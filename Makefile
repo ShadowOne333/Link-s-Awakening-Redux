@@ -142,11 +142,17 @@ src/main.azle-r1.o:
 azle-r1_ASFLAGS = -DLANG=EN -DVERSION=1
 azle-r1_FXFLAGS = --rom-version 1 --non-japanese --title "ZELDA"
 
-games += azle-r2.gbc
+redux += azle-r2.gbc
 src/main.azle-r2.o: azlf-r1.gbc
 azle-r2_ASFLAGS = -DLANG=EN -DVERSION=2
 azle-r2_LDFLAGS = -O azlf-r1.gbc
 azle-r2_FXFLAGS = --rom-version 2 --non-japanese --title "ZELDA" --game-id "AZLE"
+
+redux += redux.gbc
+src/main.redux.o: azlf-r1.gbc
+redux_ASFLAGS = -DLANG=RX -DVERSION=2
+redux_LDFLAGS = -O azlf-r1.gbc
+redux_FXFLAGS = --rom-version 2 --non-japanese --title "ZELDA" --game-id "AZLE"
 
 #
 # Main targets
@@ -157,6 +163,13 @@ build: azle.gbc
 
 # Build all revisions.
 build-all: $(games)
+
+# Build Redux version
+redux: $(redux)
+	rm -f $(games)
+	rm -f $(games:%.gbc=src/main.%.o)
+	rm -f $(games:.gbc=.map)
+	rm -f $(games:.gbc=.sym)
 
 # Test the default revision.
 test: build

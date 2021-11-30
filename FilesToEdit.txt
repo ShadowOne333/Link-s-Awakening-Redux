@@ -1,0 +1,79 @@
+Quality of Life:
+	bank2.asm:
+		Line 5006	(Low Health beeping)
+			ld a, [wHealth]		; $6325: $FA $5A $DB
+		->	ld a, [$D780]		; $6325: $FA $80 $D7
+
+		Line 5776	(???)
+			cp $8A			; $6B86: $FE $8A
+		->	cp $FF			; $6B86: $FE $FF
+			
+		Line 7116	(???)
+			ld a, e			; $72F6: $7B
+			call func_002_74FE	; $72F7: $CD $FE $74
+		->	ld [$0000], a		; $72F6: $EA $00 $00
+			nop			; $72F9: $00
+
+	bank3.asm:
+		Line 4792-4799 (Positions for power up obtain?)
+			; X offset to links position
+			Data_003_63EE::
+			    ; loop-end  loop-next2 loop-next1 loop-start
+			    db $E4,$14,$E4,$14
+		->	    db $00,$00,$00,$00
+
+			; Y offset to links position
+			Data_003_63F2::
+			    ; loop-end  loop-next2 loop-next1 loop-start
+			    db $D4,$D4,$04,$04
+		->	    db $00,$00,$04,$04
+
+		Line 4815 (Accorn and Power dialogue bypasses)
+			ld [wDialogGotItem], a	; $6404: $EA $A9 $C1
+			ld a, $30		; $6407: $3E $30
+		->	ld [wScrollXOffsetForSection], a	; $6404: $EA $00 $C1
+			ld a, $00		; $6407: $3E $00
+
+		Line 4821-4825 (Music for power up by passes)
+			ld a, MUSIC_POWERUP_ACQUIRED	; $6413: $3E $27
+			ld [wMusicTrackToPlay], a	; $6415: $EA $68 $D3
+			ld a, MUSIC_ACTIVE_POWER_UP	; $6418: $3E $49
+			ldh [hFFBD], a			; $641A: $E0 $BD
+			ldh [hNextDefaultMusicTrack], a	; $641C: $E0 $BF
+
+		->	ld a, MUSIC_ACTIVE_POWER_UP	; $6413: $3E $49
+			ld [wMusicTrackToPlay], a	; $6415: $EA $68 $D3
+			ld a, MUSIC_NONE		; $6418: $3E $00
+			ldh [hFFBD], a			; $641A: $E0 $BD
+			ldh [$00], a			; $641C: $E0 $00
+
+------------------------------------------------------------
+
+GBC+SGB compatibility:
+	Makefile: (THIS ONE MIGHT NOT BE NEEDED!)
+		rgbfix (Modify values to fit), rgbfix -f g
+
+	super_gameboy.asm:
+		Line 7-11
+		SuperGameBoyInit::
+			; If running on GBC, return immediately
+			ldh  a, [hIsGBC]	; $6A22: $F0 $FE
+			and  a			; $6A24: $A7
+			ret  nz			; $6A25: $C0
+
+	->	SuperGameBoyInit::
+			; If running on GBC, return immediately
+			ldh  a, [hIsGBC]	; $6A22: $F0 $FE
+			and  a			; $6A24: $A7
+			nop			; $6A25: $00
+
+------------------------------------------------------------
+
+Version patches:
+	This all seem to be located inside the "options.asm" file.
+	It remains to be determined which ones need to be reimplemented from v1.1 into v1.2.
+	Patches needed for EN are __PATCH_0__ (1.1), __PATCH_2__ (1.2), __PATCH_3__ (1.1), __PATCH_4__ (1.2).
+	Added __PATCH_9__ to allow for the unused Totaka's Song Easter Egg to be available in EN v1.2
+
+
+
