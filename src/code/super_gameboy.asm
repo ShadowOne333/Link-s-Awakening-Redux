@@ -8,7 +8,11 @@ SuperGameBoyInit::
     ; If running on GBC, return immediately
     ldh  a, [hIsGBC]                             ; $6A22: $F0 $FE
     and  a                                       ; $6A24: $A7
+IF REDUX
+    nop						 ; $6A25: $00
+ELSE
     ret  nz                                      ; $6A25: $C0
+ENDC
 
     ; Wait for 30 frames
     ld   bc, $1E                                 ; $6A26: $01 $1E $00

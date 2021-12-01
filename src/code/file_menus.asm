@@ -151,7 +151,7 @@ jr_001_4894::
     ld   a, [de]                                  ; $4896: $1A
     and  a                                        ; $4897: $A7
 
-IF LANG_EN || LANG_RX
+IF LANG_EN
     jr   jr_001_489D                              ; $4898: $18 $03
     dec  a                                        ; $489A: $3D
     and  $C0                                      ; $489B: $E6 $C0

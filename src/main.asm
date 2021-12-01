@@ -384,10 +384,18 @@ PhotoUlriraTiles:
 incbin "gfx/photos/photo_ulrira.2bpp"
 PhotoBowWowTiles:
 incbin "gfx/photos/photo_bow_wow.2bpp"
-PhotoShopTiles:
-incbin "gfx/photos/photo_shop.2bpp"
-PhotoFishermanTiles:
-incbin "gfx/photos/photo_fisherman.2bpp"
+
+IF REDUX
+	PhotoShopTiles:
+	incbin "gfx/photos/photo_shop_en.2bpp"
+	PhotoFishermanTiles:
+	incbin "gfx/photos/photo_fisherman_en.2bpp"
+ELSE
+	PhotoShopTiles:
+	incbin "gfx/photos/photo_shop.2bpp"
+	PhotoFishermanTiles:
+	incbin "gfx/photos/photo_fisherman.2bpp"
+ENDC
 
 section "bank2B",romx[$4000],bank[$2B]
 PhotoZoraTiles:
@@ -466,21 +474,37 @@ incbin "gfx/ending/ending_2.cgb.2bpp"
 incbin "gfx/dungeons/eagles_tower_top_2.cgb.2bpp"
 
 section "bank34",romx[$4000],bank[$34]
-incbin "gfx/menus/print.2bpp"
+IF NO_PHOTO_OVERLAY
+	incbin "gfx/menus/print_blank.2bpp"
+ELSE
+	incbin "gfx/menus/print.2bpp"
+ENDC
 
 section "bank35",romx[$4000],bank[$35]
 ColorDungeonNpcTiles::
 incbin "gfx/characters/oam_color_dungeon.2bpp"
+
 PrintUI1Tiles::
-incbin "gfx/photos/print_ui_1.2bpp"
+IF NO_PHOTO_OVERLAY
+	incbin "gfx/photos/print_ui_blank.2bpp"
+ELSE
+	incbin "gfx/photos/print_ui_1.2bpp"
+ENDC
+
 PrintUI2Tiles::
 incbin "gfx/photos/print_ui_2.2bpp"
 ColorDungeonTiles::
 incbin "gfx/dungeons/color_dungeon.2bpp"
 CameraShopIndoorTiles::
 incbin "gfx/dungeons/camera_shop.2bpp"
+
 PhotoAlbumTiles::
-incbin "gfx/photos/photo_album.2bpp"
+IF VWF
+	incbin "gfx/photos/photo_album_vwf.2bpp"
+ELSE
+	incbin "gfx/photos/photo_album.2bpp"
+ENDC
+
 EndingCGBAltTiles::
 incbin "gfx/ending/ending.cgb.alt.2bpp"
 
@@ -506,8 +530,15 @@ MarinPortraitOverlayTiles::
 incbin "gfx/ending/oam_marin_portrait_overlay.2bpp"
 TitleDXOAMTiles::
 incbin "gfx/intro/oam_title_dx.2bpp"
-ThanksForPlayingTiles::
-incbin "gfx/ending/thanks_for_playing.2bpp"
+
+IF VWF
+	ThanksForPlayingTiles::
+	incbin "gfx/ending/thanks_for_playing_vwf.2bpp"
+ELSE
+	ThanksForPlayingTiles::
+	incbin "gfx/ending/thanks_for_playing.2bpp"
+ENDC
+
 PhotoElementsTiles::
 incbin "gfx/photos/photo_elements_4.2bpp"
 include "code/photos_animations.asm"
