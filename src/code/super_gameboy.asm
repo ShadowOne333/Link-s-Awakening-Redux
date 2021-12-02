@@ -8,7 +8,7 @@ SuperGameBoyInit::
     ; If running on GBC, return immediately
     ldh  a, [hIsGBC]                             ; $6A22: $F0 $FE
     and  a                                       ; $6A24: $A7
-IF REDUX
+IF SGB_BORDER
     nop						 ; $6A25: $00
 ELSE
     ret  nz                                      ; $6A25: $C0

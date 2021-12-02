@@ -5003,7 +5003,11 @@ UpdateHealth:
     ; if wHealth is above threshold skip low health section
     ld   hl, ThresholdLowHealthTable              ; $6321: $21 $08 $63
     add  hl, de                                   ; $6324: $19
-    ld   a, [wHealth]                             ; $6325: $FA $5A $DB
+IF LOW_HEALTH_BEEP
+    ld   a, [$D780]				  ; $6325: $FA $80 $D7
+ELSE
+    ld   a, [wHealth]				  ; $6325: $FA $5A $DB
+ENDC
     cp   [hl]                                     ; $6328: $BE
     jr   nc, .increaseHealth                      ; $6329: $30 $17
 
@@ -5773,7 +5777,11 @@ label_002_6B66:
 jr_002_6B81:
     call func_002_6C2F                            ; $6B81: $CD $2F $6C
     ldh  a, [hObjectUnderEntity]                  ; $6B84: $F0 $AF
+IF QOL
+    cp   $FF                                      ; $6B86: $FE $FF
+ELSE
     cp   $8A                                      ; $6B86: $FE $8A
+ENDC
     jr   nz, jr_002_6B99                          ; $6B88: $20 $0F
 
     ld   a, [wC5A6]                               ; $6B8A: $FA $A6 $C5
@@ -7113,8 +7121,13 @@ jr_002_72EC:
 
     inc  a                                        ; $72F2: $3C
     ld   [wC5A6], a                               ; $72F3: $EA $A6 $C5
+IF QOL
+    ld   [$0000], a				  ; $72F6: $EA $00 $00
+    nop						  ; $72F9: $00
+ELSE
     ld   a, e                                     ; $72F6: $7B
     call func_002_74FE                            ; $72F7: $CD $FE $74
+ENDC
 
 jr_002_72FA:
     ld   a, [wIsRunningWithPegasusBoots]          ; $72FA: $FA $4A $C1

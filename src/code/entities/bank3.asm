@@ -4788,15 +4788,27 @@ PickHeartPiece::
     call IncrementEntityState                     ; $63E9: $CD $12 $3B
     jr   jr_003_63DB                              ; $63EC: $18 $ED
 
-; X offset to links position
-Data_003_63EE::
-    ;    loop-end  loop-next2 loop-next1 loop-start
-    db   $E4,      $14,       $E4,       $14
+IF QOL
+	; X offset to links position
+	Data_003_63EE::
+	    ;    loop-end  loop-next2 loop-next1 loop-start
+	    db   $00,      $00,       $00,       $00
 
-; Y offset to links position
-Data_003_63F2::
-    ;    loop-end  loop-next2 loop-next1 loop-start
-    db   $D4,      $D4,       $04,       $04
+	; Y offset to links position
+	Data_003_63F2::
+	    ;    loop-end  loop-next2 loop-next1 loop-start
+	    db   $00,      $00,       $04,       $04
+ELSE
+	; X offset to links position
+	Data_003_63EE::
+	    ;    loop-end  loop-next2 loop-next1 loop-start
+	    db   $E4,      $14,       $E4,       $14
+
+	; Y offset to links position
+	Data_003_63F2::
+	    ;    loop-end  loop-next2 loop-next1 loop-start
+	    db   $D4,      $D4,       $04,       $04
+ENDC
 
 PickGuardianAcorn::
     ld   a, ACTIVE_POWER_UP_GUARDIAN_ACCORN       ; $63F6: $3E $02
@@ -4812,6 +4824,20 @@ PickPieceOfPower::
 ProcessPowerUp:
     ld   [wActivePowerUp], a                      ; $6400: $EA $7C $D4
     ld   a, e                                     ; $6403: $7B
+
+IF QOL
+    ld   [wScrollXOffsetForSection], a            ; $6404: $EA $00 $C1
+    ld   a, $00                                   ; $6407: $3E $00
+    ld   [wDialogGotItemCountdown], a             ; $6409: $EA $AA $C1
+    ld   [wC111], a                               ; $640C: $EA $11 $C1
+    xor  a                                        ; $640F: $AF
+    ld   [wPowerUpHits], a                        ; $6410: $EA $7A $D4
+    ld   a, MUSIC_ACTIVE_POWER_UP		  ; $6413: $3E $49
+    ld   [wMusicTrackToPlay], a                   ; $6415: $EA $68 $D3
+    ld   a, MUSIC_NONE				  ; $6418: $3E $00
+    ldh  [hFFBD], a                               ; $641A: $E0 $BD
+    ldh  [$00], a				  ; $641C: $E0 $00
+ELSE
     ld   [wDialogGotItem], a                      ; $6404: $EA $A9 $C1
     ld   a, $30                                   ; $6407: $3E $30
     ld   [wDialogGotItemCountdown], a             ; $6409: $EA $AA $C1
@@ -4823,6 +4849,7 @@ ProcessPowerUp:
     ld   a, MUSIC_ACTIVE_POWER_UP                 ; $6418: $3E $49
     ldh  [hFFBD], a                               ; $641A: $E0 $BD
     ldh  [hNextDefaultMusicTrack], a              ; $641C: $E0 $BF
+ENDC
 
 MovePickupInTheAir::
     ; set loop counter

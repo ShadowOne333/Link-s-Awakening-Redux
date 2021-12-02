@@ -49,26 +49,6 @@ Quality of Life:
 
 ------------------------------------------------------------
 
-GBC+SGB compatibility:
-	Makefile: (THIS ONE MIGHT NOT BE NEEDED!)
-		rgbfix (Modify values to fit), rgbfix -f g
-
-	super_gameboy.asm:
-		Line 7-11
-		SuperGameBoyInit::
-			; If running on GBC, return immediately
-			ldh  a, [hIsGBC]	; $6A22: $F0 $FE
-			and  a			; $6A24: $A7
-			ret  nz			; $6A25: $C0
-
-	->	SuperGameBoyInit::
-			; If running on GBC, return immediately
-			ldh  a, [hIsGBC]	; $6A22: $F0 $FE
-			and  a			; $6A24: $A7
-			nop			; $6A25: $00
-
-------------------------------------------------------------
-
 Version patches:
 	This all seem to be located inside the "options.asm" file.
 	It remains to be determined which ones need to be reimplemented from v1.1 into v1.2.
