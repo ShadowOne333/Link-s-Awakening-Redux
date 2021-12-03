@@ -1,3 +1,20 @@
+----------------------------------------------------------
+
+VWF:
+
+07000 - 08000 = VWF code (Dialogue, PENDING)
+26000 - 28000 = Modified text (PENDING)
+51900 - 5C000 = VWF code (CGB mode?, PENDING)
+70000 - 78000 = VWF code (DMG mode?, PENDING)
+
+Graphics:
+
+gfx/fonts/font.cgb.png
+gfx/fonts/font.dmg.png
+gfx/items/items_1.cgb.png
+gfx/items/items_1.dmg.png
+
+----------------------------------------------------------
 Quality of Life:
 	bank2.asm:
 		Line 5006	(Low Health beeping)

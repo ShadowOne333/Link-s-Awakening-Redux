@@ -7690,3 +7690,14 @@ ReloadColorDungeonNpcTiles::
     ld   a, BANK(InventoryEntryPoint)             ; $3FE9: $3E $20
     ld   [MBC3SelectBank], a                      ; $3FEB: $EA $00 $21
     ret                                           ; $3FEE: $C9
+
+IF VWF
+	ld [$C3C3], a
+	call $081D
+	ret
+	ld [$2100], a
+	ld a, [hl] 
+	jp $2659
+ELSE
+ENDC
+	

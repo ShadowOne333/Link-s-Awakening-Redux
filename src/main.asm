@@ -100,7 +100,11 @@ incbin "gfx/characters/oam_link_1.dmg.2bpp"
 CharacterVfxTiles::
 incbin "gfx/characters/oam_vfx.dmg.2bpp"
 Items1Tiles::
+IF VWF
+incbin "gfx/items/items_1.dmg.vwf.2bpp"
+ELSE
 incbin "gfx/items/items_1.dmg.2bpp"
+ENDC
 InventoryEquipmentItemsTiles::
 incbin "gfx/items/items_2.dmg.2bpp"
 InventoryOverworldItemsTiles::
@@ -192,7 +196,11 @@ incbin "gfx/menus/save_menu.dmg.2bpp"
 TitleLogoTitles::
 incbin "gfx/intro/title.dmg.2bpp"
 FontTiles::
+IF VWF
+incbin "gfx/fonts/font.dmg.vwf.2bpp"
+ELSE
 incbin "gfx/fonts/font.dmg.2bpp"
+ENDC
 Overworld2Tiles::
 incbin "gfx/world/overworld_2.dmg.2bpp"
 
@@ -410,7 +418,11 @@ incbin "gfx/photos/photo_bridge.2bpp"
 section "bank2C",romx[$4000],bank[$2C]
 incbin "gfx/characters/oam_link_1.cgb.2bpp"
 incbin "gfx/characters/oam_vfx.cgb.2bpp"
+IF VWF
+incbin "gfx/items/items_1.cgb.vwf.2bpp"
+ELSE
 incbin "gfx/items/items_1.cgb.2bpp"
+ENDC
 incbin "gfx/items/items_2.cgb.2bpp"
 incbin "gfx/items/inventory_overworld_items.cgb.2bpp"
 incbin "gfx/items/instruments.cgb.2bpp"
@@ -436,7 +448,11 @@ section "bank2F",romx[$4000],bank[$2F]
 incbin "gfx/menus/menu.cgb.2bpp"
 incbin "gfx/menus/save_menu.cgb.2bpp"
 incbin "gfx/intro/title.cgb.2bpp"
+IF VWF
+incbin "gfx/fonts/font.cgb.vwf.2bpp"
+ELSE
 incbin "gfx/fonts/font.cgb.2bpp"
+ENDC
 incbin "gfx/world/overworld_2.cgb.2bpp"
 
 section "bank30",romx[$4000],bank[$30]
