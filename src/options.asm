@@ -207,8 +207,8 @@ __PATCH_3__ = TRUE
 __PATCH_4__ = TRUE
 ;__PATCH_8__ = TRUE
 __PATCH_9__ = TRUE ; Space for Totaka's song in File Menu
-;__PATCH_A__ = TRUE
-;__PATCH_B__ = TRUE
+;__PATCH_A__ = 2
+;__PATCH_B__ = 2
 
 ELIF ("{LANG}" == "FR")
 LANG_FR = TRUE

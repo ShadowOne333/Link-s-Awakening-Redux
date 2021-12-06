@@ -2,10 +2,12 @@
 
 VWF:
 
-07000 - 08000 = VWF code (Dialogue, PENDING)
-26000 - 28000 = Modified text (PENDING)
-51900 - 5C000 = VWF code (CGB mode?, PENDING)
-70000 - 78000 = VWF code (DMG mode?, PENDING)
+07E00 - 07FFF = VWF Width table and code (PENDING, needs to be moved to another bank's free space!)
+26000 - 28000 = Modified dialogue (PENDING)
+51900 - 5C000 = Modified dialogue #2 (PENDING)
+70000 - 70560 = Dialogue pointers table (Skip, automatically done by disassembly)
+70560 - 70B20 = ASCII to Tile changes for VWF (Done)
+70B2A - 78000 = Modified dialogue (PENDING)
 
 Graphics:
 
