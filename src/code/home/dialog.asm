@@ -473,7 +473,7 @@ ENDC
     ld   e, a                                     ; $2581: $5F
     ld   a, [hl]                                  ; $2582: $7E
 IF VWF
-    call $3FEF                                    ; $2583: $CD $EF $3F
+    call VWFRoutine0                              ; $2583: $CD $EF $3F
     ld   a, e                                     ; $2586: $7B
     ldh  [hMultiPurpose0], a                      ; $2587: $E0 $D7
     cp   $FC                                      ; $2589: $FE $FC
@@ -565,12 +565,12 @@ IF VWF
 	jr .notName			; $25E2: $18 $24
 	ld [$D669],a			; $25E4: $EA $69 $D6
 	ld a, $01
-	ld [$2100], a
-	call $7F10
-	call $2626
+	ld [VWFJump2], a		; $EA 00 21
+	call VWFRoutine1		; $CD 10 7F
+	call .jumphere
 	jr nz, .return
 	pop hl
-	jp $7FA3
+	jp VWFJump3			; $C3 A3 7F
 .return
 	ret
 	pop hl
@@ -587,24 +587,25 @@ IF VWF
 .notName
 	ldh  [hMultiPurpose1], a	; $2608: $E0 $D8
 	ld   e, a   
-	call $264D
+	call .jumphere2			; $CD 4D 26
 	jr .endroute
 .calling
-	call $081D
+	call ReloadSavedBank		; $CD 1D 08
 	ld   a, [bc]			; $2633: $0A
 	ldi  [hl], a			; $2634: $22
 	inc bc				; $2635: $03
 	dec e				; $2636: $1D
 	jr nz, .calling
-	call $2626
+	call .jumphere
 	ret
-	ld [$2100], a
+	ld [VWFJump2], a		; $EA $00 $21
 	ld a, [hl]
 	ld [bc], a
-	call $2626
+	call .jumphere			; $CD 26 26
 	ret
+.jumphere
 	ld a, $1C
-	ld [$2100], a
+	ld [VWFJump2], a		; $EA $00 $21
 	ret
 	nop
 	nop
@@ -693,13 +694,15 @@ IF VWF
 	call $7E9D		; $CD $9D $7E
 	jr .end2		; $18 $16
 	ld a, h			; $7C
+.jumphere2
 	ld [$D666], a		; $EA $66 $D6
 	ld a, l			; $7D
 	ld [$D667], a		; $EA $67 $D6
-	call $2626		; $CD $26 $26
+	call .jumphere		; $CD $26 $26
 	ret			; $C9
+VWFJump1
 	call $7FE8		; $CD $E8 $7F
-	call $2626		; $CD $26 $26
+	call .jumphere		; $CD $26 $26
 	ret			; $C9
 	nop			; $00
 	nop			; $00
