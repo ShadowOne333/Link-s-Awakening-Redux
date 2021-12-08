@@ -473,7 +473,7 @@ ENDC
     ld   e, a                                     ; $2581: $5F
     ld   a, [hl]                                  ; $2582: $7E
 IF VWF
-    call VWFRoutine0                              ; $2583: $CD $EF $3F
+    call $3FEF					  ; $2583: $CD $EF $3F
     ld   a, e                                     ; $2586: $7B
     ldh  [hMultiPurpose0], a                      ; $2587: $E0 $D7
     cp   $FC                                      ; $2589: $FE $FC
@@ -565,22 +565,22 @@ IF VWF
 	jr .notName			; $25E2: $18 $24
 	ld [$D669],a			; $EA $69 $D6
 	ld a, $01			; $3E 01
-	ld [.jr_2100], a		; $EA 00 21
-	call VWFRoutine1		; $CD 10 7F
+	ld [MBC3SelectBank], a		; $EA 00 21
+	call jr_7F10			; $CD 10 7F
 	call .jr_2626			; $CD 26 26
 	jr nz, .jr_25F8			; $20 04
 	pop hl				; $E1
-	jp .jr_7FA3			; $C3 A3 7F
+	jp jr_7FA3			; $C3 A3 7F
 .jr_25F8
 	ret				; $C9
 	pop hl				; $E1
-	jp .jr_7FB1			; $C3 B1 7F
+	jp jr_7FB1			; $C3 B1 7F
 	ret				; $C9
 	ld [bc], a			; $02
 	cp $FF				; $FE FF
 	ret nz				; $C0
 	pop hl				; $E1
-	jp .jr_7FB1			; $C3 B1 7F
+	jp jr_7FB1			; $C3 B1 7F
 	ret				; $C9
 	nop				; $00
 
@@ -599,14 +599,14 @@ IF VWF
 	call .jr_2626			; $CD 26 26
 	ret				; $C9
 .jr_261D
-	ld [.jr_2100], a		; $EA 00 21
+	ld [MBC3SelectBank], a		; $EA 00 21
 	ld a, [hl]			; $7E
 	ld [bc], a			; $02
 	call .jr_2626			; $CD 26 26
 	ret				; $C9
 .jr_2626
 	ld a, $1C			; $3E 1C
-	ld [.jr_2100], a		; $EA 00 21
+	ld [MBC3SelectBank], a		; $EA 00 21
 	ret				; $C9
 	nop				; $00
 	nop				; $00
@@ -692,7 +692,7 @@ ENDC
 
 
 IF VWF
-	call .jr_7E9D		; $CD $9D $7E
+	call jr_7E9D		; $CD $9D $7E
 	jr .jr_2663		; $18 $16
 .jr_264D
 	ld a, h			; $7C
@@ -702,7 +702,7 @@ IF VWF
 	call .jr_2626		; $CD $26 $26
 	ret			; $C9
 .jr_2659
-	call .jr_7FE8		; $CD $E8 $7F
+	call jr_7FE8		; $CD $E8 $7F
 	call .jr_2626		; $CD $26 $26
 	ret			; $C9
 	nop			; $00
@@ -945,7 +945,7 @@ label_278B::
     ld   [wDialogAskSelectionIndex], a            ; $278D: $EA $77 $C1
 
 IF VWF
-	jp .jr_7730				  ; $2790: $C3 $30 $77
+	jp $7730				  ; $2790: $C3 $30 $77
 ELSE
     jp   UpdateDialogState                        ; $2790: $C3 $96 $24
 ENDC

@@ -3880,7 +3880,7 @@ ENDC
     ld   e, a                                     ; $20FA: $5F
     ld   d, $00                                   ; $20FB: $16 $00
     ld   hl, LinkDirectionToLinkAnimationState_2  ; $20FD: $21 $51 $1F
-.jr_2100
+;.jr_2100
     add  hl, de                                   ; $2100: $19
     ld   a, [hl]                                  ; $2101: $7E
     ldh  [hLinkAnimationState], a                 ; $2102: $E0 $9D
@@ -7692,13 +7692,13 @@ ReloadColorDungeonNpcTiles::
     ret                                           ; $3FEE: $C9
 
 IF VWF
-VWFRoutine0
+; $3FEF
 	ld [wC3C3], a		; $EA C3 C3, Upcoming character?
 	call ReloadSavedBank	; $CD 1D 08
 	ret			; $C9
-	ld [.jr_2100], a	; $EA 00 21
+	ld [MBC3SelectBank], a	; $EA 00 21
 	ld a, [hl] 		; $7E
-	jp .jr_2659		; $C3 59 26
+	jp $2659		; $C3 59 26
 ELSE
 ENDC
 	

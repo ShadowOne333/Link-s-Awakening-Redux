@@ -1327,7 +1327,6 @@ IntroMarinState3::
     jr   nz, .jr_776C                             ; $772A: $20 $40
     ld   hl, hBaseScrollX                         ; $772C: $21 $96 $FF
     inc  [hl]                                     ; $772F: $34
-.jr_7730
     ld   a, [hl]                                  ; $7730: $7E
     cp   $40                                      ; $7731: $FE $40
     jr   z, .jr_7740                              ; $7733: $28 $0B

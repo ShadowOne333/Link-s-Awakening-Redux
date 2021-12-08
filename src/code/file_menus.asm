@@ -685,7 +685,7 @@ ENDC
 
     ; Write the slot name to the save file
 IF VWF
-	call VWFRoutine2			  ; $4AFE: $CD A0 7F
+	call $7FA0				  ; $4AFE: $CD A0 7F
 ELSE
     ld   hl, wSaveSlotNames                       ; $4AFE: $21 $80 $DB
 ENDC

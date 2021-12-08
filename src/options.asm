@@ -184,20 +184,20 @@ __PATCH_4__ = TRUE
 ENDC
 
 ELIF ("{LANG}" == "RX")
-LANG_EN = TRUE
-REDUX = TRUE
-VWF = TRUE
-QOL = TRUE
-LOW_HEALTH_BEEP = FALSE
-SGB_BORDER = TRUE
-NO_PHOTO_OVERLAY = TRUE
+LANG_EN = TRUE			; Use English language
+REDUX = TRUE			; Use Redux changes
+VWF = TRUE			; Use VWF hack
+QOL = TRUE			; Use Quality of Life hack
+LOW_HEALTH_BEEP = FALSE		; Disable low health beep
+SGB_BORDER = TRUE		; Add Super Game Boy Border (DX)
+NO_PHOTO_OVERLAY = TRUE		; Remove photo overlays
 FILE_28 = $28
 FILE_6C = $6C
 FILE_2C = $2C
 FILE_64 = $64
-EASTER_EGG_FILENAME_1 equs "ZELDA"
+EASTER_EGG_FILENAME_1 equs "ZELDA"	; Zelda
 EASTER_EGG_SONG_1 equ $60 ; MUSIC_ZELDA_NICKNAME_EASTER_EGG
-EASTER_EGG_FILENAME_2 equs "TOTA" ; Totakeke
+EASTER_EGG_FILENAME_2 equs "TOTA"	; Totaka
 EASTER_EGG_SONG_2 equ $3C ; MUSIC_TOTAKEKE_NICKNAME_EASTER_EGG
 THIEF_NAME equs "THIEF"
 __SPLIT_KEY_CAVERN_MAP__ = FALSE
@@ -206,7 +206,7 @@ __PATCH_2__ = TRUE
 __PATCH_3__ = TRUE
 __PATCH_4__ = TRUE
 ;__PATCH_8__ = TRUE
-__PATCH_9__ = TRUE ; Space for Totaka's song in File Menu
+__PATCH_9__ = TRUE		; Space for Totaka's song in File Menu
 ;__PATCH_A__ = 2
 ;__PATCH_B__ = 2
 
