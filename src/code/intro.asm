@@ -1319,14 +1319,15 @@ IntroMarinState3::
     ldh  a, [hFrameCounter]                       ; $7719: $F0 $E7
     and  $01                                      ; $771B: $E6 $01
     jr   nz, .jr_776C                             ; $771D: $20 $4D
-    ld   a, [wEntitiesPosXTable+1]                               ; $771F: $FA $01 $C2
+    ld   a, [wEntitiesPosXTable+1]                ; $771F: $FA $01 $C2
     dec  a                                        ; $7722: $3D
-    ld   [wEntitiesPosXTable+1], a                               ; $7723: $EA $01 $C2
+    ld   [wEntitiesPosXTable+1], a                ; $7723: $EA $01 $C2
     ldh  a, [hFrameCounter]                       ; $7726: $F0 $E7
     and  $03                                      ; $7728: $E6 $03
     jr   nz, .jr_776C                             ; $772A: $20 $40
     ld   hl, hBaseScrollX                         ; $772C: $21 $96 $FF
     inc  [hl]                                     ; $772F: $34
+.jr_7730
     ld   a, [hl]                                  ; $7730: $7E
     cp   $40                                      ; $7731: $FE $40
     jr   z, .jr_7740                              ; $7733: $28 $0B

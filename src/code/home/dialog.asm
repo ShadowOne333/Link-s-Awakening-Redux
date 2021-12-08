@@ -563,55 +563,56 @@ ENDC
 
 IF VWF
 	jr .notName			; $25E2: $18 $24
-	ld [$D669],a			; $25E4: $EA $69 $D6
-	ld a, $01
-	ld [VWFJump2], a		; $EA 00 21
+	ld [$D669],a			; $EA $69 $D6
+	ld a, $01			; $3E 01
+	ld [.jr_2100], a		; $EA 00 21
 	call VWFRoutine1		; $CD 10 7F
-	call .jumphere
-	jr nz, .return
-	pop hl
-	jp VWFJump3			; $C3 A3 7F
-.return
-	ret
-	pop hl
-	jp $7FB1
-	ret
-	ld [bc], a
-	cp $FF
-	ret nz
-	pop hl
-	jp $7FB1
-	ret
-	nop
+	call .jr_2626			; $CD 26 26
+	jr nz, .jr_25F8			; $20 04
+	pop hl				; $E1
+	jp .jr_7FA3			; $C3 A3 7F
+.jr_25F8
+	ret				; $C9
+	pop hl				; $E1
+	jp .jr_7FB1			; $C3 B1 7F
+	ret				; $C9
+	ld [bc], a			; $02
+	cp $FF				; $FE FF
+	ret nz				; $C0
+	pop hl				; $E1
+	jp .jr_7FB1			; $C3 B1 7F
+	ret				; $C9
+	nop				; $00
 
 .notName
 	ldh  [hMultiPurpose1], a	; $2608: $E0 $D8
-	ld   e, a   
-	call .jumphere2			; $CD 4D 26
-	jr .endroute
-.calling
+	ld   e, a			; $5F
+	call .jr_264D			; $CD 4D 26
+	jr .jr_2630			; $18 20
+.jr_2610
 	call ReloadSavedBank		; $CD 1D 08
-	ld   a, [bc]			; $2633: $0A
-	ldi  [hl], a			; $2634: $22
-	inc bc				; $2635: $03
-	dec e				; $2636: $1D
-	jr nz, .calling
-	call .jumphere
-	ret
-	ld [VWFJump2], a		; $EA $00 $21
-	ld a, [hl]
-	ld [bc], a
-	call .jumphere			; $CD 26 26
-	ret
-.jumphere
-	ld a, $1C
-	ld [VWFJump2], a		; $EA $00 $21
-	ret
-	nop
-	nop
-	nop
-	nop
-.endroute
+	ld   a, [bc]			; $0A
+	ldi  [hl], a			; $22
+	inc bc				; $03
+	dec e				; $1D
+	jr nz, .jr_2610			; $20 F7
+	call .jr_2626			; $CD 26 26
+	ret				; $C9
+.jr_261D
+	ld [.jr_2100], a		; $EA 00 21
+	ld a, [hl]			; $7E
+	ld [bc], a			; $02
+	call .jr_2626			; $CD 26 26
+	ret				; $C9
+.jr_2626
+	ld a, $1C			; $3E 1C
+	ld [.jr_2100], a		; $EA 00 21
+	ret				; $C9
+	nop				; $00
+	nop				; $00
+	nop				; $00
+	nop				; $00
+.jr_2630
 
 ELSE
     cp   "#" ; character of player name           ; $25E2: $FE $23
@@ -691,23 +692,23 @@ ENDC
 
 
 IF VWF
-	call $7E9D		; $CD $9D $7E
-	jr .end2		; $18 $16
+	call .jr_7E9D		; $CD $9D $7E
+	jr .jr_2663		; $18 $16
+.jr_264D
 	ld a, h			; $7C
-.jumphere2
 	ld [$D666], a		; $EA $66 $D6
 	ld a, l			; $7D
 	ld [$D667], a		; $EA $67 $D6
-	call .jumphere		; $CD $26 $26
+	call .jr_2626		; $CD $26 $26
 	ret			; $C9
-VWFJump1
-	call $7FE8		; $CD $E8 $7F
-	call .jumphere		; $CD $26 $26
+.jr_2659
+	call .jr_7FE8		; $CD $E8 $7F
+	call .jr_2626		; $CD $26 $26
 	ret			; $C9
 	nop			; $00
 	nop			; $00
 	nop			; $00
-.end2
+.jr_2663
 
 ELSE
     and  a                                        ; $2648: $A7
@@ -944,7 +945,7 @@ label_278B::
     ld   [wDialogAskSelectionIndex], a            ; $278D: $EA $77 $C1
 
 IF VWF
-	jp $7730		; $2790: $C3 $30 $77
+	jp .jr_7730				  ; $2790: $C3 $30 $77
 ELSE
     jp   UpdateDialogState                        ; $2790: $C3 $96 $24
 ENDC
