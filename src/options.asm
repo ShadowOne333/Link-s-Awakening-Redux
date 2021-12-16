@@ -58,9 +58,11 @@ LANG_DE = FALSE
 REDUX = FALSE
 VWF = FALSE
 QOL = FALSE
-LOW_HEALTH_BEEP = FALSE
 SGB_BORDER = FALSE
+SAVE_BUTTON_COMBO = FALSE
+NO_LOW_HEALTH_BEEP = FALSE
 NO_PHOTO_OVERLAY = FALSE
+NO_THIEF_DOWNSIDES = FALSE
 
 BANK_1C_VAR = 1
 
@@ -186,11 +188,13 @@ ENDC
 ELIF ("{LANG}" == "RX")
 LANG_EN = TRUE			; Use English language
 REDUX = TRUE			; Use Redux changes
-VWF = TRUE			; Use VWF hack
+VWF = FALSE			; Use VWF hack
 QOL = TRUE			; Use Quality of Life hack
-LOW_HEALTH_BEEP = FALSE		; Disable low health beep
 SGB_BORDER = TRUE		; Add Super Game Boy Border (DX)
+SAVE_BUTTON_COMBO = TRUE	; Change Save button combo (Up+Sel)
+NO_LOW_HEALTH_BEEP = FALSE	; Disable low health beep
 NO_PHOTO_OVERLAY = TRUE		; Remove photo overlays
+NO_THIEF_DOWNSIDES = TRUE	; Remove Thief photo downsides
 FILE_28 = $28
 FILE_6C = $6C
 FILE_2C = $2C

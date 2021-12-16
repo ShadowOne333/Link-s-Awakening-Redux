@@ -1297,7 +1297,11 @@ presentSaveScreenIfNeeded::
 
     ; If not all A + B + Start + Select buttons are pressed
     ldh  a, [hPressedButtonsMask]                 ; $0E61: $F0 $CB
+IF SAVE_BUTTON_COMBO
+    cp   J_UP | J_SELECT		          ; $0E63: $FE $44, (Modify to custom combo)
+ELSE
     cp   J_A | J_B | J_START | J_SELECT           ; $0E63: $FE $F0
+ENDC
     jr   nz, jumpToGameplayHandler                ; $0E65: $20 $1E
 
     ; If wD474 != 0
@@ -2933,7 +2937,11 @@ LinkMotionMapFadeOutHandler::
     ld   hl, wIsThief                             ; $1880: $21 $6E $DB
     inc  [hl]                                     ; $1883: $34
     ld   hl, wHasStolenFromShop                   ; $1884: $21 $46 $DB
+IF NO_THIEF_DOWNSIDES
+	nop		; $1887: $00, Skip increment 
+ELSE
     inc  [hl]                                     ; $1887: $34
+ENDC
     ld   a, [$DC0C]                               ; $1888: $FA $0C $DC
     or   $40                                      ; $188B: $F6 $40
     ld   [$DC0C], a                               ; $188D: $EA $0C $DC

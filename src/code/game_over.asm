@@ -42,8 +42,14 @@ jr_001_420D::
 
     ld   a, LINK_ANIMATION_STATE_NO_UPDATE       ; $421C: $3E $FF ; $421C: $3E $FF
     ldh  [hLinkAnimationState], a                 ; $421E: $E0 $9D ; $421E: $E0 $9D
+IF NO_THIEF_DOWNSIDES
+	call ThiefEventCheck		; $4220: $CD $00 $91
+	nop
+	nop
+ELSE
     ld   a, [wDeathCount]                         ; $4220: $FA $57 $DB ; $4220: $FA $57 $DB
     add  $01                                      ; $4223: $C6 $01 ; $4223: $C6 $01
+ENDC
     daa                                           ; $4225: $27 ; $4225: $27
     ld   [wDeathCount], a                         ; $4226: $EA $57 $DB ; $4226: $EA $57 $DB
     ld   a, [$DB58]                               ; $4229: $FA $58 $DB ; $4229: $FA $58 $DB

@@ -80,6 +80,24 @@ CopyTilesToPieceOfHeartMeter::
     ld   [MBC3SelectBank], a
     ret
 
+section "ThiefDownside", rom0[$0091]
+IF NO_THIEF_DOWNSIDES
+ThiefEventCheck::
+	ldh  a, [hMapId]	; $0091: $F0 $F7, Load Map ID
+	cp   MAP_SHOP		; $0093: $FE $0E, Is map the shop?
+	jr   nz, .not_shop	; $0095: $20 $0C, Increment if not in shop
+	ldh  a, [hMapRoom]	; $0097: $F0 $F6
+	cp   $A1		; $0099: $FE $A1, Is the current shop the one in Mabe Village?
+	jr   nz, .not_shop	; $009B: $20 $06, Increment if it's not the Mabe Shop
+	ld   a, [wDeathCount]	; $009D: $FA $57 $DB
+	add  $00		; $00A0: $C6 00
+	ret			; $00A2: $C9
+.not_shop
+	ld   a, [wDeathCount]	; $00A3: $FA $57 $DB
+	add  $01		; $00A6: $C6 01
+	ret			; $00A8: $C9
+ENDC
+
 section "Entry", rom0[$100]
     ; This is the entry point to the program.
     nop

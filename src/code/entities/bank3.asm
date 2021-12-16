@@ -4825,7 +4825,7 @@ ProcessPowerUp:
     ld   [wActivePowerUp], a                      ; $6400: $EA $7C $D4
     ld   a, e                                     ; $6403: $7B
 
-IF QOL
+IF QOL		; Acorns and Pieces of Power Messages and SFX
     ld   [wScrollXOffsetForSection], a            ; $6404: $EA $00 $C1
     ld   a, $00                                   ; $6407: $3E $00
     ld   [wDialogGotItemCountdown], a             ; $6409: $EA $AA $C1

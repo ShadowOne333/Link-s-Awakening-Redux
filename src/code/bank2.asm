@@ -5003,7 +5003,7 @@ UpdateHealth:
     ; if wHealth is above threshold skip low health section
     ld   hl, ThresholdLowHealthTable              ; $6321: $21 $08 $63
     add  hl, de                                   ; $6324: $19
-IF LOW_HEALTH_BEEP
+IF NO_LOW_HEALTH_BEEP
     ld   a, [$D780]				  ; $6325: $FA $80 $D7
 ELSE
     ld   a, [wHealth]				  ; $6325: $FA $5A $DB
@@ -5777,7 +5777,7 @@ label_002_6B66:
 jr_002_6B81:
     call func_002_6C2F                            ; $6B81: $CD $2F $6C
     ldh  a, [hObjectUnderEntity]                  ; $6B84: $F0 $AF
-IF QOL
+IF QOL		; Collision stuff for lifting message?
     cp   $FF                                      ; $6B86: $FE $FF
 ELSE
     cp   $8A                                      ; $6B86: $FE $8A
@@ -7121,7 +7121,7 @@ jr_002_72EC:
 
     inc  a                                        ; $72F2: $3C
     ld   [wC5A6], a                               ; $72F3: $EA $A6 $C5
-IF QOL
+IF QOL		; Message when lifting rocks or heavy objects
     ld   [$0000], a				  ; $72F6: $EA $00 $00
     nop						  ; $72F9: $00
 ELSE

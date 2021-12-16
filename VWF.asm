@@ -123,31 +123,37 @@ jr_7F81
 	ld   a, e		; $7B
 	cp   $01		; $FE 01
 	ret			; $C9
-jr_7F85
-	ld   a, e		; $7B
-	cp   $01		; $FE 01
-	ret			; $C9
-jr_7F89
-	ld   e, $00		; $1E 00
-	ld   [bc], a		; $02
-	ld   a, e		; $7B
-	cp   $01		; $FE 01
-	ret			; $C9
-jr_7F90
-	ld   bc, $00C9		; $01 C9 00
-	nop	; $00
-	nop	; $00
-	nop	; $00
-	nop	; $00
-	nop	; $00
-	nop	; $00
-	nop	; $00
-	nop	; $00
-	nop	; $00
-	nop	; $00
-	nop	; $00
-	nop	; $00
-	nop	; $00
+
+;--------------------------------------------
+; According to Toruzz, everything below this 
+; point is leftover/dummy code which ends up
+; being unused in the final VWF code
+;--------------------------------------------
+;jr_7F85
+;	ld   a, e		; $7B
+;	cp   $01		; $FE 01
+;	ret			; $C9
+;jr_7F89
+;	ld   e, $00		; $1E 00
+;	ld   [bc], a		; $02
+;	ld   a, e		; $7B
+;	cp   $01		; $FE 01
+;	ret			; $C9
+;jr_7F90
+;	ld   bc, $00C9		; $01 C9 00
+;	nop	; $00
+;	nop	; $00
+;	nop	; $00
+;	nop	; $00
+;	nop	; $00
+;	nop	; $00
+;	nop	; $00
+;	nop	; $00
+;	nop	; $00
+;	nop	; $00
+;	nop	; $00
+;	nop	; $00
+;	nop	; $00
 
 ;--------------------------------------------
 ; Originally at $7FA0:
