@@ -473,7 +473,7 @@ ENDC
     ld   e, a                                     ; $2581: $5F
     ld   a, [hl]                                  ; $2582: $7E
 IF VWF
-    call $3FEF					  ; $2583: $CD $EF $3F
+    call UpcomingCharacter			  ; $2583: $CD $EF $3F
     ld   a, e                                     ; $2586: $7B
     ldh  [hMultiPurpose0], a                      ; $2587: $E0 $D7
     cp   $FC                                      ; $2589: $FE $FC
@@ -692,7 +692,7 @@ ENDC
 
 
 IF VWF
-	call jr_7E9D		; $CD $9D $7E
+	call VWFRoutine		; $CD $9D $7E
 	jr .jr_2663		; $18 $16
 .jr_264D
 	ld a, h			; $7C

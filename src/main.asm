@@ -322,6 +322,9 @@ include "data/dialogs/dialog_banks.asm"
 include "code/dialog_letters.asm"
 include "text/dialog_3.asm"
 include "text/dialog_000.asm"
+IF VWF
+include "code/vwf_code.asm"
+ENDC
 
 section "bank1D", romx[$4000], bank[$1D]
 include "text/dialog_4.asm"
