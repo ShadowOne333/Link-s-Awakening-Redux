@@ -507,6 +507,7 @@ ELSE
     cp   "@" ; $ff                                ; $25A4: $FE $FF
 ENDC
     jr   nz, .notEnd                              ; $25A6: $20 $15
+.jr_25A8
     pop  hl                                       ; $25A8: $E1
     xor  a                                        ; $25A9: $AF
     ld   [wRequest], a                            ; $25AA: $EA $01 $D6
@@ -563,7 +564,8 @@ ENDC
 
 IF VWF
 	jr .notName			; $25E2: $18 $24
-	ld [$D669],a			; $EA $69 $D6
+.jr_25E4
+	ld [$D669],a			; $25E4: $EA $69 $D6
 	ld a, $01			; $3E 01
 	ld [MBC3SelectBank], a		; $EA 00 21
 	call jr_7F10			; $CD 10 7F
@@ -644,6 +646,7 @@ ELSE
     ld   e, a                                     ; $260A: $5F
     ld   a, BANK(AsciiToTileMap)                  ; $260B: $3E $1C
     ld   [MBC3SelectBank], a                      ; $260D: $EA $00 $21
+.jr_2610
     ld   hl, AsciiToTileMap                       ; $2610: $21 $41 $46
     add  hl, de                                   ; $2613: $19
     ld   e, [hl]                                  ; $2614: $5E

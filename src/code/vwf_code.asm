@@ -17,15 +17,15 @@ VWFRoutine::
 	ld [$D639], a	; $EA 39 D6
 
 .jr_0013:
-	ld a, [$C170]	; $FA 70 C1
+	ld a, [wDialogCharacterIndex]	; $FA 70 C1
 	cp $00		; $FE 00
 
 .jr_0018:
-	jr nz, .jr_0036	; $20 1C
+	jr nz, .jr_7ED3	; $20 1C
 	ld a, [$D639]	; $FA 39 D6
 	cp $01		; $FE 01
 
-	jr z, .jr_0036	; $28 15
+	jr z, .jr_7ED3	; $28 15
 	ld a, $01	; $3E 01
 	ld [$D639], a	; $EA 39 D6
 	ld [$D634], a	; $EA 34 D6
@@ -42,7 +42,7 @@ VWFRoutine::
 	ldi [hl], a	; $22
 	ld [hl], a	; $77
 
-.jr_0036:
+.jr_7ED3:
 	ld a, [bc]	; $0A
 	ld h, a		; $67
 	inc bc		; $03
@@ -52,27 +52,26 @@ VWFRoutine::
 	ld a, [$D660]	; $FA 60 D6
 	ld bc, $D638	; $01 38 D6
 
-	call $261D	; $CD 1D 26Z
+	call .jr_261D	; $CD 1D 26
 	inc hl		; $23
 	inc hl		; $23
 	ld a, h		; $7C
 
 	ld [$D668], a	; $EA 68 D6
 	ld a, l		; $7D
-	call $25E4	; $CD E4 25
+	call .jr_25E4	; $CD E4 25
 	inc bc		; $03
 
 	ld a, [bc]	; $0A
 	cp $FE		; $FE FE
-	jr c, jr_005F	; $38 0A
+	jr c, .jr_005F	; $38 0A
 
 	cp $FF		; $FE FF
 	jr z, .jr_005C	; $28 03
-	jp $2590	; $C3 90 25
+	jp .choice	; $C3 90 25
 
 .jr_005C:
-	jp $25A8	; $C3 A8 25
-
+	jp .jr_25A8	; $C3 A8 25
 
 jr_005F:
 	dec bc		; $0B
@@ -83,7 +82,7 @@ jr_005F:
 
 .jr_0068:
 	ld e, a		; $5F
-	ld hl, $4641	; $21 41 46
+	ld hl, AsciiToTileMap	; $21 41 46
 	ld d, $00	; $16 00
 	add hl, de	; $19
 	ld e, [hl]	; $5E
@@ -103,16 +102,16 @@ jr_005F:
 	ld b, h		; $44
 	ld hl, $D640	; $21 40 D6
 	ld e, $10	; $1E 10
-	call $2610	; $CD 10 26
+	call .jr_2610	; $CD 10 26
 
 	ld bc, $D638	; $01 38 D6
 	ld a, [bc]	; $0A
 	ld e, a		; $5F
 	ld d, $00	; $16 00
-	ld hl, $7E10	; $21 10 7E
+	ld hl, WidthTable	; $21 10 7E
 	add hl, de	; $19
 	ld a, $01	; $3E 01
-	call $3FF6	; $CD F6 3F
+	call .jr_3FF6	; $CD F6 3F
 	dec bc		; $0B
 	ld a, [bc]	; $0A
 	inc bc		; $03
@@ -187,24 +186,24 @@ jr_005F:
 	ld bc, $D650	; $01 50 D6
 	ld hl, $D608	; $21 08 D6
 	ld d, $01	; $16 01
-	call $7FE3	; $CD E3 7F
+	call .jr_7FE3	; $CD E3 7F
 
 	ld d, $00	; $16 00
 	ld bc, $D5F0	; $01 D5 F0
 	ld hl, $D650	; $21 50 D6
-	call $7FE3	; $CD E3 7F
+	call .jr_7FE3	; $CD E3 7F
 
 	jr .jr_010C	; $18 06
 
 .jr_7FA3:	; 0106
 	ld bc, $D668	; $01 68 D6
-	jp $7ED3	; $C3 D3 7E
+	jp .jr_7ED3	; $C3 D3 7E
 
 .jr_010C:
 	ld a, [$D63D]	; $FA 3D D6
 	cp $00		; $FE $00
 	jr z, .jr_0127	; $28 14
-	call $7FDA	; $CD DA 7F
+	call .jr_7FDA	; $CD DA 7F
 
 .jr_0116:
 	ld a, [$D63D]	; $FA 3D D6
@@ -226,7 +225,7 @@ jr_005F:
 .jr_0127:
 	ret		; $C9
 
-	call $7FDA	; $CD DA 7F
+	call .jr_7FDA	; $CD DA 7F
 .jr_012B:
 	ld a, [$D63E]	; $FA 3E D6
 	ld e, a		; $5F
@@ -246,11 +245,13 @@ jr_005F:
 	jr .jr_012B	; $20 EF
 	ret		; $C9
 
+.jr_7FDA
 	ld d, $10	; $16 10
 	ld hl, $D650	; $21 50 D6
 	ld bc, $D640	; $01 40 D6
 	ret		; $C9
 
+.jr_7FE3
 	ld e, $10	; $1E 10
 
 .jr_0149:
