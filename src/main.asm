@@ -100,11 +100,6 @@ incbin "gfx/characters/oam_link_1.dmg.2bpp"
 CharacterVfxTiles::
 incbin "gfx/characters/oam_vfx.dmg.2bpp"
 Items1Tiles::
-IF VWF
-incbin "gfx/items/items_1.dmg.vwf.2bpp"
-ELSE
-incbin "gfx/items/items_1.dmg.2bpp"
-ENDC
 InventoryEquipmentItemsTiles::
 incbin "gfx/items/items_2.dmg.2bpp"
 InventoryOverworldItemsTiles::
@@ -202,7 +197,13 @@ ELSE
 incbin "gfx/fonts/font.dmg.2bpp"
 ENDC
 Overworld2Tiles::
+IF VWF
+	; 40 bytes of code can be placed here
+section "bankOF_overlap",romx[$5A40],bank[$0F]
+incbin "gfx/world/overworld_2.dmg.2bpp",$40
+ELSE
 incbin "gfx/world/overworld_2.dmg.2bpp"
+ENDC
 
 section "bank10",romx[$4000],bank[$10]
 IntroTiles::
@@ -323,7 +324,7 @@ include "code/dialog_letters.asm"
 include "text/dialog_3.asm"
 include "text/dialog_000.asm"
 IF VWF
-include "code/vwf_code.asm"
+include "text/vwf.asm"
 ENDC
 
 section "bank1D", romx[$4000], bank[$1D]
@@ -421,11 +422,7 @@ incbin "gfx/photos/photo_bridge.2bpp"
 section "bank2C",romx[$4000],bank[$2C]
 incbin "gfx/characters/oam_link_1.cgb.2bpp"
 incbin "gfx/characters/oam_vfx.cgb.2bpp"
-IF VWF
-incbin "gfx/items/items_1.cgb.vwf.2bpp"
-ELSE
 incbin "gfx/items/items_1.cgb.2bpp"
-ENDC
 incbin "gfx/items/items_2.cgb.2bpp"
 incbin "gfx/items/inventory_overworld_items.cgb.2bpp"
 incbin "gfx/items/instruments.cgb.2bpp"
@@ -529,6 +526,9 @@ incbin "gfx/ending/ending.cgb.alt.2bpp"
 
 section "bank36",romx[$4000],bank[$36]
 include "code/entities/bank36.asm"
+IF VWF
+include "text/vwf_widthtable.asm"
+ENDC
 
 section "bank37",romx[$4000],bank[$37]
 include "code/photos.asm"

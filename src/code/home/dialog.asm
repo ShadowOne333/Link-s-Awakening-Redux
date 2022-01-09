@@ -23,12 +23,21 @@ ExecuteDialog::
 
     ; If the character index is > 20 (i.e. past the first two lines),
     ; mask wDialogNextCharPosition around $10
+IF VWF
+	ld   a, [wDialogBoxPosIndexHi]    
+	and  a                               
+	ld   a, [wDialogBoxPosIndex]      
+	jr   nz, .wrapPosition               
+	cp   $20
+	jr   c, .writePosition               
+ELSE
     ld   a, [wDialogCharacterIndexHi]             ; $2334: $FA $64 $C1
     and  a                                        ; $2337: $A7
     ld   a, [wDialogCharacterIndex]               ; $2338: $FA $70 $C1
     jr   nz, .wrapPosition                        ; $233B: $20 $04
     cp   $20                                      ; $233D: $FE $20
     jr   c, .writePosition                        ; $233F: $38 $04
+ENDC
 .wrapPosition
     and  $0F                                      ; $2341: $E6 $0F
     or   $10                                      ; $2343: $F6 $10
@@ -377,7 +386,11 @@ DialogLetterAnimationEndHandler::
     xor  a                                        ; $2513: $AF
     ldi  [hl], a                                  ; $2514: $22
     push hl                                       ; $2515: $E5
-    ld   a, [wDialogCharacterIndex]               ; $2516: $FA $70 $C1
+IF VWF
+	ld   a, [wDialogBoxPosIndex]
+ELSE
+	ld   a, [wDialogCharacterIndex]               ; $2516: $FA $70 $C1
+ENDC
     and  $1F                                      ; $2519: $E6 $1F
     ld   c, a                                     ; $251B: $4F
     ld   hl, Data_01C_45A1                        ; $251C: $21 $A1 $45
@@ -391,7 +404,11 @@ DialogLetterAnimationEndHandler::
 DialogDrawNextCharacterHandler::
     ld   a, BANK(DialogPointerTable)              ; $2529: $3E $1C
     ld   [MBC3SelectBank], a                      ; $252B: $EA $00 $21
-    ld   a, [wDialogCharacterIndex]               ; $252E: $FA $70 $C1
+IF VWF
+	ld   a, [wDialogBoxPosIndex]
+ELSE
+	ld   a, [wDialogCharacterIndex]
+ENDC
     and  $1F                                      ; $2531: $E6 $1F
     ld   c, a                                     ; $2533: $4F
     ld   b, $00                                   ; $2534: $06 $00
@@ -438,19 +455,6 @@ IF __USE_FIXED_DIALOG_BANKS__
 .foundBank
     ld   a, e
     ld   [MBC3SelectBank], a
-ELIF VWF
-    push de                                       ; $2563: $D5
-    ld   a, [wDialogIndex]                        ; $2564: $FA $73 $C1
-    ld   e, a                                     ; $2567: $5F
-    ld   a, [wDialogIndexHi]                      ; $2568: $FA $12 $C1
-    ld   d, a                                     ; $256B: $57
-    ld   hl, DialogBankTable                      ; $256C: $21 $41 $47
-    add  hl, de                                   ; $256F: $19
-    ld   a, [hl] ; bank                           ; $2570: $7E
-    and  $3f                                      ; $2571: $E6 $3F
-    ld   [MBC3SelectBank], a                      ; $2573: $EA $00 $21
-    ld   [$D660], a				  ; $2576: $EA $60 $D6
-    pop  hl					  ; $2579: $E1
 ELSE
     push de                                       ; $2563: $D5
     ld   a, [wDialogIndex]                        ; $2564: $FA $73 $C1
@@ -472,18 +476,11 @@ ENDC
     ld   a, [hli]                                 ; $2580: $2A
     ld   e, a                                     ; $2581: $5F
     ld   a, [hl]                                  ; $2582: $7E
-IF VWF
-    call UpcomingCharacter			  ; $2583: $CD $EF $3F
-    ld   a, e                                     ; $2586: $7B
-    ldh  [hMultiPurpose0], a                      ; $2587: $E0 $D7
-    cp   $FC                                      ; $2589: $FE $FC
-ELSE
     ld   [wC3C3], a ; upcoming character, used in code for the arrow ; $2583: $EA $C3 $C3
     call ReloadSavedBank                          ; $2586: $CD $1D $08
     ld   a, e                                     ; $2589: $7B
     ldh  [hMultiPurpose0], a                      ; $258A: $E0 $D7
     cp   "<ask>" ; $fe                            ; $258C: $FE $FE
-ENDC
     jr   nz, .notChoice                           ; $258E: $20 $14
     pop  hl                                       ; $2590: $E1
     xor  a                                        ; $2591: $AF
@@ -501,11 +498,7 @@ ENDC
     ret                                           ; $25A3: $C9
 
 .notChoice
-IF VWF
-    cp   $FC                                      ; $25A4: $FE $FC
-ELSE
     cp   "@" ; $ff                                ; $25A4: $FE $FF
-ENDC
     jr   nz, .notEnd                              ; $25A6: $20 $15
 .jr_25A8
     pop  hl                                       ; $25A8: $E1
@@ -531,13 +524,8 @@ INDEX = INDEX + 1
 ENDR
 
 .notEnd
-IF VWF
-    cp   $21                                      ; $25BD: $FE $21
-    jr   c, .noSFX                                ; $25BF: $38 $1F
-ELSE
     cp   " "                                      ; $25BD: $FE $20
     jr   z, .noSFX                                ; $25BF: $28 $1F
-ENDC
     push af                                       ; $25C1: $F5
     ld   a, [wDialogSFX]                          ; $25C2: $FA $AB $C5
     ld   d, a                                     ; $25C5: $57
@@ -561,62 +549,6 @@ ENDC
 .noSFX
     ld   d, $00                                   ; $25E0: $16 $00
 
-
-IF VWF
-	jr .notName			; $25E2: $18 $24
-.jr_25E4
-	ld [$D669],a			; $25E4: $EA $69 $D6
-	ld a, $01			; $3E 01
-	ld [MBC3SelectBank], a		; $EA 00 21
-	call jr_7F10			; $CD 10 7F
-	call .jr_2626			; $CD 26 26
-	jr nz, .jr_25F8			; $20 04
-	pop hl				; $E1
-	jp jr_7FA3			; $C3 A3 7F
-.jr_25F8
-	ret				; $C9
-	pop hl				; $E1
-	jp jr_7FB1			; $C3 B1 7F
-	ret				; $C9
-	ld [bc], a			; $02
-	cp $FF				; $FE FF
-	ret nz				; $C0
-	pop hl				; $E1
-	jp jr_7FB1			; $C3 B1 7F
-	ret				; $C9
-	nop				; $00
-
-.notName
-	ldh  [hMultiPurpose1], a	; $2608: $E0 $D8
-	ld   e, a			; $5F
-	call .jr_264D			; $CD 4D 26
-	jr .jr_2630			; $18 20
-.jr_2610
-	call ReloadSavedBank		; $CD 1D 08
-	ld   a, [bc]			; $0A
-	ldi  [hl], a			; $22
-	inc bc				; $03
-	dec e				; $1D
-	jr nz, .jr_2610			; $20 F7
-	call .jr_2626			; $CD 26 26
-	ret				; $C9
-.jr_261D
-	ld [MBC3SelectBank], a		; $EA 00 21
-	ld a, [hl]			; $7E
-	ld [bc], a			; $02
-	call .jr_2626			; $CD 26 26
-	ret				; $C9
-.jr_2626
-	ld a, $1C			; $3E 1C
-	ld [MBC3SelectBank], a		; $EA 00 21
-	ret				; $C9
-	nop				; $00
-	nop				; $00
-	nop				; $00
-	nop				; $00
-.jr_2630
-
-ELSE
     cp   "#" ; character of player name           ; $25E2: $FE $23
     jr   nz, .notName                             ; $25E4: $20 $22
     ld   a, [wNameIndex]                          ; $25E6: $FA $08 $C1
@@ -644,6 +576,11 @@ ELSE
 .notName
     ldh  [hMultiPurpose1], a                      ; $2608: $E0 $D8
     ld   e, a                                     ; $260A: $5F
+IF VWF
+	ld   a, BANK(saveLetterWidths)
+    ld   [MBC3SelectBank], a
+	call saveLetterWidths
+ENDC
     ld   a, BANK(AsciiToTileMap)                  ; $260B: $3E $1C
     ld   [MBC3SelectBank], a                      ; $260D: $EA $00 $21
 .jr_2610
@@ -664,9 +601,6 @@ ELSE
     add  hl, de                                   ; $262D: $19
     ld   c, l                                     ; $262E: $4D
     ld   b, h                                     ; $262F: $44
-ENDC
-
-
     pop  hl                                       ; $2630: $E1
     ld   e, $10                                   ; $2631: $1E $10
     ; copy character tile data to wRequestData
@@ -684,6 +618,9 @@ ENDC
     ldh  a, [hMultiPurpose1]                      ; $2641: $F0 $D8
     ld   e, a                                     ; $2643: $5F
     ld   d, $00                                   ; $2644: $16 $00
+IF VWF
+	call variableWidthFont
+ENDC
 IF __DO_CHECK_DAKUTEN__
     ld   hl, DakutenTable
     add  hl, de
@@ -693,27 +630,6 @@ ELSE
 ENDC
     pop  hl                                       ; $2647: $E1
 
-
-IF VWF
-	call VWFRoutine		; $CD $9D $7E
-	jr .jr_2663		; $18 $16
-.jr_264D
-	ld a, h			; $7C
-	ld [$D666], a		; $EA $66 $D6
-	ld a, l			; $7D
-	ld [$D667], a		; $EA $67 $D6
-	call .jr_2626		; $CD $26 $26
-	ret			; $C9
-.jr_2659
-	call jr_7FE8		; $CD $E8 $7F
-	call .jr_2626		; $CD $26 $26
-	ret			; $C9
-	nop			; $00
-	nop			; $00
-	nop			; $00
-.jr_2663
-
-ELSE
     and  a                                        ; $2648: $A7
     jr   z, .noDakuten                            ; $2649: $28 $18
     ld   e, a                                     ; $264B: $5F
@@ -732,7 +648,6 @@ ELSE
 .handleDakutenTile
     ldi  [hl], a                                  ; $2660: $22
     ld   [hl], $00                                ; $2661: $36 $00
-ENDC
 
 .noDakuten
     ld   a, [wDialogCharacterIndex]               ; $2663: $FA $70 $C1
@@ -767,7 +682,11 @@ data_2693::
     db $98, $99                                   ; $2693
 
 DialogBreakHandler::
-    ld   a, [wDialogCharacterIndex]               ; $2695: $FA $70 $C1
+IF VWF
+	ld   a, [wDialogBoxPosIndex]               ; $2695: $FA $70 $C1
+ELSE
+	ld   a, [wDialogCharacterIndex]               ; $2695: $FA $70 $C1
+ENDC
     and  $1F                                      ; $2698: $E6 $1F
     jr   nz, .jp_26E1                             ; $269A: $20 $45
     ld   a, [wC3C3]                               ; $269C: $FA $C3 $C3
@@ -947,11 +866,7 @@ label_278B::
     ld   a, $02                                   ; $278B: $3E $02
     ld   [wDialogAskSelectionIndex], a            ; $278D: $EA $77 $C1
 
-IF VWF
-	jp $7730				  ; $2790: $C3 $30 $77
-ELSE
     jp   UpdateDialogState                        ; $2790: $C3 $96 $24
-ENDC
 
 DialogChoiceHandler::
     ; Was A pushed?
