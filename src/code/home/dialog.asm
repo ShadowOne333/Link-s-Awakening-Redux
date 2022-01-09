@@ -476,7 +476,7 @@ ENDC
     ld   a, [hli]                                 ; $2580: $2A
     ld   e, a                                     ; $2581: $5F
     ld   a, [hl]                                  ; $2582: $7E
-    ld   [wC3C3], a ; upcoming character, used in code for the arrow ; $2583: $EA $C3 $C3
+    ld   [wUpcomingChar], a ; upcoming character, used in code for the arrow ; $2583: $EA $C3 $C3
     call ReloadSavedBank                          ; $2586: $CD $1D $08
     ld   a, e                                     ; $2589: $7B
     ldh  [hMultiPurpose0], a                      ; $258A: $E0 $D7
@@ -689,7 +689,7 @@ ELSE
 ENDC
     and  $1F                                      ; $2698: $E6 $1F
     jr   nz, .jp_26E1                             ; $269A: $20 $45
-    ld   a, [wC3C3]                               ; $269C: $FA $C3 $C3
+    ld   a, [wUpcomingChar]                               ; $269C: $FA $C3 $C3
     cp   $FF                                      ; $269F: $FE $FF
     jp   z, DialogDrawNextCharacterHandler.label_25AD ; $26A1: $CA $AD $25
     cp   $FE                                      ; $26A4: $FE $FE

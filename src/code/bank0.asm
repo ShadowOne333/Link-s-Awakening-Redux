@@ -7701,7 +7701,7 @@ ReloadColorDungeonNpcTiles::
 
 IF VWF
 UpcomingCharacter::		; $3FEF
-	ld [wC3C3], a		; $EA C3 C3, Upcoming character?
+	ld [wUpcomingChar], a		; $EA C3 C3, Upcoming character?
 	call ReloadSavedBank	; $CD 1D 08
 	ret			; $C9
 .jr_3FF6
