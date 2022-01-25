@@ -23,27 +23,24 @@ ExecuteDialog::
 
     ; If the character index is > 20 (i.e. past the first two lines),
     ; mask wDialogNextCharPosition around $10
+    
 IF VWF
-	ld   a, [wDialogBoxPosIndexHi]    
-	and  a                               
-	ld   a, [wDialogBoxPosIndex]      
-	jr   nz, .wrapPosition               
-	cp   $20
-	jr   c, .writePosition               
+	ld   a, [wDialogBoxPosIndexHi]
+	and  a
+	ld   a, [wDialogBoxPosIndex]
 ELSE
-    ld   a, [wDialogCharacterIndexHi]             ; $2334: $FA $64 $C1
+	ld   a, [wDialogCharacterIndexHi]             ; $2334: $FA $64 $C1
     and  a                                        ; $2337: $A7
     ld   a, [wDialogCharacterIndex]               ; $2338: $FA $70 $C1
+ENDC
     jr   nz, .wrapPosition                        ; $233B: $20 $04
     cp   $20                                      ; $233D: $FE $20
     jr   c, .writePosition                        ; $233F: $38 $04
-ENDC
 .wrapPosition
     and  $0F                                      ; $2341: $E6 $0F
     or   $10                                      ; $2343: $F6 $10
 .writePosition
     ld   [wDialogNextCharPosition], a             ; $2345: $EA $71 $C1
-
     ; Discard wDialogState lower byte
     ld   a, e                                     ; $2348: $7B
     and  $7F                                      ; $2349: $E6 $7F
@@ -342,8 +339,8 @@ DialogLetterAnimationEndHandler::
     ld   [MBC3SelectBank], a                      ; $24CF: $EA $00 $21
     ld   a, [wDialogState]                        ; $24D2: $FA $9F $C1
     ld   c, a                                     ; $24D5: $4F
-    ld   a, [wDialogNextCharPosition]             ; $24D6: $FA $71 $C1
-    bit  7, c                                     ; $24D9: $CB $79
+	ld   a, [wDialogNextCharPosition]             ; $24D6: $FA $71 $C1
+	bit  7, c                                     ; $24D9: $CB $79
     jr   z, .jp_24DF                              ; $24DB: $28 $02
     add  a, $20                                   ; $24DD: $C6 $20
 
@@ -387,11 +384,11 @@ DialogLetterAnimationEndHandler::
     ldi  [hl], a                                  ; $2514: $22
     push hl                                       ; $2515: $E5
 IF VWF
-	ld   a, [wDialogBoxPosIndex]
+	ld   a, [wDialogBoxPosIndex]               ; $2516: $FA $70 $C1
 ELSE
 	ld   a, [wDialogCharacterIndex]               ; $2516: $FA $70 $C1
 ENDC
-    and  $1F                                      ; $2519: $E6 $1F
+	and  $1F                                      ; $2519: $E6 $1F
     ld   c, a                                     ; $251B: $4F
     ld   hl, Data_01C_45A1                        ; $251C: $21 $A1 $45
     add  hl, bc                                   ; $251F: $09
@@ -405,9 +402,9 @@ DialogDrawNextCharacterHandler::
     ld   a, BANK(DialogPointerTable)              ; $2529: $3E $1C
     ld   [MBC3SelectBank], a                      ; $252B: $EA $00 $21
 IF VWF
-	ld   a, [wDialogBoxPosIndex]
+	ld   a, [wDialogBoxPosIndex]                             ; $49F1: $FA $70 $C1
 ELSE
-	ld   a, [wDialogCharacterIndex]
+	ld   a, [wDialogCharacterIndex]                             ; $49F1: $FA $70 $C1
 ENDC
     and  $1F                                      ; $2531: $E6 $1F
     ld   c, a                                     ; $2533: $4F
@@ -476,7 +473,7 @@ ENDC
     ld   a, [hli]                                 ; $2580: $2A
     ld   e, a                                     ; $2581: $5F
     ld   a, [hl]                                  ; $2582: $7E
-    ld   [wC3C3], a ; upcoming character, used in code for the arrow ; $2583: $EA $C3 $C3
+    ld   [wUpcomingChar], a ; upcoming character, used in code for the arrow ; $2583: $EA $C3 $C3
     call ReloadSavedBank                          ; $2586: $CD $1D $08
     ld   a, e                                     ; $2589: $7B
     ldh  [hMultiPurpose0], a                      ; $258A: $E0 $D7
@@ -500,7 +497,6 @@ ENDC
 .notChoice
     cp   "@" ; $ff                                ; $25A4: $FE $FF
     jr   nz, .notEnd                              ; $25A6: $20 $15
-.jr_25A8
     pop  hl                                       ; $25A8: $E1
     xor  a                                        ; $25A9: $AF
     ld   [wRequest], a                            ; $25AA: $EA $01 $D6
@@ -570,12 +566,16 @@ ENDR
     dec  a                                        ; $2601: $3D
     cp   "@"                                      ; $2602: $FE $FF
     jr   nz, .handleNameChar                      ; $2604: $20 $02
+IF VWF
+    ld   a, $00                                   ; Prints a character with 0 width if it's a space from the player's name
+ELSE
     ld   a, " "                                   ; $2606: $3E $20
+ENDC
 .handleNameChar
 
 .notName
     ldh  [hMultiPurpose1], a                      ; $2608: $E0 $D8
-    ld   e, a                                     ; $260A: $5F
+    ld   e, a                                   ; $260A: $5F
 IF VWF
 	ld   a, BANK(saveLetterWidths)
     ld   [MBC3SelectBank], a
@@ -583,7 +583,6 @@ IF VWF
 ENDC
     ld   a, BANK(AsciiToTileMap)                  ; $260B: $3E $1C
     ld   [MBC3SelectBank], a                      ; $260D: $EA $00 $21
-.jr_2610
     ld   hl, AsciiToTileMap                       ; $2610: $21 $41 $46
     add  hl, de                                   ; $2613: $19
     ld   e, [hl]                                  ; $2614: $5E
@@ -656,9 +655,11 @@ ENDC
     ld   a, [wDialogCharacterIndexHi]             ; $266B: $FA $64 $C1
     adc  a, $00                                   ; $266E: $CE $00
     ld   [wDialogCharacterIndexHi], a             ; $2670: $EA $64 $C1
+.SkipInc
     xor  a                                        ; $2673: $AF
     ; wC1CC = 01 when an unfinished textbox is waiting for a button press to continue.
     ld   [wC1CC], a                               ; $2674: $EA $CC $C1
+
     ld   a, [wDialogNextCharPosition]             ; $2677: $FA $71 $C1
     cp   $1F                                      ; $267A: $FE $1F
     jr   z, label_268E                            ; $267C: $28 $10
@@ -687,9 +688,9 @@ IF VWF
 ELSE
 	ld   a, [wDialogCharacterIndex]               ; $2695: $FA $70 $C1
 ENDC
-    and  $1F                                      ; $2698: $E6 $1F
+	and  $1F                                      ; $2698: $E6 $1F
     jr   nz, .jp_26E1                             ; $269A: $20 $45
-    ld   a, [wC3C3]                               ; $269C: $FA $C3 $C3
+    ld   a, [wUpcomingChar]                               ; $269C: $FA $C3 $C3
     cp   $FF                                      ; $269F: $FE $FF
     jp   z, DialogDrawNextCharacterHandler.label_25AD ; $26A1: $CA $AD $25
     cp   $FE                                      ; $26A4: $FE $FE
@@ -865,7 +866,6 @@ label_2777::
 label_278B::
     ld   a, $02                                   ; $278B: $3E $02
     ld   [wDialogAskSelectionIndex], a            ; $278D: $EA $77 $C1
-
     jp   UpdateDialogState                        ; $2790: $C3 $96 $24
 
 DialogChoiceHandler::

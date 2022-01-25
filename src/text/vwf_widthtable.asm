@@ -40,31 +40,12 @@ WidthTable:
 */
 
 saveLetterWidths:
-	/*
-	ld a, [wDialogCharacterIndex]
-	cp $00
-	jr z, .isFirstChar
-
-	ld   a, [IS_TILE_READY]
-	cp $01
-	ret nz
-	*/
-
  .isFirstChar
 	push de
 	ld hl, WidthTable
 	ld d, $00
 	add hl,de
 	ld a,[hl]
-	;ld d,a
-	;ld a,[PIXELS_TO_ADD]
-	;add d
-	;ld [PIXELS_TO_ADD],a
 	ld [CURR_CHAR_SIZE],a
-	;ld a,[wUpcomingChar]
-	;ld e,a
-	;add hl,de
-	;ld a,[hl]
-	;ld [UPCOMING_CHAR_SIZE],a
 	pop de
 	ret

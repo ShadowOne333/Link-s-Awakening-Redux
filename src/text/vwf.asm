@@ -3,33 +3,28 @@ CURR_CHAR			EQU $D638	;
 CURR_CHAR_SIZE		EQU	$D63A	; 
 IS_TILE_READY		EQU	$D63B	; Flag set if tile is to be printed
 IS_CHAR_READY		EQU	$D63C	; Flag set if we're finished with char
-PIXELS_TO_SUBTRACT	EQU	$D63D	; 
-PIXELS_TO_ADD		EQU	$D63E	; 
 CURR_CHAR_BUFFER	EQU	$D640	; 
 TILE_BUFFER			EQU	$D650	; 
-;CURR_TEXT_POINTER	EQU	$D666	; $D666-$D667
-;CURR_CHAR_POINTER	EQU	$D668	; $D668-$D669
 wDialogBoxPosIndex	EQU	$D668	; Replaces wDialogCharacterIndex for the dialog box
 wDialogBoxPosIndexHi EQU	$D669	; Replaces wDialogCharacterIndexHi for the dialog box
+PIXELS_TO_SUBTRACT	EQU	$D66A	; 
+PIXELS_TO_ADD		EQU	$D66B	; 
 
-; TODO:
-; Copiar primer carácter de D608 a D640
-; Inicializar bien D63A?
+
 variableWidthFont:
-	cp $20
-	call z, removeDoubleSpaces
-	
-	ld a, [wDialogNextCharPosition]
-	cp $20
-	call z, EndOfScript
+	; If it's a linebreak
+	cp $FD
+	call z, newLinebreak
 
+	; If it's blank
+	cp $00
+	ret z
+	
+	; If it's the first character
 	ld a, [wDialogCharacterIndex]
 	cp $00
 	call z, initVWF
 
-	;ld   a, [IS_TILE_READY]
-	;cp $01
-	;call z, initTile
 	call initTile
 
  	ld a, [PIXELS_TO_ADD]
@@ -64,7 +59,6 @@ variableWidthFont:
 	ld   a, $01
 	ld   [IS_TILE_READY], a
 	ld   [IS_CHAR_READY], a
-	;call IncrementTile
 	jr   .WidthSet
 
  .EqualTo:
@@ -75,60 +69,28 @@ variableWidthFont:
 	ld   a, $01
 	ld   [IS_TILE_READY], a
 	ld   [IS_CHAR_READY], a
-	;call IncrementTile
 	jr   .WidthSet
 
  .LessThan:
-	;ld e, a
-	;ld a, [wDialogCharacterIndex]
-	;cp $00
-	;jr nz, .NotFirstTile
-	;ld a, $01
-	;ld   [IS_TILE_READY], a
-	;jr .FirstTileReady
-
-  .NotFirstTile
-	;ld a, e
 	ld   [PIXELS_TO_ADD], a
 
 	xor a
 	ld   [PIXELS_TO_SUBTRACT], a
 	ld   [IS_TILE_READY], a
 
-	;ld   a, $01
-	;ld   [IS_CHAR_READY], a
-
  .WidthSet:
 	ld   a, [IS_TILE_READY]
 	cp   $00
-	jr   z, .Exit
+	ret z
 
 	call IncrementTile
+ .PushCharacter
 	ld   d, $01
 	ld   bc, TILE_BUFFER
 	ld   hl, CURR_CHAR_GFX
 	call CopyLine
 
 	call clearTileBuffer
-	
-	jr MoveLeft
- .Exit:
-	;ld   bc, CURR_CHAR_POINTER
-	;ld   a, [wDialogCharacterIndex]               ; $2663: $FA $70 $C1
-    ;dec  a
-    ;ld   [wDialogCharacterIndex], a
-
-	;ld a, [$D602]
-	;cp $62
-	;ret z
-	;dec a
-	;ld [$D602],a
-
-	; Testing:
-	;ld a, [wDialogState]
-	;dec a
-	;ld [wDialogState], a
-	ret
 
 MoveLeft:
 	ld   a, [PIXELS_TO_SUBTRACT]
@@ -175,8 +137,6 @@ MoveRight:
 	dec  b
 	jr nz, .Next
 
-	;xor a
-	;ld [PIXELS_TO_ADD], a
 	ret
 
 CopyLine:
@@ -194,24 +154,23 @@ CopyLine:
 	jr   nz, .Loop
 	ret
 
-;saveTextOffset:
-;	ld a, h
-;	ld [CURR_TEXT_POINTER], a
-;	ld a, l
-;	ld [CURR_TEXT_POINTER+1], a
-;	ret
-
 initVWF:
-	; Copiar primer carácter de D608 a D640
-	; Inicializar bien D63A?
-	;ld   a, $07
-	;ld   [CURR_CHAR_SIZE], a	; Ñapa temporal
-
 	xor a
-	ld [wDialogBoxPosIndex], a
-	ld [wDialogBoxPosIndexHi], a
-	ld [PIXELS_TO_SUBTRACT], a
-	ld [PIXELS_TO_ADD], a
+	ld hl, wDialogBoxPosIndex
+	ldi [hl],a	; wDialogBoxPosIndex
+	ldi [hl],a	; wDialogBoxPosIndexHi
+	ldi [hl],a	; PIXELS_TO_SUBTRACT
+	ldi [hl],a	; PIXELS_TO_ADD
+	
+	; If wDialogState = $8x, the textbox is in the bottom
+	ld a, [wDialogState]
+	and $F0
+	cp $80
+	ld a, $62
+	jr z, .bottomTextbox
+	ld a, $42
+ .bottomTextbox:
+	ld [wRequestDestinationLow], a	; Forces the BG copy to the first letter's position
 
 	ld   d, $00
 	ld   bc, CURR_CHAR_GFX
@@ -237,21 +196,37 @@ initTile:
 
 IncrementTile:
 	ld   a, [wDialogBoxPosIndex]
+	cp $2F
+	jr nz, .noWrap
+	xor a
+	jr .wrap
+   .noWrap
     add  a, $01
+   .wrap
     ld   [wDialogBoxPosIndex], a
-	ld   a, [wDialogBoxPosIndexHi]
-	adc  a, $00                      
-	ld   [wDialogBoxPosIndexHi], a
 	ret
 
-EndOfScript:
-	call initVWF
-	ret
-
-removeDoubleSpaces:
-	ld a, [wUpcomingChar]
+newLinebreak:
+	ld a, [wDialogBoxPosIndex]
+	and $F0
+	cp $00
+	jr z, .firstLine
 	cp $20
-	ret nz
+	jr z, .lineCR
+	ld a, $1F
+	ld [wDialogNextCharPosition], a
+	inc a
+	jr .setLine
+
+  .lineCR
+  	ld a, $1F
+	ld [wDialogNextCharPosition], a
+  .firstLine
+	ld a, $10
+  .setLine
+	ld [wDialogBoxPosIndex], a
+	call variableWidthFont.PushCharacter
 	xor a
 	ld [CURR_CHAR_SIZE], a
+	ld [PIXELS_TO_ADD], a
 	ret

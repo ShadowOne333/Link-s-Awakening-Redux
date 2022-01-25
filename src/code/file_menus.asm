@@ -684,11 +684,7 @@ ENDC
 .easterEggEnd
 
     ; Write the slot name to the save file
-IF VWF
-	call $7FA0				  ; $4AFE: $CD A0 7F
-ELSE
     ld   hl, wSaveSlotNames                       ; $4AFE: $21 $80 $DB
-ENDC
     add  hl, de                                   ; $4B01: $19
     pop  bc                                       ; $4B02: $C1
     ld   e, $05                                   ; $4B03: $1E $05

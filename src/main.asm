@@ -272,7 +272,11 @@ include "data/events/dungeons.asm"
 include "data/maps/layouts.asm"
 include "data/chests/chests.asm"
 include "code/bank14.asm"
+IF VWF
+include "text/vwf/dialog_1.asm"
+ELSE
 include "text/dialog_1.asm"
+ENDC
 include "text/dialog_200.asm"
 
 section "bank15",romx[$4000],bank[$15]

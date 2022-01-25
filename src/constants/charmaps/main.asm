@@ -28,6 +28,7 @@ charmap "<down>", $f1
 charmap "<left>", $f2
 charmap "<right>", $f3
 
+charmap "/", $fd
 charmap "<ask>", $fe
 charmap "@", $ff
 

@@ -7698,15 +7698,3 @@ ReloadColorDungeonNpcTiles::
     ld   a, BANK(InventoryEntryPoint)             ; $3FE9: $3E $20
     ld   [MBC3SelectBank], a                      ; $3FEB: $EA $00 $21
     ret                                           ; $3FEE: $C9
-
-IF VWF
-UpcomingCharacter::		; $3FEF
-	ld [wC3C3], a		; $EA C3 C3, Upcoming character?
-	call ReloadSavedBank	; $CD 1D 08
-	ret			; $C9
-.jr_3FF6
-	ld [MBC3SelectBank], a	; $EA 00 21
-	ld a, [hl] 		; $7E
-	jp $2659		; $C3 59 26
-ENDC
-
