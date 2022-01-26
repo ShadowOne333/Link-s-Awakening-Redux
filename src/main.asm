@@ -100,6 +100,7 @@ incbin "gfx/characters/oam_link_1.dmg.2bpp"
 CharacterVfxTiles::
 incbin "gfx/characters/oam_vfx.dmg.2bpp"
 Items1Tiles::
+incbin "gfx/items/items_1.dmg.2bpp"
 InventoryEquipmentItemsTiles::
 incbin "gfx/items/items_2.dmg.2bpp"
 InventoryOverworldItemsTiles::
