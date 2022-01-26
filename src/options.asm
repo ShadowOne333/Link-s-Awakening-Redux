@@ -189,7 +189,7 @@ ELIF ("{LANG}" == "RX")
 LANG_EN = TRUE			; Use English language
 REDUX = TRUE			; Use Redux changes
 VWF = TRUE			; Use VWF hack
-QOL = TRUE			; Use Quality of Life hack
+QOL = TRUE			; Use Quality of Life hacks
 SGB_BORDER = TRUE		; Add Super Game Boy Border (DX)
 SAVE_BUTTON_COMBO = TRUE	; Change Save button combo (Up+Sel)
 NO_LOW_HEALTH_BEEP = FALSE	; Disable low health beep

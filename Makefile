@@ -148,9 +148,12 @@ azle-r2_ASFLAGS = -DLANG=EN -DVERSION=2
 azle-r2_LDFLAGS = -O azlf-r1.gbc
 azle-r2_FXFLAGS = --rom-version 2 --non-japanese --title "ZELDA" --game-id "AZLE"
 
+#
+# Redux
+#
+
 redux += redux.gbc
 src/main.redux.o: azlf-r1.gbc
-#src/main.redux.o:
 redux_ASFLAGS = -DLANG=RX -DVERSION=2
 redux_LDFLAGS = -O azlf-r1.gbc
 redux_FXFLAGS = --rom-version 2 --non-japanese --title "ZELDA" --game-id "AZLE"
