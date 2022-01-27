@@ -7,6 +7,7 @@
 # bin
 Z80Dis
 DumpBanks
+dxeditor
 
 # rgbasm extras
 *.sym
