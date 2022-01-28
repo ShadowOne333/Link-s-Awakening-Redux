@@ -76,7 +76,11 @@ OverworldRoomPointers::
 include "data/maps/overworld.asm"
 OverworldRoomsFirstHalf::
 include "data/rooms/overworld_a.asm"
+IF VWF
+include "text/vwf/dialog_dx.asm"
+ELSE
 include "text/dialog_dx.asm"
+ENDC
 
 section "bank0A", romx[$4000], bank[$0A]
 IndoorsARoomPointers::
@@ -289,7 +293,11 @@ include "data/entities/indoors_a.asm"
 include "data/entities/indoors_b.asm"
 include "data/entities/overworld.asm"
 include "data/entities/color_dungeon.asm"
+IF VWF
+include "text/vwf/dialog_2.asm"
+ELSE
 include "text/dialog_2.asm"
+ENDC
 
 section "bank17",romx[$4000],bank[$17]
 include "code/credits.asm"
@@ -326,14 +334,22 @@ include "data/text_box_data.asm"
 include "data/ascii_to_tile.asm"
 include "data/dialogs/dialog_banks.asm"
 include "code/dialog_letters.asm"
+IF VWF
+include "text/vwf/dialog_3.asm"
+ELSE
 include "text/dialog_3.asm"
+ENDC
 include "text/dialog_000.asm"
 IF VWF
 include "text/vwf.asm"
 ENDC
 
 section "bank1D", romx[$4000], bank[$1D]
+IF VWF
+include "text/vwf/dialog_4.asm"
+ELSE
 include "text/dialog_4.asm"
+ENDC
 include "text/dialog_100.asm"
 
 section "bank1E", romx[$4000], bank[$1E]
