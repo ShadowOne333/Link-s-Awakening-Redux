@@ -1,590 +1,491 @@
 Dialog24E::
-    db "Have you heard  "
-    db "of the Flying   "
-    db "Rooster?  They  "
-    db "say it lived in "
-    db "Mabe Village a  "
-    db "long time ago..."
-    db "I wonder if it's"
-    db "true...@"
+    db "Have you heard of/"
+    db "the Flying Rooster?/"
+    db "They say it lived in/"
+    db "Mabe Village a long/"
+    db "time ago.../"
+    db "I wonder if it's true... @"
 
 Dialog24F::
-    db "Aaaah, Little   "
-    db "Marin... I want "
-    db "her to come back"
-    db "again...Her song"
-    db "is the best...@"
+    db "Aaaah, Little Marin.../"
+    db "I want to come/"
+    db "back again.../"
+    db "Her song is the best... @"
 
 Dialog250::
-    db "I dreamed that  "
-    db "I turned into a "
-    db "carrot last     "
-    db "night...  What  "
-    db "an odd dream...@"
+    db "I dreamed that I turned/"
+    db "into a carrot last night.../"
+    db "What an odd dream... @"
 
 Dialog251::
-    db "Eh?  How can an "
-    db "animal talk?    "
-    db "How?  Hey, I'm  "
-    db "just a rabbit,  "
-    db "so I don't know!@"
+    db "Eh?/"
+    db "How can an animal talk?/"
+    db "How?/"
+    db "Hey, I'm just a rabbit,/"
+    db "so I don't know! @"
 
 Dialog252::
-    db "Ahhh!  It's her!"
-    db "Little Marin!!@"
+    db "Ahhh! It's her!/"
+    db "Little Marin!! @"
 
 Dialog253::
-    db "If you have no  "
-    db "courage,then    "
-    db "you have no     "
-    db "strength.       "
-    db "Gravestones     "
-    db "won't move for  "
-    db "cowards.@"
+    db "If you have no courage,/"
+    db "then you have no strength./"
+    db "Gravestones won't move/"
+    db "for cowards. @"
 
 Dialog254::
-    db "I'm not afraid. "
-    db "I just decided  "
-    db "to wait at home.@"
+    db "I'm not afraid. I just/"
+    db "decided to wait at home. @"
 
 Dialog255::
-    db "This is my first"
-    db "walk with you,  "
-    db "#####.@"
+    db "This is my first walk/"
+    db "with you, #####. @"
 
 Dialog256::
-    db ". . . . .@"
+    db ". . . . . @"
 
 Dialog257::
-    db "This cliff will "
-    db "be our secret   "
-    db "place. @"
+    db "This cliff will be/"
+    db "our secret place. @"
 
 Dialog258::
-    db "Aren't you going"
-    db "to say anything?@"
+    db "Aren't you going to/"
+    db "say anything? @"
 
 Dialog259::
-    db "Oh how I love   "
-    db "pictures! Why   "
-    db "don't you take  "
-    db "a picture when  "
-    db "no one is       "
-    db "around? You can "
-    db "call it . . .@"
+    db "Oh how I love pictures!/"
+    db "Why don't you take a/"
+    db "picture when no one/"
+    db "is around?/"
+    db "You can call it . . . @"
 
 Dialog25A::
-    db "You've got the  "
-    db "Blue Clothes!   "
-    db "Your damage will"
-    db "be reduced by   "
-    db "half!@"
+    db "You've got the/"
+    db "Blue Clothes!/"
+    db "Your damage will be/"
+    db "reduced by half! @"
 
 Dialog25B::
-    db "You've got the  "
-    db "Red Clothes!    "
-    db "Your body is    "
+    db "You've got the/"
+    db "Red Clothes!/"
+    db "Your body is/"
     db "full of energy! @"
 
 Dialog25C::
-    db "Red for offense,"
-    db "blue for        "
-    db "defense. Which  "
-    db "do you choose?  "
-    db "    RED  BLUE<ask>"
+    db "Red for offense,/"
+    db "blue for defense./"
+    db "Which do you choose?/"
+    db "       RED    BLUE <ask>"
 
 Dialog25D::
-    db "Are you sure?   "
-    db "    YES  NO<ask>"
+    db "Are you sure?/"
+    db "       YES    NO <ask>"
 
 Dialog25E::
-    db "The fairy queen "
-    db "is waiting for  "
-    db "you.@"
+    db "The fairy queen is/"
+    db "waiting for you. @"
 
 Dialog25F::
-    db "Do you have the "
-    db "powder? If not, "
-    db "you must go     "
-    db "back.@"
+    db "Do you have the powder?/"
+    db "If not, you must go back.",$04,"@"
 
 Dialog260::
-    db "Our colors are  "
-    db "never the same! "
-    db "If I am red, he "
-    db "is blue! If he  "
-    db "is red, I am    "
-    db "blue! What color"
-    db "is my cloth?    "
-    db "    Red  Blue<ask>"
+    db "Our colors are/"
+    db "never the same!/"
+    db "If I am red, he is blue!/"
+    db "If he is red, I am blue!/"
+    db "What color is my cloth?/"
+    db "       Red    Blue <ask>"
 
 Dialog261::
-    db "BOO! I am no    "
-    db "weakling! Your  "
-    db "pitiful sword is"
-    db "no match for me!@"
+    db "BOO! I am no weakling!/"
+    db "Your pitiful sword is/"
+    db "no match for me! @"
 
 Dialog262::
-    db "I am sorry, but "
-    db "this is the     "
-    db "Color Dungeon.  "
-    db "Only those with "
-    db "the power of    "
-    db "color may enter."
-    db "If you can tell "
-    db "who wears red   "
-    db "and who wears   "
-    db "blue, you may   "
-    db "enter.          "
-    db "Farewell.@"
+    db "I am sorry, but this is/"
+    db "the Color Dungeon./"
+    db "Only those with the power/"
+    db "of color may enter./"
+    db "If you can tell who wears/"
+    db "red and who wears blue,/"
+    db "you may enter./"
+    db "Farewell. @"
 
 Dialog263::
-    db "Here is your    "
-    db "clue. Make      "
-    db "all the red     "
-    db "blue.@"
+    db "Here is your clue./"
+    db "Make all the red blue. @"
 
 Dialog264::
-    db "No,  no. Take a "
-    db "closer look and "
-    db "try again.@"
+    db "No, no./"
+    db "Take a closer look/"
+    db "and try again. @"
 
 Dialog265::
-    db "Don't tell      "
-    db "anyone.@"
+    db "Don't tell anyone. @"
 
 Dialog266::
-    db "Do you want to  "
-    db "read this book? "
-    db "    YES  NO<ask>"
+    db "Do you want to/"
+    db "read this book?/"
+    db "       YES    NO <ask>"
 
 Dialog267::
-    db "New world of    "
-    db "color under the "
-    db "5 gravestones.  "
-    db "                "
-    db "   3<up>  4<right>  5<up>   "
-    db "   2<left>  1<down>       "
-    db "Try with all    "
-    db "your might. Open"
-    db "a new path!     "
-    db "Whoever is      "
-    db "worthy receives "
-    db "the power of    "
-    db "color. I wonder "
-    db "what the world  "
-    db "of color is?@"
+    db "New world of color under/"
+    db "the 5 gravestones./"
+    db "      3<up>  4<right>  5<up>/"
+    db "         2<left>  1<down>/"
+    db "Try with all your might./"
+    db "Open a new path!/"
+    db "Whoever is worthy,/"
+    db "receives the power/"
+    db "of color./"
+    db "I wonder what the/"
+    db "world of color is? @"
 
 Dialog268::
-    db "Welcome, #####. "
-    db "I admire you for"
-    db "coming this far."
-    db "I will give you "
-    db "the power of    "
-    db "color. If you   "
-    db "want offense,   "
-    db "choose red. If  "
-    db "you want defense"
-    db "choose blue.    "
-    db "Which power do  "
-    db "you want?       "
-    db "    RED  BLUE<ask>"
+    db "Welcome, #####./"
+    db "I admire you for/"
+    db "coming this far./"
+    db "I will give you the/"
+    db "power of color./"
+    db "If you want offense,/"
+    db "choose red./"
+    db "If you want defense,/"
+    db "choose blue./"
+    db "Which power do you want?/"
+    db "       RED    BLUE <ask>"
 
 Dialog269::
-    db "You fool! Your  "
-    db "sword won't     "
-    db "work! Try       "
-    db "something else!@"
+    db "You fool!/"
+    db "Your sword won't work!/"
+    db "Try something else! @"
 
 Dialog26A::
-    db "What a greedy   "
-    db "fool! You want  "
-    db "more power?! A  "
-    db "buffoon like you"
-    db "might as well   "
-    db "give up and     "
-    db "go home!@"
+    db "What a greedy fool!/"
+    db "You want more power?!/"
+    db "A buffoon like you/"
+    db "might as well give up/"
+    db "and go home! @"
 
 Dialog26B::
-    db "Relax and close "
-    db "your eyes.@"
+    db "Relax and close your eyes.",$01,"@"
 
 Dialog26C::
-    db "I will now take "
-    db "you out.@"
+    db "I will now take you out. @"
 
 Dialog26D::
-    db "Blue is safe.   "
-    db "Yellow is       "
-    db "caution. Red is "
-    db "danger.@"
+    db "Blue is safe./"
+    db "Yellow is caution./"
+    db "Red is danger. @"
 
 Dialog26E::
-    db "Yellow is       "
-    db "caution. Red is "
-    db "danger,Take     "
-    db "your time.@"
+    db "Yellow is caution./"
+    db "Red is danger./"
+    db "Take your time. @"
 
 Dialog26F::
-    db "Blue. Start     "
-    db "over. Yellow is "
-    db "caution. Red is "
-    db "danger.@"
+    db "Blue. Start over./"
+    db "Yellow is caution./"
+    db "Red is danger. @"
 
 Dialog270::
-    db "Hey, that looks "
-    db "great! I'll call"
-    db "it '##### Plays "
-    db "With BowWow!'   "
-    db "Now get closer  "
-    db "to BowWow!@"
+    db "Hey, that looks great!/"
+    db "I'll call it:/"
+    db $9D,"##### Plays/"
+    db "With BowWow'!/"
+    db "Now, get closer/"
+    db "to BowWow! @"
 
 Dialog271::
-    db "Grrrr!@"
+    db "Grrrr! @"
 
 Dialog272::
-    db "#####, get      "
-    db "closer!@"
+    db "#####, get closer! @"
 
 Dialog273::
-    db "Grrrr! Grrrr!!@"
+    db "Grrrr! Grrrr!! @"
 
 Dialog274::
-    db "Much closer! OK,"
-    db "I'm ready.      "
-    db "Smile!@"
+    db "Much closer!/"
+    db "OK, I'm ready./"
+    db "Smile! @"
 
 Dialog275::
-    db "Grrrr! Grrrr!!  "
-    db "GRRRR!@"
+    db "Grrrr! Grrrr!!/"
+    db "GRRRR! @"
 
 Dialog276::
-    db "Ha ha ha! Do it!"
-    db "Do it!  Do it   "
-    db "moooore! ... ..."
-    db "Hunh?  No, it's "
-    db "nothing... I    "
-    db "didn't mean it.@"
+    db "Ha ha ha! Do it!/"
+    db "Do it! Do it moooore!/"
+    db "... .../"
+    db "Huh?/"
+    db "No, it's nothing.../"
+    db "I didn't mean it. @"
 
 Dialog277::
-    db "Not very good..."
-    db "Eh?  What?  Did "
-    db "I say something?"
-    db "No, you're hear-"
-    db "ing things...@"
+    db "Not very good.../"
+    db "Eh? What?/"
+    db "Did I say something?/"
+    db "No, you're hearing things...",$00,"@"
 
 Dialog278::
-    db "#####, do you   "
-    db "always look in  "
-    db "other people's  "
-    db "drawers?@"
+    db "#####, do you always/"
+    db "look in other people's/"
+    db "drawers? @"
 
 Dialog279::
-    db "Great!  Dig it! "
-    db "Dig it!  Dig to "
-    db "the center of   "
-    db "the earth!!@"
+    db "Great!/"
+    db "Dig it! Dig it!/"
+    db "Dig to the center/"
+    db "of the earth!! @"
 
 Dialog27A::
-    db "Whew!  What a   "
-    db "surprise!@"
+    db "Whew!/"
+    db "What a surprise! @"
 
 Dialog27B::
-    db "Ohh!  I'm sorry!"
-    db "Are you okay?!  "
-    db "#####?@"
+    db "Ohh! I'm sorry!/"
+    db "Are you okay?!/"
+    db "#####? @"
 
 Dialog27C::
-    db "Hey Mon!@"
+    db "Hey Mon! @"
 
 Dialog27D::
-    db "You know me, I  "
-    db "like short names"
-    db "the best...@"
+    db "You know me, I like/"
+    db "short names the best... @"
 
 Dialog27E::
-    db "It can display  "
-    db "millions of     "
-    db "polygons!@"
+    db "It can display millions/"
+    db "of polygons! @"
 
 Dialog27F::
-    db "I definitely    "
-    db "need it, as soon"
-    db "as possible!@"
+    db "I definitely need it,/"
+    db "as soon as possible! @"
 
 Dialog280::
-    db "Turn aside the  "
-    db "spined ones with"
-    db "a shield...@"
+    db "Turn aside the spined/"
+    db "ones with a shield... @"
 
 Dialog281::
-    db "First, defeat   "
-    db "the imprisoned  "
-    db "Pols Voice,     "
-    db "Last, Stalfos...@@"
+    db "First, defeat the/"
+    db "imprisoned Pols Voice./"
+    db "Last, Stalfos... @"
 
 Dialog282::
-    db "Far away...     "
-    db "Do not fear,    "
+    db "Far away.../"
+    db "Do not fear,/"
     db "dash and fly!@"
 
 Dialog283::
-    db "The glint of the"
-    db "tile will be    "
-    db "your guide...@"
+    db "The glint of the tile/"
+    db "will be your guide... @"
 
 Dialog284::
-    db "Dive under where"
-    db "torchlight beams"
-    db "do cross...@"
+    db "Dive under where torchlight/"
+    db "beams do cross... @"
 
 Dialog285::
-    db "Enter the space "
-    db "where the eyes  "
-    db "have walls...@"
+    db "Enter the space where/"
+    db "the eyes have walls... @"
 
 Dialog286::
-    db "The riddle is   "
-    db "solved when the "
-    db "pillars fall!@"
+    db "The riddle is solved/"
+    db "when the pillars fall! @"
 
 Dialog287::
-    db "Fill all the    "
-    db "holes with the  "
-    db "rock that rolls,"
-    db "this (<dpad>) is the "
-    db "key!@"
+    db "Fill all the holes/"
+    db "with the rock that rolls,/"
+    db "this (<dpad>) is the key! @"
 
 Dialog288::
-    db "If there is a   "
-    db "door that you   "
-    db "can't open, move"
-    db "a stone block.@"
+    db "If there is a door/"
+    db "that you can't open,/"
+    db "move a stone block. @"
 
 Dialog289::
-    db "Make every block"
-    db "design the same."
-    db "A new path will "
-    db "open.@"
+    db "Make every block/"
+    db "design the same./"
+    db "A new path will open. @"
 
 Dialog28A::
-    db "Part of the     "
-    db "floor is raised."
-    db "Tap the blue    "
-    db "crystal.@"
+    db "Part of the/"
+    db "floor is raised./"
+    db "Tap the blue crystal. @"
 
 Dialog28B::
-    db "To defeat the   "
-    db "black monster   "
-    db "with the hard   "
-    db "shell, feed him "
-    db "something ex-   "
-    db "plosive.@"
+    db "To defeat the black/"
+    db "monster with the/"
+    db "hard shell, feed him/"
+    db "something explosive. @"
 
 Dialog28C::
-    db "Poke suspicious "
-    db "parts of the    "
-    db "wall with your  "
-    db "sword and listen"
-    db "to the sounds it"
-    db "makes.@"
+    db "Poke suspicious parts/"
+    db "of the wall with your/"
+    db "sword and listen to the/"
+    db "sounds it makes. @"
 
 Dialog28D::
-    db "If you can't    "
-    db "destroy a       "
-    db "skeleton with   "
-    db "your sword, try "
-    db "using a bomb.@"
+    db "If you can't destroy a/"
+    db "skeleton with your sword,/"
+    db "try using a bomb. @"
 
 Dialog28E::
-    db "To open a       "
-    db "treasure chest, "
-    db "use the pots    "
-    db "around it.@"
+    db "To open a treasure chest,/"
+    db "use the pots around it. @"
 
 Dialog28F::
-    db "Hop on top of   "
-    db "the crystals to "
-    db "move forward.@"
+    db "Hop on top of the crystals/"
+    db "to move forward. @"
 
 Dialog290::
-    db "If you can't go "
-    db "over the poles, "
-    db "try throwing    "
-    db "things you have "
-    db "in your hands.@"
+    db "If you can't go over the/"
+    db "poles, try throwing things/"
+    db "you have in your hands. @"
 
 Dialog291::
-    db "Jump off the    "
-    db "floor above to  "
-    db "reach the chest "
-    db "on the table.@"
+    db "Jump off the floor/"
+    db "above to reach the/"
+    db "chest on the table. @"
 
 Dialog292::
-    db "To defeat the   "
-    db "monsters who    "
-    db "hold the key,   "
-    db "attack them from"
-    db "a higher place.@"
+    db "To defeat the monsters/"
+    db "who hold the key, attack/"
+    db "them from a higher place. @"
 
 Dialog293::
-    db "If the statue   "
-    db "looks strange,  "
-    db "shoot it with   "
-    db "the bow.@"
+    db "If the statue looks/"
+    db "strange, shoot it with/"
+    db "the bow. @"
 
 Dialog294::
-    db "Let's take a    "
-    db "picture!        "
-    db "    YES  NO<ask>"
+    db "Let's take a picture!/"
+    db "       YES    NO <ask>"
 
 Dialog295::
-    db "No picture?! Are"
-    db "you pullin' my  "
-    db "leg?            "
-    db "    Yes  No way<ask>"
+    db "No picture?!/"
+    db "Are you pullin' my leg?/"
+    db "       Yes    No way<ask>"
 
 Dialog296::
-    db "What a bummer!@"
+    db "What a bummer! @"
 
 Dialog297::
-    db "Beautiful! I'll "
-    db "call this 'Game "
-    db "Over.'@"
+    db "Beautiful! I'll call this:/"
+    db $9D,"Game Over'. @"
 
 Dialog298::
-    db "What's your     "
-    db "name, young man?"
-    db "#####? Well     "
-    db "here's your     "
-    db "album, #####.   "
-    db "Give it a look  "
-    db "before you      "
-    db "leave!@"
+    db "What's your name,/"
+    db "young man?/"
+    db "#####? Well, here's/"
+    db "your album, #####./"
+    db "Give it a look before/"
+    db "you leave! @"
 
 Dialog299::
-    db "Let's see if we "
-    db "can fill that   "
-    db "album!@"
+    db "Let's see if we can/"
+    db "fill that album! @"
 
 Dialog29A::
-    db "11 shots left!  "
-    db "What kind of    "
-    db "picture should  "
-    db "I take?@"
+    db "11 shots left!/"
+    db "What kind of picture/"
+    db "should I take? @"
 
 Dialog29B::
-    db "10 shots left!  "
-    db "What kind of    "
-    db "picture should  "
-    db "I take?@"
+    db "10 shots left!/"
+    db "What kind of picture/"
+    db "should I take? @"
 
 Dialog29C::
-    db "9 shots left!   "
-    db "What kind of    "
-    db "picture should  "
-    db "I take?@"
+    db "9 shots left!/"
+    db "What kind of picture/"
+    db "should I take? @"
 
 Dialog29D::
-    db "8 shots left!   "
-    db "What kind of    "
-    db "picture should  "
-    db "I take?@"
+    db "8 shots left!/"
+    db "What kind of picture/"
+    db "should I take? @"
 
 Dialog29E::
-    db "7 shots left!   "
-    db "What kind of    "
-    db "picture should  "
-    db "I take?@"
+    db "7 shots left!/"
+    db "What kind of picture/"
+    db "should I take? @"
 
 Dialog29F::
-    db "6 shots left!   "
-    db "What kind of    "
-    db "picture should  "
-    db "I take?@"
+    db "6 shots left!/"
+    db "What kind of picture/"
+    db "should I take? @"
 
 Dialog2A0::
-    db "5 shots left!   "
-    db "What kind of    "
-    db "picture should  "
-    db "I take?@"
+    db "5 shots left!/"
+    db "What kind of picture/"
+    db "should I take? @"
 
 Dialog2A1::
-    db "4 shots left!   "
-    db "What kind of    "
-    db "picture should  "
-    db "I take?@"
+    db "4 shots left!/"
+    db "What kind of picture/"
+    db "should I take? @"
 
 Dialog2A2::
-    db "3 shots left!   "
-    db "What kind of    "
-    db "picture should  "
-    db "I take?@"
+    db "3 shots left!/"
+    db "What kind of picture/"
+    db "should I take? @"
 
 Dialog2A3::
-    db "2 shots left!   "
-    db "What kind of    "
-    db "picture should  "
-    db "I take?@"
+    db "2 shots left!/"
+    db "What kind of picture/"
+    db "should I take? @"
 
 Dialog2A4::
-    db "1 shots left!   "
-    db "What kind of    "
-    db "picture should  "
-    db "I take?@"
+    db "1 shots left!/"
+    db "What kind of picture/"
+    db "should I take? @"
 
 Dialog2A5::
-    db "Oh no! You're   "
-    db "out of film!    "
-    db "Don't forget to "
-    db "look at your    "
-    db "album!@"
+    db "Oh no!/"
+    db "You're out of film!/"
+    db "Don't forget to look/"
+    db "at your album! @"
 
 Dialog2A6::
-    db "Hi! I'm the     "
-    db "photographer!   "
-    db "What a great    "
-    db "photo moment!   "
-    db "I'll call this  "
-    db "'Heads Up!'@"
+    db "Hi!/"
+    db "I'm the photographer!/"
+    db "What a great/"
+    db "photo moment!/"
+    db "I'll call this:/"
+    db $9D,"Heads Up'! @"
 
 Dialog2A7::
-    db "Hey, this       "
-    db "represents your "
-    db "adventures      "
-    db "perfectly!@"
+    db "Hey, this represents your/"
+    db "adventures perfectly! @"
 
 Dialog2A8::
-    db "I'll call this  "
-    db "one 'Close      "
-    db "Call.' Hmm.@"
+    db "I'll call this one:/"
+    db $9D,"Close Call'. Hmm. @"
 
 Dialog2A9::
-    db "I'm too close.@"
+    db "I'm too close. @"
 
 Dialog2AA::
-    db "I should back up"
-    db ".@"
+    db "I should back up. @"
 
 Dialog2AB::
-    db "Aaaaaah!@"
+    db "Aaaaaah! @"
 
 Dialog2AC::
-    db "I'm going back  "
-    db "to the store.   "
-    db "Bye!@"
+    db "I'm going back to/"
+    db "the store. Bye! @"
 
 Dialog2AD::
-    db "See me later,   "
-    db "when you're     "
-    db "alone!@"
+    db "See me later,/"
+    db "when you're alone! @"
 
 Dialog2AE::
-    db "Are you sure?   "
-    db "    YES  NO<ask>"
+    db "Are you sure?/"
+    db "       YES    NO <ask>"
 
 Dialog2AF::
-    db "Ah how I love   "
-    db "pictures. Hey,  "
-    db "#####! What are "
-    db "you doing here? @"
+    db "Ah how I love pictures./"
+    db "Hey, #####!/"
+    db "What are you doing here?",$04,"@"

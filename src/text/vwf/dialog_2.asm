@@ -362,8 +362,8 @@ Dialog0CF::
 Dialog0D0::
     db "        ... ... ... .../"
     db "         ... ... ... .../"
-    db "        I AM THE/"
-    db "       WIND FISH.../"
+    db "         I AM THE/"
+    db "        WIND FISH.../"
     db "      LONG HAS BEEN/"
     db "       MY SLUMBER.../"
     db "      IN MY DREAMS.../"
@@ -381,12 +381,12 @@ Dialog0D0::
     db "    ONLY THE MEMORY/"
     db "   OF THIS DREAM LAND/"
     db "      WILL EXIST IN/"
-    db "    IN THE WAKING WORLD.../"
+    db "    THE WAKING WORLD.../"
     db "         SOMEDAY,/"
     db "     THOU MAY RECALL/"
     db "       THIS ISLAND.../"
-    db " THAT MEMORY MUST BE "
-    db "THE REAL DREAM WORLD.../"
+    db " THAT MEMORY MUST BE/"
+    db " THE REAL DREAM WORLD.../"
     db "        ... ... ... .../"
     db "     COME, #####.../"
     db "     LET US AWAKEN.../"
@@ -395,9 +395,9 @@ Dialog0D0::
 Dialog0D1::
 Dialog0D2::
     db "         PLAY THE/"
-    db "      EIGHT INSTRUMENTS!/"
+    db "    EIGHT INSTRUMENTS!/"
     db "         PLAY THE/"
-    db "   SONG OF AWAKENING!! @"
+    db "  SONG OF AWAKENING!! @"
 
 Dialog0D3::
 Dialog0D4::
@@ -407,7 +407,7 @@ Dialog0D5::
 Dialog0D6::
 Dialog0D7::
     db "...#####, you have/"
-    db "have beaten all the Nightmares!/"
+    db "beaten all the Nightmares!/"
     db "Climb the stairs/"
     db "before you!@"
 
@@ -510,7 +510,8 @@ Dialog0E3::
 Dialog0E4::
     db "Fine, I'll let you/"
     db "have more arrows!/"
-    db "Heh Heh! Are you ready?!/"
+    db "Heh Heh!/"
+    db "Are you ready?!/"
     db "       Yes    N-No <ask>"
 
 Dialog0E5::
@@ -522,7 +523,7 @@ Dialog0E5::
     db "See you again! @"
 
 Dialog0E6::
-    db "            ??/"
+    db "           ??/"
     db "There is a picture carved/"
     db "on the wall, but you can't/"
     db "see it because it's too/"
@@ -630,7 +631,7 @@ Dialog0F6::
     db "Our... world... @"
 
 Dialog0F7::
-    db "Wow! #####,"
+    db "Wow! #####,/"
     db "can I try this?!/"
     db "What do you say?/"
     db "       Okay   No Way <ask>"
@@ -674,7 +675,7 @@ Dialog0FE::
 Dialog0FF::
     db "Hey! What are ya doin'/"
     db "in my chest?!/"
-    db "Where'd you learn ta"
+    db "Where'd you learn ta/"
     db "do such a thing?! @"
 
 Dialog100::

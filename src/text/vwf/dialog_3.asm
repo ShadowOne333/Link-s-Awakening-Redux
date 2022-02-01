@@ -139,8 +139,7 @@ Dialog11F::
     db "Dude! You're asking me/"
     db "when we started to live/"
     db "on this island?/"
-    db "What do mean/"
-    db "by ",$9D,"when'?/"
+    db "What do mean by ",$9D,"when'?/"
     db "Whoa! The concept just/"
     db "makes my head hurt! @"
 
@@ -148,8 +147,8 @@ Dialog120::
     db "Marin?/"
     db "She likes to go stare at/"
     db "the ocean all by herself.../"
-    db "Why? Hey, I'm just a "
-    db "kid, don't ask me! @"
+    db "Why? Hey, I'm just a kid,/"
+    db "don't ask me! @"
 
 Dialog121::
     db "Hey... Where're you/"
@@ -214,7 +213,7 @@ Dialog12A::
     db "sometimes confused.../"
     db "By the way, my baby/"
     db "wants a Yoshi Doll./"
-    db "I saw one at the"
+    db "I saw one at the/"
     db "Trendy Game, but I/"
     db "couldn't get it. @"
 
@@ -320,7 +319,7 @@ Dialog136::
 Dialog137::
     db "Please!/"
     db "I really must insist/"
-    db "you have this <broom>!"
+    db "you have this <broom>!/"
     db "       Okay   No Way <ask>"
 
 Dialog138::
@@ -395,9 +394,9 @@ Dialog141::
     db $9D,"BRRING! BRRING!/"
     db "Hello! It's me, Ulrira!/"
     db "Ask me anything about/"
-    db "/the island!/"
+    db "the island!/"
     db "If you get lost,/"
-    db "/give me a call!/"
+    db "give me a call!/"
     db "Bye! CLICK!' @"
 
 Dialog142::
@@ -432,7 +431,7 @@ Dialog144::
     db "of the village./"
     db "Why not pay him a visit?/"
     db "That's all I can tell you/"
-    db "you for now! Bye! CLICK!' @"
+    db "for now! Bye! CLICK!' @"
 
 Dialog145::
     db $9D,"BRRING! BRRING!/"
@@ -678,13 +677,13 @@ Dialog167::
 Dialog168::
     db "I would like you to take/"
     db "this letter to a Mr. Write/"
-    db "Write who lives on the border/"
+    db "who lives on the border/"
     db "of the Mysterious Forest,/"
     db "please! @"
 
 Dialog169::
     db "...Is that so?/"
-    db "And I thought you"
+    db "And I thought you/"
     db "were a gentleman... @"
 
 Dialog16A::
@@ -803,7 +802,7 @@ Dialog17C::
     db "Hey you!/"
     db "Have you been to/"
     db "the Camera Shop/"
-    db "in Tal Tal Heights?"
+    db "in Tal Tal Heights?/"
     db "I heard young people like/"
     db "to go there and take/"
     db "pictures of themselves./"
@@ -906,7 +905,7 @@ Dialog18B::
 Dialog18C::
     db "Wow! Amazing!/"
     db "That rooster is/"
-    db "actually flying!"
+    db "actually flying!/"
     db "It's just like I said, eh?/"
     db "Have you tried to hold/"
     db "him over your head?/"
