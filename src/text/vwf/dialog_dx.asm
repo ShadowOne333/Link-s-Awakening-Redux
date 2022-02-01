@@ -88,7 +88,8 @@ Dialog25E::
 
 Dialog25F::
     db "Do you have the powder?/"
-    db "If not, you must go back.",$04,"@"
+    db "If not, you must/"
+    db "go back. @"
 
 Dialog260::
     db "Our colors are/"
@@ -227,7 +228,8 @@ Dialog277::
     db "Not very good.../"
     db "Eh? What?/"
     db "Did I say something?/"
-    db "No, you're hearing things...",$00,"@"
+    db "No, you're hearing/"
+    db "things... @"
 
 Dialog278::
     db "#####, do you always/"
