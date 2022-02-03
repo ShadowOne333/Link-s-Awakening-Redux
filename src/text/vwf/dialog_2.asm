@@ -186,7 +186,7 @@ Dialog0C2::
     db "I have to admit,/"
     db "at first I did not believe/"
     db "you were real.../"
-    db "That Instrument,/"
+    db "That instrument,/"
     db "along with the seven/"
     db "others in the set,/"
     db "has the power to wake/"
@@ -270,7 +270,7 @@ Dialog0C8::
     db "The only one who knows/"
     db "for sure is the Wind Fish.../"
     db "Trust your feelings.../"
-    db "Someday you will know/"
+    db "Someday, you will know/"
     db "for sure... @"
 
 Dialog0C9::
@@ -338,7 +338,7 @@ Dialog0CF::
     db "You have defeated/"
     db "the Nightmares!/"
     db "You have proven your/"
-    db "wisdom, courage and/"
+    db "wisdom, courage, and/"
     db "power!/"
     db "... ... ... .../"
     db "As part of the Wind Fish's/"
@@ -456,9 +456,9 @@ Dialog0DC::
     db "Everybody knows me!/"
     db "Want to hang out and/"
     db "listen to us jam?/"
-    db "For 300 Rupees,/"
-    db "we'll let you listen to a/"
-    db "previously unreleased cut!/"
+    db "For 300 Rupees, we'll let/"
+    db "you listen to a previously/"
+    db "unreleased cut!/"
     db "What do you do?/"
     db "       Pay    Leave <ask>"
 
@@ -492,27 +492,27 @@ Dialog0E1::
     db "But now,/"
     db "I'll get my revenge!/"
     db "Are you ready?!/"
-    db "       Yes    N-No <ask>"
+    db "       Yes     N-No <ask>"
 
 Dialog0E2::
     db "I'll let you carry/"
     db "more Magic Powder!/"
-    db "He He! Are you ready?!"
-    db "       Yes    N-No <ask>"
+    db "He He! Are you ready?!/"
+    db "       Yes     N-No <ask>"
 
 Dialog0E3::
     db "Okay, I'll let you/"
     db "carry more Bombs!/"
     db "He He He!/"
     db "Are you ready?!/"
-    db "       Yes    N-No <ask>"
+    db "       Yes     N-No <ask>"
 
 Dialog0E4::
     db "Fine, I'll let you/"
     db "have more arrows!/"
     db "Heh Heh!/"
     db "Are you ready?!/"
-    db "       Yes    N-No <ask>"
+    db "       Yes     N-No <ask>"
 
 Dialog0E5::
     db "Heh Heh Heh!/"
@@ -576,7 +576,7 @@ Dialog0ED::
 Dialog0EE::
     db "You've got a more/"
     db "Powerful Bracelet!/"
-    db "Now you can almost/"
+    db "Now, you can almost/"
     db "lift a whale! @"
 
 Dialog0EF::
@@ -589,7 +589,7 @@ Dialog0EF::
 Dialog0F0::
     db "Want to go on a raft ride/"
     db "for a hundred Rupees?/"
-    db "       Yes    No Way <ask>"
+    db "       Yes     No Way <ask>"
 
 Dialog0F1::
     db "Okay, the raft is ready/"
@@ -634,12 +634,12 @@ Dialog0F7::
     db "Wow! #####,/"
     db "can I try this?!/"
     db "What do you say?/"
-    db "       Okay   No Way <ask>"
+    db "       Okay    No Way <ask>"
 
 Dialog0F8::
     db "C'mon! I want to do it!/"
     db "Can I? It looks so fun!/"
-    db "       Yes    Okay <ask>"
+    db "       Yes     Okay  <ask>"
 
 Dialog0F9::
     db "You're good!/"

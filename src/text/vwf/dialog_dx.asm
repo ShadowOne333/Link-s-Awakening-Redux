@@ -30,7 +30,10 @@ Dialog252::
 
 Dialog253::
     db "If you have no courage,/"
-    db "then you have no strength./"
+    db "then you have/"
+    db "no strength./"
+    db "Gravestones won't move/"
+    db "for cowards. @"
     db "Gravestones won't move/"
     db "for cowards. @"
 
@@ -97,7 +100,7 @@ Dialog260::
     db "If I am red, he is blue!/"
     db "If he is red, I am blue!/"
     db "What color is my cloth?/"
-    db "       Red    Blue <ask>"
+    db "       Red     Blue <ask>"
 
 Dialog261::
     db "BOO! I am no weakling!/"
@@ -129,7 +132,7 @@ Dialog265::
 Dialog266::
     db "Do you want to/"
     db "read this book?/"
-    db "       YES    NO <ask>"
+    db "       YES     NO <ask>"
 
 Dialog267::
     db "New world of color under/"
@@ -368,7 +371,7 @@ Dialog294::
 Dialog295::
     db "No picture?!/"
     db "Are you pullin' my leg?/"
-    db "       Yes    No way<ask>"
+    db "       Yes     No way <ask>"
 
 Dialog296::
     db "What a bummer! @"
@@ -488,6 +491,6 @@ Dialog2AE::
     db "       YES    NO <ask>"
 
 Dialog2AF::
-    db "Ah how I love pictures./"
+    db "Ah, how I love pictures./"
     db "Hey, #####!/"
     db "What are you doing here?",$04,"@"

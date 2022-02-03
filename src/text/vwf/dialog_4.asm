@@ -31,14 +31,14 @@ Dialog194::
     db "Thank you for everything!/"
     db "#####, you are the/"
     db "kindest boy I know./"
-    db "One day I made a wish/"
+    db "One day, I made a wish/"
     db "to the Wind Fish.../"
     db "What was the wish?/"
     db "It was.../"
-    db "No, it's secret! @"
+    db "No, it's a secret! @"
 
 Dialog195::
-    db "#####, some day you/"
+    db "#####, some day, you/"
     db "will leave this island.../"
     db "I just know it/"
     db "in my heart.../"
@@ -90,22 +90,21 @@ Dialog19B::
 
 Dialog19C::
     db " THE MOURNING MERMAID/"
-    db "        By SCHULE/"
-    db "?/"
-    db "...A scale is missing... @"
+    db "       By SCHULE/"
+    db "? ...A scale is missing... @"
 
 Dialog19D::
-    db "      Seashell Mansion @"
+    db "     Seashell Mansion @"
 
 Dialog19E::
     db "Entrance to/"
-    db "     Yarna Desert <right> @"
+    db "    Yarna Desert <right> @"
 
 Dialog19F::
 Dialog1A0::
-    db "     Mysterious Forest/"
-    db "  (It's a little bit/"
-    db "            mysterious) @"
+    db "    Mysterious Forest//"
+    db " (It's a little bit/"
+    db "           mysterious) @"
 
 Dialog1A1::
     db "Do you want to/"
@@ -116,12 +115,12 @@ Dialog1A1::
 
 Dialog1A2::
     db "East <right>/"
-    db "       Ukuku Prairie/"
-    db "Farther East/"
-    db "       Animal Village @"
+    db "      Ukuku Prairie/"
+    db "Farther East:/"
+    db "      Animal Village @"
 
 Dialog1A3::
-    db "       Mt. Tamaranch @"
+    db "      Mt. Tamaranch @"
 
 Dialog1A4::
     db "<right> Tail Cave/"
@@ -138,12 +137,12 @@ Dialog1A6::
     db "not stand on them! @"
 
 Dialog1A7::
-    db "      Telephone Booth @"
+    db "     Telephone Booth @"
 
 Dialog1A8::
-    db "          DANGER!/"
-    db "         Keep out!/"
-    db "      (Except BowWow) @"
+    db "         DANGER!/"
+    db "        Keep out!/"
+    db "     (Except BowWow) @"
 
 Dialog1A9::
     db "<down> GO THIS WAY @"
@@ -158,8 +157,8 @@ Dialog1AC::
     db "<left> GO THIS WAY @"
 
 Dialog1AD::
-    db "     TRY AGAIN FROM/"
-    db "        THE START @"
+    db "    TRY AGAIN FROM/"
+    db "       THE START @"
 
 Dialog1AE::
     db "GREAT!/"
@@ -169,7 +168,7 @@ Dialog1AE::
 
 Dialog1AF::
     db "GONE ON TOUR/"
-    db "                 -MAMU @"
+    db "                -MAMU  @"
 
 Dialog1B0::
     db "<right> Crazy Tracy/"
@@ -181,7 +180,7 @@ Dialog1B1::
 
 Dialog1B2::
     db "<right> Welcome to the/"
-    db "       Animal Village! @"
+    db "      Animal Village! @"
 
 Dialog1B3::
     db "<right> Cemetery/"
@@ -243,7 +242,7 @@ Dialog1C0::
     db "have a nice stick.../"
     db "Can I borrow it/"
     db "for a second?/"
-    db "       Can    Can't <ask>"
+    db "       Can     Can't <ask>"
 
 Dialog1C1::
     db "The <stick> became/"
@@ -262,7 +261,7 @@ Dialog1C3::
 
 Dialog1C4::
 Dialog1C5::
-    db "I was hungry somethin'/"
+    db "I was hungry fer somethin'/"
     db "fierce so I went and got/"
     db "bananas at the beach.../"
     db "#####, if you want/"
@@ -289,7 +288,7 @@ Dialog1C7::
     db "PLEASE!/"
     db "He's hysterical!/"
     db "What do you do?/"
-    db "       Give   Don't <ask>"
+    db "       Give    Don't <ask>"
 
 Dialog1C8::
     db "Oh thank you!/"
@@ -302,8 +301,8 @@ Dialog1C9::
     db "your mind, tell me. @"
 
 Dialog1CA::
-    db "     MUNCH MUNCH!!/"
-    db "        ... ... ... .../"
+    db "    MUNCH MUNCH!!/"
+    db "       ... ... ... .../"
     db "That was great!/"
     db "I know it's not a fair/"
     db "trade, but here's some/"
@@ -339,7 +338,7 @@ Dialog1CF::
     db "I just ran out!/"
     db "Will you swap it/"
     db "for a pineapple?/"
-    db "       Yes    No <ask>"
+    db "       Yes     No <ask>"
 
 Dialog1D0::
     db "You exchanged the <honeycomb>/"
@@ -395,7 +394,7 @@ Dialog1D6::
 
 Dialog1D7::
     db "At the beach.../"
-    db "               -Marin <marin> @"
+    db "              -Marin <marin> @"
 
 Dialog1D8::
     db "I wonder where these/"
@@ -461,14 +460,14 @@ Dialog1DF::
     db "Get ready for THIS! @"
 
 Dialog1E0::
-    db "     ZZZ ZZZ ZZZ ZZZ/"
-    db "       ... <marin> ... <marin> ... @"
+    db "    ZZZ ZZZ ZZZ ZZZ/"
+    db "      ... <marin> ... <marin> ... @"
 
 Dialog1E1::
     db "Yes, it's that lazy walrus!/"
     db "Shall we give him/"
     db "a little surprise?/"
-    db "       Yes    No... <ask>"
+    db "       Yes     No... <ask>"
 
 Dialog1E2::
     db "Aha ha ha!  Wow!/"
@@ -512,8 +511,9 @@ Dialog1E8::
     db "hook, is it?/"
     db "You had better/"
     db "let me have it./"
-    db "I'll give you my next catch/"
-    db "if you let me have it.../"
+    db "I'll give you my/"
+    db "next catch if you let/"
+    db "me have it.../"
     db "       Okay   No <ask>"
 
 Dialog1E9::
@@ -569,7 +569,7 @@ Dialog1F2::
     db "Give it! Give it back!/"
     db "I will give you a/"
     db "scale as I said!/"
-    db "       Give   Keep <ask>"
+    db "       Give    Keep <ask>"
 
 Dialog1F3::
     db "Promise!/"
@@ -610,7 +610,7 @@ Dialog1F8::
     db $9D,"I Found Zora'. @"
 
 Dialog1F9::
-    db "       Richard's Villa @"
+    db "      Richard's Villa @"
 
 Dialog1FA::
     db "Kanalet Castle/"
@@ -641,7 +641,7 @@ Dialog1FE::
     db "You get a 20 Rupee/"
     db "prize on top of that!/"
     db "Try again?/"
-    db "       Yes    No <ask>"
+    db "       Yes     No <ask>"
 
 Dialog1FF::
     db "Oh! It's a big one!/"
@@ -652,13 +652,13 @@ Dialog1FF::
     db "On top of that, you get/"
     db "a 20 Rupee prize!/"
     db "Want to try again?/"
-    db "       Yes    No <ask>"
+    db "       Yes     No <ask>"
 
 Dialog200::
-    db "      ",$9D,"How To Handle/"
-    db "  Your Shield Like A Pro!'/"
+    db "     ",$9D,"How To Handle/"
+    db " Your Shield Like A Pro!'/"
     db "Read this book?/"
-    db "       YES    NO <ask>"
+    db "       YES     NO  <ask>"
 
 Dialog201::
     db $9D,"If you hold the Button/"
@@ -667,14 +667,14 @@ Dialog201::
     db "attacks, and you can flip/"
     db "some enemies, too.../"
     db "Besides the standard/"
-    db "shield, there is also/"
+    db "shields, there is also/"
     db "a mirrored variety/"
     db "which can defend/"
     db "against beams!' @"
 
 Dialog202::
-    db "    ",$03,$9D,"Selecting The Item/"
-    db "    That's Right For You'/"
+    db "   ",$03,$9D,"Selecting The Item/"
+    db "   That's Right For You'/"
     db "Read this book?/"
     db "       YES    NO <ask>"
 
@@ -690,8 +690,8 @@ Dialog203::
     db "right for you!' @"
 
 Dialog204::
-    db "      ",$9D,"Auto Map and/"
-    db "     Memo Guide Book'/"
+    db "     ",$9D,"Auto Map and/"
+    db "    Memo Guide Book'/"
     db "Read this book?/"
     db "       YES    NO <ask>"
 
@@ -711,8 +711,8 @@ Dialog205::
     db "Ahhh! How convenient! @"
 
 Dialog206::
-    db "      ",$9D,"Secrets Of The/"
-    db "       Whirling Blade'/"
+    db "     ",$9D,"Secrets Of The/"
+    db "      Whirling Blade'/"
     db "Read this book?/"
     db "       YES    NO <ask>"
 
@@ -731,8 +731,8 @@ Dialog207::
     db "Can you master this?' @"
 
 Dialog208::
-    db "      ",$9D,"The Properties/"
-    db "       Of Warp Holes'/"
+    db "     ",$9D,"The Properties/"
+    db "      Of Warp Holes'/"
     db "Read this book?/"
     db "       YES    NO <ask>"
 
@@ -750,7 +750,7 @@ Dialog209::
     db "your own eyes...' @"
 
 Dialog20A::
-    db "      ",$9D,"Fun With Bombs'/"
+    db "     ",$9D,"Fun With Bombs'/"
     db "Read this book?/"
     db "       YES    NO <ask>"
 
@@ -765,18 +765,18 @@ Dialog20B::
     db "Did you know that?' @"
 
 Dialog20C::
-    db "         ",$9D,"Atlas Of/"
-    db "       Koholint Island'/"
+    db "        ",$9D,"Atlas Of/"
+    db "      Koholint Island'/"
     db "You can move the cursor/"
     db "and look up the name/"
     db "of a place.../"
     db "Do you want to look/"
     db "at this map?/"
-    db "       Look   Don't <ask>"
+    db "       Look    Don't  <ask>"
 
 Dialog20D::
-    db "       ",$9D,"Dark Secrets/"
-    db " And Mysteries Of Koholint'/"
+    db "      ",$9D,"Dark Secrets/"
+    db "And Mysteries Of Koholint'/"
     db "Do you really/"
     db "want to read it?/"
     db "       YES    NO <ask>"
@@ -805,20 +805,20 @@ Dialog212::
     db "...N-not there! @"
 
 Dialog213::
-    db "          ...Here!.../"
-    db "          ...enter.../"
-    db "        ...my house... @"
+    db "         ...Here!.../"
+    db "         ...enter.../"
+    db "       ...my house... @"
 
 Dialog214::
-    db "        ...Nostalgia.../"
-    db "       ...unchanged.../"
-    db "        ...boo hoo... @"
+    db "       ...Nostalgia.../"
+    db "      ...unchanged.../"
+    db "       ...boo hoo... @"
 
 Dialog215::
-    db "         ...Enough.../"
-    db "        ...cemetery.../"
-    db "        ...take me.../"
-    db "       ...my grave... @"
+    db "        ...Enough.../"
+    db "       ...cemetery.../"
+    db "       ...take me.../"
+    db "      ...my grave... @"
 
 Dialog216::
     db "...Thank you.../"
@@ -978,10 +978,10 @@ Dialog22A::
     db "Bye! CLICK!' @"
 
 Dialog22B::
-    db " ",$9D,"The Travels of #####'/"
+    db "   ",$9D,"The Travels of #####'/"
     db "Do you want to look/"
     db "at your album?/"
-    db "       Look   Don't<ask>"
+    db "       Look    Don't  <ask>"
 
 Dialog22C::
     db "Which picture would/"
@@ -1004,23 +1004,23 @@ Dialog22E::
 Dialog22F::
 Dialog230::
     db "Huh? A keyhole here?/"
-    db "It says: ",$9D,"Tail Keyhole' @"
+    db "It says: ",$9D,"Tail Keyhole'. @"
 
 Dialog231::
     db "Huh? A keyhole here?/"
-    db "It says: ",$9D,"Slime Keyhole' @"
+    db "It says: ",$9D,"Slime Keyhole'. @"
 
 Dialog232::
     db "Huh? A keyhole here?/"
-    db "It says: ",$9D,"Angler Keyhole' @"
+    db "It says: ",$9D,"Angler Keyhole'. @"
 
 Dialog233::
     db "Huh? A keyhole here?/"
-    db "It says: ",$9D,"Bird Keyhole' @"
+    db "It says: ",$9D,"Bird Keyhole'. @"
 
 Dialog234::
     db "Huh? A keyhole here?/"
-    db "It says: ",$9D,"Face Keyhole' @"
+    db "It says: ",$9D,"Face Keyhole'. @"
 
 Dialog235::
     db "Somebody, HELP! @"
@@ -1201,16 +1201,16 @@ Dialog24B::
 Dialog24C::
     db "Hey! Did ya know Animal/"
     db "Village and Mabe Village/"
-    db "are are sister cities?/"
+    db "are sister cities?/"
     db "Yes, even though they/"
     db "aren't large enough/"
     db "to be called cities.../"
     db "Anyway, I heard from/"
     db "a very good source/"
     db "that they have a/"
-    db "a Dream Shrine in Mabe,/"
-    db "and that it has something/"
-    db "good inside.../"
+    db "Dream Shrine in Mabe,/"
+    db "and that it has/"
+    db "something good inside.../"
     db "Is that true? @"
 
 Dialog24D::

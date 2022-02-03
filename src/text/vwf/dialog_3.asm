@@ -22,7 +22,7 @@ Dialog10C::
     db "take pictures./"
     db "Will you let me take/"
     db "your picture?/"
-    db "       YES    NO <ask>"
+    db "       YES     NO <ask>"
 
 Dialog10D::
     db "Go to the back of the/"
@@ -44,7 +44,7 @@ Dialog10F::
 Dialog110::
     db "This owl statue is trying/"
     db "to say something, but/"
-    db "you can't understand it/"
+    db "you can't understand it,/"
     db "because it has no beak. @"
 
 Dialog111::
@@ -185,7 +185,7 @@ Dialog126::
     db "I'll tell you something/"
     db "useful./"
     db "Go to Toronbo Shores,/"
-    db "use the magnifying glass/"
+    db "use the magnifying glass,/"
     db "and you will find/"
     db "someone like me. @"
 
@@ -220,7 +220,7 @@ Dialog12A::
 Dialog12B::
     db "Oh! Will you give that/"
     db "doll to my baby?!/"
-    db "       Yes    No <ask>"
+    db "       Yes     No <ask>"
 
 Dialog12C::
     db "Because they all look/"
@@ -239,7 +239,7 @@ Dialog12D::
 Dialog12E::
     db "You want to know/"
     db "about that ghost?/"
-    db "I'll bet he's happy/"
+    db "I'll bet he's happy,/"
     db "thanks to you./"
     db "Are you ready/"
     db "for a picture? @"
@@ -302,13 +302,13 @@ Dialog134::
 Dialog135::
     db "Mmm.../"
     db "She's so beautiful.../"
-    db "I must give you something/"
-    db "for your trouble.../"
-    db "Hmm.../"
+    db "I must give you/"
+    db "something for your/"
+    db "trouble... Hmm.../"
     db "Well, it looks like all/"
     db "I have is this broom.../"
     db "How'll that be?/"
-    db "       Fine   No... <ask>"
+    db "       Fine     No... <ask>"
 
 Dialog136::
     db "You got a Broom as your/"
@@ -344,9 +344,10 @@ Dialog13A::
     db "help you.../"
     db "Let's make.../"
     db "a deal, shall we?/"
-    db "I want you to retrieve the/"
-    db "Golden Leaf I left behind/"
-    db "in the castle when I fled.../"
+    db "I want you to retrieve/"
+    db "the Golden Leaf I left/"
+    db "behind in the castle/"
+    db "when I fled.../"
     db "       Okay   No Way <ask>"
 
 Dialog13B::
@@ -386,9 +387,9 @@ Dialog140::
     db "How to say.../"
     db "Please call.../"
     db "Outside... .../"
-    db "It seems that old man/"
+    db "(It seems that old man/"
     db "Ulrira is a shy guy/"
-    db "in person... @"
+    db "in person...) @"
 
 Dialog141::
     db $9D,"BRRING! BRRING!/"
@@ -603,7 +604,7 @@ Dialog15C::
     db "YAHOO! YAHOO!/"
     db "A new broom?!/"
     db "For me? It is, isn't it?!/"
-    db "       Yes    No <ask>"
+    db "       Yes     No <ask>"
 
 Dialog15D::
     db "Okay!/"
@@ -652,7 +653,7 @@ Dialog165::
     db "       <bananas>!       <bananas>!/"
     db "     Oooh!     Oooh!/"
     db "      Give to Kiki!?/"
-    db "       Yes    No! <ask>"
+    db "       Yes     No! <ask>"
 
 Dialog166::
     db "You don't know the proper/"
@@ -672,7 +673,7 @@ Dialog167::
     db "a gentleman, I have a/"
     db "request to make of you./"
     db "Will you listen?/"
-    db "       Yes    No <ask>"
+    db "       Yes     No <ask>"
 
 Dialog168::
     db "I would like you to take/"
@@ -732,7 +733,7 @@ Dialog170::
     db "I can't move!/"
     db "Can you give me/"
     db "some vittles?/"
-    db "       Yes    Nope <ask>"
+    db "       Yes     Nope <ask>"
 
 Dialog171::
     db "You're one cold hombre... @"
@@ -837,13 +838,13 @@ Dialog180::
 Dialog181::
     db "Make-up! Jewels!/"
     db "Dresses! I want it all!/"
-    db "Sigh.../"
-    db "And some new accessories/"
+    db "Sigh... And some/"
+    db "new accessories/"
     db "would be nice.../"
     db "Oh! That Ribbon!/"
     db "I need it! Will you/"
     db "trade for my dog food?/"
-    db "       Yes    No! <ask>"
+    db "       Yes     No! <ask>"
 
 Dialog182::
     db "You exchanged the <ribbon>/"
@@ -862,7 +863,7 @@ Dialog185::
     db "I am Manbo,/"
     db "child of the Sun Fish!/"
     db "Have you got an Ocarina?/"
-    db "       Yes    No <ask>"
+    db "       Yes     No <ask>"
 
 Dialog186::
     db "Very well.../"

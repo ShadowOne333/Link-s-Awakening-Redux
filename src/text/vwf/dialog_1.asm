@@ -34,7 +34,7 @@ Dialog003::
     db "rather sing./"
     db "Listen to this,/"
     db "it's called the ",$9D,"Ballad of/"
-    db "the Wind Fish",$27,". @"
+    db "the Wind Fish'. @"
 
 Dialog004::
     db "Hey! That's a nice/"
@@ -56,7 +56,7 @@ Dialog006::
     db "It makes me want to/"
     db "sing a song.../"
     db "Yes, the song is/"
-    db $9D,"Ballad of the Wind Fish",$27,"! @"
+    db $9D,"Ballad of the Wind Fish'! @"
 
 Dialog007::
     db "Eh? It's locked!/"
@@ -139,7 +139,7 @@ Dialog012::
 
 Dialog013::
     db "You've learned the/"
-    db $9D,"Ballad of the Wind Fish",$27,"!/"
+    db $9D,"Ballad of the Wind Fish'!/"
     db "This song will always/"
     db "remain in your heart! @"
 
@@ -240,7 +240,7 @@ Dialog024::
 
 Dialog025::
     db "You dirty rat!/"
-    db "You k-k-k... beat my/"
+    db "You k-k-k... killed my/"
     db "brothers! You'll pay!!/"
     db "I'll never forget you! @"
 
@@ -748,7 +748,7 @@ Dialog093::
 
 Dialog094::
     db "You've got the Magic Rod!/"
-    db "Now you can burn things!/"
+    db "Now, you can burn things!/"
     db "Burn it!/"
     db "Burn, baby burn! @"
 
@@ -786,7 +786,7 @@ Dialog09A::
 
 Dialog09B::
     db "You found your Sword!/"
-    db "It must be yours/"
+    db "It must be yours,/"
     db "because it has your/"
     db "name engraved on it! @"
 
@@ -817,7 +817,7 @@ Dialog0A0::
 
 Dialog0A1::
     db "You've got the Tail Key!/"
-    db "Now you can open the/"
+    db "Now, you can open the/"
     db "Tail Cave gate!@"
 
 Dialog0A2::
