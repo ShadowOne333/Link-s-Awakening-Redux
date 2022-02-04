@@ -34,8 +34,6 @@ Dialog253::
     db "no strength./"
     db "Gravestones won't move/"
     db "for cowards. @"
-    db "Gravestones won't move/"
-    db "for cowards. @"
 
 Dialog254::
     db "I'm not afraid. I just/"
@@ -132,7 +130,7 @@ Dialog265::
 Dialog266::
     db "Do you want to/"
     db "read this book?/"
-    db "       YES     NO <ask>"
+    db "       YES     NO  <ask>"
 
 Dialog267::
     db "New world of color under/"
@@ -288,8 +286,9 @@ Dialog283::
     db "will be your guide... @"
 
 Dialog284::
-    db "Dive under where torchlight/"
-    db "beams do cross... @"
+    db "Dive under where/"
+    db "torchlight beams/"
+    db "do cross... @"
 
 Dialog285::
     db "Enter the space where/"
@@ -356,8 +355,9 @@ Dialog291::
 
 Dialog292::
     db "To defeat the monsters/"
-    db "who hold the key, attack/"
-    db "them from a higher place. @"
+    db "who hold the key,/"
+    db "attack them from/"
+    db "a higher place. @"
 
 Dialog293::
     db "If the statue looks/"

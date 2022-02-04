@@ -38,20 +38,20 @@ Dialog0AA::
     db "door. @"
 
 Dialog0AB::
-    db "    You got 20 Rupees!/"
-    db "           JOY! @"
+    db "   You got 20 Rupees!/"
+    db "          JOY! @"
 
 Dialog0AC::
-    db "    You got 50 Rupees!/"
-    db "         Very Nice! @"
+    db "   You got 50 Rupees!/"
+    db "        Very Nice! @"
 
 Dialog0AD::
-    db "    You got 100 Rupees!/"
-    db "       You're Happy! @"
+    db "   You got 100 Rupees!/"
+    db "      You're Happy! @"
 
 Dialog0AE::
-    db "   You got 200 Rupees!/"
-    db "      You're Ecstatic! @"
+    db "  You got 200 Rupees!/"
+    db "     You're Ecstatic! @"
 
 Dialog0AF::
     db "Leave me alone!/"
@@ -60,8 +60,8 @@ Dialog0AF::
     db "portrait! @"
 
 Dialog0B0::
-    db "    BUZZZZZ! BUZZZZ!/"
-    db "       OUTZZZIDER! @"
+    db "   BUZZZZZ! BUZZZZ!/"
+    db "      OUTZZZIDER! @"
 
 Dialog0B1::
     db "NEENER NEENER!/"
@@ -69,10 +69,10 @@ Dialog0B1::
     db "NYAH NYAH! @"
 
 Dialog0B2::
-    db "     BLOOOP! BLOOOP!/"
-    db "       GLUB! GLUB!/"
-    db "     OGGGH! FOOOOD!/"
-    db "     BLOOOOP! GLUB! @"
+    db "    BLOOOP! BLOOOP!/"
+    db "      GLUB! GLUB!/"
+    db "    OGGGH! FOOOOD!/"
+    db "    BLOOOOP! GLUB! @"
 
 Dialog0B3::
     db "Ssso... you are the/"
@@ -360,49 +360,49 @@ Dialog0CF::
     db "Hoot! @"
 
 Dialog0D0::
+    db "       ... ... ... .../"
     db "        ... ... ... .../"
-    db "         ... ... ... .../"
-    db "         I AM THE/"
-    db "        WIND FISH.../"
-    db "      LONG HAS BEEN/"
-    db "       MY SLUMBER.../"
-    db "      IN MY DREAMS.../"
-    db "     AN EGG APPEARED/"
-    db "   AND WAS SURROUNDED/"
-    db "      BY AN ISLAND,/"
-    db "  WITH PEOPLE, ANIMALS,/"
-    db "    AN ENTIRE WORLD!/"
-    db "        ... ... ... .../"
-    db "       BUT, VERILY,/"
-    db "    IT BE THE NATURE/"
-    db "   OF DREAMS TO END!/"
-    db "  WHEN I DOST AWAKEN,/"
+    db "        I AM THE/"
+    db "       WIND FISH.../"
+    db "     LONG HAS BEEN/"
+    db "      MY SLUMBER.../"
+    db "     IN MY DREAMS.../"
+    db "    AN EGG APPEARED/"
+    db "  AND WAS SURROUNDED/"
+    db "     BY AN ISLAND,/"
+    db " WITH PEOPLE, ANIMALS,/"
+    db "   AN ENTIRE WORLD!/"
+    db "       ... ... ... .../"
+    db "      BUT, VERILY,/"
+    db "   IT BE THE NATURE/"
+    db "  OF DREAMS TO END!/"
+    db " WHEN I DOST AWAKEN,/"
     db "KOHOLINT WILL BE GONE.../"
-    db "    ONLY THE MEMORY/"
-    db "   OF THIS DREAM LAND/"
-    db "      WILL EXIST IN/"
-    db "    THE WAKING WORLD.../"
-    db "         SOMEDAY,/"
-    db "     THOU MAY RECALL/"
-    db "       THIS ISLAND.../"
-    db " THAT MEMORY MUST BE/"
-    db " THE REAL DREAM WORLD.../"
-    db "        ... ... ... .../"
-    db "     COME, #####.../"
-    db "     LET US AWAKEN.../"
-    db "       TOGETHER!! @"
+    db "   ONLY THE MEMORY/"
+    db "  OF THIS DREAM LAND/"
+    db "     WILL EXIST IN/"
+    db "   THE WAKING WORLD.../"
+    db "        SOMEDAY,/"
+    db "    THOU MAY RECALL/"
+    db "      THIS ISLAND.../"
+    db "THAT MEMORY MUST BE/"
+    db "THE REAL DREAM WORLD.../"
+    db "       ... ... ... .../"
+    db "    COME, #####.../"
+    db "    LET US AWAKEN.../"
+    db "      TOGETHER!! @"
 
 Dialog0D1::
 Dialog0D2::
-    db "         PLAY THE/"
-    db "    EIGHT INSTRUMENTS!/"
-    db "         PLAY THE/"
-    db "  SONG OF AWAKENING!! @"
+    db "        PLAY THE/"
+    db "   EIGHT INSTRUMENTS!/"
+    db "        PLAY THE/"
+    db " SONG OF AWAKENING!! @"
 
 Dialog0D3::
 Dialog0D4::
 Dialog0D5::
-    db "      Mermaid Statue @"
+    db "     Mermaid Statue @"
 
 Dialog0D6::
 Dialog0D7::
@@ -418,7 +418,7 @@ Dialog0D8::
     db "Stop it at vonce! @"
 
 Dialog0D9::
-    db "      Hoot!  Hoot!/"
+    db "     Hoot!  Hoot!/"
     db "So you are the lad who/"
     db "owns the sword.../"
     db "Now I understand why the/"
@@ -428,12 +428,12 @@ Dialog0D9::
     db "come to wake the/"
     db "Wind Fish.../"
     db "It is said that you cannot/"
-    db "leave the island unless you/"
-    db "wake the Wind Fish.../"
+    db "leave the island unless/"
+    db "you wake the Wind Fish.../"
     db "You should now go north,/"
     db "to the Mysterious Forest./"
     db "I will wait for you there!/"
-    db "           Hoot! @"
+    db "         Hoot! @"
 
 Dialog0DA::
     db "Annoyance! You are only/"
@@ -530,20 +530,20 @@ Dialog0E6::
     db "dark in here... @"
 
 Dialog0E7::
-    db "      TO THE FINDER.../"
-    db "   THE ISLE OF KOHOLINT/"
-    db "   IS BUT AN ILLUSION.../"
-    db "     HUMAN, MONSTER,/"
-    db "         SEA, SKY.../"
-    db "    A SCENE ON THE LID/"
-    db "    OF A SLEEPER'S EYE.../"
-    db "   AWAKE THE DREAMER,/"
-    db "    AND KOHOLINT WILL/"
-    db "   VANISH MUCH LIKE A/"
-    db "   BUBBLE ON A NEEDLE.../"
-    db "  CASTAWAY, YOU SHOULD/"
-    db "     KNOW THE TRUTH!/"
-    db "        ... ... ... .../"
+    db "     TO THE FINDER.../"
+    db "  THE ISLE OF KOHOLINT/"
+    db "  IS BUT AN ILLUSION.../"
+    db "    HUMAN, MONSTER,/"
+    db "        SEA, SKY.../"
+    db "   A SCENE ON THE LID/"
+    db "   OF A SLEEPER'S EYE.../"
+    db "  AWAKE THE DREAMER,/"
+    db "   AND KOHOLINT WILL/"
+    db "  VANISH MUCH LIKE A/"
+    db "  BUBBLE ON A NEEDLE.../"
+    db " CASTAWAY, YOU SHOULD/"
+    db "    KNOW THE TRUTH!/"
+    db "       ... ... ... .../"
     db "What? Illusion? @"
 
 Dialog0E8::
@@ -596,14 +596,14 @@ Dialog0F1::
     db "for you outside! Enjoy! @"
 
 Dialog0F2::
-    db $03,"  Waterfall at the Shrine @"
+    db $03," Waterfall at the Shrine @"
 
 Dialog0F3::
-    db "     South of the Shrine @"
+    db "    South of the Shrine @"
 
 Dialog0F4::
-    db "      Entrance to the/"
-    db "       Animal Village @"
+    db "     Entrance to the/"
+    db "      Animal Village @"
 
 Dialog0F5::
     db "We were born/"

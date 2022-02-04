@@ -52,7 +52,7 @@ Dialog111::
     db "inside this box./"
     db "Come and get it,/"
     db "if you can!'/"
-    db "              -Master <skull> @"
+    db "             -Master <skull> @"
 
 Dialog112::
     db "Gulp!/"
@@ -252,7 +252,7 @@ Dialog12F::
     db "You are such a nice boy!/"
     db "How can I ever repay/"
     db "you? I know.../"
-    db "      SMOOOOOOOCH!/"
+    db "     SMOOOOOOOCH!/"
     db "You got a reward from/"
     db "Madam MeowMeow... ... .../"
     db "L-l-lucky! @"
@@ -546,44 +546,44 @@ Dialog14F::
     db "Bye! CLICK!' @"
 
 Dialog150::
-    db "        ...SWAMP.../"
-    db "    A path opens.../"
-    db "         in the blooms... @"
+    db "       ...SWAMP.../"
+    db "   A path opens.../"
+    db "        in the blooms... @"
 
 Dialog151::
-    db "       ...PRAIRIE.../"
-    db "       ...PRAIRIE.../"
-    db "   The Prairie is waiting... @"
+    db "      ...PRAIRIE.../"
+    db "      ...PRAIRIE.../"
+    db "  The Prairie is waiting... @"
 
 Dialog152::
-    db "       ...WATERFALL.../"
-    db "    It is hidden in/"
-    db "          the waterfall... @"
+    db "      ...WATERFALL.../"
+    db "   It is hidden in/"
+    db "         the waterfall... @"
 
 Dialog153::
-    db "          ...BAY.../"
-    db "    Your road goes/"
-    db "          into the bay... @"
+    db "         ...BAY.../"
+    db "   Your road goes/"
+    db "         into the bay... @"
 
 Dialog154::
-    db "        ...SHRINE.../"
-    db "   An island secret/"
-    db "          in the shrine... @"
+    db "       ...SHRINE.../"
+    db "  An island secret/"
+    db "         in the shrine... @"
 
 Dialog155::
-    db "      ...MOUNTAIN.../"
-    db "  Something calls.../"
-    db "    from the mountains... @"
+    db "     ...MOUNTAIN.../"
+    db " Something calls.../"
+    db "   from the mountains... @"
 
 Dialog156::
-    db "       ...OCARINA.../"
-    db "  The music of the/"
-    db "         Ocarina leads... @"
+    db "      ...OCARINA.../"
+    db " The music of the/"
+    db "        Ocarina leads... @"
 
 Dialog157::
-    db "          ...EGG..../"
-    db "    The Egg on the/"
-    db "          mountain calls! @"
+    db "         ...EGG..../"
+    db "   The Egg on the/"
+    db "         mountain calls! @"
 
 Dialog158::
 Dialog159::
@@ -918,8 +918,8 @@ Dialog18D::
     db "is the greatest! @"
 
 Dialog18E::
-    db "        Here Sleeps/"
-    db "     The Flying Rooster @"
+    db "       Here Sleeps/"
+    db "    The Flying Rooster @"
 
 Dialog18F::
     db "Iz zat zee Mermaid scale?/"

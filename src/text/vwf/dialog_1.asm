@@ -55,8 +55,8 @@ Dialog006::
     db "sleep on such a nice day!/"
     db "It makes me want to/"
     db "sing a song.../"
-    db "Yes, the song is/"
-    db $9D,"Ballad of the Wind Fish'! @"
+    db "Yes, the song is the/"
+    db $9D,"Ballad of the Wind Fish'!@"
 
 Dialog007::
     db "Eh? It's locked!/"
@@ -70,9 +70,8 @@ Dialog008::
     db "flowing through you! @"
 
 Dialog009::
-    db "Ahhh.../"
-    db "It has the Sleepy/"
-    db "Toadstool, it does!/"
+    db "Ahhh... It has the/"
+    db "Sleepy Toadstool, it does!/"
     db "We'll mix it up something/"
     db "in a jiffy, we will! @"
 
@@ -88,14 +87,15 @@ Dialog00A::
 
 Dialog00B::
     db "I'm all tucker'd out.../"
-    db "I think I better set a/"
-    db "spell before I head home... @"
+    db "I think I better/"
+    db "set a spell before/"
+    db "I head home... @"
 
 Dialog00C::
     db "Double double/"
     db "toil and trouble,/"
     db "a toadstool mix/"
-    db "makes powder for tricks! @"
+    db "makes powder for tricks!@"
 
 Dialog00D::
     db "As a raccoon, my nose is/"
@@ -133,9 +133,9 @@ Dialog012::
     db "I'll tell you a secret!/"
     db "Use your sword to poke/"
     db "at dungeon walls.../"
-    db "If you hear a hollow clank,/"
-    db "you can break the wall/"
-    db "with a Bomb! @"
+    db "If you hear a hollow/"
+    db "clank, you can break/"
+    db "the wall with a Bomb! @"
 
 Dialog013::
     db "You've learned the/"
@@ -153,20 +153,22 @@ Dialog014::
 Dialog015::
     db "Please!/"
     db "I want you to learn it!/"
-    db "This song is my favorite! @"
+    db "This song is my/"
+    db "favorite! @"
 
 Dialog016::
     db "So, how do you like it?/"
     db "It's really touching,/"
-    db "isn't it?/"
-    db "Does it stick in your mind?/"
-    db "       Yes    No <ask>"
+    db "isn't it? Does it stick/"
+    db "in your mind?/"
+    db "       Yes     No <ask>"
 
 Dialog017::
     db "Hi there, big guy!/"
     db "I'm Crazy Tracy!/"
-    db "I've got a little secret for/"
-    db "sale that'll pump you up! @/"
+    db "I've got a little secret/"
+    db "for sale that will/"
+    db "pump you up! @"
 
 Dialog018::
     db "Will you give me 28/"
@@ -175,8 +177,8 @@ Dialog018::
 
 Dialog019::
     db "How about it?/"
-    db "42 Rupees for my little/"
-    db "secret.../"
+    db "42 Rupees for my/"
+    db "little secret.../"
     db "       Give    Don't <ask>"
 
 Dialog01A::
@@ -191,8 +193,8 @@ Dialog01A::
 
 Dialog01B::
     db "Beat it, then!/"
-    db "Come back when you have/"
-    db "some cash! @"
+    db "Come back when you/"
+    db "have some cash! @"
 
 Dialog01C::
     db "... ... ... .../"
@@ -201,8 +203,8 @@ Dialog01C::
 Dialog01D::
     db "Well!/"
     db "I'm only offering you a /"
-    db "secret that will make you/"
-    db "strong!/"
+    db "secret that will make/"
+    db "you strong!/"
     db "You're such a chicken!! @"
 
 Dialog01E::
@@ -232,7 +234,7 @@ Dialog023::
     db "YIP YIP! @"
 
 Dialog024::
-    db "Let's heal your wounds/"
+    db "Let's heal your wounds,/"
     db "get rid of all that/"
     db "stress.../"
     db "Close your eyes and/"
@@ -271,24 +273,24 @@ Dialog029::
     db "Aye Caramba!/"
     db "Kid, you have a lot to/"
     db "learn, trying to buy/"
-    db "something you have no/"
-    db "use for! @"
+    db "something you have/"
+    db "no use for! @"
 
 Dialog02A::
     db "You've got a Heart!/"
     db "Thump!/"
     db "One of your/"
-    db "Heart Containers is filled! @"
+    db "Heart Containers is filled!@"
 
 Dialog02B::
 Dialog02C::
-    db "     Bow & Arrow Set/"
-    db "     Only 980 Rupees!/"
+    db "    Bow & Arrow Set/"
+    db "    Only 980 Rupees!/"
     db "       Buy    No Way <ask>"
 
 Dialog02D::
-    db "        10 Arrows/"
-    db "        10 Rupees/"
+    db "       10 Arrows/"
+    db "       10 Rupees/"
     db "       Buy    Don't <ask>"
 
 Dialog02E::
@@ -302,19 +304,19 @@ Dialog02F::
     db "Put it back! @"
 
 Dialog030::
-    db "       Deluxe Shovel/"
-    db "       200 Rupees!/"
+    db "      Deluxe Shovel/"
+    db "      200 Rupees!/"
     db "Seems expensive!/"
     db "       Buy    No Way! <ask>"
 
 Dialog031::
-    db "       Three Hearts/"
-    db "        10 Rupees!/"
+    db "        3 Hearts/"
+    db "       10 Rupees!/"
     db "       Buy    Don't <ask>"
 
 Dialog032::
     db "          Shield/"
-    db "        20 Rupees!/"
+    db "       20 Rupees!/"
     db "       Buy    Don't <ask>"
 
 Dialog033::
@@ -324,10 +326,10 @@ Dialog033::
 
 Dialog034::
     db "Sorry, kid!/"
-    db "You don't have the/"
-    db "Rupees!/"
-    db "Come back when you have/"
-    db "the cash! @"
+    db "You don't have/"
+    db "the Rupees!/"
+    db "Come back when you/"
+    db "have the cash! @"
 
 Dialog035::
     db "Thanks a lot!/"
@@ -356,27 +358,27 @@ Dialog039::
 Dialog03A::
 Dialog03B::
     db "     TRENDY GAME!/"
-    db "     One Play 10 Rs./"
-    db "       Play   No <ask>"
+    db "  One Play - 10 Rupees/"
+    db "       Play    No <ask>"
 
 Dialog03C::
     db "The A and B Buttons/"
     db "move the crane.../"
     db "The rest is just timing!/"
-    db "Go over to the buttons to/"
-    db "to play! Good Luck! @"
+    db "Go over to the buttons/"
+    db "to play! Good luck! @"
 
 Dialog03D::
     db "It's a Shield!/"
-    db "There is space for your/"
-    db "name! @"
+    db "There is space for/"
+    db "your name! @"
 
 Dialog03E::
-    db "Challenge Again?/"
-    db "       Play   No <ask>"
+    db "Challenge again?/"
+    db "       Play    No <ask>"
 
 Dialog03F::
-    db "Good Luck! @"
+    db "Good luck! @"
 
 Dialog040::
     db "We're closing up for/"
@@ -391,34 +393,35 @@ Dialog041::
 
 Dialog042::
     db "It's 30 Rupees!/"
-    db "You can play the game 3/"
-    db "more times with this!@"
+    db "You can play the game/"
+    db "3 more times with this! @"
 
 Dialog043::
-    db "Cough Cough.../"
-    db "Don't sprinkle that on me.../"
+    db "Cough cough... Don't/"
+    db "sprinkle that on me.../"
     db "...I'll have to curse you!/"
-    db "Cough Cough... @"
+    db "Cough cough... @"
 
 Dialog044::
     db "You got a Yoshi Doll!/"
-    db "Recently, he seems to be/"
-    db "showing up in many games! @"
+    db "Recently, he seems/"
+    db "to be showing up/"
+    db "in many games! @"
 
 Dialog045::
     db "How about some fishing,/"
     db "little buddy?/"
     db "I'll only charge you/"
     db "10 Rupees.../"
-    db "       Fish   Not Now <ask>"
+    db "       Fish     Not Now <ask>"
 
 Dialog046::
     db "You have to have more/"
     db "passion! Live a little! @"
 
 Dialog047::
-    db "Okay, here's how you/"
-    db "do it./"
+    db "Okay, here's how/"
+    db "you do it./"
     db "Use <left> and <right> on the <dpad>/"
     db "to aim a cast./"
     db "Once you hook a fish,/"
@@ -428,13 +431,13 @@ Dialog047::
 Dialog048::
     db "Why not try one time,/"
     db "little buddy?/"
-    db "       Cast   Not Now <ask>"
+    db "       Cast    Not Now <ask>"
 
 Dialog049::
     db "Wow!/"
     db "That one got away!/"
     db "Want to try again?/"
-    db "       Cast   Not Now <ask>"
+    db "       Cast    Not Now <ask>"
 
 Dialog04A::
     db "Wow! Nice Fish!/"
@@ -442,7 +445,7 @@ Dialog04A::
     db "I'll give you a/"
     db "20 Rupee prize!/"
     db "Try again?/"
-    db "       Cast   Not Now <ask>"
+    db "       Cast    Not Now <ask>"
 
 Dialog04B::
     db "This pond's all fished out./"
@@ -473,13 +476,13 @@ Dialog04F::
     db "You've got a/"
     db "Piece of Heart!/"
     db "Press SELECT on the/"
-    db "Subscreen to see. @"
+    db "Sub-Screen to see. @"
 
 Dialog050::
     db "You collected four/"
     db "Pieces of Heart./"
-    db "Now, you have a complete/"
-    db "Heart Container! @"
+    db "Now, you have a/"
+    db "complete Heart Container! @"
 
 Dialog051::
     db "Brrrr.../"
@@ -488,14 +491,15 @@ Dialog051::
 
 Dialog052::
     db "NYAH NYAH!/"
-    db "You can't hurt me as long/"
-    db "as I have my bottle!@"
+    db "You can't hurt me/"
+    db "as long as I have/"
+    db "my bottle!@"
 
 Dialog053::
-    db "Waaaah!/"
-    db "You- you broke my bottle!/"
-    db "Why, you- you make me/"
-    db "hopping mad!!! @"
+    db "Waaaah! You-/"
+    db "You broke my bottle!/"
+    db "Why, you- you make/"
+    db "me hopping mad!!! @"
 
 Dialog054::
     db "Well, #####, ya finally/"
@@ -506,183 +510,185 @@ Dialog054::
     db "How did I know your/"
     db "name?/"
     db "You think it's weird eh?/"
-    db "Well, I saw it on the back/"
-    db "of this shield! @"
+    db "Well, I saw it on the/"
+    db "back of this shield! @"
 
 Dialog055::
     db "Oh, yeah.../"
-    db "Some other stuff like this/"
-    db "washed up on the beach.../"
+    db "Some other stuff like/"
+    db "this washed up on/"
+    db "the beach.../"
     db "If'n you go look, watch/"
     db "out for monsters!/"
-    db "Ever since you showed up,/"
-    db "#####, I've seen 'em/"
-    db "all over the place!@"
+    db "Ever since you showed/"
+    db "up, #####, I've seen/"
+    db "'em all over the place! @"
 
 Dialog056::
     db "Level 1--/"
-    db "         Tail Cave @"
+    db "        Tail Cave @"
 
 Dialog057::
     db "Level 2--/"
-    db "        Bottle Grotto @"
+    db "       Bottle Grotto @"
 
 Dialog058::
     db "Level 3--/"
-    db "         Key Cavern @"
+    db $04,"       Key Cavern @"
 
 Dialog059::
     db "Level 4--/"
-    db "        Angler's Tunnel @"
+    db "      Angler's Tunnel @"
 
 Dialog05A::
     db "Level 5--/"
-    db "        Catfish's Maw @"
+    db "       Catfish's Maw @"
 
 Dialog05B::
     db "Level 6--/"
-    db "         Face Shrine @"
+    db $04,"       Face Shrine @"
 
 Dialog05C::
     db "Level 7--/"
-    db "        Eagle's Tower @"
+    db "       Eagle's Tower @"
 
 Dialog05D::
     db "Level 8--/"
-    db "         Turtle Rock @"
+    db $04,"        Turtle Rock @"
 
 Dialog05E::
-    db "       Wind Fish's Egg @"
+    db "      Wind Fish's Egg @"
 
 Dialog05F::
 Dialog060::
-    db "       Mountain Bridge @"
+    db "     Mountain Bridge @"
 
 Dialog061::
-    db "  Sale's House O' Bananas @"
+    db $04,"Sale's House O' Bananas @"
 
 Dialog062::
-    db "        Pothole Field @"
+    db "       Pothole Field @"
 
 Dialog063::
-    db "      House By The Bay @"
+    db "    House By The Bay  @"
 
 Dialog064::
-    db "        Trendy Game @"
+    db "      Trendy Game @"
 
 Dialog065::
-    db "       Town Tool Shop @"
+    db "     Town Tool Shop @"
 
 Dialog066::
-    db "  Marin and Tarin's House @"
+    db $04,"Marin and Tarin's House @"
 
 Dialog067::
-    db "         Witch's Hut @"
+    db "       Witch's Hut @"
 
 Dialog068::
-    db "        Yarna Desert @"
+    db "      Yarna Desert @"
 
 Dialog069::
-    db "        Ukuku Prairie @"
+    db "      Ukuku Prairie @"
 
 Dialog06A::
-    db "      Mysterious Woods @"
+    db "    Mysterious Woods @"
 
 Dialog06B::
-    db "       Mt. Tamaranch @"
+    db "     Mt. Tamaranch @"
 
 Dialog06C::
-    db "   Tal Tal Mountain Range @"
+    db " Tal Tal Mountain Range @"
 
 Dialog06D::
-    db "        Signpost Maze @"
+    db "      Signpost Maze @"
 
 Dialog06E::
-    db "        Mabe Village @"
+    db "       Mabe Village @"
 
 Dialog06F::
-    db "        Animal Village @"
+    db "      Animal Village @"
 
 Dialog070::
-    db "          Cemetery @"
+    db "        Cemetery @"
 
 Dialog071::
-    db "         Rapids Ride @"
+    db "       Rapids Ride @"
 
 Dialog072::
-    db "       Koholint Prairie @"
+    db "     Koholint Prairie @"
 
 Dialog073::
-    db "       Toronbo Shores @"
+    db "     Toronbo Shores @"
 
 Dialog074::
-    db "        Martha's Bay @"
+    db "      Martha's Bay @"
 
 Dialog075::
-    db "       East of the Bay @"
+    db "     East of the Bay @"
 
 Dialog076::
-    db "       Goponga Swamp @"
+    db "     Goponga Swamp @"
 
 Dialog077::
-    db "         Face Shrine @"
+    db "       Face Shrine @"
 
 Dialog078::
-    db "        Kanalet Castle @"
+    db $04,"     Kanalet Castle @"
 
 Dialog079::
-    db "       Tal Tal Heights @"
+    db $04,"     Tal Tal Heights @"
 
 Dialog07A::
-    db "      Tabahl Wasteland @"
+    db $04,"    Tabahl Wasteland @"
 
 Dialog07B::
-    db "     South of the Village @"
+    db "   South of the Village @"
 
 Dialog07C::
-     db "         Fishing Pond @"
+     db "       Fishing Pond @"
 
 Dialog07D::
-    db "Madam MeowMeow's House/"
-    db "    Beware of the Dog! @"
+    db "   Madam MeowMeow's/"
+    db "         House/"
+    db "   Beware of the Dog! @"
 
 Dialog07E::
-    db "   Old Man Ulrira's House @"
+    db "  Old Man Ulrira's House @"
 
 Dialog07F::
-    db "       Weird Mr. Write @"
+    db "     Weird Mr. Write @"
 
 Dialog080::
-    db "       Crazy Tracy's/"
-    db "        Health Spa @"
+    db "      Crazy Tracy's/"
+    db "       Health Spa @"
 
 Dialog081::
-    db "     Quadruplet's House @"
+    db "   Quadruplet's House @"
 
 Dialog082::
-    db "        Dream Shrine @"
+    db "      Dream Shrine @"
 
 Dialog083::
-    db "       Telephone Booth /"
-    db "      <down> Signpost Maze @"
+    db "     Telephone Booth /"
+    db "    <down> Signpost Maze @"
 
 Dialog084::
-    db "      Seashell Mansion @"
+    db "     Seashell Mansion @"
 
 Dialog085::
-    db "       Richard's Villa @"
+    db "      Richard's Villa @"
 
 Dialog086::
-    db "         Hen House @"
+    db "        Hen House @"
 
 Dialog087::
-    db "       Village Library @"
+    db "      Village Library @"
 
 Dialog088::
-    db "          Raft Shop@"
+    db "        Raft Shop @"
 
 Dialog089::
-    db "         Warp Hole @"
+    db "        Warp Hole @"
 
 Dialog08A::
     db "This rock has many/"
@@ -710,8 +716,8 @@ Dialog08D::
 
 Dialog08E::
     db "Well, it's an Ocarina,/"
-    db "but you don't know how/"
-    db "to play it... @"
+    db "but you don't know/"
+    db "how to play it... @"
 
 Dialog08F::
     db "No! No! Poor hen!/"
@@ -732,8 +738,8 @@ Dialog092::
     db "Ahhh... Yess.../"
     db "That dust was so/"
     db "refreshing.../"
-    db "For that, I'll tell you/"
-    db "a hint!/"
+    db "For that, I'll tell/"
+    db "you a hint!/"
     db "Use a Bomb in a place/"
     db "where the sand swallows/"
     db "you.../"
@@ -748,9 +754,9 @@ Dialog093::
 
 Dialog094::
     db "You've got the Magic Rod!/"
-    db "Now, you can burn things!/"
-    db "Burn it!/"
-    db "Burn, baby burn! @"
+    db "Now, you can burn/"
+    db "things! Burn it!/"
+    db "Burn, baby, burn! @"
 
 Dialog095::
     db "You've got the/"
@@ -760,8 +766,8 @@ Dialog095::
 
 Dialog096::
     db "You've got the Ocarina!/"
-    db "You should learn to play/"
-    db "many songs!@"
+    db "You should learn to/"
+    db "play many songs!@"
 
 Dialog097::
     db "You've got the/"
@@ -777,8 +783,8 @@ Dialog098::
 Dialog099::
     db "You've got some/"
     db "Magic Powder!/"
-    db "Try sprinkling it on a/"
-    db "variety of things! @"
+    db "Try sprinkling it on/"
+    db "a variety of things! @"
 
 Dialog09A::
     db "You've got a bomb!/"
@@ -806,24 +812,26 @@ Dialog09D::
 Dialog09E::
 Dialog09F::
     db "You've got a new Sword!/"
-    db "You should put your name/"
-    db "on it right away! @"
+    db "You should put your/"
+    db "name on it right away! @"
 
 Dialog0A0::
     db "You found the/"
     db "secret medicine!/"
-    db "You should apply this and/"
-    db "see what happens!@"
+    db "You should apply this/"
+    db "and see what happens!@"
 
 Dialog0A1::
     db "You've got the Tail Key!/"
-    db "Now, you can open the/"
-    db "Tail Cave gate!@"
+    db "Now, you can open/"
+    db "the Tail Cave gate!@"
 
 Dialog0A2::
-    db "You've got the Slime Key!/"
-    db "Now you can open the/"
+    db "You've got/"
+    db "the Slime Key!/"
+    db "Now, you can open the/"
     db "gate in Ukuku Prairie! @"
 
 Dialog0A3::
-    db "You've got the Angler Key! @"
+    db "You've got/"
+    db "the Angler Key! @"
