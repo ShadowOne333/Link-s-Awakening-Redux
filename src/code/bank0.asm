@@ -1298,7 +1298,7 @@ presentSaveScreenIfNeeded::
     ; If not all A + B + Start + Select buttons are pressed
     ldh  a, [hPressedButtonsMask]                 ; $0E61: $F0 $CB
 IF SAVE_BUTTON_COMBO
-    cp   J_UP | J_SELECT		          ; $0E63: $FE $44, (Modify to custom combo)
+    cp   J_START | J_SELECT		          ; $0E63: $FE $44, (Modify to custom combo)
 ELSE
     cp   J_A | J_B | J_START | J_SELECT           ; $0E63: $FE $F0
 ENDC

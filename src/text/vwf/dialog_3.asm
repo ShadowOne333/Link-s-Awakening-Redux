@@ -1,6 +1,6 @@
 Dialog108::
-    db "Hi!/"
-    db "It's me, the photographer!/"
+    db "Hi! It's me,/"
+    db "the photographer!/"
     db "You seem curious about/"
     db "Grandpa Ulrira. @"
 
@@ -22,7 +22,7 @@ Dialog10C::
     db "take pictures./"
     db "Will you let me take/"
     db "your picture?/"
-    db "       YES     NO <ask>"
+    db "       YES     NO  <ask>"
 
 Dialog10D::
     db "Go to the back of the/"
@@ -67,7 +67,8 @@ Dialog113::
 
 Dialog114::
     db "You again?!/"
-    db "You keep going and going.../"
+    db "You keep going/"
+    db "and going.../"
     db "I can't outlast you!/"
     db "All right, let's do it! @"
 
@@ -85,7 +86,12 @@ Dialog117::
 Dialog118::
     db "Hey, man! When you/"
     db "want to save, just push/"
+IF SAVE_BUTTON_COMBO
+    db "the Start & Select/"
+    db "Buttons at once!/"
+ELSE
     db "all the Buttons at once!/"
+ENDC
     db "Uhh... Don't ask me/"
     db "what that means,/"
     db "I'm just a kid! @"
@@ -96,7 +102,7 @@ Dialog119::
     db "you will start at the last/"
     db "door you went through.../"
     db "I'm not really sure/"
-    db "why that is 'cause/"
+    db "why that is, 'cause/"
     db "I'm just a kid! @"
 
 Dialog11A::
@@ -104,7 +110,7 @@ Dialog11A::
     db "press SELECT to look/"
     db "at the island map.../"
     db "But, I don't understand/"
-    db "what they mean by that... @"
+    db "what they mean by that...@"
 
 Dialog11B::
     db "When you're running out/"
@@ -147,13 +153,13 @@ Dialog120::
     db "Marin?/"
     db "She likes to go stare at/"
     db "the ocean all by herself.../"
-    db "Why? Hey, I'm just a kid,/"
-    db "don't ask me! @"
+    db "Why? Hey, I'm just/"
+    db "a kid, don't ask me! @"
 
 Dialog121::
     db "Hey... Where're you/"
     db "two going together?/"
-    db "Huh? Uh I didn't/"
+    db "Huh? Uh, I didn't/"
     db "mean anything.../"
     db "I'm just a kid! @"
 
@@ -163,7 +169,7 @@ Dialog122::
     db "They say there's/"
     db "something good inside... .../"
     db "I better not say anything/"
-    db "else as I'm just a kid! @"
+    db "else, as I'm just a kid! @"
 
 Dialog123::
     db "Huh?!/"
@@ -203,7 +209,7 @@ Dialog128::
 
 Dialog129::
     db "You traded your/"
-    db "<yoshi> for <ribbon>!/"
+    db "<yoshi> for a <ribbon>!/"
     db "Maybe you can trade the/"
     db "ribbon for something else! @"
 
@@ -234,7 +240,7 @@ Dialog12D::
     db "beast in here!/"
     db "Leave that creature/"
     db "outside and then we/"
-    db "can talk! Good Bye! @"
+    db "can talk! Good bye! @"
 
 Dialog12E::
     db "You want to know/"
@@ -254,7 +260,8 @@ Dialog12F::
     db "you? I know.../"
     db "     SMOOOOOOOCH!/"
     db "You got a reward from/"
-    db "Madam MeowMeow... ... .../"
+    db "Madam MeowMeow.../"
+    db "... .../"
     db "L-l-lucky! @"
 
 Dialog130::
@@ -265,8 +272,9 @@ Dialog130::
 Dialog131::
     db "AIEEEEEEEE!/"
     db "It's terrrrible!/"
-    db "My BowWow was dognapped/"
-    db "by... Mo-mo-MOBLINS!!/"
+    db "My BowWow was/"
+    db "dognapped by.../"
+    db "Mo-mo-MOBLINS!!/"
     db "OHHH! AHHHH!/"
     db "Please! Somebody help/"
     db "my poor BowWow!! @"
@@ -351,17 +359,18 @@ Dialog13A::
     db "       Okay   No Way <ask>"
 
 Dialog13B::
-    db "I am impressed./"
-    db "There are 5 leaves in all./"
-    db "Remember to buy a shovel/"
-    db "on your way back. @"
+    db "I am impressed. There/"
+    db "are 5 leaves in all./"
+    db "Remember to buy/"
+    db "a shovel on your/"
+    db "way back. @"
 
 Dialog13C::
     db "Well, I never!/"
     db "I thought you looked/"
     db "cowardly, but.../"
     db "Please, leave me.../"
-    db "just get out here! @"
+    db "Just get out here! @"
 
 Dialog13D::
     db "Ahh! Tres Bien!/"
@@ -378,18 +387,19 @@ Dialog13E::
 Dialog13F::
     db "Ah! Bonjour!/"
     db "#####, for the love of/"
-    db "justice, and my own sake,/"
-    db "you must find all the/"
-    db "leaves! @"
+    db "justice, and my own/"
+    db "sake, you must find/"
+    db "all the leaves! @"
 
 Dialog140::
-    db "Er... Uh.. .Hmm.../"
+    db "Er... Uh... Hmm.../"
     db "How to say.../"
     db "Please call.../"
-    db "Outside... .../"
-    db "(It seems that old man/"
+    db "Outside.../"
+    db "... ... .../"
+    db "It seems that old man/"
     db "Ulrira is a shy guy/"
-    db "in person...) @"
+    db "in person... @"
 
 Dialog141::
     db $9D,"BRRING! BRRING!/"
@@ -403,10 +413,11 @@ Dialog141::
 Dialog142::
     db $9D,"BRRING! BRRING!/"
     db "Hello, this is Ulrira!/"
-    db "...Well, most Moblins live/"
-    db "in the Mysterious Forest,/"
-    db "but some live in the caves/"
-    db "of Tal Tal Heights.../"
+    db "...Well, most Moblins/"
+    db "live in the Mysterious/"
+    db "Forest, but some live/"
+    db "in the caves of/"
+    db "Tal Tal Heights.../"
     db "I hope that is what you/"
     db "wanted to know! CLICK!' @"
 
@@ -455,12 +466,13 @@ Dialog146::
 Dialog147::
     db $9D,"BRRING! BRRING!/"
     db "Ya, it's Ulrira!/"
-    db "You say you haven't found/"
-    db "all five Golden Leaves?/"
+    db "You say you haven't/"
+    db "found all five/"
+    db "Golden Leaves?/"
     db "Go ask the crow/"
     db "at the castle./"
-    db "I'm sure he can help you./"
-    db "Bye! CLICK!' @"
+    db "I'm sure he can help/"
+    db "you. Bye! CLICK!' @"
 
 Dialog148::
     db $9D,"BRRING! BRRING!/"
@@ -468,7 +480,7 @@ Dialog148::
     db "...Shovel... Did you/"
     db "purchase a Shovel?/"
     db "You may find something/"
-    db "if you dig here and/"
+    db "if you dig here and there!/"
     db "Bye! CLICK!' @"
 
 Dialog149::
@@ -476,8 +488,8 @@ Dialog149::
     db "Ya, it's Ulrira!/"
     db "The cave in the/"
     db "Ukuku Prairie is the key!/"
-    db "Yes, I mean the key cave,/"
-    db "no pun intended!/"
+    db "Yes, I mean the key/"
+    db "cave, no pun intended!/"
     db "Bye! CLICK!' @"
 
 Dialog14A::
@@ -528,18 +540,20 @@ Dialog14E::
     db "the Flying Rooster/"
     db "of Mabe Village?/"
     db "In the good old days, it/"
-    db "used to give us rides if we/"
-    db "held it above our heads.../"
+    db "used to give us rides if/"
+    db "we held it above/"
+    db "our heads.../"
     db "Now it is lying under/"
     db "the Weathercock.../"
     db "Is that useful for you?/"
-    db "I hope so! Bye! CLICK!' @"
+    db "I hope so!/"
+    db "Bye! CLICK!' @"
 
 Dialog14F::
     db $9D,"BRRING! BRRING!/"
     db "Hi, it's Ulrira!/"
-    db "The head of the turtle is/"
-    db "in your way?/"
+    db "The head of the turtle/"
+    db "is in your way?/"
     db "Put life into it/"
     db "and it will move!/"
     db "It's true! True!/"
@@ -557,13 +571,13 @@ Dialog151::
 
 Dialog152::
     db "      ...WATERFALL.../"
-    db "   It is hidden in/"
-    db "         the waterfall... @"
+    db "   It is hidden.../"
+    db "       in the waterfall... @"
 
 Dialog153::
     db "         ...BAY.../"
     db "   Your road goes/"
-    db "         into the bay... @"
+    db "        into the bay... @"
 
 Dialog154::
     db "       ...SHRINE.../"
@@ -577,13 +591,13 @@ Dialog155::
 
 Dialog156::
     db "      ...OCARINA.../"
-    db " The music of the/"
-    db "        Ocarina leads... @"
+    db "  The music of/"
+    db "     the Ocarina leads... @"
 
 Dialog157::
     db "         ...EGG..../"
     db "   The Egg on the/"
-    db "         mountain calls! @"
+    db "        mountain calls! @"
 
 Dialog158::
 Dialog159::
@@ -625,7 +639,7 @@ Dialog15F::
 
 Dialog160::
     db "Kiiiki! What?!/"
-    db "All right, mutt!/"
+    db "Alright, mutt!/"
     db "Let's battle!! @"
 
 Dialog161::
@@ -661,7 +675,7 @@ Dialog166::
     db "with a lady, do you?/"
     db "You should have brought/"
     db "flowers or something,/"
-    db "then I might be more "
+    db "then I might be more/"
     db "inclined to talk with you.../"
     db "Oh yes, in my case,/"
     db "hibiscus are best... @"
@@ -722,7 +736,8 @@ Dialog16E::
 
 Dialog16F::
     db "Grandma's not here./"
-    db "She's in the Animal Village./"
+    db "She's in the/"
+    db "Animal Village./"
     db "That's what Grandpa/"
     db "Ulrira said on the phone! @"
 
@@ -733,7 +748,7 @@ Dialog170::
     db "I can't move!/"
     db "Can you give me/"
     db "some vittles?/"
-    db "       Yes     Nope <ask>"
+    db "       Yes     Nope  <ask>"
 
 Dialog171::
     db "You're one cold hombre... @"

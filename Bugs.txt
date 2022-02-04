@@ -1,0 +1,5 @@
+- Sometimes, when talking to a character twice, the 2nd time only the first letter of its text prints. Pressing any button afterwards makes the proper text appear.
+
+-In larger texts by certain NPCs (the first Owl text on the entrance of the Woods is a clear example), the VWF tends to glitch-up at around the 13th or so line of text. I have been able to replicate this in other larger texts as well, or simply trying out any new text with many new lines (12+, almost always on the 13th one) (Dialogs 0BE, 0F5)
+
+- Certain texts get their starting letter erased for some reason (Dialogs 0DE, 0F0, 119, 11B, 124, 133, 135, 13C)

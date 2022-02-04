@@ -55,8 +55,8 @@ Dialog0AE::
 
 Dialog0AF::
     db "Leave me alone!/"
-    db "I'm trying to sit still so/"
-    db "Schule can paint my/"
+    db "I'm trying to sit still/"
+    db "so Schule can paint my/"
     db "portrait! @"
 
 Dialog0B0::
@@ -76,22 +76,22 @@ Dialog0B2::
 
 Dialog0B3::
     db "Ssso... you are the/"
-    db "outsssider, come to wake/"
-    db "the Wind Fisssh.../"
+    db "outsssider, come to/"
+    db "wake the Wind Fisssh.../"
     db "KEEE-HEE-HEEEH!/"
     db "I shall eat you! @"
 
 Dialog0B4::
     db "HO HO HO!/"
-    db "I'm your bad guy this/"
-    db "time!!/"
+    db "I'm your bad guy/"
+    db "this time!!/"
     db "HO HO HO! @"
 
 Dialog0B5::
     db "TSSSK, TSSSK!/"
-    db "You don't ssseem to know/"
-    db "what kind of island/"
-    db "thisss iss.../"
+    db "You don't ssseem to/"
+    db "know what kind of/"
+    db "island thisss iss.../"
     db "KEEE-HEEE-HEEE!/"
     db "What a fool.../"
     db "KEE-HEE-HEH!! @"
@@ -103,8 +103,8 @@ Dialog0B6::
     db "talking too much again... @"
 
 Dialog0B7::
-    db "Okay, listen up!/"
-    db "If the Wind Fish wakes up,/"
+    db "Okay, listen up! If the/"
+    db "Wind Fish wakes up,/"
     db "everything on this island/"
     db "will be gone forever!/"
     db "And I do mean.../"
@@ -153,22 +153,22 @@ Dialog0C0::
     db "on your quest to wake/"
     db "the dreamer!/"
     db "Welcome to the/"
-    db "Mysterious Wood!/"
+    db "Mysterious Woods!/"
     db "Much of mystery you will/"
     db "find on this uncharted/"
     db "Koholint island!/"
     db "I'm afraid you may find/"
     db "it a trifle difficult to/"
     db "leave the island while/"
-    db "the Wind Fish naps./"
-    db "...By the by,/"
-    db "have you ever visited the/"
+    db "the Wind Fish naps. /"
+    db "...By the by, have/"
+    db "you ever visited the/"
     db "Tail Cave, which is south/"
     db "of the village?/"
     db "Go there with the key/"
     db "you find in this forest.../"
-    db "The Wind Fish is watching.../"
-    db "Hoot! @"
+    db "The Wind Fish is/"
+    db "watching... Hoot! @"
 
 Dialog0C1::
     db "Hoot! Take the key and/"
@@ -177,7 +177,7 @@ Dialog0C1::
     db "that is hidden there!/"
     db "Go now!/"
     db "The Wind Fish is waiting!/"
-    db "Hooot!@"
+    db "Hooot! @"
 
 Dialog0C2::
     db "Hoooot! That is an/"
@@ -191,19 +191,20 @@ Dialog0C2::
     db "others in the set,/"
     db "has the power to wake/"
     db "the Wind Fish!/"
-    db "You must collect them all!/"
-    db "I was instructed to give/"
-    db "you directions.../"
+    db "You must collect/"
+    db "them all!/"
+    db "I was instructed to/"
+    db "give you directions.../"
     db "Your next goal is north,/"
     db "in Goponga Swamp!!/"
     db "Hoot, indeed! @"
 
 Dialog0C3::
-    db "Hoot!/"
-    db "That is a fearsome looking/"
-    db "animal you have there!/"
+    db "Hoot! That is a/"
+    db "fearsome looking animal/"
+    db "you have there!/"
     db "Do not forget,/"
-    db "the next Instrument is/"
+    db "the next instrument is/"
     db "in Goponga Swamp! @"
 
 Dialog0C4::
@@ -211,18 +212,19 @@ Dialog0C4::
     db "sleeps long and dreamily/"
     db "in the Egg above.../"
     db "When you play the eight/"
-    db "Siren Instruments in front/"
-    db "of the Egg, he will awaken./"
+    db "Siren Instruments in /"
+    db "front of the Egg,/"
+    db "he will awaken./"
     db "This, my friend, is the/"
     db "only way for you to/"
     db "leave the island! Hoo! @"
 
 Dialog0C5::
     db "Hoot!/"
-    db "How many Instruments/"
+    db "How many instruments/"
     db "have you gotten so far?/"
     db "When you play the/"
-    db "Instruments in front of/"
+    db "instruments in front of/"
     db "the Egg, the Wind Fish will/"
     db "wake and you will leave/"
     db "this island./"
@@ -267,8 +269,9 @@ Dialog0C8::
     db "so you cannot tell if/"
     db "this is a dream until/"
     db "you awaken.../"
-    db "The only one who knows/"
-    db "for sure is the Wind Fish.../"
+    db "The only one who/"
+    db "knows for sure is/"
+    db "the Wind Fish.../"
     db "Trust your feelings.../"
     db "Someday, you will know/"
     db "for sure... @"
@@ -292,9 +295,10 @@ Dialog0C9::
 Dialog0CA::
     db "Hoot hoot!/"
     db "Your path is not easy,/"
-    db "but you are almost there./"
-    db "Go east. The Wind Fish/"
-    db "is getting restless. @"
+    db "but you are almost/"
+    db "there. Go east./"
+    db "The Wind Fish is/"
+    db "getting restless. @"
 
 Dialog0CB::
     db "Hoot! It has been some/"
@@ -315,8 +319,8 @@ Dialog0CC::
     db "Her ",$9D,"Ballad of the/"
     db "Wind Fish",$27," is a song/"
     db "of awakening!/"
-    db "Did she actually intend to/"
-    db "wake the the Wind Fish?!/"
+    db "Did she actually intend/"
+    db "to wake the Wind Fish?!/"
     db "The next Sirens'/"
     db "Instrument is in the west./"
     db "Play your melodies so the/"
@@ -377,27 +381,29 @@ Dialog0D0::
     db "   IT BE THE NATURE/"
     db "  OF DREAMS TO END!/"
     db " WHEN I DOST AWAKEN,/"
-    db "KOHOLINT WILL BE GONE.../"
+    db "     KOHOLINT WILL/"
+    db "        BE GONE.../"
     db "   ONLY THE MEMORY/"
     db "  OF THIS DREAM LAND/"
     db "     WILL EXIST IN/"
-    db "   THE WAKING WORLD.../"
+    db "  THE WAKING WORLD.../"
     db "        SOMEDAY,/"
     db "    THOU MAY RECALL/"
     db "      THIS ISLAND.../"
-    db "THAT MEMORY MUST BE/"
-    db "THE REAL DREAM WORLD.../"
+    db "   THAT MEMORY MUST/"
+    db "       BE THE REAL/"
+    db "      DREAM WORLD.../"
     db "       ... ... ... .../"
-    db "    COME, #####.../"
+    db "      COME, #####.../"
     db "    LET US AWAKEN.../"
-    db "      TOGETHER!! @"
+    db "       TOGETHER!! @"
 
 Dialog0D1::
 Dialog0D2::
     db "        PLAY THE/"
-    db "   EIGHT INSTRUMENTS!/"
+    db "  EIGHT INSTRUMENTS!/"
     db "        PLAY THE/"
-    db " SONG OF AWAKENING!! @"
+    db $01," SONG OF AWAKENING!! @"
 
 Dialog0D3::
 Dialog0D4::
@@ -407,7 +413,8 @@ Dialog0D5::
 Dialog0D6::
 Dialog0D7::
     db "...#####, you have/"
-    db "beaten all the Nightmares!/"
+    db "beaten all the/"
+    db "Nightmares!/"
     db "Climb the stairs/"
     db "before you!@"
 
@@ -418,7 +425,7 @@ Dialog0D8::
     db "Stop it at vonce! @"
 
 Dialog0D9::
-    db "     Hoot!  Hoot!/"
+    db "      Hoot!  Hoot!/"
     db "So you are the lad who/"
     db "owns the sword.../"
     db "Now I understand why the/"
@@ -474,7 +481,8 @@ Dialog0DE::
 Dialog0DF::
     db "You've learned/"
     db "The Frog's Song of Soul!/"
-    db "It's a very moving tune.../"
+    db "It's a very/"
+    db "moving tune.../"
     db "It can even liven up/"
     db "unliving things! @"
 
@@ -552,10 +560,9 @@ Dialog0E8::
     db "many you've collected! @"
 
 Dialog0E9::
-    db "At last!/"
-    db "You've got the final/"
-    db "Golden Leaf!/"
-    db "Now go and see Richard/"
+    db "At last! You've got/"
+    db "the final Golden Leaf!/"
+    db "Now, go and see Richard/"
     db "about that key... @"
 
 Dialog0EA::
@@ -599,7 +606,7 @@ Dialog0F2::
     db $03," Waterfall at the Shrine @"
 
 Dialog0F3::
-    db "    South of the Shrine @"
+    db $04,"   South of the Shrine @"
 
 Dialog0F4::
     db "     Entrance to the/"
@@ -616,8 +623,9 @@ Dialog0F5::
     db "never disappear!/"
     db "We would have been the/"
     db "masters of this place.../"
-    db "But you had to come here/"
-    db "and disrupt our plans!/"
+    db "But you had to come/"
+    db "here and disrupt/"
+    db "our plans!/"
     db "Heh heh! You can never/"
     db "defeat us!!!/"
     db "Let's rumble! @"
@@ -642,8 +650,8 @@ Dialog0F8::
     db "       Yes     Okay  <ask>"
 
 Dialog0F9::
-    db "You're good!/"
-    db "You're a pro, aren't you?/"
+    db "You're good! You're/"
+    db "a pro, aren't you?/"
     db "... ... ... .../"
     db "Well, beat it! Pros aren't/"
     db "allowed in here! @"
