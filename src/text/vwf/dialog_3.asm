@@ -822,7 +822,8 @@ Dialog17C::
     db "I heard young people like/"
     db "to go there and take/"
     db "pictures of themselves./"
-    db "Seems kinda funny to me. @"
+    db "Seems kinda funny/"
+    db "to me. @"
 
 Dialog17D::
     db "Step right up and get/"
@@ -832,10 +833,10 @@ Dialog17E::
     db "Good job!/"
     db "Use it on your enemies/"
     db "and see what happens./"
-    db "If you run out,/"
-    db "go to the forest/"
-    db "pick some mushrooms,/"
-    db "and I will make you more. @"
+    db "If you run out, go to/"
+    db "the forest, pick some/"
+    db "mushrooms, and I will/"
+    db "make you more. @"
 
 Dialog17F::
     db ". . . .! I can't move!/"
@@ -846,8 +847,8 @@ Dialog17F::
 Dialog180::
     db "Make-up! Jewels!/"
     db "Dresses! I want it all!/"
-    db "Sigh.../"
-    db "And some new accessories/"
+    db "Sigh... And some/"
+    db "new accessories/"
     db "would be nice... @"
 
 Dialog181::
@@ -900,7 +901,7 @@ Dialog189::
     db "child of the Sun Fish!/"
     db "When you play my/"
     db "Mambo, you can warp/"
-    db "to Manbo Pond!/"
+    db "to Manbo's Pond!/"
     db "Try this tune in the/"
     db "dungeons, too!/"
     db "Cha-cha-cha! @"
@@ -937,7 +938,8 @@ Dialog18E::
     db "    The Flying Rooster @"
 
 Dialog18F::
-    db "Iz zat zee Mermaid scale?/"
+    db "Iz zat zee/"
+    db "Mermaid scale?/"
     db "I can't use it now. I have/"
     db "to werk on zis drawing./"
     db "You should go finish zee/"

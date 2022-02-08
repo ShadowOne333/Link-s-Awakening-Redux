@@ -2,4 +2,5 @@
 
 -In larger texts by certain NPCs (the first Owl text on the entrance of the Woods is a clear example), the VWF tends to glitch-up at around the 13th or so line of text. I have been able to replicate this in other larger texts as well, or simply trying out any new text with many new lines (12+, almost always on the 13th one) (Dialogs 0BE, 0F5)
 
-- Certain texts get their starting letter erased for some reason (Dialogs 0DE, 0F0, 119, 11B, 124, 133, 135, 13C)
+- Certain texts get their starting letter erased for some reason (Dialogs 0DE, 0F0, 119, 11B, 124, 133, 135, 13C, 180, 1AA, 1AB, 1AC, 1B0, 1B1, 1B2)
+Seems like the first letter gets replaced by an 8x8 tile (2nd to last or last tile) with letters or a blank space from the first or 2nd line. (Something related to the last letter it prints before @, as that's when it overwrites the letter)
