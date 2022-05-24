@@ -1,20 +1,18 @@
-; Array indexed by hActiveEntitySpriteVariant
-;  byte 0: tile n°
-;  byte 1: OAM attribute (palette index and flags)
-AntiFairyOAMAttributes::
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+AntiFairySpriteVariants::
 .variant1
-    db   $5A, %000
-    db   $5A, %000 | OAMF_XFLIP
+    db   $5A, OAM_GBC_PAL_0
+    db   $5A, OAM_GBC_PAL_0 | OAM_X_FLIP
 .variant2
-    db   $5A, %100 | OAMF_PAL1
-    db   $5A, %100 | OAMF_PAL1 | OAMF_XFLIP
+    db   $5A, OAM_GBC_PAL_4 | OAM_DMG_PAL_1
+    db   $5A, OAM_GBC_PAL_4 | OAM_DMG_PAL_1 | OAM_X_FLIP
 
 AntiFairyEntityHandler::
-    ld   de, AntiFairyOAMAttributes               ; $7876: $11 $6E $78
+    ld   de, AntiFairySpriteVariants              ; $7876: $11 $6E $78
     call RenderActiveEntitySpritesPair            ; $7879: $CD $C0 $3B
     call ReturnIfNonInteractive_06                ; $787C: $CD $C6 $64
 
-jr_006_787F:
+.jr_787F
     call ApplyRecoilIfNeeded_06                   ; $787F: $CD $F7 $64
     call label_3B39                               ; $7882: $CD $39 $3B
     call UpdateEntityPosWithSpeed_06              ; $7885: $CD $41 $65
@@ -23,7 +21,7 @@ jr_006_787F:
     add  hl, bc                                   ; $788E: $09
     ld   a, [hl]                                  ; $788F: $7E
     and  $03                                      ; $7890: $E6 $03
-    jr   nz, jr_006_789B                          ; $7892: $20 $07
+    jr   nz, .jr_789B                             ; $7892: $20 $07
 
     ld   a, [hl]                                  ; $7894: $7E
     and  $0C                                      ; $7895: $E6 $0C
@@ -31,7 +29,7 @@ jr_006_787F:
 
     jr   jr_006_78AD                              ; $7899: $18 $12
 
-jr_006_789B:
+.jr_789B
     ld   hl, wEntitiesSpeedXTable                 ; $789B: $21 $40 $C2
     add  hl, bc                                   ; $789E: $09
     ld   a, [hl]                                  ; $789F: $7E

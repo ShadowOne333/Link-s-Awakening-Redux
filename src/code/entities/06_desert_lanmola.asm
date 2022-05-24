@@ -24,12 +24,12 @@ DesertLanmolaEntityHandler::
     ld   [hl], $50                                ; $5604: $36 $50
     ld   e, $00                                   ; $5606: $1E $00
     ld   a, $FF                                   ; $5608: $3E $FF
-    ld   hl, $D200                                ; $560A: $21 $00 $D2
+    ld   hl, wD200                                ; $560A: $21 $00 $D2
 
-jr_006_560D:
+.loop_560D
     ld   [hl+], a                                 ; $560D: $22
     dec  e                                        ; $560E: $1D
-    jr   nz, jr_006_560D                          ; $560F: $20 $FC
+    jr   nz, .loop_560D                           ; $560F: $20 $FC
 
 jr_006_5611:
     call func_006_58C9                            ; $5611: $CD $C9 $58
@@ -61,7 +61,7 @@ IncrementEntityPrivateState2::
 
 func_006_563A::
     call GetEntityTransitionCountdown             ; $563A: $CD $05 $0C
-    jr   nz, jr_006_564A                          ; $563D: $20 $0B
+    jr   nz, .ret_564A                            ; $563D: $20 $0B
 
     ld   [hl], $CF                                ; $563F: $36 $CF
     call IncrementEntityPrivateState2             ; $5641: $CD $34 $56
@@ -69,12 +69,12 @@ func_006_563A::
     add  hl, bc                                   ; $5647: $09
     ld   [hl], $05                                ; $5648: $36 $05
 
-jr_006_564A:
+.ret_564A
     ret                                           ; $564A: $C9
 
 func_006_564B::
     call GetEntityTransitionCountdown             ; $564B: $CD $05 $0C
-    jr   nz, jr_006_568A                          ; $564E: $20 $3A
+    jr   nz, .jr_568A                             ; $564E: $20 $3A
 
     call label_27DD                               ; $5650: $CD $DD $27
     ld   a, ENTITY_KEY_DROP_POINT                 ; $5653: $3E $30
@@ -106,11 +106,11 @@ func_006_564B::
     ldh  a, [hActiveEntityVisualPosY]             ; $5686: $F0 $EC
     jr   jr_006_56BB                              ; $5688: $18 $31
 
-jr_006_568A:
+.jr_568A
     and  $1F                                      ; $568A: $E6 $1F
-    jr   nz, jr_006_56C6                          ; $568C: $20 $38
+    jr   nz, ret_006_56C6                         ; $568C: $20 $38
 
-    ld   hl, wEntitiesUnknowTableY                ; $568E: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $568E: $21 $D0 $C3
     add  hl, bc                                   ; $5691: $09
     ld   a, [hl]                                  ; $5692: $7E
     ld   hl, wEntitiesPrivateState4Table          ; $5693: $21 $40 $C4
@@ -127,11 +127,11 @@ jr_006_568A:
     add  hl, de                                   ; $56A4: $19
     ld   a, [hl]                                  ; $56A5: $7E
     ldh  [hMultiPurpose0], a                      ; $56A6: $E0 $D7
-    ld   hl, $D200                                ; $56A8: $21 $00 $D2
+    ld   hl, wD200                                ; $56A8: $21 $00 $D2
     add  hl, de                                   ; $56AB: $19
     ld   a, [hl]                                  ; $56AC: $7E
     and  $80                                      ; $56AD: $E6 $80
-    jr   nz, jr_006_56C6                          ; $56AF: $20 $15
+    jr   nz, ret_006_56C6                         ; $56AF: $20 $15
 
     push hl                                       ; $56B1: $E5
     ld   hl, wD100                                ; $56B2: $21 $00 $D1
@@ -148,7 +148,7 @@ jr_006_56BB:
     ld   a, $13                                   ; $56C2: $3E $13
     ldh  [hNoiseSfx], a                           ; $56C4: $E0 $F4
 
-jr_006_56C6:
+ret_006_56C6:
     ret                                           ; $56C6: $C9
 
 func_006_56C7::
@@ -165,14 +165,14 @@ label_006_56C8:
 
     ld   a, $02                                   ; $56D7: $3E $02
 
-jr_006_56D9:
-    ldh  [hMultiPurposeG], a                               ; $56D9: $E0 $E8
+.loop_56D9
+    ldh  [hMultiPurposeG], a                      ; $56D9: $E0 $E8
     ld   a, ENTITY_DESERT_LANMOLA                 ; $56DB: $3E $87
     call SpawnNewEntity_trampoline                ; $56DD: $CD $86 $3B
     jr   c, jr_006_5726                           ; $56E0: $38 $44
 
     push bc                                       ; $56E2: $C5
-    ldh  a, [hMultiPurposeG]                               ; $56E3: $F0 $E8
+    ldh  a, [hMultiPurposeG]                      ; $56E3: $F0 $E8
     ld   c, a                                     ; $56E5: $4F
     ld   hl, wEntitiesSpriteVariantTable          ; $56E6: $21 $B0 $C3
     add  hl, de                                   ; $56E9: $19
@@ -206,18 +206,18 @@ jr_006_56D9:
     add  hl, de                                   ; $571D: $19
     ld   [hl], $C1                                ; $571E: $36 $C1
     pop  bc                                       ; $5720: $C1
-    ldh  a, [hMultiPurposeG]                               ; $5721: $F0 $E8
+    ldh  a, [hMultiPurposeG]                      ; $5721: $F0 $E8
     dec  a                                        ; $5723: $3D
-    jr   nz, jr_006_56D9                          ; $5724: $20 $B3
+    jr   nz, .loop_56D9                           ; $5724: $20 $B3
 
 jr_006_5726:
     call func_006_594C                            ; $5726: $CD $4C $59
     call DecrementEntityIgnoreHitsCountdown       ; $5729: $CD $56 $0C
     ldh  a, [hActiveEntityState]                  ; $572C: $F0 $F0
     cp   $02                                      ; $572E: $FE $02
-    jr   c, jr_006_5754                           ; $5730: $38 $22
+    jr   c, .jr_5754                              ; $5730: $38 $22
 
-    ld   hl, wEntitiesUnknowTableY                ; $5732: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $5732: $21 $D0 $C3
     add  hl, bc                                   ; $5735: $09
     ld   a, [hl]                                  ; $5736: $7E
     inc  [hl]                                     ; $5737: $34
@@ -235,11 +235,11 @@ jr_006_5726:
     ld   hl, wEntitiesPosZTable                   ; $574A: $21 $10 $C3
     add  hl, bc                                   ; $574D: $09
     ld   a, [hl]                                  ; $574E: $7E
-    ld   hl, $D200                                ; $574F: $21 $00 $D2
+    ld   hl, wD200                                ; $574F: $21 $00 $D2
     add  hl, de                                   ; $5752: $19
     ld   [hl], a                                  ; $5753: $77
 
-jr_006_5754:
+.jr_5754
     ldh  a, [hActiveEntityState]                  ; $5754: $F0 $F0
     JP_TABLE                                      ; $5756
 ._00 dw func_006_5773                             ; $5757
@@ -247,7 +247,7 @@ jr_006_5754:
 ._02 dw func_006_57ED                             ; $575B
 ._03 dw func_006_580C                             ; $575D
 ._04 dw func_006_5835                             ; $575F
-._05 dw Data_006_589F                             ; $5761
+._05 dw DesertLanmolaSpriteVariants               ; $5761
 
 Data_006_5763::
     db   $28, $38, $48, $58, $68, $78, $88, $28
@@ -280,10 +280,10 @@ func_006_5773::
     ld   hl, wEntitiesPosYTable                   ; $5798: $21 $10 $C2
     add  hl, bc                                   ; $579B: $09
 
-jr_006_579C:
+.jr_579C
     ld   [hl], a                                  ; $579C: $77
 
-jr_006_579D:
+.jr_579D
     ld   hl, wEntitiesPosZTable                   ; $579D: $21 $10 $C3
     add  hl, bc                                   ; $57A0: $09
     ld   [hl], b                                  ; $57A1: $70
@@ -298,7 +298,7 @@ func_006_57A8::
     ldh  a, [hLinkPositionX]                      ; $57AF: $F0 $98
     push af                                       ; $57B1: $F5
 
-jr_006_57B2:
+.jr_57B2
     ldh  a, [hLinkPositionY]                      ; $57B2: $F0 $99
     push af                                       ; $57B4: $F5
     ld   a, $58                                   ; $57B5: $3E $58
@@ -334,7 +334,7 @@ jr_006_57E0:
 
 func_006_57ED::
     call GetEntityTransitionCountdown             ; $57ED: $CD $05 $0C
-    jr   nz, jr_006_5803                          ; $57F0: $20 $11
+    jr   nz, .jr_5803                             ; $57F0: $20 $11
 
     call GetRandomByte                            ; $57F2: $CD $0D $28
     and  $1F                                      ; $57F5: $E6 $1F
@@ -345,19 +345,19 @@ func_006_57ED::
     ld   [hl], $20                                ; $57FE: $36 $20
     call IncrementEntityState                     ; $5800: $CD $12 $3B
 
-jr_006_5803:
+.jr_5803
     call UpdateEntityPosWithSpeed_06              ; $5803: $CD $41 $65
     call AddEntityZSpeedToPos_06                  ; $5806: $CD $7A $65
     jp   label_3B39                               ; $5809: $C3 $39 $3B
 
 func_006_580C::
     call GetEntityTransitionCountdown             ; $580C: $CD $05 $0C
-    jr   nz, jr_006_5816                          ; $580F: $20 $05
+    jr   nz, .jr_5816                             ; $580F: $20 $05
 
     ld   [hl], $80                                ; $5811: $36 $80
     call IncrementEntityState                     ; $5813: $CD $12 $3B
 
-jr_006_5816:
+.jr_5816
     ld   hl, wEntitiesPrivateState1Table          ; $5816: $21 $B0 $C2
     add  hl, bc                                   ; $5819: $09
     ld   a, [hl]                                  ; $581A: $7E
@@ -369,12 +369,12 @@ jr_006_5816:
     ld   hl, wEntitiesSpeedZTable                 ; $5821: $21 $20 $C3
     add  hl, bc                                   ; $5824: $09
     and  $20                                      ; $5825: $E6 $20
-    jr   nz, jr_006_582B                          ; $5827: $20 $02
+    jr   nz, .jr_582B                             ; $5827: $20 $02
 
     inc  [hl]                                     ; $5829: $34
     inc  [hl]                                     ; $582A: $34
 
-jr_006_582B:
+.jr_582B
     dec  [hl]                                     ; $582B: $35
 
 jr_006_582C:
@@ -384,16 +384,16 @@ jr_006_582C:
 
 func_006_5835::
     call GetEntityTransitionCountdown             ; $5835: $CD $05 $0C
-    jr   nz, jr_006_5841                          ; $5838: $20 $07
+    jr   nz, .jr_5841                             ; $5838: $20 $07
 
     ld   [hl], $60                                ; $583A: $36 $60
     call IncrementEntityState                     ; $583C: $CD $12 $3B
     ld   [hl], b                                  ; $583F: $70
     ret                                           ; $5840: $C9
 
-jr_006_5841:
+.jr_5841
     cp   $78                                      ; $5841: $FE $78
-    jr   nz, jr_006_5858                          ; $5843: $20 $13
+    jr   nz, .jr_5858                             ; $5843: $20 $13
 
     ldh  a, [hActiveEntityPosX]                   ; $5845: $F0 $EE
     ld   [wC1CD], a                               ; $5847: $EA $CD $C1
@@ -404,17 +404,17 @@ jr_006_5841:
     ld   a, $23                                   ; $5854: $3E $23
     ldh  [hNoiseSfx], a                           ; $5856: $E0 $F4
 
-jr_006_5858:
+.jr_5858
     ld   hl, wEntitiesSpeedZTable                 ; $5858: $21 $20 $C3
     add  hl, bc                                   ; $585B: $09
     ld   a, [hl]                                  ; $585C: $7E
     sub  $F4                                      ; $585D: $D6 $F4
     and  $80                                      ; $585F: $E6 $80
-    jr   nz, jr_006_5864                          ; $5861: $20 $01
+    jr   nz, .jr_5864                             ; $5861: $20 $01
 
     dec  [hl]                                     ; $5863: $35
 
-jr_006_5864:
+.jr_5864
     ldh  a, [hFrameCounter]                       ; $5864: $F0 $E7
     and  $07                                      ; $5866: $E6 $07
     jr   nz, jr_006_5888                          ; $5868: $20 $1E
@@ -426,12 +426,12 @@ jr_006_5864:
     jr   z, jr_006_5879                           ; $5870: $28 $07
 
     and  $80                                      ; $5872: $E6 $80
-    jr   z, jr_006_5878                           ; $5874: $28 $02
+    jr   z, .jr_5878                              ; $5874: $28 $02
 
     inc  [hl]                                     ; $5876: $34
     inc  [hl]                                     ; $5877: $34
 
-jr_006_5878:
+.jr_5878
     dec  [hl]                                     ; $5878: $35
 
 jr_006_5879:
@@ -442,12 +442,12 @@ jr_006_5879:
     jr   z, jr_006_5888                           ; $587F: $28 $07
 
     and  $80                                      ; $5881: $E6 $80
-    jr   z, jr_006_5887                           ; $5883: $28 $02
+    jr   z, .jr_5887                              ; $5883: $28 $02
 
     inc  [hl]                                     ; $5885: $34
     inc  [hl]                                     ; $5886: $34
 
-jr_006_5887:
+.jr_5887
     dec  [hl]                                     ; $5887: $35
 
 jr_006_5888:
@@ -457,18 +457,43 @@ jr_006_5888:
     add  hl, bc                                   ; $5891: $09
     ld   a, [hl]                                  ; $5892: $7E
     and  $80                                      ; $5893: $E6 $80
-    jr   nz, jr_006_589A                          ; $5895: $20 $03
+    jr   nz, .jr_589A                             ; $5895: $20 $03
 
     call label_3B39                               ; $5897: $CD $39 $3B
 
-jr_006_589A:
+.jr_589A
     ld   a, $02                                   ; $589A: $3E $02
     jp   SetEntitySpriteVariant                   ; $589C: $C3 $0C $3B
 
-Data_006_589F::
-    db   $72, $03, $74, $03, $74, $23, $72, $23, $70, $03, $70, $23, $70, $43, $70, $63
-    db   $76, $03, $76, $23, $7A, $01, $7A, $61, $7A, $41, $7A, $21, $78, $03, $78, $63
-    db   $78, $43, $78, $23
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+DesertLanmolaSpriteVariants::
+.variant0
+    db $72, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $74, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant1
+    db $74, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $72, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant2
+    db $70, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $70, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant3
+    db $70, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_Y_FLIP
+    db $70, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_Y_FLIP | OAM_X_FLIP
+.variant4
+    db $76, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $76, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant5
+    db $7A, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $7A, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_Y_FLIP | OAM_X_FLIP
+.variant6
+    db $7A, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_Y_FLIP
+    db $7A, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant7
+    db $78, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $78, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_Y_FLIP | OAM_X_FLIP
+.variant8
+    db $78, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_Y_FLIP
+    db $78, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 Data_006_58C3::
     db   $0C, $18, $24, $30, $3C, $48
@@ -478,32 +503,32 @@ func_006_58C9::
     add  hl, bc                                   ; $58CC: $09
     ld   a, [hl]                                  ; $58CD: $7E
     and  $80                                      ; $58CE: $E6 $80
-    jr   nz, jr_006_58D8                          ; $58D0: $20 $06
+    jr   nz, .jr_58D8                             ; $58D0: $20 $06
 
-    ld   de, Data_006_589F                        ; $58D2: $11 $9F $58
+    ld   de, DesertLanmolaSpriteVariants          ; $58D2: $11 $9F $58
     call RenderActiveEntitySpritesPair            ; $58D5: $CD $C0 $3B
 
-jr_006_58D8:
-    ld   hl, wEntitiesUnknowTableY                ; $58D8: $21 $D0 $C3
+.jr_58D8
+    ld   hl, wEntitiesInertiaTable                ; $58D8: $21 $D0 $C3
     add  hl, bc                                   ; $58DB: $09
     ld   a, [hl]                                  ; $58DC: $7E
     ldh  [hMultiPurpose0], a                      ; $58DD: $E0 $D7
     ldh  a, [hFrameCounter]                       ; $58DF: $F0 $E7
     and  $01                                      ; $58E1: $E6 $01
-    jr   z, jr_006_58ED                           ; $58E3: $28 $08
+    jr   z, .jr_58ED                              ; $58E3: $28 $08
 
     ld   a, $06                                   ; $58E5: $3E $06
     ldh  [hIndexOfObjectBelowLink], a             ; $58E7: $E0 $E9
     ld   a, $00                                   ; $58E9: $3E $00
     jr   jr_006_58F3                              ; $58EB: $18 $06
 
-jr_006_58ED:
+.jr_58ED
     ld   a, $FF                                   ; $58ED: $3E $FF
     ldh  [hIndexOfObjectBelowLink], a             ; $58EF: $E0 $E9
     ld   a, $05                                   ; $58F1: $3E $05
 
 jr_006_58F3:
-    ldh  [hMultiPurposeG], a                               ; $58F3: $E0 $E8
+    ldh  [hMultiPurposeG], a                      ; $58F3: $E0 $E8
     ld   e, a                                     ; $58F5: $5F
     ld   d, b                                     ; $58F6: $50
     ld   hl, Data_006_58C3                        ; $58F7: $21 $C3 $58
@@ -521,7 +546,7 @@ jr_006_58F3:
     add  hl, de                                   ; $590D: $19
     ld   a, [hl]                                  ; $590E: $7E
     ldh  [hActiveEntityPosY], a                   ; $590F: $E0 $EF
-    ld   hl, $D200                                ; $5911: $21 $00 $D2
+    ld   hl, wD200                                ; $5911: $21 $00 $D2
     add  hl, de                                   ; $5914: $19
     sub  [hl]                                     ; $5915: $96
     ldh  [hActiveEntityVisualPosY], a             ; $5916: $E0 $EC
@@ -529,10 +554,10 @@ jr_006_58F3:
     and  $80                                      ; $5919: $E6 $80
     jr   nz, jr_006_5936                          ; $591B: $20 $19
 
-    ldh  a, [hMultiPurposeG]                               ; $591D: $F0 $E8
+    ldh  a, [hMultiPurposeG]                      ; $591D: $F0 $E8
     cp   $05                                      ; $591F: $FE $05
     ld   a, $04                                   ; $5921: $3E $04
-    jr   nz, jr_006_592E                          ; $5923: $20 $09
+    jr   nz, .jr_592E                             ; $5923: $20 $09
 
     ldh  a, [hFrameCounter]                       ; $5925: $F0 $E7
     rra                                           ; $5927: $1F
@@ -541,22 +566,22 @@ jr_006_58F3:
     and  $01                                      ; $592A: $E6 $01
     add  $07                                      ; $592C: $C6 $07
 
-jr_006_592E:
+.jr_592E
     ldh  [hActiveEntitySpriteVariant], a          ; $592E: $E0 $F1
-    ld   de, Data_006_589F                        ; $5930: $11 $9F $58
+    ld   de, DesertLanmolaSpriteVariants          ; $5930: $11 $9F $58
     call RenderActiveEntitySpritesPair            ; $5933: $CD $C0 $3B
 
 jr_006_5936:
     ld   e, $FF                                   ; $5936: $1E $FF
     ldh  a, [hFrameCounter]                       ; $5938: $F0 $E7
     and  $01                                      ; $593A: $E6 $01
-    jr   z, jr_006_5940                           ; $593C: $28 $02
+    jr   z, .jr_5940                              ; $593C: $28 $02
 
     ld   e, $01                                   ; $593E: $1E $01
 
-jr_006_5940:
+.jr_5940
     ld   hl, hIndexOfObjectBelowLink              ; $5940: $21 $E9 $FF
-    ldh  a, [hMultiPurposeG]                               ; $5943: $F0 $E8
+    ldh  a, [hMultiPurposeG]                      ; $5943: $F0 $E8
     add  e                                        ; $5945: $83
     cp   [hl]                                     ; $5946: $BE
     jr   nz, jr_006_58F3                          ; $5947: $20 $AA
@@ -569,44 +594,44 @@ func_006_594C::
     ld   a, [hl]                                  ; $5950: $7E
     ld   d, a                                     ; $5951: $57
     bit  7, a                                     ; $5952: $CB $7F
-    jr   z, jr_006_5958                           ; $5954: $28 $02
+    jr   z, .jr_5958                              ; $5954: $28 $02
 
     cpl                                           ; $5956: $2F
     inc  a                                        ; $5957: $3C
 
-jr_006_5958:
+.jr_5958
     ld   e, a                                     ; $5958: $5F
     ld   hl, wEntitiesSpeedYTable                 ; $5959: $21 $50 $C2
     add  hl, bc                                   ; $595C: $09
     ld   a, [hl]                                  ; $595D: $7E
     bit  7, a                                     ; $595E: $CB $7F
-    jr   z, jr_006_5964                           ; $5960: $28 $02
+    jr   z, .jr_5964                              ; $5960: $28 $02
 
     cpl                                           ; $5962: $2F
     inc  a                                        ; $5963: $3C
 
-jr_006_5964:
+.jr_5964
     cp   e                                        ; $5964: $BB
     jr   nc, jr_006_5973                          ; $5965: $30 $0C
 
     bit  7, d                                     ; $5967: $CB $7A
-    jr   nz, jr_006_596F                          ; $5969: $20 $04
+    jr   nz, .jr_596F                             ; $5969: $20 $04
 
     ld   a, $01                                   ; $596B: $3E $01
     jr   jr_006_597D                              ; $596D: $18 $0E
 
-jr_006_596F:
+.jr_596F
     ld   a, $00                                   ; $596F: $3E $00
     jr   jr_006_597D                              ; $5971: $18 $0A
 
 jr_006_5973:
     bit  7, [hl]                                  ; $5973: $CB $7E
-    jr   nz, jr_006_597B                          ; $5975: $20 $04
+    jr   nz, .jr_597B                             ; $5975: $20 $04
 
     ld   a, $02                                   ; $5977: $3E $02
     jr   jr_006_597D                              ; $5979: $18 $02
 
-jr_006_597B:
+.jr_597B
     ld   a, $03                                   ; $597B: $3E $03
 
 jr_006_597D:
@@ -625,13 +650,13 @@ label_006_5988:
     inc  [hl]                                     ; $5998: $34
     ld   a, [hl]                                  ; $5999: $7E
     and  a                                        ; $599A: $A7
-    jr   nz, jr_006_59A2                          ; $599B: $20 $05
+    jr   nz, .jr_59A2                             ; $599B: $20 $05
 
     ld   hl, wEntitiesSpriteVariantTable          ; $599D: $21 $B0 $C3
     add  hl, bc                                   ; $59A0: $09
     inc  [hl]                                     ; $59A1: $34
 
-jr_006_59A2:
+.jr_59A2
     cp   $10                                      ; $59A2: $FE $10
     ret  nz                                       ; $59A4: $C0
 

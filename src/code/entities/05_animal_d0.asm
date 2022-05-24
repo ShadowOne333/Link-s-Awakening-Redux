@@ -1,12 +1,24 @@
-Data_005_7F1E::
-    db   $50, $01, $52, $01, $52, $21, $50, $21, $54, $01, $56, $01, $56, $21, $54, $21
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+AnimalD0SpriteVariants::
+.variant0
+    db $50, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $52, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant1
+    db $52, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $50, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant2
+    db $54, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $56, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant3
+    db $56, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $54, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 AnimalD0EntityHandler::
-    ld   a, [$DB74]                               ; $7F2E: $FA $74 $DB
+    ld   a, [wDB74]                               ; $7F2E: $FA $74 $DB
     and  a                                        ; $7F31: $A7
     jp   z, ClearEntityStatus_05                  ; $7F32: $CA $4B $7B
 
-    ld   de, Data_005_7F1E                        ; $7F35: $11 $1E $7F
+    ld   de, AnimalD0SpriteVariants               ; $7F35: $11 $1E $7F
     call RenderActiveEntitySpritesPair            ; $7F38: $CD $C0 $3B
     ld   a, [wMarinEntityIndex]                   ; $7F3B: $FA $0F $C5
     ld   e, a                                     ; $7F3E: $5F
@@ -16,11 +28,11 @@ AnimalD0EntityHandler::
     ldh  a, [hActiveEntityPosY]                   ; $7F44: $F0 $EF
     ld   e, $00                                   ; $7F46: $1E $00
     cp   [hl]                                     ; $7F48: $BE
-    jr   c, jr_005_7F4D                           ; $7F49: $38 $02
+    jr   c, .jr_7F4D                              ; $7F49: $38 $02
 
     ld   e, $02                                   ; $7F4B: $1E $02
 
-jr_005_7F4D:
+.jr_7F4D
     ldh  a, [hFrameCounter]                       ; $7F4D: $F0 $E7
     rra                                           ; $7F4F: $1F
     rra                                           ; $7F50: $1F
@@ -34,4 +46,4 @@ jr_005_7F4D:
     call ShouldLinkTalkToEntity_05                ; $7F5D: $CD $06 $55
     ret  nc                                       ; $7F60: $D0
 
-    jp_open_dialog $196                           ; $7F61
+    jp_open_dialog Dialog196                      ; $7F61

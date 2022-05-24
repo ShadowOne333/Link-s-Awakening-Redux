@@ -47,22 +47,22 @@ PapahlsWifeState0Handler::
     and  $02                                      ; $4E88: $E6 $02
     jp   z, label_018_4E91                        ; $4E8A: $CA $91 $4E
 
-    ld   e, $EE                                   ; $4E8D: $1E $EE
+    ld_dialog_low e, Dialog1EE                    ; $4E8D: $1E $EE
     jr   jr_018_4EA4                              ; $4E8F: $18 $13
 
 label_018_4E91:
     ld   a, [wTradeSequenceItem]                  ; $4E91: $FA $0E $DB
     and  a                                        ; $4E94: $A7
-    ld   e, $2A                                   ; $4E95: $1E $2A
+    ld_dialog_low e, Dialog12A                    ; $4E95: $1E $2A
     jr   z, jr_018_4EA4                           ; $4E97: $28 $0B
 
-    ld   e, $2C                                   ; $4E99: $1E $2C
+    ld_dialog_low e, Dialog12C                    ; $4E99: $1E $2C
     cp   $01                                      ; $4E9B: $FE $01
     jr   nz, jr_018_4EA4                          ; $4E9D: $20 $05
 
 jr_018_4E9F:
     call IncrementEntityState                     ; $4E9F: $CD $12 $3B
-    ld   e, $2B                                   ; $4EA2: $1E $2B
+    ld_dialog_low e, Dialog12B                    ; $4EA2: $1E $2B
 
 jr_018_4EA4:
     ld   a, e                                     ; $4EA4: $7B
@@ -71,35 +71,35 @@ jr_018_4EA4:
 PapahlsWifeState1Handler::
     ld   a, [wDialogState]                        ; $4EA8: $FA $9F $C1
     and  a                                        ; $4EAB: $A7
-    jr   nz, jr_018_4ECE                          ; $4EAC: $20 $20
+    jr   nz, ret_018_4ECE                         ; $4EAC: $20 $20
 
-    ld   a, [wDialogAskSelectionIndex]                               ; $4EAE: $FA $77 $C1
+    ld   a, [wDialogAskSelectionIndex]            ; $4EAE: $FA $77 $C1
     and  a                                        ; $4EB1: $A7
-    jr   nz, jr_018_4EC5                          ; $4EB2: $20 $11
+    jr   nz, .jr_4EC5                             ; $4EB2: $20 $11
 
     ld   a, TRADING_ITEM_RIBBON                   ; $4EB4: $3E $02
     ld   [wTradeSequenceItem], a                  ; $4EB6: $EA $0E $DB
     ld   a, REPLACE_TILES_TRADING_ITEM            ; $4EB9: $3E $0D
     ldh  [hReplaceTiles], a                       ; $4EBB: $E0 $A5
-    call_open_dialog $128                         ; $4EBD
+    call_open_dialog Dialog128                    ; $4EBD
     jp   IncrementEntityState                     ; $4EC2: $C3 $12 $3B
 
-jr_018_4EC5:
-    call_open_dialog $127                         ; $4EC5
+.jr_4EC5
+    call_open_dialog Dialog127                    ; $4EC5
     call IncrementEntityState                     ; $4ECA: $CD $12 $3B
     ld   [hl], b                                  ; $4ECD: $70
 
-jr_018_4ECE:
+ret_018_4ECE:
     ret                                           ; $4ECE: $C9
 
 PapahlsWifeState2Handler::
     ld   a, [wDialogState]                        ; $4ECF: $FA $9F $C1
     and  a                                        ; $4ED2: $A7
-    jr   nz, jr_018_4EDC                          ; $4ED3: $20 $07
+    jr   nz, .ret_4EDC                            ; $4ED3: $20 $07
 
     call CreateTradingItemEntity                  ; $4ED5: $CD $0C $0C
     call IncrementEntityState                     ; $4ED8: $CD $12 $3B
     ld   [hl], b                                  ; $4EDB: $70
 
-jr_018_4EDC:
+.ret_4EDC
     ret                                           ; $4EDC: $C9

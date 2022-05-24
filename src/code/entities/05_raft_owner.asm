@@ -1,6 +1,29 @@
-Data_005_533E::
-    db   $60, $00, $62, $00, $62, $20, $60, $20, $64, $00, $66, $00, $66, $20, $64, $20
-    db   $68, $00, $6A, $00, $6C, $00, $6E, $00, $6A, $20, $68, $20, $6E, $20, $6C, $20
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+RaftOwnerIndoorSpriteVariants::
+.variant0
+    db $60, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $62, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant1
+    db $62, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $60, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant2
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant3
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant4
+    db $68, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $6A, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant5
+    db $6C, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant6
+    db $6A, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $68, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant7
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $6C, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 ; Handler for Raft Owner (and also the raft itself?)
 EntityRaftOwnerHandler::
@@ -10,16 +33,16 @@ EntityRaftOwnerHandler::
 
     ldh  a, [hFrameCounter]                       ; $5364: $F0 $E7
     and  $1F                                      ; $5366: $E6 $1F
-    jr   nz, jr_005_5372                          ; $5368: $20 $08
+    jr   nz, .jr_5372                             ; $5368: $20 $08
 
     call func_005_7B24                            ; $536A: $CD $24 $7B
     ld   hl, wEntitiesDirectionTable              ; $536D: $21 $80 $C3
     add  hl, bc                                   ; $5370: $09
     ld   [hl], e                                  ; $5371: $73
 
-jr_005_5372:
+.jr_5372
     call func_005_54EA                            ; $5372: $CD $EA $54
-    ld   de, Data_005_533E                        ; $5375: $11 $3E $53
+    ld   de, RaftOwnerIndoorSpriteVariants        ; $5375: $11 $3E $53
     call RenderActiveEntitySpritesPair            ; $5378: $CD $C0 $3B
     call ReturnIfNonInteractive_05                ; $537B: $CD $3A $7A
     call func_005_54C3                            ; $537E: $CD $C3 $54
@@ -37,8 +60,7 @@ func_005_538A::
     call ShouldLinkTalkToEntity_05                ; $5390: $CD $06 $55
     ret  nc                                       ; $5393: $D0
 
-    ld   a, $F0                                   ; $5394: $3E $F0
-    call OpenDialog                               ; $5396: $CD $85 $23
+    call_open_dialog Dialog0F0 ; "Want a ride?"   ; $5394: $3E $F0 $CD $85 $23
     jp   IncrementEntityState                     ; $5399: $C3 $12 $3B
 
 func_005_539C::
@@ -47,43 +69,48 @@ func_005_539C::
     ret  nz                                       ; $53A0: $C0
 
     call IncrementEntityState                     ; $53A1: $CD $12 $3B
-    ld   a, [wDialogAskSelectionIndex]                               ; $53A4: $FA $77 $C1
+    ld   a, [wDialogAskSelectionIndex]            ; $53A4: $FA $77 $C1
     and  a                                        ; $53A7: $A7
     jr   z, jr_005_53AC                           ; $53A8: $28 $02
 
     ld   [hl], b                                  ; $53AA: $70
 
-jr_005_53AB:
+.ret_53AB
     ret                                           ; $53AB: $C9
 
 jr_005_53AC:
     ld   a, [wRupeeCountLow]                      ; $53AC: $FA $5E $DB
     sub  $00                                      ; $53AF: $D6 $00
 
-jr_005_53B1:
+.jr_53B1
     ld   a, [wRupeeCountHigh]                     ; $53B1: $FA $5D $DB
     sbc  $01                                      ; $53B4: $DE $01
-    jr   c, jr_005_53C5                           ; $53B6: $38 $0D
+    jr   c, .jr_53C5                              ; $53B6: $38 $0D
 
-    ld   a, $64                                   ; $53B8: $3E $64
+    ld   a, RAFT_GAME_PRICE                       ; $53B8: $3E $64
     ld   [wSubstractRupeeBufferLow], a            ; $53BA: $EA $92 $DB
-    ld   a, $F1                                   ; $53BD: $3E $F1
+    ld_dialog_low a, Dialog0F1 ; "Raft is ready"  ; $53BD: $3E $F1
     ld   [wD477], a                               ; $53BF: $EA $77 $D4
-    jp   OpenDialog                               ; $53C2: $C3 $85 $23
+    jp   OpenDialogInTable0                       ; $53C2: $C3 $85 $23
 
-jr_005_53C5:
+.jr_53C5
     ld   [hl], b                                  ; $53C5: $70
-    ld   a, $4E                                   ; $53C6: $3E $4E
-    jp   OpenDialog                               ; $53C8: $C3 $85 $23
+    jp_open_dialog Dialog04E ; "Short on Rupees?" ; $53C6: $3E $4E $C3 $85 $23
 
 func_005_53CB::
     call ShouldLinkTalkToEntity_05                ; $53CB: $CD $06 $55
     ret  nc                                       ; $53CE: $D0
 
-    jp_open_dialog $0F1                           ; $53CF
+    jp_open_dialog Dialog0F1                      ; $53CF
 
-Data_005_53D4::
-    db   $5C, $01, $5C, $21, $5E, $01, $5E, $21   ; $53D4
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+RaftOwnerOnOverworldSpriteVariants:: ; $53D4
+.variant0
+    db $5C, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $5C, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $5E, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $5E, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 raftOnOverworld:
     ld   hl, wEntitiesPrivateState4Table          ; $53DC: $21 $40 $C4
@@ -98,27 +125,27 @@ raftOnOverworld:
 jr_005_53E9:
     ld   a, e                                     ; $53E9: $7B
     cp   c                                        ; $53EA: $B9
-    jr   z, jr_005_53FF                           ; $53EB: $28 $12
+    jr   z, .jr_53FF                              ; $53EB: $28 $12
 
-    ld   hl, wEntitiesStatusTable                         ; $53ED: $21 $80 $C2
+    ld   hl, wEntitiesStatusTable                 ; $53ED: $21 $80 $C2
     add  hl, de                                   ; $53F0: $19
     ld   a, [hl]                                  ; $53F1: $7E
     and  a                                        ; $53F2: $A7
-    jr   z, jr_005_53FF                           ; $53F3: $28 $0A
+    jr   z, .jr_53FF                              ; $53F3: $28 $0A
 
     ld   hl, wEntitiesTypeTable                   ; $53F5: $21 $A0 $C3
     add  hl, de                                   ; $53F8: $19
     ld   a, [hl]                                  ; $53F9: $7E
     cp   $6A                                      ; $53FA: $FE $6A
-    jp   z, ClearEntityStatus_05                 ; $53FC: $CA $4B $7B
+    jp   z, ClearEntityStatus_05                  ; $53FC: $CA $4B $7B
 
-jr_005_53FF:
+.jr_53FF
     dec  e                                        ; $53FF: $1D
     ld   a, e                                     ; $5400: $7B
     cp   $FF                                      ; $5401: $FE $FF
     jr   nz, jr_005_53E9                          ; $5403: $20 $E4
 
-    ld   de, Data_005_53D4                        ; $5405: $11 $D4 $53
+    ld   de, RaftOwnerOnOverworldSpriteVariants   ; $5405: $11 $D4 $53
     call RenderActiveEntitySpritesPair            ; $5408: $CD $C0 $3B
     call ReturnIfNonInteractive_05                ; $540B: $CD $3A $7A
     jp   func_005_54C3                            ; $540E: $C3 $C3 $54
@@ -136,32 +163,32 @@ jr_005_5411:
     sub  [hl]                                     ; $5421: $96
     add  $10                                      ; $5422: $C6 $10
     cp   $20                                      ; $5424: $FE $20
-    jr   nc, jr_005_5440                          ; $5426: $30 $18
+    jr   nc, .jr_5440                             ; $5426: $30 $18
 
     ldh  a, [hLinkPositionY]                      ; $5428: $F0 $99
-    ld   hl, hActiveEntityPosY                                ; $542A: $21 $EF $FF
+    ld   hl, hActiveEntityPosY                    ; $542A: $21 $EF $FF
     sub  [hl]                                     ; $542D: $96
     add  $14                                      ; $542E: $C6 $14
     cp   $1C                                      ; $5430: $FE $1C
-    jr   nc, jr_005_5440                          ; $5432: $30 $0C
+    jr   nc, .jr_5440                             ; $5432: $30 $0C
 
     ld   a, $80                                   ; $5434: $3E $80
     ld   [wC1AD], a                               ; $5436: $EA $AD $C1
     ldh  a, [hLinkPositionX]                      ; $5439: $F0 $98
-    ld   hl, wEntitiesPosXTable                         ; $543B: $21 $00 $C2
+    ld   hl, wEntitiesPosXTable                   ; $543B: $21 $00 $C2
     add  hl, bc                                   ; $543E: $09
     ld   [hl], a                                  ; $543F: $77
 
-jr_005_5440:
+.jr_5440
     ld   a, [wLinkGroundStatus]                   ; $5440: $FA $1F $C1
     and  a                                        ; $5443: $A7
-    jr   z, jr_005_544C                           ; $5444: $28 $06
+    jr   z, .jr_544C                              ; $5444: $28 $06
 
     call IncrementEntityState                     ; $5446: $CD $12 $3B
     ld   [hl], b                                  ; $5449: $70
     jr   jr_005_5487                              ; $544A: $18 $3B
 
-jr_005_544C:
+.jr_544C
     ldh  a, [hActiveEntityState]                  ; $544C: $F0 $F0
     JP_TABLE                                      ; $544E
 ._00 dw func_005_5455                             ; $544F
@@ -172,16 +199,16 @@ func_005_5455::
     call func_005_7B04                            ; $5455: $CD $04 $7B
     add  $08                                      ; $5458: $C6 $08
     cp   $10                                      ; $545A: $FE $10
-    jr   nc, jr_005_546A                          ; $545C: $30 $0C
+    jr   nc, .jr_546A                             ; $545C: $30 $0C
 
     call func_005_7B14                            ; $545E: $CD $14 $7B
     add  $09                                      ; $5461: $C6 $09
     cp   $12                                      ; $5463: $FE $12
-    jr   nc, jr_005_546A                          ; $5465: $30 $03
+    jr   nc, .jr_546A                             ; $5465: $30 $03
 
     call IncrementEntityState                     ; $5467: $CD $12 $3B
 
-jr_005_546A:
+.jr_546A
     jr   jr_005_5487                              ; $546A: $18 $1B
 
 func_005_546C::
@@ -199,12 +226,12 @@ func_005_546C::
 
 jr_005_5483:
     ld   a, $01                                   ; $5483: $3E $01
-    ldh  [slowWalkingSpeed], a                               ; $5485: $E0 $B2
+    ldh  [hLinkSlowWalkingSpeed], a               ; $5485: $E0 $B2
 
 jr_005_5487:
     call CopyEntityPositionToActivePosition       ; $5487: $CD $8A $3D
-    ld   de, Data_005_53D4                        ; $548A: $11 $D4 $53
-    jp   RenderActiveEntitySpritesPair                ; $548D: $C3 $C0 $3B
+    ld   de, RaftOwnerOnOverworldSpriteVariants   ; $548A: $11 $D4 $53
+    jp   RenderActiveEntitySpritesPair            ; $548D: $C3 $C0 $3B
 
 func_005_5490::
     ldh  a, [hFrameCounter]                       ; $5490: $F0 $E7
@@ -232,37 +259,37 @@ func_005_5490::
     ld   [hl], b                                  ; $54B6: $70
     ld   a, [wLinkMotionState]                    ; $54B7: $FA $1C $C1
     cp   $02                                      ; $54BA: $FE $02
-    jr   nz, jr_005_54C1                          ; $54BC: $20 $03
+    jr   nz, .jr_54C1                             ; $54BC: $20 $03
 
     ldh  a, [hLinkPositionZ]                      ; $54BE: $F0 $A2
     ld   [hl], a                                  ; $54C0: $77
 
-jr_005_54C1:
+.jr_54C1
     jr   jr_005_5483                              ; $54C1: $18 $C0
 
 func_005_54C3::
     call CheckLinkCollisionWithEnemy_trampoline   ; $54C3: $CD $5A $3B
-    jr   nc, jr_005_54E5                          ; $54C6: $30 $1D
+    jr   nc, .ret_54E5                            ; $54C6: $30 $1D
 
     call CopyLinkFinalPositionToPosition          ; $54C8: $CD $BE $0C
     call ResetPegasusBoots                        ; $54CB: $CD $B6 $0C
     ld   a, [wC1A6]                               ; $54CE: $FA $A6 $C1
     and  a                                        ; $54D1: $A7
-    jr   z, jr_005_54E5                           ; $54D2: $28 $11
+    jr   z, .ret_54E5                             ; $54D2: $28 $11
 
     ld   e, a                                     ; $54D4: $5F
     ld   d, b                                     ; $54D5: $50
-    ld   hl, wEntitiesUnknowTableR+15                                ; $54D6: $21 $9F $C3
+    ld   hl, wEntitiesPrivateState5Table+15       ; $54D6: $21 $9F $C3
     add  hl, de                                   ; $54D9: $19
     ld   a, [hl]                                  ; $54DA: $7E
     cp   $03                                      ; $54DB: $FE $03
-    jr   nz, jr_005_54E5                          ; $54DD: $20 $06
+    jr   nz, .ret_54E5                            ; $54DD: $20 $06
 
-    ld   hl, wEntitiesStatusTable+15                                ; $54DF: $21 $8F $C2
+    ld   hl, wEntitiesStatusTable+15              ; $54DF: $21 $8F $C2
     add  hl, de                                   ; $54E2: $19
     ld   [hl], $00                                ; $54E3: $36 $00
 
-jr_005_54E5:
+.ret_54E5
     ret                                           ; $54E5: $C9
 
 Data_005_54E6::
@@ -276,7 +303,7 @@ func_005_54EA::
     ld   hl, Data_005_54E6                        ; $54F0: $21 $E6 $54
     add  hl, de                                   ; $54F3: $19
     push hl                                       ; $54F4: $E5
-    ld   hl, wEntitiesUnknowTableY                ; $54F5: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $54F5: $21 $D0 $C3
     add  hl, bc                                   ; $54F8: $09
     inc  [hl]                                     ; $54F9: $34
     ld   a, [hl]                                  ; $54FA: $7E
@@ -297,7 +324,7 @@ ShouldLinkTalkToEntity_05::
     ld   e, b                                     ; $5506: $58
     ldh  a, [hActiveEntityType]                   ; $5507: $F0 $EB
     cp   ENTITY_WITCH                             ; $5509: $FE $40
-    jr   nz, .witchYPosCheck                          ; $550B: $20 $0C
+    jr   nz, .witchYPosCheck                      ; $550B: $20 $0C
 
     ; Normal check for Y position
     ldh  a, [hLinkPositionY]                      ; $550D: $F0 $99
@@ -315,7 +342,7 @@ ShouldLinkTalkToEntity_05::
     cp   $28                                      ; $5521: $FE $28
 .checkYPosEnd
 
-    jr   nc, .dontTalk                             ; $5523: $30 $44
+    jr   nc, .dontTalk                            ; $5523: $30 $44
 
     ;
     ; Check if Link is horizontally close from the entity

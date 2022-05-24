@@ -1,6 +1,20 @@
-Data_006_7604::
-    db   $6E, $00, $6E, $20, $66, $20, $64, $20, $64, $00, $66, $00, $62, $00, $62, $20
-    db   $60, $00, $60, $20
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+WizrobeSpriteVariants::
+.variant0
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant2
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant3
+    db $62, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $62, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant4
+    db $60, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $60, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 Data_006_7618::
     db   $08, $F8, $00, $00
@@ -15,7 +29,7 @@ Data_006_7624::
     db   $00, $00, $E0, $20
 
 WizrobeEntityHandler::
-    ld   de, Data_006_7604                        ; $7628: $11 $04 $76
+    ld   de, WizrobeSpriteVariants                ; $7628: $11 $04 $76
     call RenderActiveEntitySpritesPair            ; $762B: $CD $C0 $3B
     call ReturnIfNonInteractive_06                ; $762E: $CD $C6 $64
     call ApplyRecoilIfNeeded_06                   ; $7631: $CD $F7 $64
@@ -25,17 +39,17 @@ WizrobeEntityHandler::
     add  hl, bc                                   ; $763D: $09
     ld   a, [hl]                                  ; $763E: $7E
     JP_TABLE                                      ; $763F
-._00 dw WizrobeState0Handler                             ; $7640
-._01 dw WizrobeState1Handler                             ; $7642
-._02 dw WizrobeState2Handler                             ; $7644
-._03 dw WizrobeState3Handler                             ; $7646
+._00 dw WizrobeState0Handler                      ; $7640
+._01 dw WizrobeState1Handler                      ; $7642
+._02 dw WizrobeState2Handler                      ; $7644
+._03 dw WizrobeState3Handler                      ; $7646
 
 WizrobeState0Handler::
     ld   hl, wEntitiesTransitionCountdownTable    ; $7648: $21 $E0 $C2
     add  hl, bc                                   ; $764B: $09
     ld   a, [hl]                                  ; $764C: $7E
     and  a                                        ; $764D: $A7
-    jr   nz, jr_006_765E                          ; $764E: $20 $0E
+    jr   nz, .jr_765E                             ; $764E: $20 $0E
 
     call IncrementEntityState                     ; $7650: $CD $12 $3B
     ld   hl, wEntitiesPrivateState1Table          ; $7653: $21 $B0 $C2
@@ -44,7 +58,7 @@ WizrobeState0Handler::
     call GetEntityPrivateCountdown1               ; $7659: $CD $00 $0C
     ld   [hl], $20                                ; $765C: $36 $20
 
-jr_006_765E:
+.jr_765E
     jr   jr_006_767E                              ; $765E: $18 $1E
 
 WizrobeState1Handler::
@@ -58,7 +72,7 @@ WizrobeState1Handler::
     add  hl, bc                                   ; $766D: $09
     add  [hl]                                     ; $766E: $86
 
-jr_006_766F:
+.jr_766F
     ld   [hl], a                                  ; $766F: $77
     ld   hl, wEntitiesTransitionCountdownTable    ; $7670: $21 $E0 $C2
     add  hl, bc                                   ; $7673: $09
@@ -89,12 +103,12 @@ WizrobeState2Handler::
 
     ld   a, [hl]                                  ; $7698: $7E
     cp   $01                                      ; $7699: $FE $01
-    jr   z, jr_006_76A2                           ; $769B: $28 $05
+    jr   z, .jr_76A2                              ; $769B: $28 $05
 
     ld   [hl], $18                                ; $769D: $36 $18
     jp   label_006_7735                           ; $769F: $C3 $35 $77
 
-jr_006_76A2:
+.jr_76A2
     ld   hl, wEntitiesPrivateState1Table          ; $76A2: $21 $B0 $C2
     add  hl, bc                                   ; $76A5: $09
     ld   a, [hl]                                  ; $76A6: $7E
@@ -122,7 +136,7 @@ WizrobeState3Handler::
 
     ld   a, [hl]                                  ; $76C7: $7E
     cp   $01                                      ; $76C8: $FE $01
-    jr   z, jr_006_76DD                           ; $76CA: $28 $11
+    jr   z, .jr_76DD                              ; $76CA: $28 $11
 
     ld   [hl], $40                                ; $76CC: $36 $40
     call func_006_65B4                            ; $76CE: $CD $B4 $65
@@ -135,7 +149,7 @@ WizrobeState3Handler::
     ld   [hl], a                                  ; $76DB: $77
     ret                                           ; $76DC: $C9
 
-jr_006_76DD:
+.jr_76DD
     ld   hl, wEntitiesPrivateState1Table          ; $76DD: $21 $B0 $C2
     add  hl, bc                                   ; $76E0: $09
     ld   [hl], $FF                                ; $76E1: $36 $FF
@@ -184,7 +198,7 @@ label_006_7709:
     add  hl, de                                   ; $7723: $19
     ld   [hl], a                                  ; $7724: $77
 
-jr_006_7725:
+.jr_7725
     pop  bc                                       ; $7725: $C1
     ldh  a, [hMultiPurpose2]                      ; $7726: $F0 $D9
     ld   hl, wEntitiesSpriteVariantTable          ; $7728: $21 $B0 $C3

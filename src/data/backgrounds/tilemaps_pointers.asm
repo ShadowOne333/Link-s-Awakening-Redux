@@ -1,14 +1,15 @@
+; Table indexed by wBGMapToLoad
 TilemapsPointersTable::
 ._00 dw $0000
 ._01 dw CreditsIslandTilemap             ; $56CC
 ._02 dw InventoryTilemap                 ; $6748
-._03 dw MenuFileSelection                ; $6336
+._03 dw MenuFileSelectionTilemap         ; $6336
 ._04 dw MenuFileSelectionCommandsTilemap ; $6328
 ._05 dw MenuFileCreationTilemap          ; $644D
 ._06 dw MenuFileEraseTilemap             ; $6589
-._07 dw $D651
+._07 dw wMinimapTilemap                  ; $D651
 ._08 dw WorldMapTilemap                  ; $62E9
-._09 dw Tilemap09                        ; $67C9
+._09 dw EaglesTowerCloudsTilemap                        ; $67C9
 ._0A dw GameOverTilemap                  ; $698F
 ._0B dw InventoryDebugTilemap            ; $68F6
 ._0C dw MenuFileCopyTilemap              ; $6660

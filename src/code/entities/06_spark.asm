@@ -1,5 +1,11 @@
-Data_006_6615::
-    db   $5C, $00, $5C, $20, $5C, $14, $5C, $34
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+SparkSpriteVariants::
+.variant0
+    db $5C, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $5C, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $5C, OAM_GBC_PAL_4 | OAM_DMG_PAL_1
+    db $5C, OAM_GBC_PAL_4 | OAM_DMG_PAL_1 | OAM_X_FLIP
 
 Data_006_661D::
     db   $00, $10, $00, $F0, $00, $F0, $00, $10
@@ -13,12 +19,12 @@ Data_006_662D::
 SparkClockwiseEntityHandler::
 SparkCounterClockwiseEntityHandler::
     ld   a, $01                                   ; $6635: $3E $01
-    ldh  [hFFBE], a                               ; $6637: $E0 $BE
+    ldh  [hActiveEntityNoBGCollision], a          ; $6637: $E0 $BE
     ldh  a, [hFrameCounter]                       ; $6639: $F0 $E7
     rra                                           ; $663B: $1F
     and  $01                                      ; $663C: $E6 $01
     ldh  [hActiveEntitySpriteVariant], a          ; $663E: $E0 $F1
-    ld   de, Data_006_6615                        ; $6640: $11 $15 $66
+    ld   de, SparkSpriteVariants                  ; $6640: $11 $15 $66
     call RenderActiveEntitySpritesPair            ; $6643: $CD $C0 $3B
     call ReturnIfNonInteractive_06                ; $6646: $CD $C6 $64
     call ApplyRecoilIfNeeded_06                   ; $6649: $CD $F7 $64
@@ -42,7 +48,7 @@ SparkCounterClockwiseEntityHandler::
     ld   a, [hl]                                  ; $666B: $7E
     pop  hl                                       ; $666C: $E1
     and  [hl]                                     ; $666D: $A6
-    jr   nz, jr_006_6685                          ; $666E: $20 $15
+    jr   nz, .jr_6685                             ; $666E: $20 $15
 
     call GetEntityTransitionCountdown             ; $6670: $CD $05 $0C
     jr   nz, jr_006_6690                          ; $6673: $20 $1B
@@ -57,7 +63,7 @@ SparkCounterClockwiseEntityHandler::
     ld   [hl], $09                                ; $6681: $36 $09
     jr   jr_006_669D                              ; $6683: $18 $18
 
-jr_006_6685:
+.jr_6685
     ld   hl, wEntitiesPrivateState1Table          ; $6685: $21 $B0 $C2
     add  hl, bc                                   ; $6688: $09
     inc  [hl]                                     ; $6689: $34

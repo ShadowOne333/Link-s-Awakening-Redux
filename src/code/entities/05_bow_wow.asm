@@ -1,18 +1,59 @@
-Data_005_4000::
-    db   $70, $03, $70, $23, $72, $03, $72, $23, $74, $03, $76, $03, $78, $03, $7A, $03
-    db   $76, $23, $74, $23, $7A, $23, $78, $23, $7C, $03, $7C, $23
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+BowWowAtHomeSpriteVariants::
+.variant0
+    db $70, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $70, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $72, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $72, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant2
+    db $74, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $76, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant3
+    db $78, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $7A, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant4
+    db $76, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $74, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant5
+    db $7A, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $78, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant6
+    db $7C, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $7C, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
-Data_005_401C::
-    db   $40, $03, $40, $23, $42, $03, $42, $23, $44, $03, $46, $03, $48, $03, $4A, $03
-    db   $46, $23, $44, $23, $4A, $23, $48, $23, $4C, $03, $4C, $23
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+BowWowFollowingSpriteVariants::
+.variant0
+    db $40, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $40, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $42, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $42, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant2
+    db $44, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $46, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant3
+    db $48, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $4A, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant4
+    db $46, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $44, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant5
+    db $4A, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $48, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant6
+    db $4C, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $4C, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 BowWowEntityHandler::
     ld   a, c                                     ; $4038: $79
-    ld   [$D154], a                               ; $4039: $EA $54 $D1
+    ld   [wD154], a                               ; $4039: $EA $54 $D1
     ld   a, [wIsBowWowFollowingLink]              ; $403C: $FA $56 $DB
-    cp   $01                                      ; $403F: $FE $01
-    jr   nz, jr_005_4054                          ; $4041: $20 $11
+    cp   BOW_WOW_FOLLOWING                        ; $403F: $FE $01
+    jr   nz, .selectSpriteVariant                 ; $4041: $20 $11
 
+    ; calculate x- and y-Offset of bow_wow
     ldh  a, [hMapRoom]                            ; $4043: $F0 $F6
     ld   hl, wEntitiesRoomTable                   ; $4045: $21 $E0 $C3
     add  hl, bc                                   ; $4048: $09
@@ -24,22 +65,22 @@ BowWowEntityHandler::
     add  hl, bc                                   ; $4052: $09
     ld   [hl], b                                  ; $4053: $70
 
-jr_005_4054:
-    ld   de, Data_005_401C                        ; $4054: $11 $1C $40
+.selectSpriteVariant
+    ld   de, BowWowFollowingSpriteVariants        ; $4054: $11 $1C $40
     ld   a, [wIsBowWowFollowingLink]              ; $4057: $FA $56 $DB
     and  a                                        ; $405A: $A7
-    jr   nz, jr_005_4060                          ; $405B: $20 $03
+    jr   nz, .render                              ; $405B: $20 $03
 
-    ld   de, Data_005_4000                        ; $405D: $11 $00 $40
+    ld   de, BowWowAtHomeSpriteVariants           ; $405D: $11 $00 $40
 
-jr_005_4060:
+.render:
     call RenderActiveEntitySpritesPair            ; $4060: $CD $C0 $3B
     ld   a, [wRoomTransitionState]                ; $4063: $FA $24 $C1
     and  a                                        ; $4066: $A7
-    jr   z, jr_005_407C                           ; $4067: $28 $13
+    jr   z, .jr_407C                              ; $4067: $28 $13
 
     ld   a, [wIsBowWowFollowingLink]              ; $4069: $FA $56 $DB
-    cp   TRUE                                     ; $406C: $FE $01
+    cp   BOW_WOW_FOLLOWING                        ; $406C: $FE $01
     jp   z, label_005_40A2                        ; $406E: $CA $A2 $40
 
     ld   hl, wEntitiesRoomTable                   ; $4071: $21 $E0 $C3
@@ -50,7 +91,7 @@ jr_005_4060:
 
     jp   label_005_40A2                           ; $4079: $C3 $A2 $40
 
-jr_005_407C:
+.jr_407C
     ld   a, [wC1A8]                               ; $407C: $FA $A8 $C1
     ld   hl, wDialogState                         ; $407F: $21 $9F $C1
     or   [hl]                                     ; $4082: $B6
@@ -66,11 +107,11 @@ jr_005_407C:
     call DecrementEntityIgnoreHitsCountdown       ; $4093: $CD $56 $0C
     ld   a, [wIsBowWowFollowingLink]              ; $4096: $FA $56 $DB
     and  a                                        ; $4099: $A7
-    jr   nz, jr_005_409F                          ; $409A: $20 $03
+    jr   nz, .jr_409F                             ; $409A: $20 $03
 
     call label_3B70                               ; $409C: $CD $70 $3B
 
-jr_005_409F:
+.jr_409F
     call func_005_40A5                            ; $409F: $CD $A5 $40
 
 label_005_40A2:
@@ -96,10 +137,10 @@ func_005_40AF::
     ld   e, $10                                   ; $40BC: $1E $10
     ld   hl, wD100                                ; $40BE: $21 $00 $D1
 
-jr_005_40C1:
+.loop_40C1
     ld   [hl+], a                                 ; $40C1: $22
     dec  e                                        ; $40C2: $1D
-    jr   nz, jr_005_40C1                          ; $40C3: $20 $FC
+    jr   nz, .loop_40C1                           ; $40C3: $20 $FC
 
     ld   hl, wEntitiesPosYTable                   ; $40C5: $21 $10 $C2
     add  hl, bc                                   ; $40C8: $09
@@ -115,10 +156,10 @@ jr_005_40C1:
     ld   e, $10                                   ; $40D7: $1E $10
     ld   hl, wD110                                ; $40D9: $21 $10 $D1
 
-jr_005_40DC:
+.loop_40DC
     ld   [hl+], a                                 ; $40DC: $22
     dec  e                                        ; $40DD: $1D
-    jr   nz, jr_005_40DC                          ; $40DE: $20 $FC
+    jr   nz, .loop_40DC                           ; $40DE: $20 $FC
 
     ld   hl, wEntitiesPrivateState4Table          ; $40E0: $21 $40 $C4
     add  hl, bc                                   ; $40E3: $09
@@ -126,46 +167,48 @@ jr_005_40DC:
     ret                                           ; $40E5: $C9
 
 func_005_40E6::
+    ; if bow_wow is at home jump to jr_005_4137
     ld   a, [wIsBowWowFollowingLink]              ; $40E6: $FA $56 $DB
     and  a                                        ; $40E9: $A7
     jr   z, jr_005_4137                           ; $40EA: $28 $4B
 
-    cp   $80                                      ; $40EC: $FE $80
-    jr   z, jr_005_40FA                           ; $40EE: $28 $0A
+    cp   BOW_WOW_KIDNAPPED                        ; $40EC: $FE $80
+    jr   z, .jr_40FA                              ; $40EE: $28 $0A
 
+    ; bow_wow is following link
     ldh  a, [hLinkPositionX]                      ; $40F0: $F0 $98
     ldh  [hMultiPurpose0], a                      ; $40F2: $E0 $D7
-    ldh  a, [hFFB3]                               ; $40F4: $F0 $B3
+    ldh  a, [hLinkPositionZModified]              ; $40F4: $F0 $B3
     ldh  [hMultiPurpose1], a                      ; $40F6: $E0 $D8
     jr   jr_005_4129                              ; $40F8: $18 $2F
 
-jr_005_40FA:
+.jr_40FA
     ldh  a, [hLinkPositionY]                      ; $40FA: $F0 $99
     sub  $40                                      ; $40FC: $D6 $40
     add  $10                                      ; $40FE: $C6 $10
     cp   $20                                      ; $4100: $FE $20
-    jr   nc, jr_005_4127                          ; $4102: $30 $23
+    jr   nc, .jr_4127                             ; $4102: $30 $23
 
     ldh  a, [hLinkPositionX]                      ; $4104: $F0 $98
     sub  $88                                      ; $4106: $D6 $88
     add  $10                                      ; $4108: $C6 $10
     cp   $20                                      ; $410A: $FE $20
-    jr   nc, jr_005_4127                          ; $410C: $30 $19
+    jr   nc, .jr_4127                             ; $410C: $30 $19
 
     ld   a, [wCollisionType]                      ; $410E: $FA $33 $C1
     and  a                                        ; $4111: $A7
-    jr   z, jr_005_4127                           ; $4112: $28 $13
+    jr   z, .jr_4127                              ; $4112: $28 $13
 
     ; Bow-Wow retrieved from King Moblin
     ld   a, MUSIC_TOOL_ACQUIRED                   ; $4114: $3E $10
     ld   [wMusicTrackToPlay], a                   ; $4116: $EA $68 $D3
-    call_open_dialog $16C                         ; $4119
+    call_open_dialog Dialog16C                    ; $4119
     ld   a, WAVE_SFX_CHAIN_CHOMP                  ; $411E: $3E $18
     ldh  [hWaveSfx], a                            ; $4120: $E0 $F3
-    ld   a, $01                                   ; $4122: $3E $01
+    ld   a, BOW_WOW_FOLLOWING                     ; $4122: $3E $01
     ld   [wIsBowWowFollowingLink], a              ; $4124: $EA $56 $DB
 
-jr_005_4127:
+.jr_4127
     jr   jr_005_4137                              ; $4127: $18 $0E
 
 jr_005_4129:
@@ -182,11 +225,11 @@ jr_005_4137:
     ld   hl, wEntitiesPrivateState1Table          ; $4137: $21 $B0 $C2
     add  hl, bc                                   ; $413A: $09
     ld   a, [hl]                                  ; $413B: $7E
-    ld   [$D150], a                               ; $413C: $EA $50 $D1
+    ld   [wD150], a                               ; $413C: $EA $50 $D1
     ld   hl, wEntitiesPrivateState2Table          ; $413F: $21 $C0 $C2
     add  hl, bc                                   ; $4142: $09
     ld   a, [hl]                                  ; $4143: $7E
-    ld   [$D151], a                               ; $4144: $EA $51 $D1
+    ld   [wD151], a                               ; $4144: $EA $51 $D1
     call AddEntityZSpeedToPos_05                  ; $4147: $CD $EA $7A
     ld   hl, wEntitiesSpeedZTable                 ; $414A: $21 $20 $C3
     add  hl, bc                                   ; $414D: $09
@@ -198,14 +241,14 @@ jr_005_4137:
     add  hl, bc                                   ; $4155: $09
     ld   a, [hl]                                  ; $4156: $7E
     and  $80                                      ; $4157: $E6 $80
-    ldh  [hMultiPurposeG], a                               ; $4159: $E0 $E8
-    jr   z, jr_005_4160                           ; $415B: $28 $03
+    ldh  [hMultiPurposeG], a                      ; $4159: $E0 $E8
+    jr   z, .jr_4160                              ; $415B: $28 $03
 
     xor  a                                        ; $415D: $AF
     ld   [hl], a                                  ; $415E: $77
     ld   [de], a                                  ; $415F: $12
 
-jr_005_4160:
+.jr_4160
     call label_3B23                               ; $4160: $CD $23 $3B
     ldh  a, [hActiveEntityState]                  ; $4163: $F0 $F0
     JP_TABLE                                      ; $4165
@@ -226,7 +269,7 @@ func_005_4180::
     jr   z, jr_005_41B1                           ; $4183: $28 $2C
 
     call GetEntityPrivateCountdown1               ; $4185: $CD $00 $0C
-    jr   nz, jr_005_41B0                          ; $4188: $20 $26
+    jr   nz, .ret_41B0                            ; $4188: $20 $26
 
     call GetRandomByte                            ; $418A: $CD $0D $28
     and  $3F                                      ; $418D: $E6 $3F
@@ -250,7 +293,7 @@ func_005_4180::
     add  hl, bc                                   ; $41AE: $09
     ld   [hl], a                                  ; $41AF: $77
 
-jr_005_41B0:
+.ret_41B0
     ret                                           ; $41B0: $C9
 
 jr_005_41B1:
@@ -258,11 +301,11 @@ jr_005_41B1:
     ld   [hl], $28                                ; $41B4: $36 $28
     ld   a, [wIsBowWowFollowingLink]              ; $41B6: $FA $56 $DB
     and  a                                        ; $41B9: $A7
-    jr   z, jr_005_41BF                           ; $41BA: $28 $03
+    jr   z, .bow_wow_not_following                ; $41BA: $28 $03
 
     jp   label_005_4297                           ; $41BC: $C3 $97 $42
 
-jr_005_41BF:
+.bow_wow_not_following
     ld   hl, wEntitiesSpeedZTable                 ; $41BF: $21 $20 $C3
     add  hl, bc                                   ; $41C2: $09
     ld   [hl], $20                                ; $41C3: $36 $20
@@ -273,35 +316,35 @@ jr_005_41BF:
 
 func_005_41CF::
     call GetEntityPrivateCountdown1               ; $41CF: $CD $00 $0C
-    jr   nz, jr_005_41DA                          ; $41D2: $20 $06
+    jr   nz, .jr_41DA                             ; $41D2: $20 $06
 
     ld   [hl], $20                                ; $41D4: $36 $20
     call IncrementEntityState                     ; $41D6: $CD $12 $3B
     ld   [hl], b                                  ; $41D9: $70
 
-jr_005_41DA:
-    ldh  a, [hMultiPurposeG]                               ; $41DA: $F0 $E8
+.jr_41DA
+    ldh  a, [hMultiPurposeG]                      ; $41DA: $F0 $E8
     and  a                                        ; $41DC: $A7
-    jr   z, jr_005_41E5                           ; $41DD: $28 $06
+    jr   z, .jr_41E5                              ; $41DD: $28 $06
 
     ld   hl, wEntitiesSpeedZTable                 ; $41DF: $21 $20 $C3
     add  hl, bc                                   ; $41E2: $09
     ld   [hl], $10                                ; $41E3: $36 $10
 
-jr_005_41E5:
+.jr_41E5
     call UpdateEntityPosWithSpeed_05              ; $41E5: $CD $B1 $7A
     jp   func_005_4228                            ; $41E8: $C3 $28 $42
 
 func_005_41EB::
     call GetEntityTransitionCountdown             ; $41EB: $CD $05 $0C
-    jr   z, jr_005_41F9                           ; $41EE: $28 $09
+    jr   z, .jr_41F9                              ; $41EE: $28 $09
 
     call UpdateEntityPosWithSpeed_05              ; $41F0: $CD $B1 $7A
     call func_005_4228                            ; $41F3: $CD $28 $42
     dec  e                                        ; $41F6: $1D
     jr   z, jr_005_4206                           ; $41F7: $28 $0D
 
-jr_005_41F9:
+.jr_41F9
     call ClearEntitySpeed                         ; $41F9: $CD $7F $3D
     call IncrementEntityState                     ; $41FC: $CD $12 $3B
     ld   [hl], $03                                ; $41FF: $36 $03
@@ -317,7 +360,7 @@ jr_005_4206:
 
 func_005_420E::
     call GetEntityTransitionCountdown             ; $420E: $CD $05 $0C
-    jr   nz, jr_005_4227                          ; $4211: $20 $14
+    jr   nz, ret_005_4227                         ; $4211: $20 $14
 
     call GetRandomByte                            ; $4213: $CD $0D $28
     and  $3F                                      ; $4216: $E6 $3F
@@ -325,15 +368,15 @@ func_005_420E::
     ld   [hl], a                                  ; $421A: $77
     ld   a, [wIsBowWowFollowingLink]              ; $421B: $FA $56 $DB
     and  a                                        ; $421E: $A7
-    jr   z, jr_005_4223                           ; $421F: $28 $02
+    jr   z, .bow_wow_not_following                ; $421F: $28 $02
 
     ld   [hl], $10                                ; $4221: $36 $10
 
-jr_005_4223:
+.bow_wow_not_following
     call IncrementEntityState                     ; $4223: $CD $12 $3B
     ld   [hl], b                                  ; $4226: $70
 
-jr_005_4227:
+ret_005_4227:
     ret                                           ; $4227: $C9
 
 func_005_4228::
@@ -346,13 +389,13 @@ func_005_4228::
     sub  [hl]                                     ; $4233: $96
     add  $20                                      ; $4234: $C6 $20
     cp   $40                                      ; $4236: $FE $40
-    jr   c, jr_005_423E                           ; $4238: $38 $04
+    jr   c, .jr_423E                              ; $4238: $38 $04
 
     ldh  a, [hActiveEntityPosX]                   ; $423A: $F0 $EE
     ld   [hl], a                                  ; $423C: $77
     inc  e                                        ; $423D: $1C
 
-jr_005_423E:
+.jr_423E
     ld   hl, wEntitiesPrivateState2Table          ; $423E: $21 $C0 $C2
     add  hl, bc                                   ; $4241: $09
     ld   a, [hl]                                  ; $4242: $7E
@@ -361,13 +404,13 @@ jr_005_423E:
     sub  [hl]                                     ; $4247: $96
     add  $20                                      ; $4248: $C6 $20
     cp   $40                                      ; $424A: $FE $40
-    jr   c, jr_005_4252                           ; $424C: $38 $04
+    jr   c, .ret_4252                             ; $424C: $38 $04
 
     ldh  a, [hActiveEntityPosY]                   ; $424E: $F0 $EF
     ld   [hl], a                                  ; $4250: $77
     inc  e                                        ; $4251: $1C
 
-jr_005_4252:
+.ret_4252
     ret                                           ; $4252: $C9
 
 label_005_4253:
@@ -403,11 +446,11 @@ jr_005_4268:
     ld   a, [wIsBowWowFollowingLink]              ; $427E: $FA $56 $DB
     and  a                                        ; $4281: $A7
     ld   a, $4E                                   ; $4282: $3E $4E
-    jr   nz, jr_005_4288                          ; $4284: $20 $02
+    jr   nz, .bow_wow_not_at_home                 ; $4284: $20 $02
 
     ld   a, $7E                                   ; $4286: $3E $7E
 
-jr_005_4288:
+.bow_wow_not_at_home
     ld   [de], a                                  ; $4288: $12
     inc  de                                       ; $4289: $13
     ld   a, $00                                   ; $428A: $3E $00
@@ -424,20 +467,20 @@ jr_005_428E:
 
 label_005_4297:
     ld   a, [wIsBowWowFollowingLink]              ; $4297: $FA $56 $DB
-    cp   $80                                      ; $429A: $FE $80
+    cp   BOW_WOW_KIDNAPPED                        ; $429A: $FE $80
     jp   z, label_005_432F                        ; $429C: $CA $2F $43
 
     call GetRandomByte                            ; $429F: $CD $0D $28
     ld   d, b                                     ; $42A2: $50
     and  $01                                      ; $42A3: $E6 $01
-    jr   nz, jr_005_42AF                          ; $42A5: $20 $08
+    jr   nz, .jr_42AF                             ; $42A5: $20 $08
 
     ld   e, $0F                                   ; $42A7: $1E $0F
     ld   a, $FF                                   ; $42A9: $3E $FF
     ldh  [hMultiPurpose0], a                      ; $42AB: $E0 $D7
     jr   jr_005_42B7                              ; $42AD: $18 $08
 
-jr_005_42AF:
+.jr_42AF
     ld   e, $00                                   ; $42AF: $1E $00
     ld   a, $01                                   ; $42B1: $3E $01
     ldh  [hMultiPurpose0], a                      ; $42B3: $E0 $D7
@@ -449,31 +492,31 @@ jr_005_42B7:
 jr_005_42B9:
     ld   a, e                                     ; $42B9: $7B
     cp   c                                        ; $42BA: $B9
-    jr   z, jr_005_4323                           ; $42BB: $28 $66
+    jr   z, .jr_4323                              ; $42BB: $28 $66
 
     ld   hl, wEntitiesStatusTable                 ; $42BD: $21 $80 $C2
     add  hl, de                                   ; $42C0: $19
     ld   a, [hl]                                  ; $42C1: $7E
     and  a                                        ; $42C2: $A7
-    jr   z, jr_005_4323                           ; $42C3: $28 $5E
+    jr   z, .jr_4323                              ; $42C3: $28 $5E
 
     cp   $01                                      ; $42C5: $FE $01
-    jr   z, jr_005_4323                           ; $42C7: $28 $5A
+    jr   z, .jr_4323                              ; $42C7: $28 $5A
 
     ld   hl, wEntitiesSpriteVariantTable          ; $42C9: $21 $B0 $C3
     add  hl, de                                   ; $42CC: $19
     ld   a, [hl]                                  ; $42CD: $7E
     dec  a                                        ; $42CE: $3D
-    jr   z, jr_005_4323                           ; $42CF: $28 $52
+    jr   z, .jr_4323                              ; $42CF: $28 $52
 
     push de                                       ; $42D1: $D5
     ld   hl, wEntitiesTypeTable                   ; $42D2: $21 $A0 $C3
     add  hl, de                                   ; $42D5: $19
     ld   e, [hl]                                  ; $42D6: $5E
-    call CanBowWowEatEntity                               ; $42D7: $CD $25 $39
+    call CanBowWowEatEntity                       ; $42D7: $CD $25 $39
     pop  de                                       ; $42DA: $D1
     and  a                                        ; $42DB: $A7
-    jr   z, jr_005_4323                           ; $42DC: $28 $45
+    jr   z, .jr_4323                              ; $42DC: $28 $45
 
     ld   hl, wEntitiesPosXTable                   ; $42DE: $21 $00 $C2
     add  hl, de                                   ; $42E1: $19
@@ -481,7 +524,7 @@ jr_005_42B9:
     sub  [hl]                                     ; $42E4: $96
     add  $2F                                      ; $42E5: $C6 $2F
     cp   $5E                                      ; $42E7: $FE $5E
-    jr   nc, jr_005_4323                          ; $42E9: $30 $38
+    jr   nc, .jr_4323                             ; $42E9: $30 $38
 
     ld   hl, wEntitiesPosYTable                   ; $42EB: $21 $10 $C2
     add  hl, de                                   ; $42EE: $19
@@ -489,10 +532,10 @@ jr_005_42B9:
     sub  [hl]                                     ; $42F1: $96
     add  $2F                                      ; $42F2: $C6 $2F
     cp   $5E                                      ; $42F4: $FE $5E
-    jr   nc, jr_005_4323                          ; $42F6: $30 $2B
+    jr   nc, .jr_4323                             ; $42F6: $30 $2B
 
     ld   a, e                                     ; $42F8: $7B
-    ld   [$D152], a                               ; $42F9: $EA $52 $D1
+    ld   [wD152], a                               ; $42F9: $EA $52 $D1
     ldh  a, [hLinkPositionY]                      ; $42FC: $F0 $99
     push af                                       ; $42FE: $F5
     ldh  a, [hLinkPositionX]                      ; $42FF: $F0 $98
@@ -516,12 +559,12 @@ jr_005_42B9:
     ld   [hl], $04                                ; $4320: $36 $04
     ret                                           ; $4322: $C9
 
-jr_005_4323:
-    ld   hl, hMultiPurpose0                            ; $4323: $21 $D7 $FF
+.jr_4323
+    ld   hl, hMultiPurpose0                       ; $4323: $21 $D7 $FF
     ld   a, e                                     ; $4326: $7B
     add  [hl]                                     ; $4327: $86
     ld   e, a                                     ; $4328: $5F
-    ld   hl, hMultiPurpose1                            ; $4329: $21 $D8 $FF
+    ld   hl, hMultiPurpose1                       ; $4329: $21 $D8 $FF
     cp   [hl]                                     ; $432C: $BE
     jr   nz, jr_005_42B9                          ; $432D: $20 $8A
 
@@ -531,7 +574,7 @@ label_005_432F:
     ret                                           ; $4334: $C9
 
 label_005_4335:
-    ld   a, [$D152]                               ; $4335: $FA $52 $D1
+    ld   a, [wD152]                               ; $4335: $FA $52 $D1
     ld   e, a                                     ; $4338: $5F
     ld   d, b                                     ; $4339: $50
     ld   hl, wEntitiesStatusTable                 ; $433A: $21 $80 $C2
@@ -560,7 +603,7 @@ label_005_4335:
     add  hl, de                                   ; $435C: $19
     ld   a, [hl]                                  ; $435D: $7E
     cp   $3D                                      ; $435E: $FE $3D
-    jr   nz, jr_005_4380                          ; $4360: $20 $1E
+    jr   nz, .jr_4380                             ; $4360: $20 $1E
 
     ld   hl, wEntitiesPrivateState4Table          ; $4362: $21 $40 $C4
     add  hl, de                                   ; $4365: $19
@@ -581,9 +624,9 @@ label_005_4335:
     ret  nz                                       ; $4378: $C0
 
     ld   [hl], $80                                ; $4379: $36 $80
-    jp_open_dialog $115                           ; $437B
+    jp_open_dialog Dialog115                      ; $437B
 
-jr_005_4380:
+.jr_4380
     ld   hl, wEntitiesFlashCountdownTable         ; $4380: $21 $20 $C4
     add  hl, de                                   ; $4383: $19
     ld   a, [hl]                                  ; $4384: $7E
@@ -596,17 +639,17 @@ jr_005_4380:
     add  hl, de                                   ; $438E: $19
     ld   a, [hl]                                  ; $438F: $7E
     cp   $AD                                      ; $4390: $FE $AD
-    jr   nz, jr_005_43A0                          ; $4392: $20 $0C
+    jr   nz, .jr_43A0                             ; $4392: $20 $0C
 
     ld   hl, wEntitiesFlashCountdownTable         ; $4394: $21 $20 $C4
     add  hl, de                                   ; $4397: $19
     ld   [hl], $18                                ; $4398: $36 $18
-    ld   hl, wEntitiesUnknowTableY                ; $439A: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $439A: $21 $D0 $C3
     add  hl, de                                   ; $439D: $19
     inc  [hl]                                     ; $439E: $34
     ret                                           ; $439F: $C9
 
-jr_005_43A0:
+.jr_43A0
     push bc                                       ; $43A0: $C5
     ld   c, e                                     ; $43A1: $4B
     ld   b, d                                     ; $43A2: $42
@@ -639,14 +682,14 @@ jr_005_43C6:
     jr   c, jr_005_43D8                           ; $43CC: $38 $0A
 
     bit  7, a                                     ; $43CE: $CB $7F
-    jr   nz, jr_005_43D6                          ; $43D0: $20 $04
+    jr   nz, .jr_43D6                             ; $43D0: $20 $04
 
     inc  [hl]                                     ; $43D2: $34
     inc  [hl]                                     ; $43D3: $34
     inc  [hl]                                     ; $43D4: $34
     inc  [hl]                                     ; $43D5: $34
 
-jr_005_43D6:
+.jr_43D6
     dec  [hl]                                     ; $43D6: $35
     dec  [hl]                                     ; $43D7: $35
 
@@ -668,14 +711,14 @@ jr_005_43E5:
     jr   c, jr_005_43F7                           ; $43EB: $38 $0A
 
     bit  7, a                                     ; $43ED: $CB $7F
-    jr   nz, jr_005_43F5                          ; $43EF: $20 $04
+    jr   nz, .jr_43F5                             ; $43EF: $20 $04
 
     inc  [hl]                                     ; $43F1: $34
     inc  [hl]                                     ; $43F2: $34
     inc  [hl]                                     ; $43F3: $34
     inc  [hl]                                     ; $43F4: $34
 
-jr_005_43F5:
+.jr_43F5
     dec  [hl]                                     ; $43F5: $35
     dec  [hl]                                     ; $43F6: $35
 
@@ -693,15 +736,15 @@ func_005_43FE::
     and  a                                        ; $4401: $A7
     ret  z                                        ; $4402: $C8
 
-    cp   $80                                      ; $4403: $FE $80
+    cp   BOW_WOW_KIDNAPPED                        ; $4403: $FE $80
     ret  z                                        ; $4405: $C8
 
     ldh  a, [hLinkSpeedY]                         ; $4406: $F0 $9B
     ld   hl, hLinkSpeedX                          ; $4408: $21 $9A $FF
     or   [hl]                                     ; $440B: $B6
-    ld   hl, hLinkVelocityZ                                ; $440C: $21 $A3 $FF
+    ld   hl, hLinkVelocityZ                       ; $440C: $21 $A3 $FF
     or   [hl]                                     ; $440F: $B6
-    jp   z, jr_005_44CA                           ; $4410: $CA $CA $44
+    jp   z, ret_005_44CA                          ; $4410: $CA $CA $44
 
     ld   hl, wEntitiesPrivateState1Table          ; $4413: $21 $B0 $C2
     add  hl, bc                                   ; $4416: $09
@@ -724,7 +767,7 @@ jr_005_442D:
     jr   c, jr_005_4448                           ; $4433: $38 $13
 
     bit  7, a                                     ; $4435: $CB $7F
-    jr   nz, jr_005_443F                          ; $4437: $20 $06
+    jr   nz, .jr_443F                             ; $4437: $20 $06
 
     inc  [hl]                                     ; $4439: $34
     inc  [hl]                                     ; $443A: $34
@@ -733,7 +776,7 @@ jr_005_442D:
     inc  [hl]                                     ; $443D: $34
     inc  [hl]                                     ; $443E: $34
 
-jr_005_443F:
+.jr_443F
     dec  [hl]                                     ; $443F: $35
     dec  [hl]                                     ; $4440: $35
     dec  [hl]                                     ; $4441: $35
@@ -761,7 +804,7 @@ jr_005_4455:
     jr   c, jr_005_4473                           ; $445B: $38 $16
 
     bit  7, a                                     ; $445D: $CB $7F
-    jr   nz, jr_005_4467                          ; $445F: $20 $06
+    jr   nz, .jr_4467                             ; $445F: $20 $06
 
     inc  [hl]                                     ; $4461: $34
     inc  [hl]                                     ; $4462: $34
@@ -770,7 +813,7 @@ jr_005_4455:
     inc  [hl]                                     ; $4465: $34
     inc  [hl]                                     ; $4466: $34
 
-jr_005_4467:
+.jr_4467
     dec  [hl]                                     ; $4467: $35
     dec  [hl]                                     ; $4468: $35
     dec  [hl]                                     ; $4469: $35
@@ -798,17 +841,17 @@ jr_005_4473:
     ld   e, $06                                   ; $4483: $1E $06
 
 jr_005_4485:
-    ld   a, [$D151]                               ; $4485: $FA $51 $D1
+    ld   a, [wD151]                               ; $4485: $FA $51 $D1
     sub  [hl]                                     ; $4488: $96
     jr   z, jr_005_4492                           ; $4489: $28 $07
 
     bit  7, a                                     ; $448B: $CB $7F
-    jr   nz, jr_005_4491                          ; $448D: $20 $02
+    jr   nz, .jr_4491                             ; $448D: $20 $02
 
     inc  [hl]                                     ; $448F: $34
     inc  [hl]                                     ; $4490: $34
 
-jr_005_4491:
+.jr_4491
     dec  [hl]                                     ; $4491: $35
 
 jr_005_4492:
@@ -821,23 +864,23 @@ jr_005_4492:
 jr_005_4499:
     ldh  a, [hMultiPurpose0]                      ; $4499: $F0 $D7
     and  $02                                      ; $449B: $E6 $02
-    jr   z, jr_005_44CA                           ; $449D: $28 $2B
+    jr   z, ret_005_44CA                          ; $449D: $28 $2B
 
     ld   hl, wD100                                ; $449F: $21 $00 $D1
     ld   e, $06                                   ; $44A2: $1E $06
 
 jr_005_44A4:
-    ld   a, [$D150]                               ; $44A4: $FA $50 $D1
+    ld   a, [wD150]                               ; $44A4: $FA $50 $D1
     sub  [hl]                                     ; $44A7: $96
     jr   z, jr_005_44B1                           ; $44A8: $28 $07
 
     bit  7, a                                     ; $44AA: $CB $7F
-    jr   nz, jr_005_44B0                          ; $44AC: $20 $02
+    jr   nz, .jr_44B0                             ; $44AC: $20 $02
 
     inc  [hl]                                     ; $44AE: $34
     inc  [hl]                                     ; $44AF: $34
 
-jr_005_44B0:
+.jr_44B0
     dec  [hl]                                     ; $44B0: $35
 
 jr_005_44B1:
@@ -858,7 +901,7 @@ func_005_44B5::
     add  hl, bc                                   ; $44C8: $09
     ld   [hl], a                                  ; $44C9: $77
 
-jr_005_44CA:
+ret_005_44CA:
     ret                                           ; $44CA: $C9
 
 func_005_44CB::
@@ -875,44 +918,44 @@ func_005_44CB::
     ld   a, [hl]                                  ; $44DA: $7E
     ld   d, a                                     ; $44DB: $57
     bit  7, a                                     ; $44DC: $CB $7F
-    jr   z, jr_005_44E2                           ; $44DE: $28 $02
+    jr   z, .jr_44E2                              ; $44DE: $28 $02
 
     cpl                                           ; $44E0: $2F
     inc  a                                        ; $44E1: $3C
 
-jr_005_44E2:
+.jr_44E2
     ld   e, a                                     ; $44E2: $5F
     ld   hl, wEntitiesSpeedYTable                 ; $44E3: $21 $50 $C2
     add  hl, bc                                   ; $44E6: $09
     ld   a, [hl]                                  ; $44E7: $7E
     bit  7, a                                     ; $44E8: $CB $7F
-    jr   z, jr_005_44EE                           ; $44EA: $28 $02
+    jr   z, .jr_44EE                              ; $44EA: $28 $02
 
     cpl                                           ; $44EC: $2F
     inc  a                                        ; $44ED: $3C
 
-jr_005_44EE:
+.jr_44EE
     cp   e                                        ; $44EE: $BB
     jr   nc, jr_005_44FE                          ; $44EF: $30 $0D
 
     bit  7, d                                     ; $44F1: $CB $7A
-    jr   nz, jr_005_44F9                          ; $44F3: $20 $04
+    jr   nz, .jr_44F9                             ; $44F3: $20 $04
 
     ld   e, $04                                   ; $44F5: $1E $04
     jr   label_005_4509                           ; $44F7: $18 $10
 
-jr_005_44F9:
+.jr_44F9
     ld   e, $02                                   ; $44F9: $1E $02
     jp   label_005_4509                           ; $44FB: $C3 $09 $45
 
 jr_005_44FE:
     bit  7, [hl]                                  ; $44FE: $CB $7E
-    jr   z, jr_005_4507                           ; $4500: $28 $05
+    jr   z, .jr_4507                              ; $4500: $28 $05
 
     ld   a, $06                                   ; $4502: $3E $06
     jp   SetEntitySpriteVariant                   ; $4504: $C3 $0C $3B
 
-jr_005_4507:
+.jr_4507
     ld   e, $00                                   ; $4507: $1E $00
 
 label_005_4509:

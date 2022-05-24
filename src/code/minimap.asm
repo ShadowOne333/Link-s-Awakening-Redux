@@ -45,7 +45,7 @@ ENDC
 
     ; Load the minimap into WRAM
     ld   de, wDungeonMinimap                      ; $673A: $11 $80 $D4
-    ld   bc, $40                                ; $673D: $01 $40 $00
+    ld   bc, $40                                  ; $673D: $01 $40 $00
     call CopyData                                 ; $6740: $CD $14 $29
     ld   d, $00                                   ; $6743: $16 $00
     ld   e, $00                                   ; $6745: $1E $00
@@ -185,7 +185,7 @@ ENDC
 
 ; Configure palette copy, then jump to do the copy
 label_002_67E5:
-    ld   a, [wMinimapLayout]                               ; $67E5: $FA $B0 $DB
+    ld   a, [wMinimapLayout]                      ; $67E5: $FA $B0 $DB
     and  $30                                      ; $67E8: $E6 $30
     swap a                                        ; $67EA: $CB $37
     JP_TABLE                                      ; $67EC: $C7
@@ -215,7 +215,7 @@ jr_002_6807:
 
 ; Configure palette copy, then jump to do the copy
 label_002_680B:
-    ld   a, [wMinimapLayout]                               ; $680B: $FA $B0 $DB
+    ld   a, [wMinimapLayout]                      ; $680B: $FA $B0 $DB
     and  $30                                      ; $680E: $E6 $30
     swap a                                        ; $6810: $CB $37
     JP_TABLE                                      ; $6812: $C7
@@ -237,7 +237,7 @@ jr_002_6823:
 
 ; Configure palette copy, then jump to do the copy
 label_002_6827:
-    ld   a, [wMinimapLayout]                               ; $6827: $FA $B0 $DB
+    ld   a, [wMinimapLayout]                      ; $6827: $FA $B0 $DB
     and  $30                                      ; $682A: $E6 $30
     swap a                                        ; $682C: $CB $37
     JP_TABLE                                      ; $682E: $C7
@@ -276,7 +276,7 @@ jr_002_6848:
     ld   c, $00                                   ; $6858: $0E $00
     ld   d, c                                     ; $685A: $51
 
-jr_002_685B:
+.loop_685B
     push hl                                       ; $685B: $E5
     ld   hl, wDungeonMinimap                      ; $685C: $21 $80 $D4
     add  hl, de                                   ; $685F: $19
@@ -287,11 +287,11 @@ jr_002_685B:
     inc  c                                        ; $6864: $0C
     ld   a, c                                     ; $6865: $79
     cp   $10                                      ; $6866: $FE $10
-    jr   z, jr_002_687D                           ; $6868: $28 $13
+    jr   z, .jr_687D                              ; $6868: $28 $13
 
     inc  hl                                       ; $686A: $23
     and  $03                                      ; $686B: $E6 $03
-    jr   nz, jr_002_685B                          ; $686D: $20 $EC
+    jr   nz, .loop_685B                           ; $686D: $20 $EC
 
     ld   a, e                                     ; $686F: $7B
     add  $04                                      ; $6870: $C6 $04
@@ -302,15 +302,15 @@ jr_002_685B:
     ld   a, $00                                   ; $6877: $3E $00
     adc  h                                        ; $6879: $8C
     ld   h, a                                     ; $687A: $67
-    jr   jr_002_685B                              ; $687B: $18 $DE
+    jr   .loop_685B                               ; $687B: $18 $DE
 
-jr_002_687D:
+.jr_687D
     xor  a                                        ; $687D: $AF
     ld   [rSVBK], a                               ; $687E: $E0 $70
     ld   [rVBK], a                                ; $6880: $E0 $4F
     ei                                            ; $6882: $FB
 
-jr_002_6883:
+.jr_6883
     pop  hl                                       ; $6883: $E1
     pop  de                                       ; $6884: $D1
 
@@ -318,7 +318,7 @@ jr_002_6885:
     ld   c, $00                                   ; $6885: $0E $00
     ld   d, c                                     ; $6887: $51
 
-jr_002_6888:
+.loop_6888
     push hl                                       ; $6888: $E5
     ld   hl, wDungeonMinimap                      ; $6889: $21 $80 $D4
     add  hl, de                                   ; $688C: $19
@@ -329,11 +329,11 @@ jr_002_6888:
     inc  c                                        ; $6891: $0C
     ld   a, c                                     ; $6892: $79
     cp   $10                                      ; $6893: $FE $10
-    jr   z, jr_002_68AA                           ; $6895: $28 $13
+    jr   z, .ret_68AA                             ; $6895: $28 $13
 
     inc  hl                                       ; $6897: $23
     and  $03                                      ; $6898: $E6 $03
-    jr   nz, jr_002_6888                          ; $689A: $20 $EC
+    jr   nz, .loop_6888                           ; $689A: $20 $EC
 
     ld   a, e                                     ; $689C: $7B
     add  $04                                      ; $689D: $C6 $04
@@ -344,7 +344,7 @@ jr_002_6888:
     ld   a, $00                                   ; $68A4: $3E $00
     adc  h                                        ; $68A6: $8C
     ld   h, a                                     ; $68A7: $67
-    jr   jr_002_6888                              ; $68A8: $18 $DE
+    jr   .loop_6888                               ; $68A8: $18 $DE
 
-jr_002_68AA:
+.ret_68AA
     ret                                           ; $68AA: $C9

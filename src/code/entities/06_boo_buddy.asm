@@ -1,9 +1,32 @@
-Data_006_7989::
-    db   $62, $20, $60, $20, $66, $20, $64, $20, $60, $00, $62, $00, $64, $00, $66, $00
-    db   $68, $00, $68, $20, $6A, $00, $6A, $20, $6E, $20, $6C, $20, $6C, $00, $6E, $00
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+BooBuddySpriteVariants::
+.variant0
+    db $62, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $60, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant2
+    db $60, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $62, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant3
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant4
+    db $68, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $68, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant5
+    db $6A, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $6A, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant6
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $6C, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant7
+    db $6C, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
 
 BooBuddyEntityHandler::
-    ld   de, Data_006_7989                        ; $79A9: $11 $89 $79
+    ld   de, BooBuddySpriteVariants               ; $79A9: $11 $89 $79
     call RenderActiveEntitySpritesPair            ; $79AC: $CD $C0 $3B
     call ReturnIfNonInteractive_06                ; $79AF: $CD $C6 $64
     call ApplyRecoilIfNeeded_06                   ; $79B2: $CD $F7 $64
@@ -40,7 +63,7 @@ BooBuddyState0Handler::
     ldh  a, [hMultiPurpose1]                      ; $79ED: $F0 $D8
     ld   hl, wEntitiesSpeedXTable                 ; $79EF: $21 $40 $C2
 
-jr_006_79F2:
+.jr_79F2
     call func_006_7A79                            ; $79F2: $CD $79 $7A
     call label_3B44                               ; $79F5: $CD $44 $3B
     jr   jr_006_7A27                              ; $79F8: $18 $2D
@@ -54,7 +77,7 @@ jr_006_79FA:
     call func_006_65A4                            ; $7A03: $CD $A4 $65
     add  $24                                      ; $7A06: $C6 $24
 
-jr_006_7A08:
+.jr_7A08
     cp   $48                                      ; $7A08: $FE $48
     jr   nc, jr_006_7A27                          ; $7A0A: $30 $1B
 
@@ -96,7 +119,7 @@ label_006_7A38:
 BooBuddyState1Handler::
     ld   a, [wC1A2]                               ; $7A3E: $FA $A2 $C1
     and  a                                        ; $7A41: $A7
-    jr   z, jr_006_7A74                           ; $7A42: $28 $30
+    jr   z, .jr_7A74                              ; $7A42: $28 $30
 
     ld   hl, wEntitiesHealthTable                 ; $7A44: $21 $60 $C3
     add  hl, bc                                   ; $7A47: $09
@@ -128,7 +151,7 @@ BooBuddyState1Handler::
     ld   [hl], a                                  ; $7A72: $77
     ret                                           ; $7A73: $C9
 
-jr_006_7A74:
+.jr_7A74
     call IncrementEntityState                     ; $7A74: $CD $12 $3B
     ld   [hl], b                                  ; $7A77: $70
     ret                                           ; $7A78: $C9
@@ -136,24 +159,24 @@ jr_006_7A74:
 func_006_7A79::
     add  hl, bc                                   ; $7A79: $09
     sub  [hl]                                     ; $7A7A: $96
-    jr   z, jr_006_7A8B                           ; $7A7B: $28 $0E
+    jr   z, ret_006_7A8B                          ; $7A7B: $28 $0E
 
     bit  7, a                                     ; $7A7D: $CB $7F
-    jr   z, jr_006_7A87                           ; $7A7F: $28 $06
+    jr   z, .jr_7A87                              ; $7A7F: $28 $06
 
     dec  [hl]                                     ; $7A81: $35
     dec  [hl]                                     ; $7A82: $35
     dec  [hl]                                     ; $7A83: $35
     dec  [hl]                                     ; $7A84: $35
-    jr   jr_006_7A8B                              ; $7A85: $18 $04
+    jr   ret_006_7A8B                             ; $7A85: $18 $04
 
-jr_006_7A87:
+.jr_7A87
     inc  [hl]                                     ; $7A87: $34
     inc  [hl]                                     ; $7A88: $34
     inc  [hl]                                     ; $7A89: $34
     inc  [hl]                                     ; $7A8A: $34
 
-jr_006_7A8B:
+ret_006_7A8B:
     ret                                           ; $7A8B: $C9
 
 func_006_7A8C::
@@ -189,12 +212,12 @@ func_006_7AB0::
 
     call func_006_6594                            ; $7AB8: $CD $94 $65
     srl  e                                        ; $7ABB: $CB $3B
-    jr   c, jr_006_7AC3                           ; $7ABD: $38 $04
+    jr   c, .jr_7AC3                              ; $7ABD: $38 $04
 
     ld   a, $06                                   ; $7ABF: $3E $06
     jr   jr_006_7AC9                              ; $7AC1: $18 $06
 
-jr_006_7AC3:
+.jr_7AC3
     ld   a, $07                                   ; $7AC3: $3E $07
     jr   jr_006_7AC9                              ; $7AC5: $18 $02
 

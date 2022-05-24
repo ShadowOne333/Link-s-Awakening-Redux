@@ -1,5 +1,7 @@
-Data_006_4E9D::
-    db   $F8, $10, $FA, $10
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+Unknown017SpriteVariants::
+    db $F8, OAM_GBC_PAL_0 | OAM_DMG_PAL_1
+    db $FA, OAM_GBC_PAL_0 | OAM_DMG_PAL_1
 
 Entity8CHandler::
     ldh  a, [hActiveEntityState]                  ; $4EA1: $F0 $F0
@@ -17,22 +19,22 @@ Entity8CHandler::
     jp   IncrementEntityState                     ; $4EB4: $C3 $12 $3B
 
 label_006_4EB7:
-    ld   de, Data_006_4E9D                        ; $4EB7: $11 $9D $4E
+    ld   de, Unknown017SpriteVariants             ; $4EB7: $11 $9D $4E
     call RenderActiveEntitySpritesPair            ; $4EBA: $CD $C0 $3B
     call ReturnIfNonInteractive_06                ; $4EBD: $CD $C6 $64
-    ldh  a, [hFFBA]                               ; $4EC0: $F0 $BA
+    ldh  a, [hMovingBlockMoverState]              ; $4EC0: $F0 $BA
     cp   $02                                      ; $4EC2: $FE $02
     jr   z, jr_006_4EF2                           ; $4EC4: $28 $2C
 
     and  a                                        ; $4EC6: $A7
     jr   z, jr_006_4EE3                           ; $4EC7: $28 $1A
 
-    ld   hl, wEntitiesUnknowTableY                ; $4EC9: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $4EC9: $21 $D0 $C3
     add  hl, bc                                   ; $4ECC: $09
     inc  [hl]                                     ; $4ECD: $34
     ld   a, [hl]                                  ; $4ECE: $7E
     cp   $0A                                      ; $4ECF: $FE $0A
-    jr   nz, jr_006_4EE2                          ; $4ED1: $20 $0F
+    jr   nz, .ret_4EE2                            ; $4ED1: $20 $0F
 
     ld   [hl], b                                  ; $4ED3: $70
     ld   a, $11                                   ; $4ED4: $3E $11
@@ -41,11 +43,11 @@ label_006_4EB7:
     add  hl, bc                                   ; $4EDB: $09
     ld   a, [hl]                                  ; $4EDC: $7E
     cp   $20                                      ; $4EDD: $FE $20
-    jr   nc, jr_006_4EE2                          ; $4EDF: $30 $01
+    jr   nc, .ret_4EE2                            ; $4EDF: $30 $01
 
     inc  [hl]                                     ; $4EE1: $34
 
-jr_006_4EE2:
+.ret_4EE2
     ret                                           ; $4EE2: $C9
 
 jr_006_4EE3:
@@ -55,10 +57,10 @@ jr_006_4EE3:
     and  a                                        ; $4EE8: $A7
     jr   z, jr_006_4F0E                           ; $4EE9: $28 $23
 
-jr_006_4EEB:
+.jr_4EEB
     ldh  a, [hFrameCounter]                       ; $4EEB: $F0 $E7
 
-jr_006_4EED:
+.jr_4EED
     and  $0F                                      ; $4EED: $E6 $0F
     jr   nz, jr_006_4EF2                          ; $4EEF: $20 $01
 
@@ -67,7 +69,7 @@ jr_006_4EED:
 jr_006_4EF2:
     ld   a, [hl]                                  ; $4EF2: $7E
     cp   $04                                      ; $4EF3: $FE $04
-    jr   nc, jr_006_4F0D                          ; $4EF5: $30 $16
+    jr   nc, .ret_4F0D                            ; $4EF5: $30 $16
 
     call CheckLinkCollisionWithEnemy_trampoline   ; $4EF7: $CD $5A $3B
     ret  nc                                       ; $4EFA: $D0
@@ -81,7 +83,7 @@ jr_006_4EF2:
     ldh  a, [hMultiPurpose1]                      ; $4F09: $F0 $D8
     ldh  [hLinkSpeedX], a                         ; $4F0B: $E0 $9A
 
-jr_006_4F0D:
+.ret_4F0D
     ret                                           ; $4F0D: $C9
 
 jr_006_4F0E:

@@ -4,7 +4,7 @@
 
 ; Special case for the sequence with Marin and Link chatting on the beach
 AnimateMarinBeachTiles::
-    ld   a, [wRequestDestinationHigh]             ; $1ACC: $FA $01 $D6
+    ld   a, [wDrawCommand]                        ; $1ACC: $FA $01 $D6
     and  a                                        ; $1ACF: $A7
     ret  nz                                       ; $1AD0: $C0
     ld   a, BANK(MarinBeachWavesTiles)            ; $1AD1: $3E $10
@@ -72,7 +72,7 @@ AnimateTiles::
     cp   GAMEPLAY_INTRO                           ; $1B14: $FE $00
     jr   nz, .introEnd                            ; $1B16: $20 $2E
     ; If there is no transfer request pending…
-    ld   a, [wRequest]                            ; $1B18: $FA $01 $D6
+    ld   a, [wDrawCommand]                        ; $1B18: $FA $01 $D6
     and  a                                        ; $1B1B: $A7
     jp   nz, .return                              ; $1B1C: $C2 $45 $1B
     ; … and the frame count is >= 4
@@ -135,7 +135,7 @@ AnimateTiles::
     ; If there is a pending request or a map transition,
     ; only animate Link's sprite.
     ld   hl, wRoomTransitionState                 ; $1B67: $21 $24 $C1
-    ld   a, [wRequest]                            ; $1B6A: $FA $01 $D6
+    ld   a, [wDrawCommand]                        ; $1B6A: $FA $01 $D6
     or   [hl]                                     ; $1B6D: $B6
     jp   nz, DrawLinkSpriteAndReturn              ; $1B6E: $C2 $2E $1D
 
@@ -528,9 +528,9 @@ label_1D8C::
 
 label_1D95::
     ldh  a, [hLinkAnimationState]                 ; $1D95: $F0 $9D
-    cp   LINK_ANIMATION_STATE_HOLD_SWIMMING_2          ; $1D97: $FE $4E
+    cp   LINK_ANIMATION_STATE_HOLD_SWIMMING_2     ; $1D97: $FE $4E
     jr   z, label_1D9F                            ; $1D99: $28 $04
-    cp   LINK_ANIMATION_STATE_MOVING_SWIMMING_2          ; $1D9B: $FE $4F
+    cp   LINK_ANIMATION_STATE_MOVING_SWIMMING_2   ; $1D9B: $FE $4F
     jr   nz, label_1DA1                           ; $1D9D: $20 $02
 
 label_1D9F::
@@ -583,9 +583,9 @@ label_1DD2::
 
 label_1DDB::
     ldh  a, [hLinkAnimationState]                 ; $1DDB: $F0 $9D
-    cp   LINK_ANIMATION_STATE_HOLD_SWIMMING_2          ; $1DDD: $FE $4E
+    cp   LINK_ANIMATION_STATE_HOLD_SWIMMING_2     ; $1DDD: $FE $4E
     jr   z, label_1DE5                            ; $1DDF: $28 $04
-    cp   LINK_ANIMATION_STATE_MOVING_SWIMMING_2          ; $1DE1: $FE $4F
+    cp   LINK_ANIMATION_STATE_MOVING_SWIMMING_2   ; $1DE1: $FE $4F
     jr   nz, label_1DE7                           ; $1DE3: $20 $02
 
 label_1DE5::

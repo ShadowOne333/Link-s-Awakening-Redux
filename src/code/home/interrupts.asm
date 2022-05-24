@@ -184,11 +184,11 @@ LoadRequestedGfx::
     call LCDOff                                   ; $043A: $CD $CF $28
     callsb LoadBGMapAttributes                    ; $043D: $3E $24 $EA $00 $21 $CD $2C $5C
 
-    ; Read and execute a wRequest for loading wBGMapToLoad.
+    ; Read and execute a wDrawCommand for loading wBGMapToLoad.
     callsb GetBGCopyRequest                       ; $0445: $3E $20 $EA $00 $21 $CD $77 $45
     ld   a, BANK(BGTilemaps)                      ; $044D: $3E $08
     ld   [MBC3SelectBank], a                      ; $044F: $EA $00 $21
-    call ExecuteBGCopyRequest.noMapTransition     ; $0452: $CD $2D $29
+    call ExecuteDrawCommands.noRoomTransition     ; $0452: $CD $2D $29
 
     ; Restore tilesets bank
     ld   a, $0C                                   ; $0455: $3E $0C
@@ -268,7 +268,7 @@ InterruptVBlank::
     jr   nc, .renderDialogText                    ; $04A0: $30 $0A
     ; DialogState < 5
     ; Open dialog
-    call label_23E4                               ; $04A2: $CD $E4 $23
+    call func_23E4                                ; $04A2: $CD $E4 $23
     ld   hl, wDialogState                         ; $04A5: $21 $9F $C1
     inc  [hl]  ; Increment DialogState            ; $04A8: $34
     jp   .vblankDone                              ; $04A9: $C3 $69 $05
@@ -375,7 +375,7 @@ InterruptVBlank::
     add  hl, de                                   ; $0517: $19
     ld   a, [hl]                                  ; $0518: $7E
     ; Store the stage to wSwitchableObjectAnimationStage
-    ld   [wSwitchableObjectAnimationStage], a                               ; $0519: $EA $F8 $D6
+    ld   [wSwitchableObjectAnimationStage], a     ; $0519: $EA $F8 $D6
 
     call UpdateSwitchBlockTiles                   ; $051C: $CD $D7 $1E
 
@@ -396,13 +396,13 @@ InterruptVBlank::
     callsb func_024_5C1A                          ; $0530: $3E $24 $EA $00 $21 $CD $1A $5C
 .gbcEnd
 
-    ld   de, wRequest                             ; $0538: $11 $01 $D6
-    call ExecuteBGCopyRequest ; Load BG column tiles ; $053B: $CD $27 $29
+    ld   de, wDrawCommand                         ; $0538: $11 $01 $D6
+    call ExecuteDrawCommands; Load BG column tiles ; $053B: $CD $27 $29
     xor  a                                        ; $053E: $AF
-    ld   [wRequests], a                           ; $053F: $EA $00 $D6
-    ld   [wRequest], a                            ; $0542: $EA $01 $D6
-    ld   [wDC90], a                               ; $0545: $EA $90 $DC
-    ld   [wDC91], a                               ; $0548: $EA $91 $DC
+    ld   [wDrawCommandsSize], a                   ; $053F: $EA $00 $D6
+    ld   [wDrawCommand], a                        ; $0542: $EA $01 $D6
+    ld   [wDrawCommandsAltSize], a                ; $0545: $EA $90 $DC
+    ld   [wDrawCommandAlt], a                     ; $0548: $EA $91 $DC
 
     ; On Overworld, copy some palette data to OAM buffer
     callsb func_036_72BA                          ; $054B: $3E $36 $EA $00 $21 $CD $BA $72
@@ -440,7 +440,7 @@ InterruptVBlank::
 PhotoAlbumVBlankHandler::
     ld   a, [wCurrentBank]                        ; $0577: $FA $AF $DB
     push af                                       ; $057A: $F5
-    ldh  a, [hIsRenderingFrame]                     ; $057B: $F0 $FD
+    ldh  a, [hIsRenderingFrame]                   ; $057B: $F0 $FD
     and  a                                        ; $057D: $A7
     jr   nz, .clearBGTilesFlag                    ; $057E: $20 $2B
 
@@ -453,13 +453,13 @@ PhotoAlbumVBlankHandler::
     callsw func_024_5C1A                          ; $0590: $3E $24 $CD $0C $08 $CD $1A $5C
 .gbcEnd
 
-    ld   de, wRequest                             ; $0598: $11 $01 $D6
-    call ExecuteBGCopyRequest                     ; $059B: $CD $27 $29
+    ld   de, wDrawCommand                         ; $0598: $11 $01 $D6
+    call ExecuteDrawCommands                      ; $059B: $CD $27 $29
     xor  a                                        ; $059E: $AF
-    ld   [wRequests], a                           ; $059F: $EA $00 $D6
-    ld   [wRequest], a                            ; $05A2: $EA $01 $D6
-    ld   [wDC90], a                               ; $05A5: $EA $90 $DC
-    ld   [wDC91], a                               ; $05A8: $EA $91 $DC
+    ld   [wDrawCommandsSize], a                   ; $059F: $EA $00 $D6
+    ld   [wDrawCommand], a                        ; $05A2: $EA $01 $D6
+    ld   [wDrawCommandsAltSize], a                ; $05A5: $EA $90 $DC
+    ld   [wDrawCommandAlt], a                     ; $05A8: $EA $91 $DC
 
 .clearBGTilesFlag
     callsw PrinterInterruptVBlank                 ; $05AB: $3E $28 $CD $0C $08 $CD $16 $46
@@ -490,17 +490,17 @@ LoadTiles::
     and  a                                        ; $05BE: $A7
     jp   z, LoadEntityTiles                       ; $05BF: $CA $9E $06
 
-    cp   $07                                      ; $05C2: $FE $07
+    cp   TILESET_LOAD_INVENTORY                   ; $05C2: $FE $07
     jp   z, LoadInventorySirenInstruments         ; $05C4: $CA $B0 $07
-    cp   $03                                      ; $05C7: $FE $03
+    cp   TILESET_LOAD_PIECE_OF_HEART_1            ; $05C7: $FE $03
     jp   z, LoadPieceOfHeartMeterTiles1           ; $05C9: $CA $62 $00
-    cp   $04                                      ; $05CC: $FE $04
+    cp   TILESET_LOAD_PIECE_OF_HEART_2            ; $05CC: $FE $04
     jp   z, LoadPieceOfHeartMeterTiles2           ; $05CE: $CA $6A $00
-    cp   $05                                      ; $05D1: $FE $05
+    cp   TILESET_CLEAR_PIECE_OF_HEART_1           ; $05D1: $FE $05
     jp   z, ClearPieceOfHeartMeterTiles1          ; $05D3: $CA $72 $00
-    cp   $06                                      ; $05D6: $FE $06
+    cp   TILESET_CLEAR_PIECE_OF_HEART_2           ; $05D6: $FE $06
     jp   z, ClearPieceOfHeartMeterTiles2          ; $05D8: $CA $7A $00
-    cp   $08                                      ; $05DB: $FE $08
+    cp   TILESET_LOAD_INVENTORY_SONG_1            ; $05DB: $FE $08
     jp   nc, LoadBGTilesCommands8ToD              ; $05DD: $D2 $D3 $07
 
     ld   a, [wIsIndoor]                           ; $05E0: $FA $A5 $DB
@@ -511,7 +511,7 @@ ELSE
     jp   z, LoadOverworldBGTiles                  ; $05E4: $CA $56 $06
 ENDC
     ldh  a, [hNeedsUpdatingBGTiles]               ; $05E7: $F0 $90
-    cp   $02                                      ; $05E9: $FE $02
+    cp   TILESET_LOAD_DUNGEON_MINIMAP             ; $05E9: $FE $02
     jp   z, LoadDungeonMinimapTiles               ; $05EB: $CA $26 $08
 
     ld   a, BANK(Dungeons2Tiles)                  ; $05EE: $3E $0D
@@ -809,7 +809,7 @@ UpdateEntityTilesB::
     ret                                           ; $07AF: $C9
 
 LoadInventorySirenInstruments::
-    callsb LoadSirenInstruments                     ; $07B0: $3E $01 $EA $00 $21 $CD $B5 $6B
+    callsb LoadSirenInstruments                   ; $07B0: $3E $01 $EA $00 $21 $CD $B5 $6B
     jp   CopyTilesToPieceOfHeartMeter.restoreBank0C ; $07B8: $C3 $8B $00
 
 ; Data origin table (in bank $0C)
@@ -864,9 +864,9 @@ LoadBGTilesCommands8ToD::
     call CopyData                                 ; $07F5: $CD $14 $29
 
     ldh  a, [hNeedsUpdatingBGTiles]               ; $07F8: $F0 $90
-    cp   $0A                                      ; $07FA: $FE $0A
+    cp   TILESET_LOAD_INVENTORY_SONG_3            ; $07FA: $FE $0A
     jr   z, .clearBGTilesFlag                     ; $07FC: $28 $0A
-    cp   $0D                                      ; $07FE: $FE $0D
+    cp   TILESET_LOAD_SHARED_GFX_3                ; $07FE: $FE $0D
     jr   z, .clearBGTilesFlag                     ; $0800: $28 $06
 
     ; Increment BG Tiles flag

@@ -28,7 +28,7 @@ MermaidStatueInitHandler::
 
 MermaidStatueInteractiveHandler::
     call func_018_7D36                            ; $495A: $CD $36 $7D
-    ld   a, [$DB7F]                               ; $495D: $FA $7F $DB
+    ld   a, [wExchangingTradeSequenceItem]        ; $495D: $FA $7F $DB
     and  a                                        ; $4960: $A7
     ret  nz                                       ; $4961: $C0
 
@@ -46,25 +46,25 @@ MermaidStatueInteractiveHandler::
     ld   a, TRADING_ITEM_MAGNIFIYING_GLASS        ; $4970: $3E $0E
     ld   [wTradeSequenceItem], a                  ; $4972: $EA $0E $DB
     ld   a, $01                                   ; $4975: $3E $01
-    ld   [$DB7F], a                               ; $4977: $EA $7F $DB
+    ld   [wExchangingTradeSequenceItem], a        ; $4977: $EA $7F $DB
     ld   a, $04                                   ; $497A: $3E $04
     ldh  [hNoiseSfx], a                           ; $497C: $E0 $F4
     call GetEntityTransitionCountdown             ; $497E: $CD $05 $0C
     ld   [hl], $60                                ; $4981: $36 $60
-    call SetRoomStatus20                            ; $4983: $CD $B9 $7F
-    call_open_dialog $116                         ; $4986
+    call SetRoomStatus20                          ; $4983: $CD $B9 $7F
+    call_open_dialog Dialog116                    ; $4986
 
     jp   IncrementEntityState                     ; $498B: $C3 $12 $3B
 
 .alreadyHasMagnifyingGlass
-    jp_open_dialog $19C                           ; $498E
+    jp_open_dialog Dialog19C                      ; $498E
 
 MermaidStatueOpeningHandler::
     ld   a, $02                                   ; $4993: $3E $02
     ldh  [hLinkInteractiveMotionBlocked], a       ; $4995: $E0 $A1
     ld   [wC167], a                               ; $4997: $EA $67 $C1
     call GetEntityTransitionCountdown             ; $499A: $CD $05 $0C
-    jr   nz, jr_018_49AD                          ; $499D: $20 $0E
+    jr   nz, .jr_49AD                             ; $499D: $20 $0E
 
     call IncrementEntityState                     ; $499F: $CD $12 $3B
     ld   [hl], $01                                ; $49A2: $36 $01
@@ -74,14 +74,14 @@ MermaidStatueOpeningHandler::
     ld   [wC167], a                               ; $49A9: $EA $67 $C1
     ret                                           ; $49AC: $C9
 
-jr_018_49AD:
+.jr_49AD
     cp   $40                                      ; $49AD: $FE $40
-    jr   nz, jr_018_49B6                          ; $49AF: $20 $05
+    jr   nz, .jr_49B6                             ; $49AF: $20 $05
 
     ld   hl, hNoiseSfx                            ; $49B1: $21 $F4 $FF
     ld   [hl], $11                                ; $49B4: $36 $11
 
-jr_018_49B6:
+.jr_49B6
     ret  nc                                       ; $49B6: $D0
 
     ld   hl, wEntitiesSpeedXTable                 ; $49B7: $21 $40 $C2

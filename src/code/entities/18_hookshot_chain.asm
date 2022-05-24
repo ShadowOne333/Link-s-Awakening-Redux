@@ -17,7 +17,7 @@ HookshotChainEntityHandler::
     inc  a                                        ; $7BF5: $3C
     ld   [wC1A6], a                               ; $7BF6: $EA $A6 $C1
     xor  a                                        ; $7BF9: $AF
-    call ResetSpinAttack                                ; $7BFA: $CD $AF $0C
+    call ResetSpinAttack                          ; $7BFA: $CD $AF $0C
     ld   [wIgnoreLinkCollisionsCountdown], a      ; $7BFD: $EA $3E $C1
     ldh  a, [hLinkDirection]                      ; $7C00: $F0 $9E
     ld   e, a                                     ; $7C02: $5F
@@ -30,12 +30,12 @@ HookshotChainEntityHandler::
     call ReturnIfNonInteractive_18                ; $7C0F: $CD $E8 $7D
     ldh  a, [hFrameCounter]                       ; $7C12: $F0 $E7
     and  $03                                      ; $7C14: $E6 $03
-    jr   nz, jr_018_7C1C                          ; $7C16: $20 $04
+    jr   nz, .jr_7C1C                             ; $7C16: $20 $04
 
     ld   a, $0B                                   ; $7C18: $3E $0B
     ldh  [hNoiseSfx], a                           ; $7C1A: $E0 $F4
 
-jr_018_7C1C:
+.jr_7C1C
     ldh  a, [hActiveEntityState]                  ; $7C1C: $F0 $F0
     and  a                                        ; $7C1E: $A7
     jr   z, jr_018_7C39                           ; $7C1F: $28 $18
@@ -45,7 +45,7 @@ IF __PATCH_0__
     add  hl, bc
     ldh  a, [hLinkPositionX]
     cp   [hl]
-    jr   nz, jr_018_7C21
+    jr   nz, .jr_7C21
 
     ld   hl, wEntitiesPosYTable
     add  hl, bc
@@ -54,7 +54,7 @@ IF __PATCH_0__
     jr   z, jr_018_7C39
 ENDC
 
-jr_018_7C21:
+.jr_7C21
     ld   a, $30                                   ; $7C21: $3E $30
     call GetVectorTowardsLink_trampoline          ; $7C23: $CD $B5 $3B
     ldh  a, [hMultiPurpose0]                      ; $7C26: $F0 $D7
@@ -80,12 +80,12 @@ jr_018_7C39:
 
 jr_018_7C46:
     call CheckLinkCollisionWithEnemy_trampoline   ; $7C46: $CD $5A $3B
-    jr   nc, jr_018_7CAE                          ; $7C49: $30 $63
+    jr   nc, ret_018_7CAE                         ; $7C49: $30 $63
 
     xor  a                                        ; $7C4B: $AF
     ld   [wC1C6], a                               ; $7C4C: $EA $C6 $C1
     call ClearEntityStatusBank18                  ; $7C4F: $CD $08 $7F
-    jr   jr_018_7CAE                              ; $7C52: $18 $5A
+    jr   ret_018_7CAE                             ; $7C52: $18 $5A
 
 jr_018_7C54:
     ld   a, $06                                   ; $7C54: $3E $06
@@ -100,53 +100,53 @@ jr_018_7C54:
     call label_3B23                               ; $7C64: $CD $23 $3B
     ld   a, [wIsIndoor]                           ; $7C67: $FA $A5 $DB
     and  a                                        ; $7C6A: $A7
-    jr   z, jr_018_7CAE                           ; $7C6B: $28 $41
+    jr   z, ret_018_7CAE                          ; $7C6B: $28 $41
 
     call func_018_6493                            ; $7C6D: $CD $93 $64
-    ld   hl, wEntitiesSpeedYTable                       ; $7C70: $21 $50 $C2
+    ld   hl, wEntitiesSpeedYTable                 ; $7C70: $21 $50 $C2
     add  hl, bc                                   ; $7C73: $09
     ld   a, [hl]                                  ; $7C74: $7E
     and  a                                        ; $7C75: $A7
-    jr   z, jr_018_7CAE                           ; $7C76: $28 $36
+    jr   z, ret_018_7CAE                          ; $7C76: $28 $36
 
     ld   e, $9E                                   ; $7C78: $1E $9E
     bit  7, a                                     ; $7C7A: $CB $7F
-    jr   nz, jr_018_7C80                          ; $7C7C: $20 $02
+    jr   nz, .jr_7C80                             ; $7C7C: $20 $02
 
     ld   e, $9F                                   ; $7C7E: $1E $9F
 
-jr_018_7C80:
+.jr_7C80
     ldh  a, [hObjectUnderEntity]                  ; $7C80: $F0 $AF
     cp   e                                        ; $7C82: $BB
-    jr   nz, jr_018_7CAE                          ; $7C83: $20 $29
+    jr   nz, ret_018_7CAE                         ; $7C83: $20 $29
 
     ld   a, ENTITY_68                             ; $7C85: $3E $68
     call SpawnNewEntity_trampoline                ; $7C87: $CD $86 $3B
-    ld   hl, wEntitiesPosXTable                         ; $7C8A: $21 $00 $C2
+    ld   hl, wEntitiesPosXTable                   ; $7C8A: $21 $00 $C2
     add  hl, de                                   ; $7C8D: $19
-    ldh  a, [hSwordIntersectedAreaX]              ; $7C8E: $F0 $CE
+    ldh  a, [hIntersectedObjectLeft]              ; $7C8E: $F0 $CE
     add  $08                                      ; $7C90: $C6 $08
     ld   [hl], a                                  ; $7C92: $77
-    ld   hl, wEntitiesPosYTable                         ; $7C93: $21 $10 $C2
+    ld   hl, wEntitiesPosYTable                   ; $7C93: $21 $10 $C2
     add  hl, de                                   ; $7C96: $19
-    ldh  a, [hSwordIntersectedAreaY]              ; $7C97: $F0 $CD
+    ldh  a, [hIntersectedObjectTop]               ; $7C97: $F0 $CD
     add  $10                                      ; $7C99: $C6 $10
     ld   [hl], a                                  ; $7C9B: $77
     ldh  a, [hObjectUnderEntity]                  ; $7C9C: $F0 $AF
     cp   $9E                                      ; $7C9E: $FE $9E
     ld   a, $00                                   ; $7CA0: $3E $00
-    jr   z, jr_018_7CA5                           ; $7CA2: $28 $01
+    jr   z, .jr_7CA5                              ; $7CA2: $28 $01
 
     inc  a                                        ; $7CA4: $3C
 
-jr_018_7CA5:
+.jr_7CA5
     ld   hl, wEntitiesDirectionTable              ; $7CA5: $21 $80 $C3
     add  hl, de                                   ; $7CA8: $19
     ld   [hl], a                                  ; $7CA9: $77
     call GetEntityTransitionCountdown             ; $7CAA: $CD $05 $0C
     ld   [hl], b                                  ; $7CAD: $70
 
-jr_018_7CAE:
+ret_018_7CAE:
     ret                                           ; $7CAE: $C9
 
 jr_018_7CAF:
@@ -161,12 +161,14 @@ jr_018_7CAF:
     ld   a, TRANSCIENT_VFX_SWORD_POKE             ; $7CBF: $3E $05
     jp   AddTranscientVfx                         ; $7CC1: $C3 $C7 $0C
 
-
-Data_018_7CC4::
-    db   $36, $00, $36, $20
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+HookshotChainSpriteVariants::
+.variant0
+    db $36, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $36, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 func_018_7CC8::
-    ld   de, Data_018_7CC4                        ; $7CC8: $11 $C4 $7C
+    ld   de, HookshotChainSpriteVariants          ; $7CC8: $11 $C4 $7C
     call RenderActiveEntitySpritesPair            ; $7CCB: $CD $C0 $3B
     ldh  a, [hActiveEntityPosX]                   ; $7CCE: $F0 $EE
     ld   hl, hLinkPositionX                       ; $7CD0: $21 $98 $FF
@@ -196,17 +198,17 @@ jr_018_7CF8:
     ld   hl, hFrameCounter                        ; $7CFA: $21 $E7 $FF
     xor  [hl]                                     ; $7CFD: $AE
     and  $01                                      ; $7CFE: $E6 $01
-    jr   nz, jr_018_7D09                          ; $7D00: $20 $07
+    jr   nz, .jr_7D09                             ; $7D00: $20 $07
 
     ldh  a, [hLinkPositionY]                      ; $7D02: $F0 $99
-    ld   hl, hMultiPurpose1                            ; $7D04: $21 $D8 $FF
+    ld   hl, hMultiPurpose1                       ; $7D04: $21 $D8 $FF
     add  [hl]                                     ; $7D07: $86
     ld   [de], a                                  ; $7D08: $12
 
-jr_018_7D09:
+.jr_7D09
     inc  de                                       ; $7D09: $13
     ldh  a, [hLinkPositionX]                      ; $7D0A: $F0 $98
-    ld   hl, hMultiPurpose0                            ; $7D0C: $21 $D7 $FF
+    ld   hl, hMultiPurpose0                       ; $7D0C: $21 $D7 $FF
     add  [hl]                                     ; $7D0F: $86
     add  $04                                      ; $7D10: $C6 $04
     ld   [de], a                                  ; $7D12: $12
@@ -218,11 +220,11 @@ jr_018_7D09:
     ld   [de], a                                  ; $7D1A: $12
     inc  de                                       ; $7D1B: $13
     ldh  a, [hMultiPurpose0]                      ; $7D1C: $F0 $D7
-    ld   hl, hMultiPurpose2                            ; $7D1E: $21 $D9 $FF
+    ld   hl, hMultiPurpose2                       ; $7D1E: $21 $D9 $FF
     add  [hl]                                     ; $7D21: $86
     ldh  [hMultiPurpose0], a                      ; $7D22: $E0 $D7
     ldh  a, [hMultiPurpose1]                      ; $7D24: $F0 $D8
-    ld   hl, hMultiPurpose3                            ; $7D26: $21 $DA $FF
+    ld   hl, hMultiPurpose3                       ; $7D26: $21 $DA $FF
     add  [hl]                                     ; $7D29: $86
     ldh  [hMultiPurpose1], a                      ; $7D2A: $E0 $D8
     ldh  a, [hMultiPurpose4]                      ; $7D2C: $F0 $DB

@@ -14,7 +14,7 @@ func_027_7240::
     srl  a                                        ; $7252: $CB $3F
     ld   c, a                                     ; $7254: $4F
 
-jr_027_7255:
+.loop_7255
     ldh  a, [hActiveEntityVisualPosY]             ; $7255: $F0 $EC
     add  [hl]                                     ; $7257: $86
     ld   [de], a                                  ; $7258: $12
@@ -32,17 +32,17 @@ jr_027_7255:
     ld   [de], a                                  ; $7265: $12
     inc  de                                       ; $7266: $13
     dec  c                                        ; $7267: $0D
-    jr   nz, jr_027_7255                          ; $7268: $20 $EB
+    jr   nz, .loop_7255                           ; $7268: $20 $EB
 
     pop  bc                                       ; $726A: $C1
     ld   a, [wOAMNextAvailableSlot]               ; $726B: $FA $C0 $C3
     add  c                                        ; $726E: $81
     cp   $A0                                      ; $726F: $FE $A0
-    jr   c, jr_027_7274                           ; $7271: $38 $01
+    jr   c, .jr_7274                              ; $7271: $38 $01
 
     xor  a                                        ; $7273: $AF
 
-jr_027_7274:
+.jr_7274
     ld   [wOAMNextAvailableSlot], a               ; $7274: $EA $C0 $C3
     ld   a, [wActiveEntityIndex]                  ; $7277: $FA $23 $C1
     ld   c, a                                     ; $727A: $4F
@@ -74,11 +74,11 @@ func_027_72E4::
     ld   hl, Data_027_727C                        ; $72EC: $21 $7C $72
     ldh  a, [hFrameCounter]                       ; $72EF: $F0 $E7
     and  $10                                      ; $72F1: $E6 $10
-    jr   z, jr_027_72F8                           ; $72F3: $28 $03
+    jr   z, .jr_72F8                              ; $72F3: $28 $03
 
     ld   hl, Data_027_72A4                        ; $72F5: $21 $A4 $72
 
-jr_027_72F8:
+.jr_72F8
     ld   c, $28                                   ; $72F8: $0E $28
     call func_027_7240                            ; $72FA: $CD $40 $72
     ret                                           ; $72FD: $C9
@@ -95,11 +95,11 @@ func_027_7306::
     ld   a, [hl]                                  ; $730A: $7E
     cp   $28                                      ; $730B: $FE $28
     ld   hl, Data_027_72FE                        ; $730D: $21 $FE $72
-    jr   z, jr_027_7315                           ; $7310: $28 $03
+    jr   z, .jr_7315                              ; $7310: $28 $03
 
     ld   hl, Data_027_7302                        ; $7312: $21 $02 $73
 
-jr_027_7315:
+.jr_7315
     ld   c, $04                                   ; $7315: $0E $04
     call func_027_7240                            ; $7317: $CD $40 $72
     ret                                           ; $731A: $C9
@@ -122,15 +122,15 @@ func_027_734B::
     ld   a, [hl]                                  ; $734F: $7E
     cp   $18                                      ; $7350: $FE $18
     ld   hl, Data_027_733B                        ; $7352: $21 $3B $73
-    jr   z, jr_027_7361                           ; $7355: $28 $0A
+    jr   z, .jr_7361                              ; $7355: $28 $0A
 
     ld   hl, Data_027_731B                        ; $7357: $21 $1B $73
     cp   $68                                      ; $735A: $FE $68
-    jr   z, jr_027_7361                           ; $735C: $28 $03
+    jr   z, .jr_7361                              ; $735C: $28 $03
 
     ld   hl, Data_027_732B                        ; $735E: $21 $2B $73
 
-jr_027_7361:
+.jr_7361
     ld   c, $10                                   ; $7361: $0E $10
     call func_027_7240                            ; $7363: $CD $40 $72
     ret                                           ; $7366: $C9
@@ -150,7 +150,7 @@ Data_027_7367::
     db   $08, $00, $7D, $00, $08, $08, $7D, $20   ; $73BF
 
 func_027_73C7::
-    ld   hl, wEntitiesSpriteVariantTable                                ; $73C7: $21 $B0 $C3
+    ld   hl, wEntitiesSpriteVariantTable          ; $73C7: $21 $B0 $C3
     add  hl, bc                                   ; $73CA
     ld   a, [hl]                                  ; $73CB
     sla  a                                        ; $73CC: $CB $27
@@ -220,7 +220,7 @@ func_027_74E3::
     ld   hl, wEntitiesPosYTable                   ; $74EB: $21 $10 $C2
     add  hl, bc                                   ; $74EE: $09
 
-jr_027_74EF:
+.jr_74EF
     ld   a, [hl]                                  ; $74EF: $7E
     sub  d                                        ; $74F0: $92
     ldh  [hActiveEntityVisualPosY], a             ; $74F1: $E0 $EC
@@ -237,15 +237,15 @@ jr_027_74EF:
     ld   c, $50                                   ; $7503: $0E $50
     ld   a, [wCreditsSubscene]                    ; $7505: $FA $0E $D0
     cp   $03                                      ; $7508: $FE $03
-    jr   c, jr_027_750E                           ; $750A: $38 $02
+    jr   c, .jr_750E                              ; $750A: $38 $02
 
     ld   c, $4F                                   ; $750C: $0E $4F
 
-jr_027_750E:
+.jr_750E
     call func_027_7240                            ; $750E: $CD $40 $72
     ld   b, $00                                   ; $7511: $06 $00
 
-jr_027_7513:
+.jr_7513
     ld   c, $0B                                   ; $7513: $0E $0B
     ret                                           ; $7515: $C9
 
@@ -496,14 +496,14 @@ func_027_789E::
 
     ld   a, [hl]                                  ; $78AF: $7E
     and  a                                        ; $78B0: $A7
-    jr   z, jr_027_78BB                           ; $78B1: $28 $08
+    jr   z, .jr_78BB                              ; $78B1: $28 $08
 
     dec  [hl]                                     ; $78B3: $35
     ld   a, $FF                                   ; $78B4: $3E $FF
     ld   [wD01C], a                               ; $78B6: $EA $1C $D0
     jr   jr_027_78CD                              ; $78B9: $18 $12
 
-jr_027_78BB:
+.jr_78BB
     ld   hl, wD016                                ; $78BB: $21 $16 $D0
     inc  [hl]                                     ; $78BE: $34
     ld   a, $01                                   ; $78BF: $3E $01
@@ -529,19 +529,19 @@ jr_027_78DB:
     inc  a                                        ; $78E1: $3C
     and  $01                                      ; $78E2: $E6 $01
     ld   [wD017], a                               ; $78E4: $EA $17 $D0
-    jr   nz, jr_027_78F1                          ; $78E7: $20 $08
+    jr   nz, .jr_78F1                             ; $78E7: $20 $08
 
     call func_027_7ACB                            ; $78E9: $CD $CB $7A
     call func_027_7B8F                            ; $78EC: $CD $8F $7B
     jr   jr_027_790C                              ; $78EF: $18 $1B
 
-jr_027_78F1:
+.jr_78F1
     call func_027_79E6                            ; $78F1: $CD $E6 $79
     ld   hl, wD016                                ; $78F4: $21 $16 $D0
     inc  [hl]                                     ; $78F7: $34
     ld   a, [hl]                                  ; $78F8: $7E
     cp   $40                                      ; $78F9: $FE $40
-    jr   nz, jr_027_7908                          ; $78FB: $20 $0B
+    jr   nz, .jr_7908                             ; $78FB: $20 $0B
 
     ld   a, $01                                   ; $78FD: $3E $01
     ld   [wD01D], a                               ; $78FF: $EA $1D $D0
@@ -549,7 +549,7 @@ jr_027_78F1:
     ld   [wD01C], a                               ; $7904: $EA $1C $D0
     ret                                           ; $7907: $C9
 
-jr_027_7908:
+.jr_7908
     cp   $C0                                      ; $7908: $FE $C0
     jr   z, jr_027_7910                           ; $790A: $28 $04
 
@@ -559,9 +559,9 @@ jr_027_790C:
 
 jr_027_7910:
     ld   a, $07                                   ; $7910: $3E $07
-    ldh  [hVolumeRight], a                      ; $7912: $E0 $A9
+    ldh  [hVolumeRight], a                        ; $7912: $E0 $A9
     swap a                                        ; $7914: $CB $37
-    ldh  [hVolumeLeft], a                      ; $7916: $E0 $AA
+    ldh  [hVolumeLeft], a                         ; $7916: $E0 $AA
     ld   a, $32                                   ; $7918: $3E $32
     ld   [wD466], a                               ; $791A: $EA $66 $D4
     ld   a, $90                                   ; $791D: $3E $90
@@ -577,19 +577,19 @@ func_027_7925::
     dec  [hl]                                     ; $792B: $35
     ret  nz                                       ; $792C: $C0
 
-    ldh  a, [hVolumeRight]                      ; $792D: $F0 $A9
+    ldh  a, [hVolumeRight]                        ; $792D: $F0 $A9
     dec  a                                        ; $792F: $3D
-    ldh  [hVolumeRight], a                      ; $7930: $E0 $A9
-    ldh  a, [hVolumeLeft]                      ; $7932: $F0 $AA
+    ldh  [hVolumeRight], a                        ; $7930: $E0 $A9
+    ldh  a, [hVolumeLeft]                         ; $7932: $F0 $AA
     sub  $10                                      ; $7934: $D6 $10
-    ldh  [hVolumeLeft], a                      ; $7936: $E0 $AA
-    jr   nz, jr_027_7940                          ; $7938: $20 $06
+    ldh  [hVolumeLeft], a                         ; $7936: $E0 $AA
+    jr   nz, .jr_7940                             ; $7938: $20 $06
 
     ld   a, MUSIC_SILENCE                         ; $793A: $3E $FF
     ld   [wMusicTrackToPlay], a                   ; $793C: $EA $68 $D3
     ret                                           ; $793F: $C9
 
-jr_027_7940:
+.jr_7940
     ld   a, $14                                   ; $7940: $3E $14
     ld   [hl], a                                  ; $7942: $77
     ret                                           ; $7943: $C9
@@ -631,7 +631,7 @@ func_027_79E6::
 func_027_79F2::
     ld   a, [wD466]                               ; $79F2: $FA $66 $D4
     and  a                                        ; $79F5: $A7
-    jr   nz, jr_027_7A06                          ; $79F6: $20 $0E
+    jr   nz, .jr_7A06                             ; $79F6: $20 $0E
 
     ld   a, JINGLE_SEAGULL                        ; $79F8: $3E $21
     ldh  [hJingle], a                             ; $79FA: $E0 $F2
@@ -640,7 +640,7 @@ func_027_79F2::
     add  $30                                      ; $7A01: $C6 $30
     ld   [wD466], a                               ; $7A03: $EA $66 $D4
 
-jr_027_7A06:
+.jr_7A06
     dec  a                                        ; $7A06: $3D
     ld   [wD466], a                               ; $7A07: $EA $66 $D4
     ret                                           ; $7A0A: $C9
@@ -671,10 +671,11 @@ Data_027_7A0B::
     db   $02, $02, $02, $02, $03, $03, $03, $03   ; $7ABB
     db   $04, $04, $04, $04, $05, $05, $05, $05   ; $7AC3
 
+; Fly Marin as seagull upwards?
 func_027_7ACB::
     ld   a, [wD016]                               ; $7ACB: $FA $16 $D0
     cp   $C0                                      ; $7ACE: $FE $C0
-    jr   nc, jr_027_7ADE                          ; $7AD0: $30 $0C
+    jr   nc, .jr_7ADE                             ; $7AD0: $30 $0C
 
     ld   e, a                                     ; $7AD2: $5F
     ld   d, $00                                   ; $7AD3: $16 $00
@@ -684,34 +685,37 @@ func_027_7ACB::
     ld   [wD01B], a                               ; $7ADA: $EA $1B $D0
     ret                                           ; $7ADD: $C9
 
-jr_027_7ADE:
+.jr_7ADE
     ld   hl, wD020                                ; $7ADE: $21 $20 $D0
     ld   a, [hl]                                  ; $7AE1: $7E
     and  a                                        ; $7AE2: $A7
-    jr   z, jr_027_7AE8                           ; $7AE3: $28 $03
+    jr   z, .jr_7AE8                              ; $7AE3: $28 $03
 
     dec  [hl]                                     ; $7AE5: $35
     jr   jr_027_7B07                              ; $7AE6: $18 $1F
 
-jr_027_7AE8:
-    ld   hl, wEntitiesUnknowTableY                ; $7AE8: $21 $D0 $C3
+.jr_7AE8
+    ; Increment wEntitiesInertiaTable[bc]
+    ld   hl, wEntitiesInertiaTable                ; $7AE8: $21 $D0 $C3
     add  hl, bc                                   ; $7AEB: $09
     ld   a, [hl]                                  ; $7AEC: $7E
     inc  a                                        ; $7AED: $3C
     ld   [hl], a                                  ; $7AEE: $77
-    and  $1F                                      ; $7AEF: $E6 $1F
-    jr   nz, jr_027_7AFD                          ; $7AF1: $20 $0A
 
+    ; Every 32 frames…
+    and  $1F                                      ; $7AEF: $E6 $1F
+    jr   nz, .done                                ; $7AF1: $20 $0A
+    ; if the Y speed hasn't maxed out yet…
     ld   hl, wEntitiesSpeedYTable                 ; $7AF3: $21 $50 $C2
     add  hl, bc                                   ; $7AF6: $09
     ld   a, [hl]                                  ; $7AF7: $7E
     cp   $FF                                      ; $7AF8: $FE $FF
-    jr   z, jr_027_7AFD                           ; $7AFA: $28 $01
-
+    jr   z, .done                                 ; $7AFA: $28 $01
+    ; increment the Y speed.
     inc  [hl]                                     ; $7AFC: $34
-
-jr_027_7AFD:
+.done
     call UpdateEntityPosWithSpeed_27              ; $7AFD: $CD $18 $7B
+
     ldh  a, [hActiveEntityPosX]                   ; $7B00: $F0 $EE
     cp   $B0                                      ; $7B02: $FE $B0
     jp   nc, label_027_7B51                       ; $7B04: $D2 $51 $7B
@@ -725,11 +729,11 @@ jr_027_7B07:
     inc  [hl]                                     ; $7B0F: $34
     ld   a, [hl]                                  ; $7B10: $7E
     cp   $06                                      ; $7B11: $FE $06
-    jr   nz, jr_027_7B16                          ; $7B13: $20 $01
+    jr   nz, .jr_7B16                             ; $7B13: $20 $01
 
     xor  a                                        ; $7B15: $AF
 
-jr_027_7B16:
+.jr_7B16
     ld   [hl], a                                  ; $7B16: $77
     ret                                           ; $7B17: $C9
 
@@ -1074,28 +1078,28 @@ MarinPortraitTilesTable::
 ;   wD01A:  copy step (from 0 to 5)
 LoadCreditsMarinPortraitTiles::
     ; Destination address higher byte
-    ld   a, [wD01A]                              ; $7FC5: $FA $1A $D0
-    cp   $05                                     ; $7FC8: $FE $05
-    jr   nz, .else                               ; $7FCA: $20 $04
-    ld   c, $07                                  ; $7FCC: $0E $07
-    jr   .sourceEnd                                ; $7FCE: $18 $01
+    ld   a, [wD01A]                               ; $7FC5: $FA $1A $D0
+    cp   $05                                      ; $7FC8: $FE $05
+    jr   nz, .else                                ; $7FCA: $20 $04
+    ld   c, $07                                   ; $7FCC: $0E $07
+    jr   .sourceEnd                               ; $7FCE: $18 $01
 .else
-    ld   c, a                                    ; $7FD0: $4F
+    ld   c, a                                     ; $7FD0: $4F
 .sourceEnd
 
     ; de = a * 2
-    sla  a                                       ; $7FD1: $CB $27
-    ld   e, a                                    ; $7FD3: $5F
-    ld   d, $00                                  ; $7FD4: $16 $00
-    ld   hl, MarinPortraitTilesTable             ; $7FD6: $21 $B9 $7F
-    add  hl, de                                  ; $7FD9: $19
+    sla  a                                        ; $7FD1: $CB $27
+    ld   e, a                                     ; $7FD3: $5F
+    ld   d, $00                                   ; $7FD4: $16 $00
+    ld   hl, MarinPortraitTilesTable              ; $7FD6: $21 $B9 $7F
+    add  hl, de                                   ; $7FD9: $19
 
     ; Source address higher byte
-    ld   a, [hl+]                                ; $7FDA: $2A
-    ld   b, a                                    ; $7FDB: $47
+    ld   a, [hl+]                                 ; $7FDA: $2A
+    ld   b, a                                     ; $7FDB: $47
     ; Source bank
-    ld   a, [hl]                                 ; $7FDC: $7E
+    ld   a, [hl]                                  ; $7FDC: $7E
     ; Bank to switch back after the transfer
-    ld   h, BANK(@)                              ; $7FDD: $26 $27
+    ld   h, BANK(@)                               ; $7FDD: $26 $27
     ; Execute the copy
-    jp   CopyDataToVRAM                          ; $7FDF: $C3 $13 $0A
+    jp   CopyDataToVRAM                           ; $7FDF: $C3 $13 $0A

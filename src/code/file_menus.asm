@@ -34,7 +34,7 @@ FileSelectionPrepare0::
     ld   [wTilesetToLoad], a                      ; $47EB: $EA $FE $D6
 
     xor  a                                        ; $47EE: $AF
-    ld   [wIsFileSelectionArrowShifted], a                               ; $47EF: $EA $00 $D0
+    ld   [wIsFileSelectionArrowShifted], a        ; $47EF: $EA $00 $D0
     jp   IncrementGameplaySubtypeAndReturn        ; $47F2: $C3 $D6 $44
 
 FileSelectionPrepare1::
@@ -97,13 +97,13 @@ FileSelectionPrepare5::
 
 func_001_4852::
     push de                                       ; $4852: $D5
-    ld   a, [$D600]                               ; $4853: $FA $00 $D6
+    ld   a, [wDrawCommandsSize]                   ; $4853: $FA $00 $D6
     ld   e, a                                     ; $4856: $5F
     ld   d, $00                                   ; $4857: $16 $00
-    ld   hl, $D601                                ; $4859: $21 $01 $D6
+    ld   hl, wDrawCommand                         ; $4859: $21 $01 $D6
     add  hl, de                                   ; $485C: $19
     add  a, $10                                   ; $485D: $C6 $10
-    ld   [$D600], a                               ; $485F: $EA $00 $D6
+    ld   [wDrawCommandsSize], a                   ; $485F: $EA $00 $D6
     ld   a, b                                     ; $4862: $78
     ldi  [hl], a                                  ; $4863: $22
     ld   a, c                                     ; $4864: $79
@@ -152,11 +152,11 @@ jr_001_4894::
     and  a                                        ; $4897: $A7
 
 IF LANG_EN
-    jr   jr_001_489D                              ; $4898: $18 $03
+    jr   .jr_489D                                 ; $4898: $18 $03
     dec  a                                        ; $489A: $3D
     and  $C0                                      ; $489B: $E6 $C0
 ELSE
-    jr   z, jr_001_489D
+    jr   z, .jr_489D
     dec  a
     push hl
     push bc
@@ -171,30 +171,30 @@ ENDC
     cp   $00
 ENDC
 
-jr_001_489D::
+.jr_489D::
 IF __PATCH_B__ == 1
     ld   a, $7E
-    jr   z, jr_001_48A9
+    jr   z, .jr_48A9
     ldh  a, [hRoomBank]
     cp   $02
     ld   a, $C8
-    jr   z, jr_001_48A9
+    jr   z, .jr_48A9
     inc  a
 ELIF __PATCH_B__ == 2
     ld   a, $7E
-    jr   z, jr_001_48A9
+    jr   z, .jr_48A9
     ld   a, $c9
 ELSE
     ld   a, $7E                                   ; $489D: $3E $7E
-    jr   jr_001_48A9                              ; $489F: $18 $08
+    jr   .jr_48A9                                 ; $489F: $18 $08
     ld   a, [de]                                  ; $48A1: $1A
     and  $80                                      ; $48A2: $E6 $80
     ld   a, $C8                                   ; $48A4: $3E $C8
-    jr   z, jr_001_48A9                           ; $48A6: $28 $01
+    jr   z, .jr_48A9                              ; $48A6: $28 $01
     inc  a                                        ; $48A8: $3C
 ENDC
 
-jr_001_48A9::
+.jr_48A9::
     ldi  [hl], a                                  ; $48A9: $22
     inc  de                                       ; $48AA: $13
     ldh  a, [hMultiPurpose0]                      ; $48AB: $F0 $D7
@@ -223,11 +223,11 @@ IF LANG_DE
     ldh [hLinkInteractiveMotionBlocked], a
 ENDC
     and  a                                        ; $48C5: $A7
-    ; … use background map 3,
-    ld   a, $03                                   ; $48C6: $3E $03
+    ; … draw the file selection without the copy/erase commands,
+    ld   a, TILEMAP_MENU_FILE_SELECTION           ; $48C6: $3E $03
     jr   z, .BGMapEnd                             ; $48C8: $28 $02
-    ; else use background map 4.
-    ld   a, $04                                   ; $48CA: $3E $04
+    ; … else draw the file selection with the commands.
+    ld   a, TILEMAP_MENU_FILE_SELECTION_COMMANDS  ; $48CA: $3E $04
 .BGMapEnd
 
     ; Load background and palette
@@ -266,7 +266,7 @@ IF LANG_DE
 
     xor a
     ldh [hLinkInteractiveMotionBlocked], a
-    ld hl, wRequestDestination
+    ld hl, wDrawCommand
     ld de, Data_001_48EB
     ld c, Data_001_48EB.end - Data_001_48EB
 
@@ -282,23 +282,23 @@ ENDC
     call func_001_6BA8                            ; $48E8: $CD $A8 $6B
     ldh  a, [hJoypadState]                        ; $48EB: $F0 $CC
     and  J_A | J_START                            ; $48ED: $E6 $90
-    jr   z, jr_001_48F4                           ; $48EF: $28 $03
+    jr   z, .jr_48F4                              ; $48EF: $28 $03
     jp   IncrementGameplaySubtypeAndReturn        ; $48F1: $C3 $D6 $44
 
-jr_001_48F4::
+.jr_48F4::
     ldh  a, [hJoypadState]                        ; $48F4: $F0 $CC
-    and  J_UP | J_DOWN                ; $48F6: $E6 $0C
+    and  J_UP | J_DOWN                            ; $48F6: $E6 $0C
     jr   z, jr_001_4920                           ; $48F8: $28 $26
     ld   c, $02                                   ; $48FA: $0E $02
     ld   a, [wSaveFilesCount]                     ; $48FC: $FA $A7 $DB
     and  a                                        ; $48FF: $A7
-    jr   z, jr_001_4903                           ; $4900: $28 $01
+    jr   z, .jr_4903                              ; $4900: $28 $01
     inc  c                                        ; $4902: $0C
 
-jr_001_4903::
+.jr_4903::
     ldh  a, [hJoypadState]                        ; $4903: $F0 $CC
     bit  J_BIT_UP, a                              ; $4905: $CB $57
-    jr   nz, jr_001_4915                          ; $4907: $20 $0C
+    jr   nz, .jr_4915                             ; $4907: $20 $0C
     ld   a, [wSaveSlot]                           ; $4909: $FA $A6 $DB
     add  a, $01                                   ; $490C: $C6 $01
     inc  c                                        ; $490E: $0C
@@ -307,7 +307,7 @@ jr_001_4903::
     xor  a                                        ; $4912: $AF
     jr   jr_001_491D                              ; $4913: $18 $08
 
-jr_001_4915::
+.jr_4915::
     ld   a, [wSaveSlot]                           ; $4915: $FA $A6 $DB
     sub  a, $01                                   ; $4918: $D6 $01
     jr   nc, jr_001_491D                          ; $491A: $30 $01
@@ -321,24 +321,24 @@ jr_001_4920::
     cp   $03                                      ; $4923: $FE $03
     jr   nz, func_001_4954                        ; $4925: $20 $2D
     ldh  a, [hJoypadState]                        ; $4927: $F0 $CC
-    and  J_RIGHT | J_LEFT              ; $4929: $E6 $03
-    jr   z, jr_001_4938                           ; $492B: $28 $0B
+    and  J_RIGHT | J_LEFT                         ; $4929: $E6 $03
+    jr   z, .jr_4938                              ; $492B: $28 $0B
     call func_001_6BAE                            ; $492D: $CD $AE $6B
-    ld   a, [wIsFileSelectionArrowShifted]                               ; $4930: $FA $00 $D0
+    ld   a, [wIsFileSelectionArrowShifted]        ; $4930: $FA $00 $D0
     xor  $01                                      ; $4933: $EE $01
-    ld   [wIsFileSelectionArrowShifted], a                               ; $4935: $EA $00 $D0
+    ld   [wIsFileSelectionArrowShifted], a        ; $4935: $EA $00 $D0
 
-jr_001_4938::
+.jr_4938::
     ldh  a, [hFrameCounter]                       ; $4938: $F0 $E7
     and  $10                                      ; $493A: $E6 $10
     jr   nz, func_001_4954                        ; $493C: $20 $16
-    ld   a, [wIsFileSelectionArrowShifted]                               ; $493E: $FA $00 $D0
+    ld   a, [wIsFileSelectionArrowShifted]        ; $493E: $FA $00 $D0
     and  a                                        ; $4941: $A7
     ld   a, FILE_2C                               ; $4942: $3E $2C
-    jr   z, jr_001_4948                           ; $4944: $28 $02
+    jr   z, .jr_4948                              ; $4944: $28 $02
     ld   a, FILE_64                               ; $4946: $3E $64
 
-jr_001_4948::
+.jr_4948::
     ld   hl, wOAMBuffer + $8                      ; $4948: $21 $08 $C0
     ld   [hl], $88 ; y                            ; $494B: $36 $88
     inc  hl                                       ; $494D: $23
@@ -356,7 +356,7 @@ func_001_4954::
     add  hl, de                                   ; $495D: $19
     ldh  a, [hFrameCounter]                       ; $495E: $F0 $E7
     and  $08                                      ; $4960: $E6 $08
-    jr   z, jr_001_497B                           ; $4962: $28 $17
+    jr   z, .jr_497B                              ; $4962: $28 $17
     ld   a, [hl]                                  ; $4964: $7E
     ld   hl, wOAMBuffer                           ; $4965: $21 $00 $C0
     push af                                       ; $4968: $F5
@@ -376,7 +376,7 @@ func_001_4954::
     ld   [hl], a                                  ; $4979: $77
     ret                                           ; $497A: $C9
 
-jr_001_497B::
+.jr_497B::
     ld   a, [hl]                                  ; $497B: $7E
     ld   hl, wOAMBuffer                           ; $497C: $21 $00 $C0
     push af                                       ; $497F: $F5
@@ -468,20 +468,14 @@ HandleFileSelectionCommand::
 
 ; File creation data
 Data_001_49F2::
-    dec  b                                        ; $49F2: $05
-    and  h                                        ; $49F3: $A4
-    or   d                                        ; $49F4: $B2
-    and  a                                        ; $49F5: $A7
-    ld   e, a                                     ; $49F6: $5F
-    xor  e                                        ; $49F7: $AB
+    dw   SaveGame1.main + wBButtonSlot - wOverworldRoomStatus
+    dw   SaveGame2.main + wBButtonSlot - wOverworldRoomStatus
+    dw   SaveGame3.main + wBButtonSlot - wOverworldRoomStatus
 
 Data_001_49F8::
-    dec  b                                        ; $49F8: $05
-    and  c                                        ; $49F9: $A1
-    or   d                                        ; $49FA: $B2
-    and  h                                        ; $49FB: $A4
-    ld   e, a                                     ; $49FC: $5F
-    xor  b                                        ; $49FD: $A8
+    dw   SaveGame1.main
+    dw   SaveGame2.main
+    dw   SaveGame3.main
 
 ; Part of file copy
 Data_001_49FE::
@@ -524,27 +518,27 @@ FileCreationInit1Handler::
     ret                                           ; $4A23: $C9
 
 FileCreationInit2Handler::
-    ld   a, $05                                   ; $4A24: $3E $05
+    ld   a, TILEMAP_MENU_FILE_CREATION            ; $4A24: $3E $05
     ld   [wBGMapToLoad], a                        ; $4A26: $EA $FF $D6
 
     ;
     ; Write the proper tile for the save file number at the top
     ;
 
-    ; Configure a wRequest to copy the tile number to the BG map
+    ; Configure a wDrawCommand to copy the tile number to the BG map
     ; during the next vblank period.
-    ld   hl, wRequest                             ; $4A29: $21 $01 $D6
+    ld   hl, wDrawCommand                         ; $4A29: $21 $01 $D6
     ld   a, HIGH(FILE_NEW_SAVE_SLOT_INDEX_BG)     ; $4A2C: $3E $98
-    ldi  [hl], a ; wRequestDestinationHigh        ; $4A2E: $22
+    ldi  [hl], a ; wDrawCommandDestinationHigh    ; $4A2E: $22
     ld   a, LOW(FILE_NEW_SAVE_SLOT_INDEX_BG)      ; $4A2F: $3E $49
-    ldi  [hl], a ; wRequestDestinationLow         ; $4A31: $22
+    ldi  [hl], a ; wDrawCommand.destinationLow    ; $4A31: $22
     xor  a                                        ; $4A32: $AF
-    ldi  [hl], a ; wRequestLength                 ; $4A33: $22
+    ldi  [hl], a ; wDrawCommand.length            ; $4A33: $22
     ld   a, [wSaveSlot]                           ; $4A34: $FA $A6 $DB
     add  a, FILE_NEW_SAVE_SLOT_1_TILE             ; $4A37: $C6 $AB
-    ldi  [hl], a ; wRequestData[0]                ; $4A39: $22
+    ldi  [hl], a ; wDrawCommandData[0]            ; $4A39: $22
     xor  a                                        ; $4A3A: $AF
-    ld   [hl], a ; wRequestData[1]                ; $4A3B: $77
+    ld   [hl], a ; wDrawCommandData[1]            ; $4A3B: $77
     jp   IncrementGameplaySubtypeAndReturn        ; $4A3C: $C3 $D6 $44
 
 IF !LANG_DE
@@ -566,7 +560,7 @@ label_4A47::
     ld   e, DEBUG_SAVE_FILE_SIZE                  ; $4A4A: $1E $43
     push hl                                       ; $4A4C: $E5
 
-jr_001_4A4D::
+.loop_4A4D
     call EnableExternalRAMWriting                 ; $4A4D: $CD $D0 $27
     ld   a, [bc]                                  ; $4A50: $0A
     ldi  [hl], a                                  ; $4A51: $22
@@ -574,7 +568,7 @@ jr_001_4A4D::
     dec  e                                        ; $4A53: $1D
     ld   a, e                                     ; $4A54: $7B
     and  a                                        ; $4A55: $A7
-    jr   nz, jr_001_4A4D                          ; $4A56: $20 $F5
+    jr   nz, .loop_4A4D                           ; $4A56: $20 $F5
     pop  hl                                       ; $4A58: $E1
     ld   bc, $4E                                  ; $4A59: $01 $4E $00
     ld   a, $01                                   ; $4A5C: $3E $01
@@ -612,7 +606,7 @@ CHECKNAME: macro
     ld   hl, wSaveSlotNames
     add  hl, de
 I = 0
-REPT 5
+REPT NAME_LENGTH
     ld   a, [hli]
 IF STRLEN(\1) < I + 1
     cp   0
@@ -659,7 +653,7 @@ ENDC
     ld   h, [hl]                                  ; $4AC8: $66
     ld   l, a                                     ; $4AC9: $6F
     push hl                                       ; $4ACA: $E5
-    ld   de, $4F                                  ; $4ACB: $11 $4F $00
+    ld   de, wName - wBButtonSlot                 ; $4ACB: $11 $4F $00
     add  hl, de                                   ; $4ACE: $19
     push hl                                       ; $4ACF: $E5
     ld   a, [wSaveSlot]                           ; $4AD0: $FA $A6 $DB
@@ -687,7 +681,7 @@ ENDC
     ld   hl, wSaveSlotNames                       ; $4AFE: $21 $80 $DB
     add  hl, de                                   ; $4B01: $19
     pop  bc                                       ; $4B02: $C1
-    ld   e, $05                                   ; $4B03: $1E $05
+    ld   e, NAME_LENGTH                           ; $4B03: $1E $05
 .loop
     call EnableExternalRAMWriting                 ; $4B05: $CD $D0 $27
     ld   a, [hli]                                 ; $4B08: $2A
@@ -698,16 +692,16 @@ ENDC
 
     pop  hl                                       ; $4B0E: $E1
     push hl                                       ; $4B0F: $E5
-    ld   de, $5A                                  ; $4B10: $11 $5A $00
+    ld   de, wHealth - wBButtonSlot               ; $4B10: $11 $5A $00
     add  hl, de                                   ; $4B13: $19
     ld   [hl], $18  ; write new save current health ; $4B14: $36 $18
     pop  hl                                       ; $4B16: $E1
     push hl                                       ; $4B17: $E5
-    ld   de, $5B                                  ; $4B18: $11 $5B $00
+    ld   de, wMaxHealth - wBButtonSlot            ; $4B18: $11 $5B $00
     add  hl, de                                   ; $4B1B: $19
     ld   [hl], $03  ; write new save max health   ; $4B1C: $36 $03
     pop  hl                                       ; $4B1E: $E1
-    ld   de, $57                                  ; $4B1F: $11 $57 $00
+    ld   de, wDeathCount - wBButtonSlot           ; $4B1F: $11 $57 $00
     add  hl, de                                   ; $4B22: $19
     xor  a                                        ; $4B23: $AF
     ldi  [hl], a                                  ; $4B24: $22
@@ -768,12 +762,12 @@ jr_001_4BF7::
     ldh  a, [hPressedButtonsMask]                 ; $4C05: $F0 $CB
     ld   hl, wC182                                ; $4C07: $21 $82 $C1
     and  $0F                                      ; $4C0A: $E6 $0F
-    jr   nz, jr_001_4C12                          ; $4C0C: $20 $04
+    jr   nz, .jr_4C12                             ; $4C0C: $20 $04
     xor  a                                        ; $4C0E: $AF
     ld   [hl], a                                  ; $4C0F: $77
     jr   jr_001_4C1F                              ; $4C10: $18 $0D
 
-jr_001_4C12::
+.jr_4C12::
     ld   a, [hl]                                  ; $4C12: $7E
     inc  a                                        ; $4C13: $3C
     ld   [hl], a                                  ; $4C14: $77
@@ -789,7 +783,7 @@ jr_001_4C1F::
 jr_001_4C21::
     call func_001_6BAE                            ; $4C21: $CD $AE $6B
     bit  1, a                                     ; $4C24: $CB $4F
-    jr   nz, jr_001_4C34                          ; $4C26: $20 $0C
+    jr   nz, .jr_4C34                             ; $4C26: $20 $0C
     ld   a, [wDBA9]                               ; $4C28: $FA $A9 $DB
     add  a, $01                                   ; $4C2B: $C6 $01
     cp   NameEntryCharacterTableSize              ; $4C2D: $FE $40
@@ -797,7 +791,7 @@ jr_001_4C21::
     xor  a                                        ; $4C31: $AF
     jr   jr_001_4C5E                              ; $4C32: $18 $2A
 
-jr_001_4C34::
+.jr_4C34::
     ld   a, [wDBA9]                               ; $4C34: $FA $A9 $DB
     sub  a, $01                                   ; $4C37: $D6 $01
     cp   $FF                                      ; $4C39: $FE $FF
@@ -808,14 +802,14 @@ jr_001_4C34::
 jr_001_4C41::
     call func_001_6BAE                            ; $4C41: $CD $AE $6B
     bit  2, a                                     ; $4C44: $CB $57
-    jr   z, jr_001_4C53                           ; $4C46: $28 $0B
+    jr   z, .jr_4C53                              ; $4C46: $28 $0B
     ld   a, [wDBA9]                               ; $4C48: $FA $A9 $DB
     sub  a, $10                                   ; $4C4B: $D6 $10
     jr   nc, jr_001_4C5E                          ; $4C4D: $30 $0F
     add  a, NameEntryCharacterTableSize           ; $4C4F: $C6 $40
     jr   jr_001_4C5E                              ; $4C51: $18 $0B
 
-jr_001_4C53::
+.jr_4C53::
     ld   a, [wDBA9]                               ; $4C53: $FA $A9 $DB
     add  a, $10                                   ; $4C56: $C6 $10
     cp   NameEntryCharacterTableSize              ; $4C58: $FE $40
@@ -857,7 +851,7 @@ func_001_4C8A::                            ; "Enter Name" screen
     and  J_A | J_B                      ; Was A or B pushed? ; $4C8C: $E6 $30
     jr   z, jr_001_4CB7                  ; If no, bail ; $4C8E: $28 $27
     bit  5, a                           ; Was B pushed? ; $4C90: $CB $6F
-    jr   nz, jr_001_4CA7                 ; If yes, backspace ; $4C92: $20 $13
+    jr   nz, .jr_4CA7                 ; If yes, backspace ; $4C92: $20 $13
     call PlayValidationJingle           ; Otherwise, A was pushed ; $4C94: $CD $BE $49
     call func_001_4CDA                     ; so add the current letter ; $4C97: $CD $DA $4C
     ld   a, [wDBAA]                               ; $4C9A: $FA $AA $DB
@@ -867,7 +861,7 @@ func_001_4C8A::                            ; "Enter Name" screen
     ld   a, $04                                   ; $4CA3: $3E $04
     jr   jr_001_4CB4                              ; $4CA5: $18 $0D
 
-jr_001_4CA7::
+.jr_4CA7::
     ; B button when inputting filename
     call PlayValidationJingle                     ; $4CA7: $CD $BE $49
     ld   a, [wDBAA]                               ; $4CAA: $FA $AA $DB
@@ -889,7 +883,7 @@ jr_001_4CB7::
     ldh  a, [hFrameCounter]                       ; $4CC2: $F0 $E7
     and  $10                                      ; $4CC4: $E6 $10
     jr   z, .return                               ; $4CC6: $28 $11
-    ld   hl, wOAMBuffer+4                                ; $4CC8: $21 $04 $C0
+    ld   hl, wOAMBuffer+4                         ; $4CC8: $21 $04 $C0
     ld   a, $18                                   ; $4CCB: $3E $18
     add  a, $0B                                   ; $4CCD: $C6 $0B
     ldi  [hl], a                                  ; $4CCF: $22
@@ -918,7 +912,7 @@ func_001_4CDA::
     sla  a                                        ; $4CEC: $CB $27
     add  a, c                                     ; $4CEE: $81
     ld   c, a                                     ; $4CEF: $4F
-    ld   hl, wSaveSlot1Name                                ; $4CF0: $21 $80 $DB
+    ld   hl, wSaveSlot1Name                       ; $4CF0: $21 $80 $DB
     add  hl, bc                                   ; $4CF3: $09
     ld   a, [wDBAA]                               ; $4CF4: $FA $AA $DB
     ld   c, a                                     ; $4CF7: $4F
@@ -955,7 +949,7 @@ FileDeletionEntryPoint::
 FileDeletionState0Handler::
     ldh  a, [hIsGBC]                              ; $4D1A: $F0 $FE ; $4D1A: $F0 $FE
     and  a                                        ; $4D1C: $A7 ; $4D1C: $A7
-    jr   z, jr_001_4D53                            ; $4D1D: $28 $34 ; $4D1D: $28 $34
+    jr   z, jr_001_4D53                           ; $4D1D: $28 $34 ; $4D1D: $28 $34
 
     ld   a, $01                                   ; $4D1F: $3E $01 ; $4D1F: $3E $01
     call ClearFileMenuBG_trampoline               ; $4D21: $CD $FA $08 ; $4D21: $CD $FA $08
@@ -966,7 +960,7 @@ FileDeletionState0Handler::
 FileDeletionState1Handler::
     ldh  a, [hIsGBC]                              ; $4D2C: $F0 $FE ; $4D2C: $F0 $FE
     and  a                                        ; $4D2E: $A7 ; $4D2E: $A7
-    jr   z, jr_001_4D53                            ; $4D2F: $28 $22 ; $4D2F: $28 $22
+    jr   z, jr_001_4D53                           ; $4D2F: $28 $22 ; $4D2F: $28 $22
 
     ld   a, $02                                   ; $4D31: $3E $02 ; $4D31: $3E $02
     ld   [wPaletteDataFlags], a                   ; $4D33: $EA $D1 $DD ; $4D33: $EA $D1 $DD
@@ -975,7 +969,7 @@ FileDeletionState1Handler::
 FileDeletionState8Handler::
     ldh  a, [hIsGBC]                              ; $4D39: $F0 $FE ; $4D39: $F0 $FE
     and  a                                        ; $4D3B: $A7 ; $4D3B: $A7
-    jr   z, jr_001_4D53                            ; $4D3C: $28 $15 ; $4D3C: $28 $15
+    jr   z, jr_001_4D53                           ; $4D3C: $28 $15 ; $4D3C: $28 $15
 
     call LoadFileMenuBG_trampoline                ; $4D3E: $CD $05 $09 ; $4D3E: $CD $05 $09
     ld   a, $01                                   ; $4D41: $3E $01 ; $4D41: $3E $01
@@ -985,7 +979,7 @@ FileDeletionState8Handler::
 FileDeletionState9Handler::
     ldh  a, [hIsGBC]                              ; $4D49: $F0 $FE ; $4D49: $F0 $FE
     and  a                                        ; $4D4B: $A7 ; $4D4B: $A7
-    jr   z, jr_001_4D53                            ; $4D4C: $28 $05 ; $4D4C: $28 $05
+    jr   z, jr_001_4D53                           ; $4D4C: $28 $05 ; $4D4C: $28 $05
 
     ld   a, $02                                   ; $4D4E: $3E $02 ; $4D4E: $3E $02
     ld   [wPaletteDataFlags], a                   ; $4D50: $EA $D1 $DD ; $4D50: $EA $D1 $DD
@@ -1002,23 +996,23 @@ FileDeletionState2Handler::
     jp   IncrementGameplaySubtypeAndReturn        ; $4D62: $C3 $D6 $44 ; $4D62: $C3 $D6 $44
 
 FileDeletionState3Handler::
-    ld   a, $06                                   ; $4D65: $3E $06 ; $4D65: $3E $06
+    ld   a, TILEMAP_MENU_FILE_ERASE               ; $4D65: $3E $06 ; $4D65: $3E $06
     ld   [wBGMapToLoad], a                        ; $4D67: $EA $FF $D6 ; $4D67: $EA $FF $D6
     jp   IncrementGameplaySubtypeAndReturn        ; $4D6A: $C3 $D6 $44 ; $4D6A: $C3 $D6 $44
 
 FileDeletionState4Handler::
-    call func_001_4D8B                               ; $4D6D: $CD $8B $4D ; $4D6D: $CD $8B $4D
-    call func_001_4D94                               ; $4D70: $CD $94 $4D ; $4D70: $CD $94 $4D
-    call func_001_4D9D                               ; $4D73: $CD $9D $4D ; $4D73: $CD $9D $4D
+    call func_001_4D8B                            ; $4D6D: $CD $8B $4D ; $4D6D: $CD $8B $4D
+    call func_001_4D94                            ; $4D70: $CD $94 $4D ; $4D70: $CD $94 $4D
+    call func_001_4D9D                            ; $4D73: $CD $9D $4D ; $4D73: $CD $9D $4D
     jp   IncrementGameplaySubtypeAndReturn        ; $4D76: $C3 $D6 $44 ; $4D76: $C3 $D6 $44
 
 FileDeletionState5Handler::
-    call func_001_4DA6                               ; $4D79: $CD $A6 $4D ; $4D79: $CD $A6 $4D
-    call func_001_4DBE                               ; $4D7C: $CD $BE $4D ; $4D7C: $CD $BE $4D
+    call func_001_4DA6                            ; $4D79: $CD $A6 $4D ; $4D79: $CD $A6 $4D
+    call func_001_4DBE                            ; $4D7C: $CD $BE $4D ; $4D7C: $CD $BE $4D
     jp   IncrementGameplaySubtypeAndReturn        ; $4D7F: $C3 $D6 $44 ; $4D7F: $C3 $D6 $44
 
 FileDeletionState6Handler::
-    call func_001_4DD6                               ; $4D82: $CD $D6 $4D ; $4D82: $CD $D6 $4D
+    call func_001_4DD6                            ; $4D82: $CD $D6 $4D ; $4D82: $CD $D6 $4D
     jp   IncrementGameplaySubtypeAndReturn        ; $4D85: $C3 $D6 $44 ; $4D85: $C3 $D6 $44
 
 FileDeletionState7Handler::
@@ -1045,19 +1039,19 @@ func_001_4DA6::
 IF __PATCH_4__
     ret  z
     xor  a
-    ld   hl, wDC06
-    ld   de, wDC09
+    ld   hl, wFile1Health
+    ld   de, wFile1MaxHealth
     ; fallthrough
 ELSE
-    jr   z, jr_001_4DBD                            ; $4DAB: $28 $10 ; $4DAB: $28 $10
+    jr   z, ret_001_4DBD                          ; $4DAB: $28 $10 ; $4DAB: $28 $10
 
     xor  a                                        ; $4DAD: $AF ; $4DAD: $AF
     ldh  [hMultiPurpose4], a                      ; $4DAE: $E0 $DB ; $4DAE: $E0 $DB
-    ld   a, [wDC06]                               ; $4DB0: $FA $06 $DC ; $4DB0: $FA $06 $DC
+    ld   a, [wFile1Health]                        ; $4DB0: $FA $06 $DC ; $4DB0: $FA $06 $DC
     ldh  [hMultiPurpose2], a                      ; $4DB3: $E0 $D9 ; $4DB3: $E0 $D9
-    ld   a, [wDC09]                               ; $4DB5: $FA $09 $DC ; $4DB5: $FA $09 $DC
+    ld   a, [wFile1MaxHealth]                     ; $4DB5: $FA $09 $DC ; $4DB5: $FA $09 $DC
     ldh  [hMultiPurpose3], a                      ; $4DB8: $E0 $DA ; $4DB8: $E0 $DA
-    jp   label_001_5D53                               ; $4DBA: $C3 $53 $5D ; $4DBA: $C3 $53 $5D
+    jp   label_001_5D53                           ; $4DBA: $C3 $53 $5D ; $4DBA: $C3 $53 $5D
 ENDC
 
 IF __PATCH_4__
@@ -1089,7 +1083,7 @@ jr_001_4dc8:
     jp label_001_5D53
 
 ELSE
-jr_001_4DBD::
+ret_001_4DBD::
     ret                                           ; $4DBD: $C9 ; $4DBD: $C9
 ENDC
 
@@ -1099,17 +1093,17 @@ func_001_4DBE::
 IF __PATCH_4__
     ret  z
     ld   a, $01
-    ld   hl, wDC07
-    ld   de, wDC0A
+    ld   hl, wFile2Health
+    ld   de, wFile2MaxHealth
     jr   jr_001_4db6
 ELSE
-    jr   z, jr_001_4DBD                           ; $4DC3: $28 $F8 ; $4DC3: $28 $F8
+    jr   z, ret_001_4DBD                          ; $4DC3: $28 $F8 ; $4DC3: $28 $F8
 
     ld   a, $01                                   ; $4DC5: $3E $01 ; $4DC5: $3E $01
     ldh  [hMultiPurpose4], a                      ; $4DC7: $E0 $DB ; $4DC7: $E0 $DB
-    ld   a, [wDC07]                               ; $4DC9: $FA $07 $DC ; $4DC9: $FA $07 $DC
+    ld   a, [wFile2Health]                        ; $4DC9: $FA $07 $DC ; $4DC9: $FA $07 $DC
     ldh  [hMultiPurpose2], a                      ; $4DCC: $E0 $D9 ; $4DCC: $E0 $D9
-    ld   a, [wDC0A]                               ; $4DCE: $FA $0A $DC ; $4DCE: $FA $0A $DC
+    ld   a, [wFile2MaxHealth]                     ; $4DCE: $FA $0A $DC ; $4DCE: $FA $0A $DC
     ldh  [hMultiPurpose3], a                      ; $4DD1: $E0 $DA ; $4DD1: $E0 $DA
     jp   label_001_5D53                           ; $4DD3: $C3 $53 $5D ; $4DD3: $C3 $53 $5D
 ENDC
@@ -1120,17 +1114,17 @@ func_001_4DD6::
 IF __PATCH_4__
     ret  z
     ld   a, $02
-    ld   hl, wDC08
-    ld   de, wDC0B
+    ld   hl, wFile3Health
+    ld   de, wFile3MaxHealth
     jr   jr_001_4db6
 ELSE
-    jr   z, jr_001_4DBD                           ; $4DDB: $28 $E0 ; $4DDB: $28 $E0
+    jr   z, ret_001_4DBD                          ; $4DDB: $28 $E0 ; $4DDB: $28 $E0
 
     ld   a, $02                                   ; $4DDD: $3E $02 ; $4DDD: $3E $02
     ldh  [hMultiPurpose4], a                      ; $4DDF: $E0 $DB ; $4DDF: $E0 $DB
-    ld   a, [wDC08]                               ; $4DE1: $FA $08 $DC ; $4DE1: $FA $08 $DC
+    ld   a, [wFile3Health]                        ; $4DE1: $FA $08 $DC ; $4DE1: $FA $08 $DC
     ldh  [hMultiPurpose2], a                      ; $4DE4: $E0 $D9 ; $4DE4: $E0 $D9
-    ld   a, [wDC0B]                               ; $4DE6: $FA $0B $DC ; $4DE6: $FA $0B $DC
+    ld   a, [wFile3MaxHealth]                     ; $4DE6: $FA $0B $DC ; $4DE6: $FA $0B $DC
     ldh  [hMultiPurpose3], a                      ; $4DE9: $E0 $DA ; $4DE9: $E0 $DA
     jp   label_001_5D53                           ; $4DEB: $C3 $53 $5D ; $4DEB: $C3 $53 $5D
 ENDC
@@ -1144,14 +1138,14 @@ FileDeletionState10Handler::
     call func_001_6BA8                            ; $4E06: $CD $A8 $6B ; $4E06: $CD $A8 $6B
     ldh  a, [hJoypadState]                        ; $4E09: $F0 $CC ; $4E09: $F0 $CC
     and  J_DOWN                                   ; $4E0B: $E6 $08 ; $4E0B: $E6 $08
-    jr   z, jr_001_4E18                           ; $4E0D: $28 $09 ; $4E0D: $28 $09
+    jr   z, .jr_4E18                              ; $4E0D: $28 $09 ; $4E0D: $28 $09
 
     ld   a, [wSaveSlot]                           ; $4E0F: $FA $A6 $DB ; $4E0F: $FA $A6 $DB
     inc  a                                        ; $4E12: $3C ; $4E12: $3C
     and  $03                                      ; $4E13: $E6 $03 ; $4E13: $E6 $03
     ld   [wSaveSlot], a                           ; $4E15: $EA $A6 $DB ; $4E15: $EA $A6 $DB
 
-jr_001_4E18::
+.jr_4E18::
     ldh  a, [hJoypadState]                        ; $4E18: $F0 $CC ; $4E18: $F0 $CC
     and  J_UP                                     ; $4E1A: $E6 $04 ; $4E1A: $E6 $04
     jr   z, jr_001_4E2B                           ; $4E1C: $28 $0D ; $4E1C: $28 $0D
@@ -1159,11 +1153,11 @@ jr_001_4E18::
     ld   a, [wSaveSlot]                           ; $4E1E: $FA $A6 $DB ; $4E1E: $FA $A6 $DB
     dec  a                                        ; $4E21: $3D ; $4E21: $3D
     cp   $FF                                      ; $4E22: $FE $FF ; $4E22: $FE $FF
-    jr   nz, jr_001_4E28                          ; $4E24: $20 $02 ; $4E24: $20 $02
+    jr   nz, .jr_4E28                             ; $4E24: $20 $02 ; $4E24: $20 $02
 
     ld   a, $03                                   ; $4E26: $3E $03 ; $4E26: $3E $03
 
-jr_001_4E28::
+.jr_4E28::
     ld   [wSaveSlot], a                           ; $4E28: $EA $A6 $DB ; $4E28: $EA $A6 $DB
 
 jr_001_4E2B::
@@ -1173,28 +1167,28 @@ jr_001_4E2B::
 
     ld   a, [wSaveSlot]                           ; $4E31: $FA $A6 $DB ; $4E31: $FA $A6 $DB
     cp   $03                                      ; $4E34: $FE $03 ; $4E34: $FE $03
-    jr   nz, jr_001_4E3B                          ; $4E36: $20 $03 ; $4E36: $20 $03
+    jr   nz, .jr_4E3B                             ; $4E36: $20 $03 ; $4E36: $20 $03
 
     jp   label_001_4555                           ; $4E38: $C3 $55 $45 ; $4E38: $C3 $55 $45
 
-jr_001_4E3B::
+.jr_4E3B::
     call PlayValidationJingleAndReturn            ; $4E3B: $CD $BE $49 ; $4E3B: $CD $BE $49
     call IncrementGameplaySubtype                 ; $4E3E: $CD $D6 $44 ; $4E3E: $CD $D6 $44
 
 IF LANG_JP
 CopyQuitOkTilemap::
-    ld hl, wRequestDestination
-    ld a, $99
+    ld hl, wDrawCommand
+    ld a, HIGH(vBGMap0 + $1EE)
     ld [hl+], a
-    ld a, $ee
+    ld a, LOW(vBGMap0 + $1EE)
     ld [hl+], a
     ld a, $02
     ld [hl+], a
-    ld a, $ba
+    ld a, $BA
     ld [hl+], a
-    ld a, $bb
+    ld a, $BB
     ld [hl+], a
-    ld a, $3d
+    ld a, $3D
 
     ld [hl+], a                                   ; $4eb9: $22
     xor a                                         ; $4eba: $af
@@ -1203,13 +1197,13 @@ CopyQuitOkTilemap::
 ELSE
     jr   CopyQuitOkTilemap                        ; $4E41: $18 $12 ; $4E41: $18 $12
 
-; Tilemap for the "QUIT / OK" text, formatted as wRequest data
+; Tilemap for the "QUIT / OK" text, formatted as wDrawCommand data
 FileMenuQuitOkTilemap::
 include "data/file_menu_quit_ok.asm"
 .end
 
 CopyQuitOkTilemap::
-    ld   hl, wRequest                             ; $4E55: $21 $01 $D6
+    ld   hl, wDrawCommand                         ; $4E55: $21 $01 $D6
     ld   de, FileMenuQuitOkTilemap                ; $4E58: $11 $43 $4E
 IF LANG_EN
     ld   c, FileMenuQuitOkTilemap.end - FileMenuQuitOkTilemap - 1 ; $4E5B: $0E $11
@@ -1260,49 +1254,49 @@ ENDC
     ld   a, [hl+]                                 ; $4E8B: $2A ; $4E8B: $2A
     ld   h, [hl]                                  ; $4E8C: $66 ; $4E8C: $66
     ld   l, a                                     ; $4E8D: $6F ; $4E8D: $6F
-    ld   de, $3a8                                 ; $4E8E: $11 $A8 $03 ; $4E8E: $11 $A8 $03
+    ld   de, SaveGame1.end - SaveGame1.main       ; $4E8E: $11 $A8 $03 ; $4E8E: $11 $A8 $03
 
-jr_001_4E91::
+.loop_4E91:: ; Clear the save
     call EnableExternalRAMWriting                 ; $4E91: $CD $D0 $27 ; $4E91: $CD $D0 $27
     xor  a                                        ; $4E94: $AF ; $4E94: $AF
     ld   [hl+], a                                 ; $4E95: $22 ; $4E95: $22
     dec  de                                       ; $4E96: $1B ; $4E96: $1B
     ld   a, e                                     ; $4E97: $7B ; $4E97: $7B
     or   d                                        ; $4E98: $B2 ; $4E98: $B2
-    jr   nz, jr_001_4E91                           ; $4E99: $20 $F6 ; $4E99: $20 $F6
+    jr   nz, .loop_4E91                           ; $4E99: $20 $F6 ; $4E99: $20 $F6
 
-    jp   label_001_4555                               ; $4E9B: $C3 $55 $45 ; $4E9B: $C3 $55 $45
+    jp   label_001_4555                           ; $4E9B: $C3 $55 $45 ; $4E9B: $C3 $55 $45
 
 jr_001_4E9E::
-    call func_001_4EE5                               ; $4E9E: $CD $E5 $4E ; $4E9E: $CD $E5 $4E
-    call CopyReturnToMenuTilemap                               ; $4EA1: $CD $BB $4E ; $4EA1: $CD $BB $4E
+    call func_001_4EE5                            ; $4E9E: $CD $E5 $4E ; $4E9E: $CD $E5 $4E
+    call CopyReturnToMenuTilemap                  ; $4EA1: $CD $BB $4E ; $4EA1: $CD $BB $4E
     ld   hl, wGameplaySubtype                     ; $4EA4: $21 $96 $DB ; $4EA4: $21 $96 $DB
     dec  [hl]                                     ; $4EA7: $35 ; $4EA7: $35
     ret                                           ; $4EA8: $C9 ; $4EA8: $C9
 
 IF LANG_JP
 CopyReturnToMenuTilemap::
-    ld   a, [wRequests]                             ; $4eff: $fa $00 $d6
+    ld   a, [wDrawCommandsSize]                     ; $4eff: $fa $00 $d6
     ld   e, a                                       ; $4f02: $5f
-    add  $04                                       ; $4f03: $c6 $04
-    ld   [wRequests], a                             ; $4f05: $ea $00 $d6
+    add  $04                                        ; $4f03: $c6 $04
+    ld   [wDrawCommandsSize], a                     ; $4f05: $ea $00 $d6
     ld   d, $00                                     ; $4f08: $16 $00
-    ld   hl, wRequestDestination                    ; $4f0a: $21 $01 $d6
-    add  hl, de                                    ; $4f0d: $19
-    ld   a, $99                                     ; $4f0e: $3e $99
+    ld   hl, wDrawCommand                           ; $4f0a: $21 $01 $d6
+    add  hl, de                                     ; $4f0d: $19
+    ld   a, HIGH(vBGMap0 + $1EE)                    ; $4f0e: $3e $99
     ld   [hl+], a                                   ; $4f10: $22
-    ld   a, $ee                                     ; $4f11: $3e $ee
+    ld   a, LOW(vBGMap0 + $1EE)                     ; $4f11: $3e $ee
     ld   [hl+], a                                   ; $4f13: $22
     ld   a, $42                                     ; $4f14: $3e $42
     ld   [hl+], a                                   ; $4f16: $22
     ld   a, $7e                                     ; $4f17: $3e $7e
     ld   [hl+], a                                   ; $4f19: $22
-    xor  a                                         ; $4f1a: $af
+    xor  a                                          ; $4f1a: $af
     ld   [hl], a                                    ; $4f1b: $77
-    ret                                           ; $4f1c: $c9
+    ret                                             ; $4f1c: $c9
 ELSE
 
-; Tilemap for the "RETURN TO MENU" text, formatted as wRequest data
+; Tilemap for the "RETURN TO MENU" text, formatted as wDrawCommand data
 FileReturnToMenuTilemap::
 include "data/file_menu_return_to_menu.asm"
 .end
@@ -1314,14 +1308,14 @@ include "data/file_menu_return_to_menu_alt.asm"
 ENDC
 
 CopyReturnToMenuTilemap::
-    ld   a, [wRequests]                           ; $4EBB: $FA $00 $D6
+    ld   a, [wDrawCommandsSize]                   ; $4EBB: $FA $00 $D6
     ld   e, a                                     ; $4EBE: $5F
-    add  FileReturnToMenuTilemap.end - FileReturnToMenuTilemap - 1    ; $4EBF: $C6 $11
-    ld   [wRequests], a                           ; $4EC1: $EA $00 $D6
+    add  FileReturnToMenuTilemap.end - FileReturnToMenuTilemap - 1 ; $4EBF: $C6 $11
+    ld   [wDrawCommandsSize], a                   ; $4EC1: $EA $00 $D6
     ld   d, $00                                   ; $4EC4: $16 $00
-    ld   hl, wRequestDestinationHigh              ; $4EC6: $21 $01 $D6
+    ld   hl, wDrawCommand                         ; $4EC6: $21 $01 $D6
     add  hl, de                                   ; $4EC9: $19
-    ld   de, FileReturnToMenuTilemap                        ; $4ECA: $11 $A9 $4E
+    ld   de, FileReturnToMenuTilemap              ; $4ECA: $11 $A9 $4E
 
 IF LANG_DE
     ; On German version, if on the File Copy screen, use an alternate version
@@ -1352,11 +1346,11 @@ ENDC
 ENDC
 
 jr_001_4ED9::
-    call func_001_4F0C                               ; $4ED9: $CD $0C $4F ; $4ED9: $CD $0C $4F
-    call func_001_4954                               ; $4EDC: $CD $54 $49 ; $4EDC: $CD $54 $49
+    call func_001_4F0C                            ; $4ED9: $CD $0C $4F ; $4ED9: $CD $0C $4F
+    call func_001_4954                            ; $4EDC: $CD $54 $49 ; $4EDC: $CD $54 $49
     ldh  a, [hFrameCounter]                       ; $4EDF: $F0 $E7 ; $4EDF: $F0 $E7
     and  $10                                      ; $4EE1: $E6 $10 ; $4EE1: $E6 $10
-    jr   z, jr_001_4EEF                            ; $4EE3: $28 $0A ; $4EE3: $28 $0A
+    jr   z, jr_001_4EEF                           ; $4EE3: $28 $0A ; $4EE3: $28 $0A
 
 func_001_4EE5::
     ld   a, [wSaveSlot]                           ; $4EE5: $FA $A6 $DB ; $4EE5: $FA $A6 $DB
@@ -1375,15 +1369,15 @@ jr_001_4EEF::
     ld   d, $00                                   ; $4EF8: $16 $00 ; $4EF8: $16 $00
     ld   hl, Data_001_4DEE                        ; $4EFA: $21 $EE $4D ; $4EFA: $21 $EE $4D
     add  hl, de                                   ; $4EFD: $19 ; $4EFD: $19
-    ld   de, wRequestDestinationHigh              ; $4EFE: $11 $01 $D6 ; $4EFE: $11 $01 $D6
+    ld   de, wDrawCommand                         ; $4EFE: $11 $01 $D6 ; $4EFE: $11 $01 $D6
     ld   c, $08                                   ; $4F01: $0E $08 ; $4F01: $0E $08
 
-jr_001_4F03::
+.loop_4F03
     ld   a, [hl+]                                 ; $4F03: $2A ; $4F03: $2A
     ld   [de], a                                  ; $4F04: $12 ; $4F04: $12
     inc  de                                       ; $4F05: $13 ; $4F05: $13
     dec  c                                        ; $4F06: $0D ; $4F06: $0D
-    jr   nz, jr_001_4F03                          ; $4F07: $20 $FA ; $4F07: $20 $FA
+    jr   nz, .loop_4F03                           ; $4F07: $20 $FA ; $4F07: $20 $FA
 
     xor  a                                        ; $4F09: $AF ; $4F09: $AF
     ld   [de], a                                  ; $4F0A: $12 ; $4F0A: $12
@@ -1391,18 +1385,18 @@ jr_001_4F03::
 
 func_001_4F0C::
     ldh  a, [hJoypadState]                        ; $4F0C: $F0 $CC ; $4F0C: $F0 $CC
-    and  J_RIGHT | J_LEFT              ; $4F0E: $E6 $03 ; $4F0E: $E6 $03
-    jr   z, jr_001_4F1D                           ; $4F10: $28 $0B ; $4F10: $28 $0B
+    and  J_RIGHT | J_LEFT                         ; $4F0E: $E6 $03 ; $4F0E: $E6 $03
+    jr   z, .jr_4F1D                              ; $4F10: $28 $0B ; $4F10: $28 $0B
 
     call func_001_6BAE                            ; $4F12: $CD $AE $6B ; $4F12: $CD $AE $6B
     ld   a, [wCreditsScratch0]                    ; $4F15: $FA $00 $D0 ; $4F15: $FA $00 $D0
     xor  $01                                      ; $4F18: $EE $01 ; $4F18: $EE $01
     ld   [wCreditsScratch0], a                    ; $4F1A: $EA $00 $D0 ; $4F1A: $EA $00 $D0
 
-jr_001_4F1D::
+.jr_4F1D::
     ldh  a, [hFrameCounter]                       ; $4F1D: $F0 $E7 ; $4F1D: $F0 $E7
     and  $10                                      ; $4F1F: $E6 $10 ; $4F1F: $E6 $10
-    jr   nz, jr_001_4F3A                          ; $4F21: $20 $17 ; $4F21: $20 $17
+    jr   nz, ret_001_4F3A                         ; $4F21: $20 $17 ; $4F21: $20 $17
 
     ld   a, [wCreditsScratch0]                    ; $4F23: $FA $00 $D0 ; $4F23: $FA $00 $D0
     ld   e, a                                     ; $4F26: $5F ; $4F26: $5F
@@ -1410,18 +1404,18 @@ IF LANG_JP
     ld   a, [wGameplayType]
     cp   GAMEPLAY_FILE_COPY
     ld   a, $1c
-    jr   nz, jr_001_4f76
+    jr   nz, .jr_4f76
 ENDC
-    ld   a, FILE_28                                   ; $4F27: $3E $28 ; $4F27: $3E $28
+    ld   a, FILE_28                               ; $4F27: $3E $28 ; $4F27: $3E $28
 
-jr_001_4f76:
+.jr_4f76
     dec  e                                        ; $4F29: $1D ; $4F29: $1D
-    jr   nz, jr_001_4F2E                           ; $4F2A: $20 $02 ; $4F2A: $20 $02
+    jr   nz, .jr_4F2E                             ; $4F2A: $20 $02 ; $4F2A: $20 $02
 
-    ld   a, FILE_6C                                   ; $4F2C: $3E $6C ; $4F2C: $3E $6C
+    ld   a, FILE_6C                               ; $4F2C: $3E $6C ; $4F2C: $3E $6C
 
-jr_001_4F2E::
-    ld   hl, wOAMBuffer+12                                ; $4F2E: $21 $0C $C0 ; $4F2E: $21 $0C $C0
+.jr_4F2E::
+    ld   hl, wOAMBuffer+12                        ; $4F2E: $21 $0C $C0 ; $4F2E: $21 $0C $C0
     ld   [hl], $88                                ; $4F31: $36 $88 ; $4F31: $36 $88
     inc  hl                                       ; $4F33: $23 ; $4F33: $23
     ld   [hl+], a                                 ; $4F34: $22 ; $4F34: $22
@@ -1430,7 +1424,7 @@ jr_001_4F2E::
     xor  a                                        ; $4F38: $AF ; $4F38: $AF
     ld   [hl], a                                  ; $4F39: $77 ; $4F39: $77
 
-jr_001_4F3A::
+ret_001_4F3A::
     ret                                           ; $4F3A: $C9 ; $4F3A: $C9
 
 Data_001_4F3B::
@@ -1439,12 +1433,12 @@ Data_001_4F3B::
 
 CopyDigitsToFileScreenBG::
     push hl                                       ; $4F45: $E5 ; $4F45: $E5
-    ld   a, [wRequests]                           ; $4F46: $FA $00 $D6 ; $4F46: $FA $00 $D6
+    ld   a, [wDrawCommandsSize]                   ; $4F46: $FA $00 $D6 ; $4F46: $FA $00 $D6
     ld   c, a                                     ; $4F49: $4F ; $4F49: $4F
     add  $06                                      ; $4F4A: $C6 $06 ; $4F4A: $C6 $06
-    ld   [wRequests], a                           ; $4F4C: $EA $00 $D6 ; $4F4C: $EA $00 $D6
+    ld   [wDrawCommandsSize], a                   ; $4F4C: $EA $00 $D6 ; $4F4C: $EA $00 $D6
     ld   b, $00                                   ; $4F4F: $06 $00 ; $4F4F: $06 $00
-    ld   hl, wRequestDestinationHigh              ; $4F51: $21 $01 $D6 ; $4F51: $21 $01 $D6
+    ld   hl, wDrawCommand                         ; $4F51: $21 $01 $D6 ; $4F51: $21 $01 $D6
     add  hl, bc                                   ; $4F54: $09 ; $4F54: $09
     ld   a, d                                     ; $4F55: $7A ; $4F55: $7A
     ld   [hl+], a                                 ; $4F56: $22 ; $4F56: $22
@@ -1523,7 +1517,7 @@ FileCopyState2Handler::
     jp   IncrementGameplaySubtypeAndReturn        ; $4FB8: $C3 $D6 $44 ; $4FB8: $C3 $D6 $44
 
 FileCopyState3Handler::
-    ld   a, $0C                                   ; $4FBB: $3E $0C ; $4FBB: $3E $0C
+    ld   a, TILEMAP_MENU_FILE_COPY                ; $4FBB: $3E $0C ; $4FBB: $3E $0C
     ld   [wBGMapToLoad], a                        ; $4FBD: $EA $FF $D6 ; $4FBD: $EA $FF $D6
     jp   IncrementGameplaySubtypeAndReturn        ; $4FC0: $C3 $D6 $44 ; $4FC0: $C3 $D6 $44
 
@@ -1555,13 +1549,13 @@ FileCopyState8Handler::
     call func_001_6BA8                            ; $4FFF: $CD $A8 $6B ; $4FFF: $CD $A8 $6B
     ldh  a, [hJoypadState]                        ; $5002: $F0 $CC ; $5002: $F0 $CC
     and  J_DOWN                                   ; $5004: $E6 $08 ; $5004: $E6 $08
-    jr   z, jr_001_500E                           ; $5006: $28 $06 ; $5006: $28 $06
+    jr   z, .jr_500E                              ; $5006: $28 $06 ; $5006: $28 $06
 
     ld   a, [wIntroTimer]                         ; $5008: $FA $01 $D0 ; $5008: $FA $01 $D0
     inc  a                                        ; $500B: $3C ; $500B: $3C
     jr   jr_001_5018                              ; $500C: $18 $0A ; $500C: $18 $0A
 
-jr_001_500E::
+.jr_500E::
     ldh  a, [hJoypadState]                        ; $500E: $F0 $CC ; $500E: $F0 $CC
     and  J_UP                                     ; $5010: $E6 $04 ; $5010: $E6 $04
     jr   z, jr_001_501D                           ; $5012: $28 $09 ; $5012: $28 $09
@@ -1589,12 +1583,12 @@ jr_001_501D::
     jr   z, jr_001_5042                           ; $5034: $28 $0C ; $5034: $28 $0C
 
     cp   $01                                      ; $5036: $FE $01 ; $5036: $FE $01
-    jr   z, jr_001_503F                           ; $5038: $28 $05 ; $5038: $28 $05
+    jr   z, .jr_503F                              ; $5038: $28 $05 ; $5038: $28 $05
 
     ld   hl, wSaveSlot3Name                       ; $503A: $21 $8A $DB ; $503A: $21 $8A $DB
     jr   jr_001_5042                              ; $503D: $18 $03 ; $503D: $18 $03
 
-jr_001_503F::
+.jr_503F::
     ld   hl, wSaveSlot2Name                       ; $503F: $21 $85 $DB ; $503F: $21 $85 $DB
 
 jr_001_5042::
@@ -1621,7 +1615,7 @@ ELSE
     add  [hl]                                     ; $504B: $86 ; $504B: $86
 ENDC
     and  a                                        ; $504C: $A7 ; $504C: $A7
-    jr   z, jr_001_5055                            ; $504D: $28 $06 ; $504D: $28 $06
+    jr   z, jr_001_5055                           ; $504D: $28 $06 ; $504D: $28 $06
 
     call IncrementGameplaySubtype                 ; $504F: $CD $D6 $44 ; $504F: $CD $D6 $44
     call PlayValidationJingleAndReturn            ; $5052: $CD $BE $49 ; $5052: $CD $BE $49
@@ -1630,7 +1624,7 @@ jr_001_5055::
     ld   a, [wIntroTimer]                         ; $5055: $FA $01 $D0 ; $5055: $FA $01 $D0
     ld   e, a                                     ; $5058: $5F ; $5058: $5F
     ld   d, $00                                   ; $5059: $16 $00 ; $5059: $16 $00
-    ld   hl, Data_001_48E4                           ; $505B: $21 $E4 $48 ; $505B: $21 $E4 $48
+    ld   hl, Data_001_48E4                        ; $505B: $21 $E4 $48 ; $505B: $21 $E4 $48
     add  hl, de                                   ; $505E: $19 ; $505E: $19
     ldh  a, [hFrameCounter]                       ; $505F: $F0 $E7 ; $505F: $F0 $E7
     and  $08                                      ; $5061: $E6 $08 ; $5061: $E6 $08
@@ -1638,7 +1632,7 @@ jr_001_5055::
     ld   hl, wOAMBuffer                           ; $5064: $21 $00 $C0 ; $5064: $21 $00 $C0
 
 label_001_5067::
-    jr   z, jr_001_507D                            ; $5067: $28 $14 ; $5067: $28 $14
+    jr   z, .jr_507D                              ; $5067: $28 $14 ; $5067: $28 $14
 
     push af                                       ; $5069: $F5 ; $5069: $F5
     ld   [hl+], a                                 ; $506A: $22 ; $506A: $22
@@ -1657,7 +1651,7 @@ label_001_5067::
     ld   [hl], a                                  ; $507B: $77 ; $507B: $77
     ret                                           ; $507C: $C9 ; $507C: $C9
 
-jr_001_507D::
+.jr_507D::
     push af                                       ; $507D: $F5 ; $507D: $F5
     ld   [hl+], a                                 ; $507E: $22 ; $507E: $22
     ld   a, $10                                   ; $507F: $3E $10 ; $507F: $3E $10
@@ -1680,7 +1674,7 @@ func_001_5094::
     ld   a, [wIntroTimer]                         ; $5094: $FA $01 $D0 ; $5094: $FA $01 $D0
     ld   e, a                                     ; $5097: $5F ; $5097: $5F
     ld   d, $00                                   ; $5098: $16 $00 ; $5098: $16 $00
-    ld   hl, Data_001_48E4                           ; $509A: $21 $E4 $48 ; $509A: $21 $E4 $48
+    ld   hl, Data_001_48E4                        ; $509A: $21 $E4 $48 ; $509A: $21 $E4 $48
     add  hl, de                                   ; $509D: $19 ; $509D: $19
     ld   a, [hl]                                  ; $509E: $7E ; $509E: $7E
     ld   hl, wOAMBuffer                           ; $509F: $21 $00 $C0 ; $509F: $21 $00 $C0
@@ -1708,14 +1702,14 @@ FileCopyState9Handler::
     call func_001_6BA8                            ; $50DF: $CD $A8 $6B ; $50DF: $CD $A8 $6B
     ldh  a, [hJoypadState]                        ; $50E2: $F0 $CC ; $50E2: $F0 $CC
     and  J_DOWN                                   ; $50E4: $E6 $08 ; $50E4: $E6 $08
-    jr   z, jr_001_50F1                           ; $50E6: $28 $09 ; $50E6: $28 $09
+    jr   z, .jr_50F1                              ; $50E6: $28 $09 ; $50E6: $28 $09
 
     ld   a, [wIntroSubTimer]                      ; $50E8: $FA $02 $D0 ; $50E8: $FA $02 $D0
     inc  a                                        ; $50EB: $3C ; $50EB: $3C
     and  $03                                      ; $50EC: $E6 $03 ; $50EC: $E6 $03
     ld   [wIntroSubTimer], a                      ; $50EE: $EA $02 $D0 ; $50EE: $EA $02 $D0
 
-jr_001_50F1::
+.jr_50F1::
     ldh  a, [hJoypadState]                        ; $50F1: $F0 $CC ; $50F1: $F0 $CC
     and  $04                                      ; $50F3: $E6 $04 ; $50F3: $E6 $04
     jr   z, jr_001_5104                           ; $50F5: $28 $0D ; $50F5: $28 $0D
@@ -1723,42 +1717,42 @@ jr_001_50F1::
     ld   a, [wIntroSubTimer]                      ; $50F7: $FA $02 $D0 ; $50F7: $FA $02 $D0
     dec  a                                        ; $50FA: $3D ; $50FA: $3D
     cp   $FF                                      ; $50FB: $FE $FF ; $50FB: $FE $FF
-    jr   nz, jr_001_5101                          ; $50FD: $20 $02 ; $50FD: $20 $02
+    jr   nz, .jr_5101                             ; $50FD: $20 $02 ; $50FD: $20 $02
 
     ld   a, $03                                   ; $50FF: $3E $03 ; $50FF: $3E $03
 
-jr_001_5101::
+.jr_5101::
     ld   [wIntroSubTimer], a                      ; $5101: $EA $02 $D0 ; $5101: $EA $02 $D0
 
 jr_001_5104::
     call func_001_5094                            ; $5104: $CD $94 $50 ; $5104: $CD $94 $50
     ldh  a, [hJoypadState]                        ; $5107: $F0 $CC ; $5107: $F0 $CC
     bit  J_BIT_B, a                               ; $5109: $CB $6F ; $5109: $CB $6F
-    jr   z, jr_001_5114                           ; $510B: $28 $07 ; $510B: $28 $07
+    jr   z, .jr_5114                              ; $510B: $28 $07 ; $510B: $28 $07
 
     ld   hl, wGameplaySubtype                     ; $510D: $21 $96 $DB ; $510D: $21 $96 $DB
     dec  [hl]                                     ; $5110: $35 ; $5110: $35
     jp   label_001_514F                           ; $5111: $C3 $4F $51 ; $5111: $C3 $4F $51
 
-jr_001_5114::
+.jr_5114::
     and  $90                                      ; $5114: $E6 $90 ; $5114: $E6 $90
-    jr   z, jr_001_5129                            ; $5116: $28 $11 ; $5116: $28 $11
+    jr   z, .jr_5129                              ; $5116: $28 $11 ; $5116: $28 $11
 
     ld   a, [wIntroSubTimer]                      ; $5118: $FA $02 $D0 ; $5118: $FA $02 $D0
     cp   $03                                      ; $511B: $FE $03 ; $511B: $FE $03
-    jp   z, label_001_4555                            ; $511D: $CA $55 $45 ; $511D: $CA $55 $45
+    jp   z, label_001_4555                        ; $511D: $CA $55 $45 ; $511D: $CA $55 $45
 
     call PlayValidationJingleAndReturn            ; $5120: $CD $BE $49 ; $5120: $CD $BE $49
     call IncrementGameplaySubtype                 ; $5123: $CD $D6 $44 ; $5123: $CD $D6 $44
     jp   CopyQuitOkTilemap                        ; $5126: $C3 $55 $4E ; $5126: $C3 $55 $4E
 
-jr_001_5129::
-    call func_001_5175                               ; $5129: $CD $75 $51 ; $5129: $CD $75 $51
+.jr_5129::
+    call func_001_5175                            ; $5129: $CD $75 $51 ; $5129: $CD $75 $51
 
 func_001_512C::
     ldh  a, [hFrameCounter]                       ; $512C: $F0 $E7 ; $512C: $F0 $E7
     and  $10                                      ; $512E: $E6 $10 ; $512E: $E6 $10
-    jr   z, label_001_514F                            ; $5130: $28 $1D ; $5130: $28 $1D
+    jr   z, label_001_514F                        ; $5130: $28 $1D ; $5130: $28 $1D
 
     ld   a, [wIntroTimer]                         ; $5132: $FA $01 $D0 ; $5132: $FA $01 $D0
     rla                                           ; $5135: $17 ; $5135: $17
@@ -1769,15 +1763,15 @@ func_001_512C::
     ld   d, $00                                   ; $513B: $16 $00 ; $513B: $16 $00
     ld   hl, Data_001_50AF                        ; $513D: $21 $AF $50 ; $513D: $21 $AF $50
     add  hl, de                                   ; $5140: $19 ; $5140: $19
-    ld   de, wRequestDestinationHigh              ; $5141: $11 $01 $D6 ; $5141: $11 $01 $D6
+    ld   de, wDrawCommand                         ; $5141: $11 $01 $D6 ; $5141: $11 $01 $D6
     ld   c, $08                                   ; $5144: $0E $08 ; $5144: $0E $08
 
-jr_001_5146::
+.loop_5146
     ld   a, [hl+]                                 ; $5146: $2A ; $5146: $2A
     ld   [de], a                                  ; $5147: $12 ; $5147: $12
     inc  de                                       ; $5148: $13 ; $5148: $13
     dec  c                                        ; $5149: $0D ; $5149: $0D
-    jr   nz, jr_001_5146                           ; $514A: $20 $FA ; $514A: $20 $FA
+    jr   nz, .loop_5146                           ; $514A: $20 $FA ; $514A: $20 $FA
 
     xor  a                                        ; $514C: $AF ; $514C: $AF
     ld   [de], a                                  ; $514D: $12 ; $514D: $12
@@ -1786,16 +1780,16 @@ jr_001_5146::
 label_001_514F::
     ld   a, [wIntroTimer]                         ; $514F: $FA $01 $D0 ; $514F: $FA $01 $D0
     cp   $01                                      ; $5152: $FE $01 ; $5152: $FE $01
-    jr   z, jr_001_5163                            ; $5154: $28 $0D ; $5154: $28 $0D
+    jr   z, .jr_5163                              ; $5154: $28 $0D ; $5154: $28 $0D
 
     cp   $02                                      ; $5156: $FE $02 ; $5156: $FE $02
-    jr   z, jr_001_516C                            ; $5158: $28 $12 ; $5158: $28 $12
+    jr   z, jr_001_516C                           ; $5158: $28 $12 ; $5158: $28 $12
 
     ld   bc, $98C4                                ; $515A: $01 $C4 $98 ; $515A: $01 $C4 $98
     ld   de, wSaveSlot1Name                       ; $515D: $11 $80 $DB ; $515D: $11 $80 $DB
     jp   func_001_4852                            ; $5160: $C3 $52 $48 ; $5160: $C3 $52 $48
 
-jr_001_5163::
+.jr_5163::
     ld   bc, $9924                                ; $5163: $01 $24 $99 ; $5163: $01 $24 $99
     ld   de, wSaveSlot2Name                       ; $5166: $11 $85 $DB ; $5166: $11 $85 $DB
     jp   func_001_4852                            ; $5169: $C3 $52 $48 ; $5169: $C3 $52 $48
@@ -1809,18 +1803,18 @@ func_001_5175::
     ld   a, [wIntroSubTimer]                      ; $5175: $FA $02 $D0 ; $5175: $FA $02 $D0
     ld   e, a                                     ; $5178: $5F ; $5178: $5F
     ld   d, $00                                   ; $5179: $16 $00 ; $5179: $16 $00
-    ld   hl, Data_001_48E4                           ; $517B: $21 $E4 $48 ; $517B: $21 $E4 $48
+    ld   hl, Data_001_48E4                        ; $517B: $21 $E4 $48 ; $517B: $21 $E4 $48
     add  hl, de                                   ; $517E: $19 ; $517E: $19
     ld   a, [wIntroSubTimer]                      ; $517F: $FA $02 $D0 ; $517F: $FA $02 $D0
     cp   $03                                      ; $5182: $FE $03 ; $5182: $FE $03
-    jp   z, label_001_51C3                            ; $5184: $CA $C3 $51 ; $5184: $CA $C3 $51
+    jp   z, label_001_51C3                        ; $5184: $CA $C3 $51 ; $5184: $CA $C3 $51
 
     ldh  a, [hFrameCounter]                       ; $5187: $F0 $E7 ; $5187: $F0 $E7
     and  $08                                      ; $5189: $E6 $08 ; $5189: $E6 $08
-    jr   z, jr_001_51A8                            ; $518B: $28 $1B ; $518B: $28 $1B
+    jr   z, .jr_51A8                              ; $518B: $28 $1B ; $518B: $28 $1B
 
     ld   a, [hl]                                  ; $518D: $7E ; $518D: $7E
-    ld   hl, wOAMBuffer+8                                ; $518E: $21 $08 $C0 ; $518E: $21 $08 $C0
+    ld   hl, wOAMBuffer+8                         ; $518E: $21 $08 $C0 ; $518E: $21 $08 $C0
     push af                                       ; $5191: $F5 ; $5191: $F5
     ld   [hl+], a                                 ; $5192: $22 ; $5192: $22
     ld   a, $58                                   ; $5193: $3E $58 ; $5193: $3E $58
@@ -1839,9 +1833,9 @@ func_001_5175::
     ld   [hl], a                                  ; $51A6: $77 ; $51A6: $77
     ret                                           ; $51A7: $C9 ; $51A7: $C9
 
-jr_001_51A8::
+.jr_51A8::
     ld   a, [hl]                                  ; $51A8: $7E ; $51A8: $7E
-    ld   hl, wOAMBuffer+8                                ; $51A9: $21 $08 $C0 ; $51A9: $21 $08 $C0
+    ld   hl, wOAMBuffer+8                         ; $51A9: $21 $08 $C0 ; $51A9: $21 $08 $C0
     push af                                       ; $51AC: $F5 ; $51AC: $F5
     ld   [hl+], a                                 ; $51AD: $22 ; $51AD: $22
     ld   a, $58                                   ; $51AE: $3E $58 ; $51AE: $3E $58
@@ -1864,7 +1858,7 @@ label_001_51C3::
     ldh  a, [hFrameCounter]                       ; $51C3: $F0 $E7 ; $51C3: $F0 $E7
     and  $08                                      ; $51C5: $E6 $08 ; $51C5: $E6 $08
     ld   a, [hl]                                  ; $51C7: $7E ; $51C7: $7E
-    ld   hl, wOAMBuffer+8                                ; $51C8: $21 $08 $C0 ; $51C8: $21 $08 $C0
+    ld   hl, wOAMBuffer+8                         ; $51C8: $21 $08 $C0 ; $51C8: $21 $08 $C0
     jp   label_001_5067                           ; $51CB: $C3 $67 $50 ; $51CB: $C3 $67 $50
 
 func_001_51CE::
@@ -1918,10 +1912,10 @@ FileCopyStateAHandler::
     ld   h, [hl]                                  ; $521F: $66 ; $521F: $66
     ld   l, a                                     ; $5220: $6F ; $5220: $6F
 
-    ; sizeof save data + extra bytes?
-    ld   de, $3ad                                 ; $5221: $11 $AD $03 ; $5221: $11 $AD $03
+    ; sizeof save data
+    ld   de, (SaveGame2 - SaveGame1)              ; $5221: $11 $AD $03 ; $5221: $11 $AD $03
 
-jr_001_5224::
+.loop_5224
     call EnableExternalRAMWriting                 ; $5224: $CD $D0 $27 ; $5224: $CD $D0 $27
     ld   a, [bc]                                  ; $5227: $0A ; $5227: $0A
     inc  bc                                       ; $5228: $03 ; $5228: $03
@@ -1930,23 +1924,23 @@ jr_001_5224::
     dec  de                                       ; $522D: $1B ; $522D: $1B
     ld   a, e                                     ; $522E: $7B ; $522E: $7B
     or   d                                        ; $522F: $B2 ; $522F: $B2
-    jr   nz, jr_001_5224                          ; $5230: $20 $F2 ; $5230: $20 $F2
+    jr   nz, .loop_5224                           ; $5230: $20 $F2 ; $5230: $20 $F2
 
     jp   label_001_4555                           ; $5232: $C3 $55 $45 ; $5232: $C3 $55 $45
 
 jr_001_5235::
     ldh  a, [hJoypadState]                        ; $5235: $F0 $CC ; $5235: $F0 $CC
     bit  J_BIT_B, a                               ; $5237: $CB $6F ; $5237: $CB $6F
-    jr   z, jr_001_5249                           ; $5239: $28 $0E ; $5239: $28 $0E
+    jr   z, .jr_5249                              ; $5239: $28 $0E ; $5239: $28 $0E
 
     ld   hl, wGameplaySubtype                     ; $523B: $21 $96 $DB ; $523B: $21 $96 $DB
     dec  [hl]                                     ; $523E: $35 ; $523E: $35
     xor  a                                        ; $523F: $AF ; $523F: $AF
     ld   [wCreditsScratch0], a                    ; $5240: $EA $00 $D0 ; $5240: $EA $00 $D0
-    call CopyReturnToMenuTilemap                            ; $5243: $CD $BB $4E ; $5243: $CD $BB $4E
+    call CopyReturnToMenuTilemap                  ; $5243: $CD $BB $4E ; $5243: $CD $BB $4E
     jp   label_001_526F                           ; $5246: $C3 $6F $52 ; $5246: $C3 $6F $52
 
-jr_001_5249::
+.jr_5249::
     call func_001_512C                            ; $5249: $CD $2C $51 ; $5249: $CD $2C $51
     ldh  a, [hFrameCounter]                       ; $524C: $F0 $E7 ; $524C: $F0 $E7
     and  $10                                      ; $524E: $E6 $10 ; $524E: $E6 $10
@@ -1961,15 +1955,15 @@ jr_001_5249::
     ld   d, $00                                   ; $525B: $16 $00 ; $525B: $16 $00
     ld   hl, Data_001_50C7                        ; $525D: $21 $C7 $50 ; $525D: $21 $C7 $50
     add  hl, de                                   ; $5260: $19 ; $5260: $19
-    ld   de, $D609                                ; $5261: $11 $09 $D6 ; $5261: $11 $09 $D6
+    ld   de, wDrawCommand.data + 5                ; $5261: $11 $09 $D6 ; $5261: $11 $09 $D6
     ld   c, $08                                   ; $5264: $0E $08 ; $5264: $0E $08
 
-jr_001_5266::
+.loop_5266
     ld   a, [hl+]                                 ; $5266: $2A ; $5266: $2A
     ld   [de], a                                  ; $5267: $12 ; $5267: $12
     inc  de                                       ; $5268: $13 ; $5268: $13
     dec  c                                        ; $5269: $0D ; $5269: $0D
-    jr   nz, jr_001_5266                          ; $526A: $20 $FA ; $526A: $20 $FA
+    jr   nz, .loop_5266                           ; $526A: $20 $FA ; $526A: $20 $FA
 
     xor  a                                        ; $526C: $AF ; $526C: $AF
     ld   [de], a                                  ; $526D: $12 ; $526D: $12
@@ -1978,7 +1972,7 @@ jr_001_5266::
 label_001_526F::
     ld   a, [wIntroSubTimer]                      ; $526F: $FA $02 $D0 ; $526F: $FA $02 $D0
     cp   $01                                      ; $5272: $FE $01 ; $5272: $FE $01
-    jr   z, jr_001_5283                           ; $5274: $28 $0D ; $5274: $28 $0D
+    jr   z, .jr_5283                              ; $5274: $28 $0D ; $5274: $28 $0D
 
     cp   $02                                      ; $5276: $FE $02 ; $5276: $FE $02
     jr   z, jr_001_528C                           ; $5278: $28 $12 ; $5278: $28 $12
@@ -1987,7 +1981,7 @@ label_001_526F::
     ld   de, wSaveSlot1Name                       ; $527D: $11 $80 $DB ; $527D: $11 $80 $DB
     jp   func_001_4852                            ; $5280: $C3 $52 $48 ; $5280: $C3 $52 $48
 
-jr_001_5283::
+.jr_5283::
     ld   bc, $992D                                ; $5283: $01 $2D $99 ; $5283: $01 $2D $99
     ld   de, wSaveSlot2Name                       ; $5286: $11 $85 $DB ; $5286: $11 $85 $DB
     jp   func_001_4852                            ; $5289: $C3 $52 $48 ; $5289: $C3 $52 $48

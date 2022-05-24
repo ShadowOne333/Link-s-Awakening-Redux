@@ -3,11 +3,11 @@ MarinAtTheShoreEntityHandler::
     and  a                                        ; $618D: $A7
     jp   nz, MarinAsFollowerHandler               ; $618E: $C2 $E8 $59
 
-    ld   a, [$DB74]                               ; $6191: $FA $74 $DB
+    ld   a, [wDB74]                               ; $6191: $FA $74 $DB
     and  a                                        ; $6194: $A7
     ret  nz                                       ; $6195: $C0
 
-    ld   a, [wOverworldRoomStatus + $FD]                               ; $6196: $FA $FD $D8
+    ld   a, [wOverworldRoomStatus + $FD]          ; $6196: $FA $FD $D8
     and  $20                                      ; $6199: $E6 $20
     jp   nz, ClearEntityStatusBank18              ; $619B: $C2 $08 $7F
 
@@ -15,7 +15,7 @@ MarinAtTheShoreEntityHandler::
     cp   TRADING_ITEM_PINEAPPLE                   ; $61A1: $FE $07
     jp   c, ClearEntityStatusBank18               ; $61A3: $DA $08 $7F
 
-    ld   de, Data_018_5EB7                        ; $61A6: $11 $B7 $5E
+    ld   de, MarinAtTalTalAndInStoreSpriteVariants ; $61A6: $11 $B7 $5E
     call RenderActiveEntitySpritesPair            ; $61A9: $CD $C0 $3B
     ld   a, [wRoomTransitionState]                ; $61AC: $FA $24 $C1
     and  a                                        ; $61AF: $A7
@@ -44,7 +44,7 @@ MarinAtTheShoreTransitionHandler::
     ld   a, MUSIC_MARIN_BEACH_TRANSITION          ; $61D1: $3E $4D
     ld   [wMusicTrackToPlay], a                   ; $61D3: $EA $68 $D3
     ldh  [hDefaultMusicTrack], a                  ; $61D6: $E0 $B0
-    ldh  [hFFBD], a                               ; $61D8: $E0 $BD
+    ldh  [hDefaultMusicTrackAlt], a               ; $61D8: $E0 $BD
     jp   IncrementEntityState                     ; $61DA: $C3 $12 $3B
 
 MarinAtTheShoreState1Handler::
@@ -69,19 +69,19 @@ MarinAtTheShoreState2Handler::
     ret  nz                                       ; $61FB: $C0
 
     call GetEntityTransitionCountdown             ; $61FC: $CD $05 $0C
-    jr   nz, jr_018_6209                          ; $61FF: $20 $08
+    jr   nz, .jr_6209                             ; $61FF: $20 $08
 
-    call_open_dialog $1D5 ; "Want to talk a while?" ; $6201
+    call_open_dialog Dialog1D5 ; "Want to talk a while?" ; $6201
     call IncrementEntityState                     ; $6206: $CD $12 $3B
 
-jr_018_6209:
+.jr_6209
     ld   e, $02                                   ; $6209: $1E $02
     cp   $0C                                      ; $620B: $FE $0C
-    jr   c, jr_018_6211                           ; $620D: $38 $02
+    jr   c, .jr_6211                              ; $620D: $38 $02
 
     ld   e, $04                                   ; $620F: $1E $04
 
-jr_018_6211:
+.jr_6211
     ld   a, e                                     ; $6211: $7B
     jp   SetEntitySpriteVariant                   ; $6212: $C3 $0C $3B
 
@@ -91,7 +91,7 @@ MarinAtTheShoreState3Handler::
     ret  nz                                       ; $6219: $C0
 
     call IncrementEntityState                     ; $621A: $CD $12 $3B
-    ld   a, [wDialogAskSelectionIndex]                               ; $621D: $FA $77 $C1
+    ld   a, [wDialogAskSelectionIndex]            ; $621D: $FA $77 $C1
     and  a                                        ; $6220: $A7
     jr   nz, .playerDoesntWantToTalk              ; $6221: $20 $1A
 
@@ -112,7 +112,7 @@ MarinAtTheShoreState3Handler::
 .playerDoesntWantToTalk
     xor  a                                        ; $623D: $AF
     ld   [wC167], a                               ; $623E: $EA $67 $C1
-    jp_open_dialog $1D6 ; "I'll just watch the waves" ; $6241
+    jp_open_dialog Dialog1D6 ; "I'll just watch the waves" ; $6241
 
 MarinAtTheShoreState4Handler::
     ld   a, [wDialogState]                        ; $6246: $FA $9F $C1
@@ -125,18 +125,18 @@ MarinAtTheShoreState4Handler::
 
 MarinAtTheShoreState5Handler::
     call GetEntityTransitionCountdown             ; $6253: $CD $05 $0C
-    jr   nz, jr_018_625B                          ; $6256: $20 $03
+    jr   nz, .jr_625B                             ; $6256: $20 $03
 
     call IncrementEntityState                     ; $6258: $CD $12 $3B
 
-jr_018_625B:
+.jr_625B
     ld   e, $00                                   ; $625B: $1E $00
     cp   $54                                      ; $625D: $FE $54
-    jr   c, jr_018_6263                           ; $625F: $38 $02
+    jr   c, .jr_6263                              ; $625F: $38 $02
 
     ld   e, $04                                   ; $6261: $1E $04
 
-jr_018_6263:
+.jr_6263
     ld   a, e                                     ; $6263: $7B
     jp   SetEntitySpriteVariant                   ; $6264: $C3 $0C $3B
 

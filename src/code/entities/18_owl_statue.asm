@@ -1,5 +1,8 @@
-Data_018_5DF7::
-    db   $5E, $01, $5E, $21
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+OwlStatueSpriteVariants::
+.variant0
+    db $5E, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $5E, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 Data_018_5DFB::
     db   $00, $F8, $50, $06, $00, $00, $52, $06, $00, $08, $54, $06, $00, $10, $56, $06
@@ -11,11 +14,11 @@ OwlStatueSouthFaceShrine:
     ld   hl, Data_018_5DFB                        ; $5E1B: $21 $FB $5D
     ld   a, [wBGPaletteEffectAddress]             ; $5E1E: $FA $CC $C3
     and  a                                        ; $5E21: $A7
-    jr   nz, jr_018_5E27                          ; $5E22: $20 $03
+    jr   nz, .jr_5E27                             ; $5E22: $20 $03
 
     ld   hl, Data_018_5E0B                        ; $5E24: $21 $0B $5E
 
-jr_018_5E27:
+.jr_5E27
     ld   c, $04                                   ; $5E27: $0E $04
     call RenderActiveEntitySpritesRect            ; $5E29: $CD $E6 $3C
     ld   a, $02                                   ; $5E2C: $3E $02
@@ -42,18 +45,18 @@ func_018_5E43::
 
     ld   a, [wBGPalette]                          ; $5E4E: $FA $97 $DB
     cp   $E4                                      ; $5E51: $FE $E4
-    jr   nz, jr_018_5E58                          ; $5E53: $20 $03
+    jr   nz, .jr_5E58                             ; $5E53: $20 $03
 
     jp   IncrementEntityState                     ; $5E55: $C3 $12 $3B
 
-jr_018_5E58:
-    jp_open_dialog $0E6                           ; $5E58
+.jr_5E58
+    jp_open_dialog Dialog0E6                      ; $5E58
 
 func_018_5E5D::
     call ReturnIfNonInteractive_18                ; $5E5D: $CD $E8 $7D
     ld   a, [wDialogState]                        ; $5E60: $FA $9F $C1
     and  a                                        ; $5E63: $A7
-    jr   nz, jr_018_5E79                          ; $5E64: $20 $13
+    jr   nz, .ret_5E79                            ; $5E64: $20 $13
 
     ld   a, GAMEPLAY_WF_MURAL                     ; $5E66: $3E $0A
     call func_018_4CB0                            ; $5E68: $CD $B0 $4C
@@ -64,7 +67,7 @@ func_018_5E5D::
     ld   hl, wOverworldRoomStatus + $AC           ; $5E74: $21 $AC $D8
     set  4, [hl]                                  ; $5E77: $CB $E6
 
-jr_018_5E79:
+.ret_5E79
     ret                                           ; $5E79: $C9
 
 OwlStatueEntityHandler::
@@ -80,7 +83,7 @@ ELSE
     add  $01                                      ; $5E83: $C6 $01
     ldh  [hActiveEntityVisualPosY], a             ; $5E85: $E0 $EC
 ENDC
-    ld   de, Data_018_5DF7                        ; $5E87: $11 $F7 $5D
+    ld   de, OwlStatueSpriteVariants              ; $5E87: $11 $F7 $5D
     call RenderActiveEntitySpritesPair            ; $5E8A: $CD $C0 $3B
 
 IF __PATCH_0__
@@ -96,20 +99,20 @@ ENDC
 
     ld   a, [wHasDungeonStoneSlab]                ; $5E97: $FA $CE $DB
     and  a                                        ; $5E9A: $A7
-    ld   a, $10                                   ; $5E9B: $3E $10
-    jr   nz, jr_018_5EA2                          ; $5E9D: $20 $03
+    ld_dialog_low a, Dialog110 ; "no beak"        ; $5E9B: $3E $10
+    jr   nz, .jr_5EA2                             ; $5E9D: $20 $03
 
     jp   OpenDialogInTable1                       ; $5E9F: $C3 $73 $23
 
-jr_018_5EA2:
+.jr_5EA2
     ldh  a, [hMapId]                              ; $5EA2: $F0 $F7
     cp   MAP_COLOR_DUNGEON                        ; $5EA4: $FE $FF
-    jr   nz, jr_018_5EAD                          ; $5EA6: $20 $05
+    jr   nz, .jr_5EAD                             ; $5EA6: $20 $05
 
-    jp_open_dialog $263                           ; $5EA8
+    jp_open_dialog Dialog263                      ; $5EA8
 
-jr_018_5EAD:
+.jr_5EAD
     ld   a, $18                                   ; $5EAD: $3E $18
-    call func_036_4A4C_trampoline                 ; $5EAF: $CD $EA $0A
+    call GetOwlStatueDialogId_trampoline          ; $5EAF: $CD $EA $0A
     ldh  a, [hMultiPurpose0]                      ; $5EB2: $F0 $D7
     jp   OpenDialogInTable2                       ; $5EB4: $C3 $7C $23

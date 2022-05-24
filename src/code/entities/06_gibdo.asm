@@ -1,21 +1,33 @@
-Data_006_7E6F::
-    db   $74, $02, $76, $02, $76, $22, $74, $22
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+GibdoSpriteVariants::
+.variant0
+    db $74, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $76, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant1
+    db $76, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $74, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
-Data_006_7E77::
-    db   $44, $02, $46, $02, $46, $22, $44, $22
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+GibdoTurtleRockSpriteVariants::
+.variant0
+    db $44, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $46, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant1
+    db $46, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $44, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 Data_006_7E7F::
     db   $00, $08, $F8, $00, $F8, $08
 
 GibdoEntityHandler::
-    ld   de, Data_006_7E6F                        ; $7E85: $11 $6F $7E
+    ld   de, GibdoSpriteVariants                  ; $7E85: $11 $6F $7E
     ldh  a, [hMapId]                              ; $7E88: $F0 $F7
     cp   MAP_TURTLE_ROCK                          ; $7E8A: $FE $07
-    jr   nz, jr_006_7E91                          ; $7E8C: $20 $03
+    jr   nz, .render                              ; $7E8C: $20 $03
 
-    ld   de, Data_006_7E77                        ; $7E8E: $11 $77 $7E
+    ld   de, GibdoTurtleRockSpriteVariants        ; $7E8E: $11 $77 $7E
 
-jr_006_7E91:
+.render:
     call RenderActiveEntitySpritesPair            ; $7E91: $CD $C0 $3B
     call ReturnIfNonInteractive_06                ; $7E94: $CD $C6 $64
     call DecrementEntityIgnoreHitsCountdown       ; $7E97: $CD $56 $0C
@@ -28,7 +40,7 @@ label_006_7E9D:
     add  hl, bc                                   ; $7EA6: $09
     ld   a, [hl]                                  ; $7EA7: $7E
     and  $03                                      ; $7EA8: $E6 $03
-    jr   nz, jr_006_7EBB                          ; $7EAA: $20 $0F
+    jr   nz, .jr_7EBB                             ; $7EAA: $20 $0F
 
     ld   a, [hl]                                  ; $7EAC: $7E
     and  $0C                                      ; $7EAD: $E6 $0C
@@ -41,7 +53,7 @@ label_006_7E9D:
     ld   [hl], a                                  ; $7EB8: $77
     jr   jr_006_7EC3                              ; $7EB9: $18 $08
 
-jr_006_7EBB:
+.jr_7EBB
     ld   hl, wEntitiesSpeedXTable                 ; $7EBB: $21 $40 $C2
     add  hl, bc                                   ; $7EBE: $09
     ld   a, [hl]                                  ; $7EBF: $7E
@@ -53,13 +65,13 @@ jr_006_7EC3:
     add  hl, bc                                   ; $7EC6: $09
     ld   a, [hl]                                  ; $7EC7: $7E
     and  a                                        ; $7EC8: $A7
-    jr   nz, jr_006_7ED2                          ; $7EC9: $20 $07
+    jr   nz, .jr_7ED2                             ; $7EC9: $20 $07
 
     call GetRandomByte                            ; $7ECB: $CD $0D $28
     and  $3F                                      ; $7ECE: $E6 $3F
     jr   nz, jr_006_7EFF                          ; $7ED0: $20 $2D
 
-jr_006_7ED2:
+.jr_7ED2
     xor  a                                        ; $7ED2: $AF
     ld   hl, wEntitiesSpeedYTable                 ; $7ED3: $21 $50 $C2
     add  hl, bc                                   ; $7ED6: $09

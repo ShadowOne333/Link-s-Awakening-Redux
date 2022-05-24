@@ -1,9 +1,21 @@
-Data_018_525B::
-    db   $78, $01, $7A, $01, $7C, $01, $7E, $01, $7A, $21, $78, $21, $7E, $21, $7C, $21
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+AnimalD2SpriteVariants::
+.variant0
+    db $78, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $7A, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant1
+    db $7C, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $7E, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant2
+    db $7A, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $78, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant3
+    db $7E, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $7C, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 AnimalD2EntityHandler::
     call func_018_51B0                            ; $526B: $CD $B0 $51
-    ld   de, Data_018_525B                        ; $526E: $11 $5B $52
+    ld   de, AnimalD2SpriteVariants               ; $526E: $11 $5B $52
     call RenderActiveEntitySpritesPair            ; $5271: $CD $C0 $3B
     ld   a, [wMarinEntityIndex]                   ; $5274: $FA $0F $C5
     ld   e, a                                     ; $5277: $5F
@@ -13,11 +25,11 @@ AnimalD2EntityHandler::
     ldh  a, [hActiveEntityPosX]                   ; $527D: $F0 $EE
     ld   e, $00                                   ; $527F: $1E $00
     cp   [hl]                                     ; $5281: $BE
-    jr   nc, jr_018_5286                          ; $5282: $30 $02
+    jr   nc, .jr_5286                             ; $5282: $30 $02
 
     ld   e, $02                                   ; $5284: $1E $02
 
-jr_018_5286:
+.jr_5286
     ldh  a, [hFrameCounter]                       ; $5286: $F0 $E7
     rra                                           ; $5288: $1F
     rra                                           ; $5289: $1F

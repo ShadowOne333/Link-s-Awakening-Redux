@@ -1,10 +1,44 @@
-Data_006_720C::
-    db   $68, $01, $6A, $01, $64, $01, $66, $01, $6C, $01, $6E, $01, $6A, $21, $68, $21
-    db   $66, $21, $64, $21, $6E, $21, $6C, $21
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+MrWriteSpriteVariants::
+.variant0
+    db $68, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $6A, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant1
+    db $64, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $66, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant2
+    db $6C, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $6E, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant3
+    db $6A, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $68, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant4
+    db $66, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $64, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant5
+    db $6E, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $6C, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
-Data_006_7224::
-    db   $68, $00, $6A, $00, $64, $00, $66, $00, $6C, $00, $6E, $00, $6A, $20, $68, $20
-    db   $66, $20, $64, $20, $6E, $20, $6C, $20
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+MrWriteBirdChristineHouseSpriteVariants::
+.variant0
+    db $68, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $6A, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant1
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant2
+    db $6C, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant3
+    db $6A, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $68, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant4
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant5
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $6C, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 MrWriteBirdEntityHandler::
     ld   hl, wEntitiesDirectionTable              ; $723C: $21 $80 $C3
@@ -20,24 +54,24 @@ MrWriteBirdEntityHandler::
 
     and  $80                                      ; $724D: $E6 $80
     ld   a, $00                                   ; $724F: $3E $00
-    jr   nz, jr_006_7255                          ; $7251: $20 $02
+    jr   nz, .jr_7255                             ; $7251: $20 $02
 
     ld   a, $03                                   ; $7253: $3E $03
 
-jr_006_7255:
+.jr_7255
     ld   hl, wEntitiesDirectionTable              ; $7255: $21 $80 $C3
     add  hl, bc                                   ; $7258: $09
     ld   [hl], a                                  ; $7259: $77
 
 jr_006_725A:
-    ld   de, Data_006_720C                        ; $725A: $11 $0C $72
+    ld   de, MrWriteSpriteVariants                ; $725A: $11 $0C $72
     ldh  a, [hMapRoom]                            ; $725D: $F0 $F6
     cp   ROOM_INDOOR_B_CHRISTINE_HOUSE            ; $725F: $FE $D9
-    jr   nz, jr_006_7266                          ; $7261: $20 $03
+    jr   nz, .jr_7266                             ; $7261: $20 $03
 
-    ld   de, Data_006_7224                        ; $7263: $11 $24 $72
+    ld   de, MrWriteBirdChristineHouseSpriteVariants ; $7263: $11 $24 $72
 
-jr_006_7266:
+.jr_7266
     call RenderActiveEntitySpritesPair            ; $7266: $CD $C0 $3B
     call ReturnIfNonInteractive_06                ; $7269: $CD $C6 $64
     ld   a, [wIsIndoor]                           ; $726C: $FA $A5 $DB
@@ -52,15 +86,15 @@ jr_006_7266:
     add  hl, bc                                   ; $727E: $09
     ld   a, [hl]                                  ; $727F: $7E
     and  $80                                      ; $7280: $E6 $80
-    ldh  [hMultiPurposeG], a                               ; $7282: $E0 $E8
-    jr   z, jr_006_728C                           ; $7284: $28 $06
+    ldh  [hMultiPurposeG], a                      ; $7282: $E0 $E8
+    jr   z, .jr_728C                              ; $7284: $28 $06
 
     ld   [hl], b                                  ; $7286: $70
     ld   hl, wEntitiesPosZTable                   ; $7287: $21 $10 $C3
     add  hl, bc                                   ; $728A: $09
     ld   [hl], b                                  ; $728B: $70
 
-jr_006_728C:
+.jr_728C
     ldh  a, [hActiveEntityState]                  ; $728C: $F0 $F0
     JP_TABLE                                      ; $728E
 ._00 dw MrWriteBirdState0Handler
@@ -76,8 +110,8 @@ MrWriteBirdState0Handler::
     call SetEntitySpriteVariant                   ; $72A1: $CD $0C $3B
     call GetEntityTransitionCountdown             ; $72A4: $CD $05 $0C
 
-jr_006_72A7:
-    jr   nz, jr_006_72E0                          ; $72A7: $20 $37
+.jr_72A7
+    jr   nz, .jr_72E0                             ; $72A7: $20 $37
 
     call GetRandomByte                            ; $72A9: $CD $0D $28
     and  $07                                      ; $72AC: $E6 $07
@@ -110,26 +144,26 @@ jr_006_72A7:
     ld   [hl], a                                  ; $72DC: $77
     call IncrementEntityState                     ; $72DD: $CD $12 $3B
 
-jr_006_72E0:
+.jr_72E0
     jp   label_006_7308                           ; $72E0: $C3 $08 $73
 
 MrWriteBirdState1Handler::
     call func_006_7335                            ; $72E3: $CD $35 $73
     call UpdateEntityPosWithSpeed_06              ; $72E6: $CD $41 $65
     call label_3B23                               ; $72E9: $CD $23 $3B
-    ldh  a, [hMultiPurposeG]                               ; $72EC: $F0 $E8
+    ldh  a, [hMultiPurposeG]                      ; $72EC: $F0 $E8
     and  a                                        ; $72EE: $A7
     jr   z, label_006_7308                        ; $72EF: $28 $17
 
     call GetEntityTransitionCountdown             ; $72F1: $CD $05 $0C
-    jr   nz, jr_006_72FD                          ; $72F4: $20 $07
+    jr   nz, .jr_72FD                             ; $72F4: $20 $07
 
     ld   [hl], $30                                ; $72F6: $36 $30
     call IncrementEntityState                     ; $72F8: $CD $12 $3B
     ld   [hl], b                                  ; $72FB: $70
     ret                                           ; $72FC: $C9
 
-jr_006_72FD:
+.jr_72FD
     ld   hl, wEntitiesSpeedZTable                 ; $72FD: $21 $20 $C3
     add  hl, bc                                   ; $7300: $09
     ld   [hl], $08                                ; $7301: $36 $08
@@ -150,21 +184,21 @@ MrWriteBirdState2Handler::
     call label_3B23                               ; $7315: $CD $23 $3B
     ldh  a, [hFrameCounter]                       ; $7318: $F0 $E7
     and  $01                                      ; $731A: $E6 $01
-    jr   nz, jr_006_7323                          ; $731C: $20 $05
+    jr   nz, .jr_7323                             ; $731C: $20 $05
 
     ld   hl, wEntitiesSpeedZTable                 ; $731E: $21 $20 $C3
     add  hl, bc                                   ; $7321: $09
     inc  [hl]                                     ; $7322: $34
 
-jr_006_7323:
-    ldh  a, [hMultiPurposeG]                               ; $7323: $F0 $E8
+.jr_7323
+    ldh  a, [hMultiPurposeG]                      ; $7323: $F0 $E8
     and  a                                        ; $7325: $A7
-    jr   z, jr_006_732C                           ; $7326: $28 $04
+    jr   z, .jr_732C                              ; $7326: $28 $04
 
     call IncrementEntityState                     ; $7328: $CD $12 $3B
     ld   [hl], b                                  ; $732B: $70
 
-jr_006_732C:
+.jr_732C
     ldh  a, [hFrameCounter]                       ; $732C: $F0 $E7
     rra                                           ; $732E: $1F
     and  $02                                      ; $732F: $E6 $02
@@ -174,17 +208,17 @@ jr_006_732C:
 func_006_7335::
     ld   a, [wSwordAnimationState]                ; $7335: $FA $37 $C1
     cp   SWORD_ANIMATION_STATE_SWING_START        ; $7338: $FE $02
-    jr   nz, jr_006_7371                          ; $733A: $20 $35
+    jr   nz, .ret_7371                            ; $733A: $20 $35
 
     call func_006_6594                            ; $733C: $CD $94 $65
     add  $18                                      ; $733F: $C6 $18
     cp   $30                                      ; $7341: $FE $30
-    jr   nc, jr_006_7371                          ; $7343: $30 $2C
+    jr   nc, .ret_7371                            ; $7343: $30 $2C
 
     call func_006_65A4                            ; $7345: $CD $A4 $65
     add  $18                                      ; $7348: $C6 $18
     cp   $30                                      ; $734A: $FE $30
-    jr   nc, jr_006_7371                          ; $734C: $30 $23
+    jr   nc, .ret_7371                            ; $734C: $30 $23
 
     call IncrementEntityState                     ; $734E: $CD $12 $3B
     ld   [hl], $02                                ; $7351: $36 $02
@@ -207,7 +241,7 @@ func_006_7335::
     ld   [hl], $0C                                ; $736E: $36 $0C
     pop  af                                       ; $7370: $F1
 
-jr_006_7371:
+.ret_7371
     ret                                           ; $7371: $C9
 
 label_006_7372:

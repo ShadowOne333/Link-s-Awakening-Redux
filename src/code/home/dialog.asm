@@ -71,7 +71,8 @@ DialogOpenAnimationStartHandler::
 ; Input:
 ;   a: dialog index in table 1
 OpenDialogInTable1::
-    call OpenDialog                               ; $2373: $CD $85 $23
+    call OpenDialogInTable0                       ; $2373: $CD $85 $23
+    ; Overwrite the table number
     ld   a, $01                                   ; $2376: $3E $01
     ld   [wDialogIndexHi], a                      ; $2378: $EA $12 $C1
     ret                                           ; $237B: $C9
@@ -80,7 +81,8 @@ OpenDialogInTable1::
 ; Input:
 ;   a: dialog index in table 2
 OpenDialogInTable2::
-    call OpenDialog                               ; $237C: $CD $85 $23
+    call OpenDialogInTable0                       ; $237C: $CD $85 $23
+    ; Overwrite the table number
     ld   a, $02                                   ; $237F: $3E $02
     ld   [wDialogIndexHi], a                      ; $2381: $EA $12 $C1
     ret                                           ; $2384: $C9
@@ -88,7 +90,7 @@ OpenDialogInTable2::
 ; Open a dialog in the $00-$FF range
 ; Input:
 ;   a: dialog index in table 0
-OpenDialog::
+OpenDialogInTable0::
     ; Clear wDialogAskSelectionIndex
     push af                                       ; $2385: $F5
     xor  a                                        ; $2386: $AF
@@ -100,13 +102,15 @@ OpenDialog::
 
     ; Initialize dialog variables
     xor  a                                        ; $238E: $AF
-    ld   [wDialogOpenCloseAnimationFrame], a                               ; $238F: $EA $6F $C1
+    ld   [wDialogOpenCloseAnimationFrame], a      ; $238F: $EA $6F $C1
     ld   [wDialogCharacterIndex], a               ; $2392: $EA $70 $C1
     ld   [wDialogCharacterIndexHi], a             ; $2395: $EA $64 $C1
-    ld   [wNameIndex], a                               ; $2398: $EA $08 $C1
+    ld   [wNameIndex], a                          ; $2398: $EA $08 $C1
     ld   [wDialogIndexHi], a                      ; $239B: $EA $12 $C1
+
     ld   a, $0F                                   ; $239E: $3E $0F
-    ld   [wDialogSFX], a                               ; $23A0: $EA $AB $C5
+    ld   [wDialogSFX], a                          ; $23A0: $EA $AB $C5
+
     ; Determine if the dialog is displayed on top or bottom
     ; wDialogState = hLinkPositionY < $48 ? $81 : $01
     ldh  a, [hLinkPositionY]                      ; $23A3: $F0 $99
@@ -115,6 +119,7 @@ OpenDialog::
     and  $80                                      ; $23A8: $E6 $80
     or   $01                                      ; $23AA: $F6 $01
     ld   [wDialogState], a                        ; $23AC: $EA $9F $C1
+
     ret                                           ; $23AF: $C9
 
 DialogOpenAnimationHandler::
@@ -133,7 +138,7 @@ DialogClosingEndHandler::
     cp   a, GAMEPLAY_WORLD                        ; $23C1: $FE $0B
     ret  nz                                       ; $23C3: $C0
 
-    ld   a, [wBGPaletteEffectAddress]                               ; $23C4: $FA $CC $C3
+    ld   a, [wBGPaletteEffectAddress]             ; $23C4: $FA $CC $C3
     cp   a, $08                                   ; $23C7: $FE $08
     ret  c                                        ; $23C9: $D8
 
@@ -154,24 +159,25 @@ data_23DC::
 
 ; Open dialog animation
 ; Saves tiles under the dialog box?
-label_23E4::
+func_23E4::
     ld   a, [wDialogState]                        ; $23E4: $FA $9F $C1
     bit  7, a                                     ; $23E7: $CB $7F
-    jr   z, label_23EF                            ; $23E9: $28 $04
+    jr   z, .jr_23EF                              ; $23E9: $28 $04
     and  $7F                                      ; $23EB: $E6 $7F
     add  a, $03                                   ; $23ED: $C6 $03
+.jr_23EF
 
-label_23EF::
     ld   e, a                                     ; $23EF: $5F
     ld   d, $00                                   ; $23F0: $16 $00
     ld   hl, data_23D2 - $02                      ; $23F2: $21 $D0 $23
     add  hl, de                                   ; $23F5: $19
     ld   a, [hl]                                  ; $23F6: $7E
-    add  a, $00                                   ; $23F7: $C6 $00
+    add  a, LOW(wD500)                            ; $23F7: $C6 $00
     ld   c, a                                     ; $23F9: $4F
-    ld   a, $D5                                   ; $23FA: $3E $D5
+    ld   a, HIGH(wD500)                           ; $23FA: $3E $D5
     adc  a, $00                                   ; $23FC: $CE $00
     ld   b, a                                     ; $23FE: $47
+
     ld   hl, data_23DC                            ; $23FF: $21 $DC $23
     add  hl, de                                   ; $2402: $19
     ld   a, [wBGOriginLow]                        ; $2403: $FA $2F $C1
@@ -192,36 +198,39 @@ label_23EF::
     and  a                                        ; $241B: $A7
     jr   nz, label_2444                           ; $241C: $20 $26
 
-label_241E::
+    ; DMG version of the loop
+.loop
     ld   a, [hli]                                 ; $241E: $2A
     ld   [bc], a                                  ; $241F: $02
     inc  bc                                       ; $2420: $03
+
     ld   a, l                                     ; $2421: $7D
     and  $1F                                      ; $2422: $E6 $1F
-    jr   nz, label_242B                           ; $2424: $20 $05
+    jr   nz, .jr_242B                             ; $2424: $20 $05
     ld   a, l                                     ; $2426: $7D
     dec  a                                        ; $2427: $3D
     and  $E0                                      ; $2428: $E6 $E0
     ld   l, a                                     ; $242A: $6F
+.jr_242B
 
-label_242B::
     inc  e                                        ; $242B: $1C
     ld   a, e                                     ; $242C: $7B
     cp   $12                                      ; $242D: $FE $12
-    jr   nz, label_241E                           ; $242F: $20 $ED
+    jr   nz, .loop                                ; $242F: $20 $ED
+
     ld   e, $00                                   ; $2431: $1E $00
     ldh  a, [hMultiPurpose0]                      ; $2433: $F0 $D7
     add  a, $20                                   ; $2435: $C6 $20
     ldh  [hMultiPurpose0], a                      ; $2437: $E0 $D7
-    jr   nc, label_243C                           ; $2439: $30 $01
+    jr   nc, .jr_243C                             ; $2439: $30 $01
     inc  h                                        ; $243B: $24
+.jr_243C
 
-label_243C::
     ld   l, a                                     ; $243C: $6F
     inc  d                                        ; $243D: $14
     ld   a, d                                     ; $243E: $7A
     cp   $02                                      ; $243F: $FE $02
-    jr   nz, label_241E                           ; $2441: $20 $DB
+    jr   nz, .loop                                ; $2441: $20 $DB
     ret                                           ; $2443: $C9
 
 label_2444::
@@ -294,7 +303,7 @@ DialogFinishedHandler::
 UpdateDialogState::
     ; Clear wDialogOpenCloseAnimationFrame
     xor  a                                        ; $2496: $AF
-    ld   [wDialogOpenCloseAnimationFrame], a                               ; $2497: $EA $6F $C1
+    ld   [wDialogOpenCloseAnimationFrame], a      ; $2497: $EA $6F $C1
 
 .if
     ; If GameplayType == PHOTO_ALBUM
@@ -318,10 +327,10 @@ UpdateDialogState_return:
     ret                                           ; $24AE: $C9
 
 DialogClosingBeginHandler::
-    jpsb func_01C_4AA8                            ; $24AF: $3E $1C $EA $00 $21 $C3 $A8 $4A
+    jpsb AnimateDialogClosing                     ; $24AF: $3E $1C $EA $00 $21 $C3 $A8 $4A
 
 DialogLetterAnimationStartHandler::
-    ld   a, BANK(func_01C_49F1)                   ; $24B7: $3E $1C
+    ld   a, BANK(ClearLetterPixels)               ; $24B7: $3E $1C
     ld   [MBC3SelectBank], a                      ; $24B9: $EA $00 $21
     ld   a, [wDialogScrollDelay]                  ; $24BC: $FA $72 $C1
     and  a                                        ; $24BF: $A7
@@ -331,7 +340,7 @@ DialogLetterAnimationStartHandler::
     ret                                           ; $24C6: $C9
 
 .delayOver
-    call func_01C_49F1                            ; $24C7: $CD $F1 $49
+    call ClearLetterPixels                        ; $24C7: $CD $F1 $49
     jp   IncrementDialogStateAndReturn            ; $24CA: $C3 $85 $24
 
 DialogLetterAnimationEndHandler::
@@ -355,7 +364,7 @@ DialogLetterAnimationEndHandler::
     ld   hl, Data_01C_45C1                        ; $24E9: $21 $C1 $45
     add  hl, bc                                   ; $24EC: $09
     add  a, [hl]                                  ; $24ED: $86
-    ld   hl, wRequests                            ; $24EE: $21 $00 $D6
+    ld   hl, wDrawCommandsSize                    ; $24EE: $21 $00 $D6
     add  hl, de                                   ; $24F1: $19
     ldi  [hl], a                                  ; $24F2: $22
     ld   [wC175], a                               ; $24F3: $EA $75 $C1
@@ -415,7 +424,7 @@ ENDC
     add  hl, bc                                   ; $253D: $09
     ld   a, [hl]                                  ; $253E: $7E
 
-    ld   hl, wRequests                            ; $253F: $21 $00 $D6
+    ld   hl, wDrawCommandsSize                    ; $253F: $21 $00 $D6
     add  hl, de                                   ; $2542: $19
     ldi  [hl], a ; high byte of tile destination address ; $2543: $22
     push hl                                       ; $2544: $E5
@@ -481,7 +490,7 @@ ENDC
     jr   nz, .notChoice                           ; $258E: $20 $14
     pop  hl                                       ; $2590: $E1
     xor  a                                        ; $2591: $AF
-    ld   [wRequest], a                            ; $2592: $EA $01 $D6
+    ld   [wDrawCommand], a                        ; $2592: $EA $01 $D6
 
 .choice
     ld   a, [wDialogState]                        ; $2595: $FA $9F $C1
@@ -499,7 +508,7 @@ ENDC
     jr   nz, .notEnd                              ; $25A6: $20 $15
     pop  hl                                       ; $25A8: $E1
     xor  a                                        ; $25A9: $AF
-    ld   [wRequest], a                            ; $25AA: $EA $01 $D6
+    ld   [wDrawCommand], a                        ; $25AA: $EA $01 $D6
 
 .label_25AD::
     ld   a, [wDialogState]                        ; $25AD: $FA $9F $C1
@@ -602,7 +611,7 @@ ENDC
     ld   b, h                                     ; $262F: $44
     pop  hl                                       ; $2630: $E1
     ld   e, $10                                   ; $2631: $1E $10
-    ; copy character tile data to wRequestData
+    ; copy character tile data to wDrawCommandData
 .copyTileLoop
     ld   a, [bc]                                  ; $2633: $0A
     ldi  [hl], a                                  ; $2634: $22
@@ -732,7 +741,7 @@ ENDC
     jp   z, label_278B                            ; $26DE: $CA $8B $27
 
 .jp_26E1
-    ; Build a BG Data transfer request for the dialog background
+    ; Build a draw command for the dialog background
 
     ; e = (wDialogState == DIALOG_CLOSED ? 0 : 1)
     ld   e, $00                                   ; $26E1: $1E $00
@@ -747,18 +756,18 @@ ENDC
     add  hl, de                                   ; $26F0: $19
     ld   a, [wBGOriginHigh]                       ; $26F1: $FA $2E $C1
     add  a, [hl]                                  ; $26F4: $86
-    ld   [wRequestDestinationHigh], a             ; $26F5: $EA $01 $D6
+    ld   [wDrawCommand.destinationHigh], a        ; $26F5: $EA $01 $D6
     ld   hl, data_2691                            ; $26F8: $21 $91 $26
     add  hl, de                                   ; $26FB: $19
     ld   a, [wBGOriginLow]                        ; $26FC: $FA $2F $C1
     add  a, [hl]                                  ; $26FF: $86
-    ld   [wRequestDestinationLow], a              ; $2700: $EA $02 $D6
-    ld   a, BG_COPY_MODE_ROW_SINGLE_VALUE | $0F   ; $2703: $3E $4F
-    ld   [wRequestLength], a                      ; $2705: $EA $03 $D6
+    ld   [wDrawCommand.destinationLow], a         ; $2700: $EA $02 $D6
+    ld   a, DC_FILL_ROW | $0F                     ; $2703: $3E $4F
+    ld   [wDrawCommand.length], a                 ; $2705: $EA $03 $D6
     ldh  a, [hDialogBackgroundTile]               ; $2708: $F0 $E8
-    ld   [wRequestLength + 1], a                  ; $270A: $EA $04 $D6
+    ld   [wDrawCommand.length+ 1], a              ; $270A: $EA $04 $D6
     xor  a                                        ; $270D: $AF
-    ld   [$D605], a                               ; $270E: $EA $05 $D6
+    ld   [wDrawCommand.data + 1], a               ; $270E: $EA $05 $D6
 IF __PATCH_9__
     jp   IncrementDialogState
 ELSE
@@ -847,8 +856,8 @@ data_276B::
 
 DialogFinishScrolling::
     ld   e, 0                                     ; $276D: $1E $00
-    ld   a, [$C0FB+$A4]                           ; $276F: $FA $9F $C1
-    and  $80 ; 'Ç'                                ; $2772: $E6 $80
+    ld   a, [wDialogState]                        ; $276F: $FA $9F $C1
+    and  $80                                      ; $2772: $E6 $80
     jr   z, label_2777                            ; $2774: $28 $01
     inc  e                                        ; $2776: $1C
 

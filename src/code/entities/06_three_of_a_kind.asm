@@ -1,12 +1,35 @@
-Data_006_4911::
-    db   $74, $02, $76, $02, $76, $22, $74, $22, $70, $01, $72, $01, $72, $21, $70, $21
-    db   $78, $00, $7A, $00, $7A, $20, $78, $20, $7C, $03, $7E, $03, $7E, $23, $7C, $23
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+ThreeOfAKindSpriteVariants::
+.variant0
+    db $74, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $76, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant1
+    db $76, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $74, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant2
+    db $70, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $72, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant3
+    db $72, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $70, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant4
+    db $78, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $7A, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant5
+    db $7A, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $78, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant6
+    db $7C, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $7E, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant7
+    db $7E, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $7C, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 ThreeOfAKindEntityHandler::
     ld   hl, wEntitiesHealthTable                 ; $4931: $21 $60 $C3
     add  hl, bc                                   ; $4934: $09
     ld   [hl], $20                                ; $4935: $36 $20
-    ld   de, Data_006_4911                        ; $4937: $11 $11 $49
+    ld   de, ThreeOfAKindSpriteVariants           ; $4937: $11 $11 $49
     call RenderActiveEntitySpritesPair            ; $493A: $CD $C0 $3B
     call ReturnIfNonInteractive_06                ; $493D: $CD $C6 $64
     call DecrementEntityIgnoreHitsCountdown       ; $4940: $CD $56 $0C
@@ -21,14 +44,14 @@ ThreeOfAKindEntityHandler::
 ThreeOfAKindState0Handler::
     call label_3B39
     call GetEntityTransitionCountdown             ; $4955: $CD $05 $0C
-    jr   nz, jr_006_4962                          ; $4958: $20 $08
+    jr   nz, .jr_4962                             ; $4958: $20 $08
 
     ld   [hl], $20                                ; $495A: $36 $20
     call ClearEntitySpeed                         ; $495C: $CD $7F $3D
     call IncrementEntityState                     ; $495F: $CD $12 $3B
 
-jr_006_4962:
-    ld   hl, wEntitiesUnknowTableY                ; $4962: $21 $D0 $C3
+.jr_4962
+    ld   hl, wEntitiesInertiaTable                ; $4962: $21 $D0 $C3
     add  hl, bc                                   ; $4965: $09
     inc  [hl]                                     ; $4966: $34
 
@@ -37,17 +60,17 @@ jr_006_4967:
     add  hl, bc                                   ; $496A: $09
     ldh  a, [hFrameCounter]                       ; $496B: $F0 $E7
     and  $0F                                      ; $496D: $E6 $0F
-    jr   nz, jr_006_4976                          ; $496F: $20 $05
+    jr   nz, .jr_4976                             ; $496F: $20 $05
 
     ld   a, [hl]                                  ; $4971: $7E
     inc  a                                        ; $4972: $3C
     and  $03                                      ; $4973: $E6 $03
     ld   [hl], a                                  ; $4975: $77
 
-jr_006_4976:
+.jr_4976
     ld   e, [hl]                                  ; $4976: $5E
     sla  e                                        ; $4977: $CB $23
-    ld   hl, wEntitiesUnknowTableY                ; $4979: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $4979: $21 $D0 $C3
     add  hl, bc                                   ; $497C: $09
     ld   a, [hl]                                  ; $497D: $7E
     rra                                           ; $497E: $1F
@@ -77,9 +100,9 @@ Data_006_499F::
 ThreeOfAKindState1Handler::
     call label_3B39                               ; $49A3: $CD $39 $3B
 
-jr_006_49A6:
+.jr_49A6
     call GetEntityTransitionCountdown             ; $49A6: $CD $05 $0C
-    jr   nz, jr_006_49D2                          ; $49A9: $20 $27
+    jr   nz, .jr_49D2                             ; $49A9: $20 $27
 
     call GetRandomByte                            ; $49AB: $CD $0D $28
     and  $1F                                      ; $49AE: $E6 $1F
@@ -104,7 +127,7 @@ jr_006_49A6:
     add  hl, bc                                   ; $49D0: $09
     ld   [hl], a                                  ; $49D1: $77
 
-jr_006_49D2:
+.jr_49D2
     jr   jr_006_4967                              ; $49D2: $18 $93
 
 ThreeOfAKindState2Handler::
@@ -123,31 +146,31 @@ jr_006_49E2:
     add  hl, de                                   ; $49E5: $19
     ld   a, [hl]                                  ; $49E6: $7E
     and  a                                        ; $49E7: $A7
-    jr   z, jr_006_4A09                           ; $49E8: $28 $1F
+    jr   z, .jr_4A09                              ; $49E8: $28 $1F
 
     ld   hl, wEntitiesTypeTable                   ; $49EA: $21 $A0 $C3
     add  hl, de                                   ; $49ED: $19
     ld   a, [hl]                                  ; $49EE: $7E
     cp   $90                                      ; $49EF: $FE $90
-    jr   nz, jr_006_4A09                          ; $49F1: $20 $16
+    jr   nz, .jr_4A09                             ; $49F1: $20 $16
 
     ld   hl, wEntitiesStateTable                  ; $49F3: $21 $90 $C2
     add  hl, de                                   ; $49F6: $19
     ld   a, [hl]                                  ; $49F7: $7E
     cp   $02                                      ; $49F8: $FE $02
-    jr   nz, jr_006_4A09                          ; $49FA: $20 $0D
+    jr   nz, .jr_4A09                             ; $49FA: $20 $0D
 
     ld   hl, wEntitiesTransitionCountdownTable    ; $49FC: $21 $E0 $C2
     add  hl, de                                   ; $49FF: $19
     ld   a, [hl]                                  ; $4A00: $7E
     and  a                                        ; $4A01: $A7
-    jr   nz, jr_006_4A09                          ; $4A02: $20 $05
+    jr   nz, .jr_4A09                             ; $4A02: $20 $05
 
     ldh  a, [hMultiPurpose0]                      ; $4A04: $F0 $D7
     inc  a                                        ; $4A06: $3C
     ldh  [hMultiPurpose0], a                      ; $4A07: $E0 $D7
 
-jr_006_4A09:
+.jr_4A09
     dec  e                                        ; $4A09: $1D
     ld   a, e                                     ; $4A0A: $7B
     cp   $FF                                      ; $4A0B: $FE $FF
@@ -167,23 +190,23 @@ jr_006_4A1B:
     add  hl, de                                   ; $4A1E: $19
     ld   a, [hl]                                  ; $4A1F: $7E
     and  a                                        ; $4A20: $A7
-    jr   z, jr_006_4A37                           ; $4A21: $28 $14
+    jr   z, .jr_4A37                              ; $4A21: $28 $14
 
     ld   hl, wEntitiesTypeTable                   ; $4A23: $21 $A0 $C3
     add  hl, de                                   ; $4A26: $19
     ld   a, [hl]                                  ; $4A27: $7E
     cp   $90                                      ; $4A28: $FE $90
-    jr   nz, jr_006_4A37                          ; $4A2A: $20 $0B
+    jr   nz, .jr_4A37                             ; $4A2A: $20 $0B
 
     ld   hl, wEntitiesDirectionTable              ; $4A2C: $21 $80 $C3
     add  hl, de                                   ; $4A2F: $19
     ld   a, [hl]                                  ; $4A30: $7E
-    ld   hl, hMultiPurpose2                            ; $4A31: $21 $D9 $FF
+    ld   hl, hMultiPurpose2                       ; $4A31: $21 $D9 $FF
     add  hl, bc                                   ; $4A34: $09
     ld   [hl], a                                  ; $4A35: $77
     inc  bc                                       ; $4A36: $03
 
-jr_006_4A37:
+.jr_4A37
     dec  e                                        ; $4A37: $1D
     ld   a, e                                     ; $4A38: $7B
     cp   $FF                                      ; $4A39: $FE $FF
@@ -193,13 +216,13 @@ jr_006_4A37:
     call PlayWrongAnswerJingle                    ; $4A3E: $CD $20 $0C
     ld   e, $00                                   ; $4A41: $1E $00
     ldh  a, [hMultiPurpose2]                      ; $4A43: $F0 $D9
-    ld   hl, hMultiPurpose3                            ; $4A45: $21 $DA $FF
+    ld   hl, hMultiPurpose3                       ; $4A45: $21 $DA $FF
     cp   [hl]                                     ; $4A48: $BE
-    jr   nz, jr_006_4A62                          ; $4A49: $20 $17
+    jr   nz, .jr_4A62                             ; $4A49: $20 $17
 
     inc  hl                                       ; $4A4B: $23
     cp   [hl]                                     ; $4A4C: $BE
-    jr   nz, jr_006_4A62                          ; $4A4D: $20 $13
+    jr   nz, .jr_4A62                             ; $4A4D: $20 $13
 
 IF __PATCH_0__
     ld   hl, hJingle
@@ -208,7 +231,7 @@ ENDC
 
     ld   e, $FF                                   ; $4A4F: $1E $FF
     cp   $02                                      ; $4A51: $FE $02
-    jr   nc, jr_006_4A62                          ; $4A53: $30 $0D
+    jr   nc, .jr_4A62                             ; $4A53: $30 $0D
 
 IF !__PATCH_0__
     ld   hl, hJingle                              ; $4A55: $21 $F2 $FF
@@ -217,13 +240,13 @@ ENDC
 
     ld   e, $2D                                   ; $4A5A: $1E $2D
     cp   $01                                      ; $4A5C: $FE $01
-    jr   nz, jr_006_4A62                          ; $4A5E: $20 $02
+    jr   nz, .jr_4A62                             ; $4A5E: $20 $02
 
     ld   e, $2E                                   ; $4A60: $1E $2E
 
-jr_006_4A62:
+.jr_4A62
     ld   a, e                                     ; $4A62: $7B
-    ldh  [hMultiPurposeG], a                               ; $4A63: $E0 $E8
+    ldh  [hMultiPurposeG], a                      ; $4A63: $E0 $E8
     ld   e, $0F                                   ; $4A65: $1E $0F
     ld   d, b                                     ; $4A67: $50
 
@@ -240,20 +263,20 @@ jr_006_4A68:
     cp   $90                                      ; $4A75: $FE $90
     jr   nz, jr_006_4AA1                          ; $4A77: $20 $28
 
-    ldh  a, [hMultiPurposeG]                               ; $4A79: $F0 $E8
+    ldh  a, [hMultiPurposeG]                      ; $4A79: $F0 $E8
     and  a                                        ; $4A7B: $A7
-    jr   nz, jr_006_4A85                          ; $4A7C: $20 $07
+    jr   nz, .jr_4A85                             ; $4A7C: $20 $07
 
     ld   hl, wEntitiesStateTable                  ; $4A7E: $21 $90 $C2
     add  hl, de                                   ; $4A81: $19
     ld   [hl], d                                  ; $4A82: $72
     jr   jr_006_4AA1                              ; $4A83: $18 $1C
 
-jr_006_4A85:
+.jr_4A85
     ld   hl, wEntitiesDroppedItemTable            ; $4A85: $21 $E0 $C4
     add  hl, de                                   ; $4A88: $19
     ld   [hl], a                                  ; $4A89: $77
-    ld   hl, wEntitiesUnknowTableV                ; $4A8A: $21 $80 $C4
+    ld   hl, wEntitiesPrivateCountdown3Table      ; $4A8A: $21 $80 $C4
     add  hl, de                                   ; $4A8D: $19
     ld   [hl], $1F                                ; $4A8E: $36 $1F
     ld   hl, wEntitiesStatusTable                 ; $4A90: $21 $80 $C2

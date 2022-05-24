@@ -32,8 +32,8 @@ func_024_5C1A::
 
     ld   a, $01                                   ; $5C1E: $3E $01
     ldh  [rVBK], a                                ; $5C20: $E0 $4F
-    ld   de, wDC91                                ; $5C22: $11 $91 $DC
-    call ExecuteBGCopyRequest                     ; $5C25: $CD $27 $29
+    ld   de, wDrawCommandAlt                      ; $5C22: $11 $91 $DC
+    call ExecuteDrawCommands                      ; $5C25: $CD $27 $29
     xor  a                                        ; $5C28: $AF
     ldh  [rVBK], a                                ; $5C29: $E0 $4F
     ret                                           ; $5C2B: $C9
@@ -56,7 +56,7 @@ LoadBGMapAttributes::
     ld   e, a                                     ; $5C41: $5F
     ld   a, [hl]                                  ; $5C42: $7E
     ld   d, a                                     ; $5C43: $57
-    call ExecuteBGCopyRequest.noMapTransition     ; $5C44: $CD $2D $29
+    call ExecuteDrawCommands.noRoomTransition     ; $5C44: $CD $2D $29
     xor  a                                        ; $5C47: $AF
     ldh  [rVBK], a                                ; $5C48: $E0 $4F
     ret                                           ; $5C4A: $C9
@@ -90,29 +90,29 @@ LoadBGPalettes::
     ld   a, [wDDD7]                               ; $740F: $FA $D7 $DD
     dec  a                                        ; $7412: $3D
     ld   [wDDD7], a                               ; $7413: $EA $D7 $DD
-    jr   z, jr_024_741B                           ; $7416: $28 $03
+    jr   z, .jr_741B                              ; $7416: $28 $03
 
     cp   $01                                      ; $7418: $FE $01
     ret  nz                                       ; $741A: $C0
-jr_024_741B:
+.jr_741B
 
     ld   a, [wDDD6]                               ; $741B: $FA $D6 $DD
     bit  7, a                                     ; $741E: $CB $7F
-    jr   nz, jr_024_7427                          ; $7420: $20 $05
+    jr   nz, .jr_7427                             ; $7420: $20 $05
     ld   hl, BGPalettePointersTableA              ; $7422: $21 $E1 $73
     jr   jr_024_742A                              ; $7425: $18 $03
-jr_024_7427:
+.jr_7427
     ld   hl, BGPalettePointersTableB              ; $7427: $21 $ED $73
 jr_024_742A:
 
     ld   a, [wDDD7]                               ; $742A: $FA $D7 $DD
     cp   $01                                      ; $742D: $FE $01
-    jr   z, jr_024_7436                           ; $742F: $28 $05
+    jr   z, .jr_7436                              ; $742F: $28 $05
 
     ld   a, $0B                                   ; $7431: $3E $0B
     ld   [wDDD7], a                               ; $7433: $EA $D7 $DD
 
-jr_024_7436:
+.jr_7436
     push hl                                       ; $7436: $E5
     ld   a, [wDDD6]                               ; $7437: $FA $D6 $DD
     and  $3F                                      ; $743A: $E6 $3F
@@ -135,11 +135,11 @@ jr_024_7436:
     and  $01                                      ; $7456: $E6 $01
     swap a                                        ; $7458: $CB $37
 
-    ld   [wPalettePartialCopyColorIndexStart], a ; $745A: $EA $D3 $DD
+    ld   [wPalettePartialCopyColorIndexStart], a  ; $745A: $EA $D3 $DD
     ld   a, $10                                   ; $745D: $3E $10
-    ld   [wPalettePartialCopyColorCount], a      ; $745F: $EA $D4 $DD
+    ld   [wPalettePartialCopyColorCount], a       ; $745F: $EA $D4 $DD
     ld   a, $81                                   ; $7462: $3E $81
-    ld   [wPaletteDataFlags], a                    ; $7464: $EA $D1 $DD
+    ld   [wPaletteDataFlags], a                   ; $7464: $EA $D1 $DD
     ld   a, [wDDD6]                               ; $7467: $FA $D6 $DD
     inc  a                                        ; $746A: $3C
     ld   [wDDD6], a                               ; $746B: $EA $D6 $DD

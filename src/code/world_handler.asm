@@ -49,21 +49,23 @@ IF !LANG_DE
     ld   a, [ROM_DebugTool2]                      ; $439B: $FA $04 $00
     and  a                                        ; $439E: $A7
     jr   z, .debugToolDisabled                    ; $439F: $28 $06
-    ld   a, $0B                                   ; $43A1: $3E $0B
+    ld   a, TILEMAP_INVENTORY_DEBUG               ; $43A1: $3E $0B
     ld   [wBGMapToLoad], a                        ; $43A3: $EA $FF $D6
     ret                                           ; $43A6: $C9
 .debugToolDisabled
 ENDC
+
     ld   a, [wIsIndoor]                           ; $43A7: $FA $A5 $DB
     and  a                                        ; $43AA: $A7
-    jr   z, jr_001_4414                           ; $43AB: $28 $67
+    jr   z, .loadOverworldInventory               ; $43AB: $28 $67
+
     ldh  a, [hMapId]                              ; $43AD: $F0 $F7
     cp   MAP_COLOR_DUNGEON                        ; $43AF: $FE $FF
-    jr   nz, jr_001_43B8                          ; $43B1: $20 $05
-    ld   hl, $DDDA                                ; $43B3: $21 $DA $DD
-    jr   jr_001_43C5                              ; $43B6: $18 $0D
+    jr   nz, .jr_43B8                             ; $43B1: $20 $05
+    ld   hl, wColorDungeonItemFlags               ; $43B3: $21 $DA $DD
+    jr   .jr_001_43C5                             ; $43B6: $18 $0D
 
-jr_001_43B8::
+.jr_43B8
     ld   e, a                                     ; $43B8: $5F
     sla  a                                        ; $43B9: $CB $27
     sla  a                                        ; $43BB: $CB $27
@@ -73,31 +75,31 @@ jr_001_43B8::
     ld   hl, wDungeonItemFlags                    ; $43C1: $21 $16 $DB
     add  hl, de                                   ; $43C4: $19
 
-jr_001_43C5::
+.jr_001_43C5
     ld   de, wHasDungeonMap                       ; $43C5: $11 $CC $DB
     ld   c, $05                                   ; $43C8: $0E $05
 
-jr_001_43CA::
+.jr_001_43CA
     ldh  a, [hMapId]                              ; $43CA: $F0 $F7
     cp   MAP_COLOR_DUNGEON                        ; $43CC: $FE $FF
-    jr   z, jr_001_43DB                           ; $43CE: $28 $0B
+    jr   z, .jr_001_43DB                          ; $43CE: $28 $0B
     cp   MAP_WINDFISHS_EGG                        ; $43D0: $FE $08
-    jr   z, jr_001_43D8                           ; $43D2: $28 $04
+    jr   z, .jr_43D8                              ; $43D2: $28 $04
     cp   MAP_CAVE_B                               ; $43D4: $FE $0A
-    jr   c, jr_001_43DB                           ; $43D6: $38 $03
+    jr   c, .jr_001_43DB                          ; $43D6: $38 $03
 
-jr_001_43D8::
+.jr_43D8
     xor  a                                        ; $43D8: $AF
-    jr   z, jr_001_43DC                           ; $43D9: $28 $01
+    jr   z, .jr_001_43DC                          ; $43D9: $28 $01
 
-jr_001_43DB::
+.jr_001_43DB
     ld   a, [hli]                                 ; $43DB: $2A
 
-jr_001_43DC::
+.jr_001_43DC
     ld   [de], a                                  ; $43DC: $12
     inc  de                                       ; $43DD: $13
     dec  c                                        ; $43DE: $0D
-    jr   nz, jr_001_43CA                          ; $43DF: $20 $E9
+    jr   nz, .jr_001_43CA                         ; $43DF: $20 $E9
 
     ; If inside the color dungeon ($FF),
     ; lookup for dungeon $0F in the table instead.
@@ -107,7 +109,7 @@ jr_001_43DC::
     ld   a, $0F                                   ; $43E7: $3E $0F
 .colorDungeonIndexEnd
 
-    ; Lookup the minimap layout for the dungeon in a
+    ; Lookup the minimap layout for the dungeon
     ld   e, a                                     ; $43E9: $5F
     ld   d, $00                                   ; $43EA: $16 $00
     ld   hl, MinimapLayoutTable                   ; $43EC: $21 $85 $43
@@ -117,35 +119,54 @@ jr_001_43DC::
 
     ldh  a, [hMapId]                              ; $43F4: $F0 $F7
     cp   MAP_COLOR_DUNGEON                        ; $43F6: $FE $FF
-    jr   z, jr_001_440B                           ; $43F8: $28 $11
+    jr   z, .loadMinimap                          ; $43F8: $28 $11
+
+    ; If on the Windfish Egg,
+    ; or in a non-dungeon indoor (hMapId >= MAP_CAVE_B),
+    ; or in the side-scrolling section of Eagle's Tower (boss fight),
+    ; load the Eagle's Tower unused clouds instead of the minimap.
     cp   MAP_WINDFISHS_EGG                        ; $43FA: $FE $08
-    jr   z, jr_001_4425                           ; $43FC: $28 $27
+    jr   z, .loadEaglesTowerClouds                ; $43FC: $28 $27
     cp   MAP_CAVE_B                               ; $43FE: $FE $0A
-    jr   nc, jr_001_4425                          ; $4400: $30 $23
+    jr   nc, .loadEaglesTowerClouds               ; $4400: $30 $23
     cp   MAP_EAGLES_TOWER                         ; $4402: $FE $06
-    jr   nz, jr_001_440B                          ; $4404: $20 $05
+    jr   nz, .loadMinimap                         ; $4404: $20 $05
     ldh  a, [hIsSideScrolling]                    ; $4406: $F0 $F9
     and  a                                        ; $4408: $A7
-    jr   nz, jr_001_4425                          ; $4409: $20 $1A
+    jr   nz, .loadEaglesTowerClouds               ; $4409: $20 $1A
 
-jr_001_440B::
-    call func_001_5511                            ; $440B: $CD $11 $55
-    ld   a, $07                                   ; $440E: $3E $07
+.loadMinimap
+    ; Create a wDrawCommand containing the minimap tilemap
+    call CreateMinimapTilemap                     ; $440B: $CD $11 $55
+    ; Request this wDrawCommand to be loaded on next vblank
+    ld   a, TILEMAP_MINIMAP                       ; $440E: $3E $07
     ld   [wBGMapToLoad], a                        ; $4410: $EA $FF $D6
     ret                                           ; $4413: $C9
 
-jr_001_4414::
-    ld   a, $02                                   ; $4414: $3E $02
+.loadOverworldInventory
+    ; Loading the overworld inventory is much simpler.
+    ld   a, TILEMAP_INVENTORY                     ; $4414: $3E $02
     ld   [wBGMapToLoad], a                        ; $4416: $EA $FF $D6
+
     call GetRandomByte                            ; $4419: $CD $0D $28
     ld   hl, hFrameCounter                        ; $441C: $21 $E7 $FF
     or   [hl]                                     ; $441F: $B6
     and  $03                                      ; $4420: $E6 $03
-    ldh  [hFFB9], a                               ; $4422: $E0 $B9
+    ldh  [hTileGlintAnimation], a                 ; $4422: $E0 $B9
+
     ret                                           ; $4424: $C9
 
-jr_001_4425::
-    ld   a, $09                                   ; $4425: $3E $09
+.loadEaglesTowerClouds
+    ; Eagle's Tower boss fight was supposed to have animated clouds,
+    ; loaded as an extra tilemap outside of the visible viewport before
+    ; the actual room tilemap is loaded.
+    ;
+    ; However this effect is not used in the final game.
+    ;
+    ; Moreover, this extra tilemap is loaded for maaaany other rooms than Eagle's Tower
+    ; boss fight – basically every non-dungeon indoor room, plus the Windfish Egg.
+    ; We can only speculate why (programming error?)
+    ld   a, TILEMAP_EAGLES_TOWER_CLOUDS           ; $4425: $3E $09
     ld   [wBGMapToLoad], a                        ; $4427: $EA $FF $D6
     ret                                           ; $442A: $C9
 
@@ -163,11 +184,11 @@ GameplayWorldLoadRoomHandler::
     ld   a, [wDBC8]                               ; $4445: $FA $C8 $DB
     ldh  [hLinkPositionZ], a                      ; $4448: $E0 $A2
     and  a                                        ; $444A: $A7
-    jr   z, jr_001_4452                           ; $444B: $28 $05
+    jr   z, .jr_4452                              ; $444B: $28 $05
     ld   a, $02                                   ; $444D: $3E $02
     ld   [wIsLinkInTheAir], a                     ; $444F: $EA $46 $C1
 
-jr_001_4452::
+.jr_4452::
     ld   a, $04                                   ; $4452: $3E $04
     ld   [wRoomTransitionDirection], a            ; $4454: $EA $25 $C1
     call LoadRoom                                 ; $4457: $CD $F4 $30
@@ -181,11 +202,11 @@ jr_001_4452::
     ld   d, a                                     ; $446A: $57
     ldh  a, [hMapId]                              ; $446B: $F0 $F7
     cp   MAP_COLOR_DUNGEON                        ; $446D: $FE $FF
-    jr   nz, jr_001_4475                          ; $446F: $20 $04
+    jr   nz, .jr_4475                             ; $446F: $20 $04
     ld   d, $00                                   ; $4471: $16 $00
     jr   jr_001_447E                              ; $4473: $18 $09
 
-jr_001_4475::
+.jr_4475::
     cp   $1A                                      ; $4475: $FE $1A
     jr   nc, jr_001_447E                          ; $4477: $30 $05
     cp   $06                                      ; $4479: $FE $06
@@ -197,16 +218,16 @@ jr_001_447E::
     ld   e, a                                     ; $4480: $5F
     call GetChestsStatusForRoom_trampoline        ; $4481: $CD $ED $29
     cp   $1A                                      ; $4484: $FE $1A
-    jr   z, jr_001_4495                           ; $4486: $28 $0D
+    jr   z, .jr_4495                              ; $4486: $28 $0D
     cp   $19                                      ; $4488: $FE $19
-    jr   z, jr_001_4495                           ; $448A: $28 $09
+    jr   z, .jr_4495                              ; $448A: $28 $09
     ld   a, [wRoomEvent]                          ; $448C: $FA $8E $C1
     and  EVENT_EFFECT_MASK                        ; $448F: $E6 $E0
     cp   EFFECT_DROP_KEY                          ; $4491: $FE $80
     jr   nz, jr_001_44A6                          ; $4493: $20 $11
 
-jr_001_4495::
-    ld   a, [$DBCD]                               ; $4495: $FA $CD $DB
+.jr_4495::
+    ld   a, [wHasDungeonCompass]                  ; $4495: $FA $CD $DB
     and  a                                        ; $4498: $A7
     jr   z, jr_001_44A6                           ; $4499: $28 $0B
     ldh  a, [hRoomStatus]                         ; $449B: $F0 $F8
@@ -219,10 +240,10 @@ jr_001_44A6::
     ld   a, [wIsIndoor]                           ; $44A6: $FA $A5 $DB
     and  a                                        ; $44A9: $A7
     ld   a, $06                                   ; $44AA: $3E $06
-    jr   nz, jr_001_44B0                          ; $44AC: $20 $02
+    jr   nz, .jr_44B0                             ; $44AC: $20 $02
     ld   a, $07                                   ; $44AE: $3E $07
 
-jr_001_44B0::
+.jr_44B0::
     ld   [wTilesetToLoad], a                      ; $44B0: $EA $FE $D6
     ret                                           ; $44B3: $C9
 
@@ -231,21 +252,21 @@ GameplayWorldSelectTilesetHandler::
     ldh  [hWorldTileset], a                       ; $44B6: $E0 $94
     ldh  a, [hIsGBC]                              ; $44B8: $F0 $FE
     and  a                                        ; $44BA: $A7
-    jr   z, jr_001_44C9                           ; $44BB: $28 $0C
+    jr   z, .jr_44C9                              ; $44BB: $28 $0C
     di                                            ; $44BD: $F3
     ld   a, $03                                   ; $44BE: $3E $03
     ld   [rSVBK], a                               ; $44C0: $E0 $70
     xor  a                                        ; $44C2: $AF
-    ld   [wIsFileSelectionArrowShifted], a                               ; $44C3: $EA $00 $D0
+    ld   [wIsFileSelectionArrowShifted], a        ; $44C3: $EA $00 $D0
     ld   [rSVBK], a                               ; $44C6: $E0 $70
     ei                                            ; $44C8: $FB
 
-jr_001_44C9::
+.jr_44C9::
     call SelectRoomTilesets                       ; $44C9: $CD $1E $0D
 
     xor  a                                        ; $44CC: $AF
     ldh  [hNeedsUpdatingBGTiles], a               ; $44CD: $E0 $90
-    ldh  [hNeedsUpdatingEntityTilesA], a         ; $44CF: $E0 $91
+    ldh  [hNeedsUpdatingEntityTilesA], a          ; $44CF: $E0 $91
 
     ld   a, TILESET_ROOM_SPECIFIC                 ; $44D1: $3E $09
     ld   [wTilesetToLoad], a                      ; $44D3: $EA $FE $D6
@@ -268,7 +289,7 @@ GameplayWorldLoadRoomTilemapHandler::
     ld   a, [wSwitchButtonPressed]                ; $44EB: $FA $CB $C1
     and  a                                        ; $44EE: $A7
     jr   z, .switchableObjectEnd                  ; $44EF: $28 $04
-    ld   a, REPLACE_TILES_BUTTON_PRESSED              ; $44F1: $3E $03
+    ld   a, REPLACE_TILES_BUTTON_PRESSED          ; $44F1: $3E $03
     ldh  [hReplaceTiles], a                       ; $44F3: $E0 $A5
 .switchableObjectEnd
 
@@ -318,7 +339,7 @@ GameplayWorldLoad6Handler::
     ; Finish preparations
     ;
 
-    ld   a, [$FF40]                               ; $450A: $F0 $40
+    ld   a, [rLCDC]                               ; $450A: $F0 $40
     or   $20                                      ; $450C: $F6 $20
     ld   [wLCDControl], a                         ; $450E: $EA $FD $D6
     ld   [rLCDC], a                               ; $4511: $E0 $40
@@ -337,7 +358,7 @@ GameplayWorldLoad6Handler::
 
     ld   a, [wObjectAffectingBGPalette]           ; $4528: $FA $CB $C3
     and  a                                        ; $452B: $A7
-    jr   z, jr_001_4548                           ; $452C: $28 $1A
+    jr   z, .jr_4548                              ; $452C: $28 $1A
     ld   a, [wC5AD]                               ; $452E: $FA $AD $C5
     ld   [wBGPalette], a                          ; $4531: $EA $97 $DB
     ld   a, $1C                                   ; $4534: $3E $1C
@@ -346,14 +367,14 @@ GameplayWorldLoad6Handler::
     ld   [wOBJ1Palette], a                        ; $453B: $EA $99 $DB
     ldh  a, [hIsGBC]                              ; $453E: $F0 $FE
     and  a                                        ; $4540: $A7
-    jr   nz, jr_001_4548                          ; $4541: $20 $05
+    jr   nz, .jr_4548                             ; $4541: $20 $05
     ld   a, $04                                   ; $4543: $3E $04
-    ld   [wTransitionSequenceCounter], a                               ; $4545: $EA $6B $C1
+    ld   [wTransitionSequenceCounter], a          ; $4545: $EA $6B $C1
 
-jr_001_4548::
+.jr_4548::
     jp   label_27DD                               ; $4548: $C3 $DD $27
     ldh  a, [hJoypadState]                        ; $454B: $F0 $CC
-    and  J_A | J_START                                      ; $454D: $E6 $90
+    and  J_A | J_START                            ; $454D: $E6 $90
     jp   z, TransitionReturn                      ; $454F: $CA $66 $46
 
 TransitionToFileMenu::
@@ -361,85 +382,85 @@ TransitionToFileMenu::
 
 label_001_4555::
     call EnableExternalRAMWriting                 ; $4555: $CD $D0 $27
-    ld   a, [$A454]                               ; $4558: $FA $54 $A4
+    ld   a, [SaveGame1.main + wName - wOverworldRoomStatus] ; $4558: $FA $54 $A4
     ld   [wSaveSlot1Name], a                      ; $455B: $EA $80 $DB
     call EnableExternalRAMWriting                 ; $455E: $CD $D0 $27
-    ld   a, [$A455]                               ; $4561: $FA $55 $A4
+    ld   a, [SaveGame1.main + wName - wOverworldRoomStatus + 1] ; $4561: $FA $55 $A4
     ld   [wSaveSlot1Name+1], a                    ; $4564: $EA $81 $DB
     call EnableExternalRAMWriting                 ; $4567: $CD $D0 $27
-    ld   a, [$A456]                               ; $456A: $FA $56 $A4
+    ld   a, [SaveGame1.main + wName - wOverworldRoomStatus + 2] ; $456A: $FA $56 $A4
     ld   [wSaveSlot1Name+2], a                    ; $456D: $EA $82 $DB
     call EnableExternalRAMWriting                 ; $4570: $CD $D0 $27
-    ld   a, [$A457]                               ; $4573: $FA $57 $A4
+    ld   a, [SaveGame1.main + wName - wOverworldRoomStatus + 3] ; $4573: $FA $57 $A4
     ld   [wSaveSlot1Name+3], a                    ; $4576: $EA $83 $DB
     call EnableExternalRAMWriting                 ; $4579: $CD $D0 $27
-    ld   a, [$A458]                               ; $457C: $FA $58 $A4
+    ld   a, [SaveGame1.main + wName - wOverworldRoomStatus + 4] ; $457C: $FA $58 $A4
     ld   [wSaveSlot1Name+4], a                    ; $457F: $EA $84 $DB
     call EnableExternalRAMWriting                 ; $4582: $CD $D0 $27
-    ld   a, [$A45F]                               ; $4585: $FA $5F $A4
-    ld   [wDC06], a                               ; $4588: $EA $06 $DC
+    ld   a, [SaveGame1.main + wHealth - wOverworldRoomStatus] ; $4585: $FA $5F $A4
+    ld   [wFile1Health], a                        ; $4588: $EA $06 $DC
     call EnableExternalRAMWriting                 ; $458B: $CD $D0 $27
-    ld   a, [$A460]                               ; $458E: $FA $60 $A4
-    ld   [wDC09], a                               ; $4591: $EA $09 $DC
+    ld   a, [SaveGame1.main + wMaxHealth - wOverworldRoomStatus] ; $458E: $FA $60 $A4
+    ld   [wFile1MaxHealth], a                     ; $4591: $EA $09 $DC
     call EnableExternalRAMWriting                 ; $4594: $CD $D0 $27
-    ld   a, [$A45C]                               ; $4597: $FA $5C $A4
+    ld   a, [SaveGame1.main + wDeathCount - wOverworldRoomStatus] ; $4597: $FA $5C $A4
     ld   [wFile1DeathCountHigh], a                ; $459A: $EA $00 $DC
     call EnableExternalRAMWriting                 ; $459D: $CD $D0 $27
-    ld   a, [$A45D]                               ; $45A0: $FA $5D $A4
+    ld   a, [SaveGame1.main + wDeathCount - wOverworldRoomStatus + 1] ; $45A0: $FA $5D $A4
     ld   [wFile1DeathCountLow], a                 ; $45A3: $EA $01 $DC
     call EnableExternalRAMWriting                 ; $45A6: $CD $D0 $27
-    ld   a, [$A801]                               ; $45A9: $FA $01 $A8
+    ld   a, [SaveGame2.main + wName - wOverworldRoomStatus] ; $45A9: $FA $01 $A8
     ld   [wSaveSlot2Name], a                      ; $45AC: $EA $85 $DB
     call EnableExternalRAMWriting                 ; $45AF: $CD $D0 $27
-    ld   a, [$A802]                               ; $45B2: $FA $02 $A8
+    ld   a, [SaveGame2.main + wName - wOverworldRoomStatus + 1] ; $45B2: $FA $02 $A8
     ld   [wSaveSlot2Name+1], a                    ; $45B5: $EA $86 $DB
     call EnableExternalRAMWriting                 ; $45B8: $CD $D0 $27
-    ld   a, [$A803]                               ; $45BB: $FA $03 $A8
+    ld   a, [SaveGame2.main + wName - wOverworldRoomStatus + 2] ; $45BB: $FA $03 $A8
     ld   [wSaveSlot2Name+2], a                    ; $45BE: $EA $87 $DB
     call EnableExternalRAMWriting                 ; $45C1: $CD $D0 $27
-    ld   a, [$A804]                               ; $45C4: $FA $04 $A8
+    ld   a, [SaveGame2.main + wName - wOverworldRoomStatus + 3] ; $45C4: $FA $04 $A8
     ld   [wSaveSlot2Name+3], a                    ; $45C7: $EA $88 $DB
     call EnableExternalRAMWriting                 ; $45CA: $CD $D0 $27
-    ld   a, [$A805]                               ; $45CD: $FA $05 $A8
+    ld   a, [SaveGame2.main + wName - wOverworldRoomStatus + 4] ; $45CD: $FA $05 $A8
     ld   [wSaveSlot2Name+4], a                    ; $45D0: $EA $89 $DB
     call EnableExternalRAMWriting                 ; $45D3: $CD $D0 $27
-    ld   a, [$A80C]                               ; $45D6: $FA $0C $A8
-    ld   [wDC07], a                               ; $45D9: $EA $07 $DC
+    ld   a, [SaveGame2.main + wHealth - wOverworldRoomStatus] ; $45D6: $FA $0C $A8
+    ld   [wFile2Health], a                        ; $45D9: $EA $07 $DC
     call EnableExternalRAMWriting                 ; $45DC: $CD $D0 $27
-    ld   a, [$A80D]                               ; $45DF: $FA $0D $A8
-    ld   [wDC0A], a                               ; $45E2: $EA $0A $DC
+    ld   a, [SaveGame2.main + wMaxHealth - wOverworldRoomStatus] ; $45DF: $FA $0D $A8
+    ld   [wFile2MaxHealth], a                     ; $45E2: $EA $0A $DC
     call EnableExternalRAMWriting                 ; $45E5: $CD $D0 $27
-    ld   a, [$A809]                               ; $45E8: $FA $09 $A8
+    ld   a, [SaveGame2.main + wDeathCount - wOverworldRoomStatus] ; $45E8: $FA $09 $A8
     ld   [wFile2DeathCountHigh], a                ; $45EB: $EA $02 $DC
     call EnableExternalRAMWriting                 ; $45EE: $CD $D0 $27
-    ld   a, [$A80A]                               ; $45F1: $FA $0A $A8
+    ld   a, [SaveGame2.main + wDeathCount - wOverworldRoomStatus + 1] ; $45F1: $FA $0A $A8
     ld   [wFile2DeathCountLow], a                 ; $45F4: $EA $03 $DC
     call EnableExternalRAMWriting                 ; $45F7: $CD $D0 $27
-    ld   a, [$ABAE]                               ; $45FA: $FA $AE $AB
+    ld   a, [SaveGame3.main + wName - wOverworldRoomStatus] ; $45FA: $FA $AE $AB
     ld   [wSaveSlot3Name], a                      ; $45FD: $EA $8A $DB
     call EnableExternalRAMWriting                 ; $4600: $CD $D0 $27
-    ld   a, [$ABAF]                               ; $4603: $FA $AF $AB
+    ld   a, [SaveGame3.main + wName - wOverworldRoomStatus + 1] ; $4603: $FA $AF $AB
     ld   [wSaveSlot3Name+1], a                    ; $4606: $EA $8B $DB
     call EnableExternalRAMWriting                 ; $4609: $CD $D0 $27
-    ld   a, [$ABB0]                               ; $460C: $FA $B0 $AB
+    ld   a, [SaveGame3.main + wName - wOverworldRoomStatus + 2] ; $460C: $FA $B0 $AB
     ld   [wSaveSlot3Name+2], a                    ; $460F: $EA $8C $DB
     call EnableExternalRAMWriting                 ; $4612: $CD $D0 $27
-    ld   a, [$ABB1]                               ; $4615: $FA $B1 $AB
+    ld   a, [SaveGame3.main + wName - wOverworldRoomStatus + 3] ; $4615: $FA $B1 $AB
     ld   [wSaveSlot3Name+3], a                    ; $4618: $EA $8D $DB
     call EnableExternalRAMWriting                 ; $461B: $CD $D0 $27
-    ld   a, [$ABB2]                               ; $461E: $FA $B2 $AB
+    ld   a, [SaveGame3.main + wName - wOverworldRoomStatus + 4] ; $461E: $FA $B2 $AB
     ld   [wSaveSlot3Name+4], a                    ; $4621: $EA $8E $DB
     call EnableExternalRAMWriting                 ; $4624: $CD $D0 $27
-    ld   a, [$ABB9]                               ; $4627: $FA $B9 $AB
-    ld   [wDC08], a                               ; $462A: $EA $08 $DC
+    ld   a, [SaveGame3.main + wHealth - wOverworldRoomStatus] ; $4627: $FA $B9 $AB
+    ld   [wFile3Health], a                        ; $462A: $EA $08 $DC
     call EnableExternalRAMWriting                 ; $462D: $CD $D0 $27
-    ld   a, [$ABBA]                               ; $4630: $FA $BA $AB
-    ld   [wDC0B], a                               ; $4633: $EA $0B $DC
+    ld   a, [SaveGame3.main + wMaxHealth - wOverworldRoomStatus] ; $4630: $FA $BA $AB
+    ld   [wFile3MaxHealth], a                     ; $4633: $EA $0B $DC
     call EnableExternalRAMWriting                 ; $4636: $CD $D0 $27
-    ld   a, [$ABB6]                               ; $4639: $FA $B6 $AB
+    ld   a, [SaveGame3.main + wDeathCount - wOverworldRoomStatus] ; $4639: $FA $B6 $AB
     ld   [wFile3DeathCountHigh], a                ; $463C: $EA $04 $DC
     call EnableExternalRAMWriting                 ; $463F: $CD $D0 $27
-    ld   a, [$ABB7]                               ; $4642: $FA $B7 $AB
+    ld   a, [SaveGame3.main + wDeathCount - wOverworldRoomStatus + 1] ; $4642: $FA $B7 $AB
     ld   [wFile3DeathCountLow], a                 ; $4645: $EA $05 $DC
     ld   a, GAMEPLAY_FILE_SELECT                  ; $4648: $3E $02
     ld   [wGameplayType], a                       ; $464A: $EA $95 $DB

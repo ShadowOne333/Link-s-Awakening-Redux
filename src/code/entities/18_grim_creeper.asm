@@ -3,7 +3,7 @@ GrimCreeperEntityHandler::
     add  hl, bc                                   ; $6FD9: $09
     ld   a, [hl]                                  ; $6FDA: $7E
 
-jr_018_6FDB:
+.jr_6FDB
     and  a                                        ; $6FDB: $A7
     jp   nz, label_018_71A3                       ; $6FDC: $C2 $A3 $71
 
@@ -22,21 +22,21 @@ jr_018_6FDB:
     add  hl, bc                                   ; $6FFA: $09
     ld   a, [hl]                                  ; $6FFB: $7E
     and  a                                        ; $6FFC: $A7
-    jr   nz, jr_018_7008                          ; $6FFD: $20 $09
+    jr   nz, .jr_7008                             ; $6FFD: $20 $09
 
     inc  [hl]                                     ; $6FFF: $34
-    call_open_dialog $025                         ; $7000
-    jp   SetRoomStatus20                            ; $7005: $C3 $B9 $7F
+    call_open_dialog Dialog025                    ; $7000
+    jp   SetRoomStatus20                          ; $7005: $C3 $B9 $7F
 
-jr_018_7008:
+.jr_7008
     cp   $01                                      ; $7008: $FE $01
-    jr   nz, jr_018_7011                          ; $700A: $20 $05
+    jr   nz, .jr_7011                             ; $700A: $20 $05
 
     ld   a, $3F                                   ; $700C: $3E $3F
     ldh  [hNoiseSfx], a                           ; $700E: $E0 $F4
     inc  [hl]                                     ; $7010: $34
 
-jr_018_7011:
+.jr_7011
     ld   hl, wEntitiesSpeedZTable                 ; $7011: $21 $20 $C3
     add  hl, bc                                   ; $7014: $09
     ld   [hl], $20                                ; $7015: $36 $20
@@ -63,29 +63,29 @@ jr_018_7028:
 
 GrimCreeperState0Handler::
     ld   a, $07                                   ; $7039: $3E $07
-    ld   [$D205], a                               ; $703B: $EA $05 $D2
+    ld   [wD205], a                               ; $703B: $EA $05 $D2
     jp   IncrementEntityState                     ; $703E: $C3 $12 $3B
 
 GrimCreeperState1Handler::
     call GetEntityTransitionCountdown             ; $7041: $CD $05 $0C
     ld   [hl], $80                                ; $7044: $36 $80
     xor  a                                        ; $7046: $AF
-    ld   [$D201], a                               ; $7047: $EA $01 $D2
-    ld   [$D202], a                               ; $704A: $EA $02 $D2
-    ld   a, [$D205]                               ; $704D: $FA $05 $D2
+    ld   [wD201], a                               ; $7047: $EA $01 $D2
+    ld   [wD202], a                               ; $704A: $EA $02 $D2
+    ld   a, [wD205]                               ; $704D: $FA $05 $D2
     inc  a                                        ; $7050: $3C
     and  $07                                      ; $7051: $E6 $07
-    ld   [$D205], a                               ; $7053: $EA $05 $D2
+    ld   [wD205], a                               ; $7053: $EA $05 $D2
     jp   IncrementEntityState                     ; $7056: $C3 $12 $3B
 
 GrimCreeperState2Handler::
     call GetEntityTransitionCountdown             ; $7059: $CD $05 $0C
-    jr   nz, jr_018_7088                          ; $705C: $20 $2A
+    jr   nz, ret_018_7088                         ; $705C: $20 $2A
 
     ld   [hl], $FF                                ; $705E: $36 $FF
     ld   hl, wEntitiesOptions1Table               ; $7060: $21 $30 $C4
     add  hl, bc                                   ; $7063: $09
-    res  ENTITY_OPT1_B_EXCLUDED_FROM_KILL_ALL, [hl]                                  ; $7064: $CB $8E
+    res  ENTITY_OPT1_B_EXCLUDED_FROM_KILL_ALL, [hl] ; $7064: $CB $8E
     ld   e, $0F                                   ; $7066: $1E $0F
     ld   d, b                                     ; $7068: $50
 
@@ -94,19 +94,19 @@ jr_018_7069:
     add  hl, de                                   ; $706C: $19
     ld   a, [hl]                                  ; $706D: $7E
     cp   $BC                                      ; $706E: $FE $BC
-    jr   nz, jr_018_707F                          ; $7070: $20 $0D
+    jr   nz, .jr_707F                             ; $7070: $20 $0D
 
     ld   hl, wEntitiesPrivateState1Table          ; $7072: $21 $B0 $C2
     add  hl, de                                   ; $7075: $19
     ld   a, [hl]                                  ; $7076: $7E
     and  a                                        ; $7077: $A7
-    jr   z, jr_018_707F                           ; $7078: $28 $05
+    jr   z, .jr_707F                              ; $7078: $28 $05
 
     ld   hl, wEntitiesStatusTable                 ; $707A: $21 $80 $C2
     add  hl, de                                   ; $707D: $19
     ld   [hl], b                                  ; $707E: $70
 
-jr_018_707F:
+.jr_707F
     dec  e                                        ; $707F: $1D
     ld   a, e                                     ; $7080: $7B
     cp   $FF                                      ; $7081: $FE $FF
@@ -114,7 +114,7 @@ jr_018_707F:
 
     jp   IncrementEntityState                     ; $7085: $C3 $12 $3B
 
-jr_018_7088:
+ret_018_7088:
     ret                                           ; $7088: $C9
 
 Data_018_7089::
@@ -125,19 +125,19 @@ Data_018_708F::
 
 GrimCreeperState3Handler::
     call GetEntityTransitionCountdown             ; $7095: $CD $05 $0C
-    jr   nz, jr_018_70A4                          ; $7098: $20 $0A
+    jr   nz, .jr_70A4                             ; $7098: $20 $0A
 
     ld   hl, wEntitiesOptions1Table               ; $709A: $21 $30 $C4
     add  hl, bc                                   ; $709D: $09
-    set  ENTITY_OPT1_B_EXCLUDED_FROM_KILL_ALL, [hl]                                  ; $709E: $CB $CE
+    set  ENTITY_OPT1_B_EXCLUDED_FROM_KILL_ALL, [hl] ; $709E: $CB $CE
     call IncrementEntityState                     ; $70A0: $CD $12 $3B
     xor  a                                        ; $70A3: $AF
 
-jr_018_70A4:
+.jr_70A4
     and  $1F                                      ; $70A4: $E6 $1F
     jr   nz, label_018_70FD                       ; $70A6: $20 $55
 
-    ld   hl, wEntitiesUnknowTableY                ; $70A8: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $70A8: $21 $D0 $C3
     add  hl, bc                                   ; $70AB: $09
     ld   a, [hl]                                  ; $70AC: $7E
     cp   $06                                      ; $70AD: $FE $06
@@ -149,7 +149,7 @@ jr_018_70A4:
 
     ld   a, JINGLE_GRIM_CREEPER                   ; $70B8: $3E $31
     ldh  [hJingle], a                             ; $70BA: $E0 $F2
-    ld   hl, wEntitiesUnknowTableY                ; $70BC: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $70BC: $21 $D0 $C3
     add  hl, bc                                   ; $70BF: $09
     push bc                                       ; $70C0: $C5
     ld   c, [hl]                                  ; $70C1: $4E
@@ -169,7 +169,7 @@ jr_018_70A4:
     ld   hl, wEntitiesPosZTable                   ; $70D7: $21 $10 $C3
     add  hl, de                                   ; $70DA: $19
     ld   [hl], $1C                                ; $70DB: $36 $1C
-    ld   hl, wEntitiesUnknowTableY                ; $70DD: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $70DD: $21 $D0 $C3
     add  hl, de                                   ; $70E0: $19
     ld   [hl], c                                  ; $70E1: $71
     ld   hl, wEntitiesOptions1Table               ; $70E2: $21 $30 $C4
@@ -199,20 +199,20 @@ label_018_70FD:
     jp   SetEntitySpriteVariant                   ; $7106: $C3 $0C $3B
 
 GrimCreeperState4Handler::
-    ld   a, [$D201]                               ; $7109: $FA $01 $D2
+    ld   a, [wD201]                               ; $7109: $FA $01 $D2
     cp   $06                                      ; $710C: $FE $06
-    jr   nz, jr_018_7121                          ; $710E: $20 $11
+    jr   nz, .jr_7121                             ; $710E: $20 $11
 
-    ld   hl, wEntitiesUnknowTableY                ; $7110: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $7110: $21 $D0 $C3
     add  hl, bc                                   ; $7113: $09
     ld   [hl], b                                  ; $7114: $70
     xor  a                                        ; $7115: $AF
-    ld   [$D201], a                               ; $7116: $EA $01 $D2
+    ld   [wD201], a                               ; $7116: $EA $01 $D2
     call GetEntityTransitionCountdown             ; $7119: $CD $05 $0C
     ld   [hl], $40                                ; $711C: $36 $40
     call IncrementEntityState                     ; $711E: $CD $12 $3B
 
-jr_018_7121:
+.jr_7121
     jp   label_018_70FD                           ; $7121: $C3 $FD $70
 
 GrimCreeperState5Handler::
@@ -220,7 +220,7 @@ GrimCreeperState5Handler::
     ret  nz                                       ; $7127: $C0
 
     ld   a, $FF                                   ; $7128: $3E $FF
-    ld   [$D201], a                               ; $712A: $EA $01 $D2
+    ld   [wD201], a                               ; $712A: $EA $01 $D2
     ld   hl, wEntitiesDropTimerTable              ; $712D: $21 $50 $C4
     add  hl, bc                                   ; $7130: $09
     ld   [hl], $40                                ; $7131: $36 $40
@@ -235,18 +235,18 @@ GrimCreeperState6Handler::
 
     ld   a, [wRoomEventEffectExecuted]            ; $713E: $FA $8F $C1
     and  a                                        ; $7141: $A7
-    jr   nz, jr_018_7152                          ; $7142: $20 $0E
+    jr   nz, .jr_7152                             ; $7142: $20 $0E
 
     ld   hl, wEntitiesPrivateState2Table          ; $7144: $21 $C0 $C2
     add  hl, bc                                   ; $7147: $09
     ld   a, [hl]                                  ; $7148: $7E
     and  a                                        ; $7149: $A7
-    jr   nz, jr_018_7152                          ; $714A: $20 $06
+    jr   nz, .jr_7152                             ; $714A: $20 $06
 
     inc  [hl]                                     ; $714C: $34
-    call_open_dialog $1DF                         ; $714D
+    call_open_dialog Dialog1DF                    ; $714D
 
-jr_018_7152:
+.jr_7152
     call IncrementEntityState                     ; $7152: $CD $12 $3B
     ld   [hl], $01                                ; $7155: $36 $01
 
@@ -278,11 +278,17 @@ func_018_7181::
     ld   a, $01                                   ; $7196: $3E $01
     jp   func_015_7964_trampoline                 ; $7198: $C3 $A0 $3D
 
-Data_018_719B::
-    db   $6E, $00, $6E, $20, $6E, $40, $6E, $60
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+GrimCreeperSpriteVariants::
+.variant0
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_Y_FLIP
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_Y_FLIP | OAM_X_FLIP
 
 label_018_71A3:
-    ld   de, Data_018_719B                        ; $71A3: $11 $9B $71
+    ld   de, GrimCreeperSpriteVariants            ; $71A3: $11 $9B $71
     call RenderActiveEntitySpritesPair            ; $71A6: $CD $C0 $3B
     call ReturnIfNonInteractive_18                ; $71A9: $CD $E8 $7D
     call DecrementEntityIgnoreHitsCountdown       ; $71AC: $CD $56 $0C
@@ -307,53 +313,53 @@ Data_018_71EC::
 func_018_721C::
     ldh  a, [hLinkPositionX]                      ; $721C: $F0 $98
 
-jr_018_721E:
+.jr_721E
     push af                                       ; $721E: $F5
     ldh  a, [hLinkPositionY]                      ; $721F: $F0 $99
     push af                                       ; $7221: $F5
-    ld   a, [$D205]                               ; $7222: $FA $05 $D2
+    ld   a, [wD205]                               ; $7222: $FA $05 $D2
     rla                                           ; $7225: $17
     and  $FE                                      ; $7226: $E6 $FE
     ld   e, a                                     ; $7228: $5F
     rla                                           ; $7229: $17
     and  $FC                                      ; $722A: $E6 $FC
 
-jr_018_722C:
+.jr_722C
     add  e                                        ; $722C: $83
-    ld   hl, wEntitiesUnknowTableY                ; $722D: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $722D: $21 $D0 $C3
 
-jr_018_7230:
+.jr_7230
     add  hl, bc                                   ; $7230: $09
     add  [hl]                                     ; $7231: $86
 
-jr_018_7232:
+.jr_7232
     ld   e, a                                     ; $7232: $5F
 
-jr_018_7233:
+.jr_7233
     ld   d, b                                     ; $7233: $50
     ld   hl, Data_018_71BC                        ; $7234: $21 $BC $71
     add  hl, de                                   ; $7237: $19
     ld   a, [hl]                                  ; $7238: $7E
 
-jr_018_7239:
+.jr_7239
     ldh  [hLinkPositionX], a                      ; $7239: $E0 $98
     ld   hl, Data_018_71EC                        ; $723B: $21 $EC $71
     add  hl, de                                   ; $723E: $19
     ld   a, [hl]                                  ; $723F: $7E
     ldh  [hLinkPositionY], a                      ; $7240: $E0 $99
 
-jr_018_7242:
+.jr_7242
     ldh  a, [hFrameCounter]                       ; $7242: $F0 $E7
 
-jr_018_7244:
+.jr_7244
     xor  c                                        ; $7244: $A9
     and  $03                                      ; $7245: $E6 $03
-    jr   nz, jr_018_724E                          ; $7247: $20 $05
+    jr   nz, .jr_724E                             ; $7247: $20 $05
 
     ld   a, $10                                   ; $7249: $3E $10
     call ApplyVectorTowardsLink_trampoline        ; $724B: $CD $AA $3B
 
-jr_018_724E:
+.jr_724E
     ld   hl, hActiveEntityPosX                    ; $724E: $21 $EE $FF
     ldh  a, [hLinkPositionX]                      ; $7251: $F0 $98
     sub  [hl]                                     ; $7253: $96
@@ -361,16 +367,16 @@ jr_018_724E:
     cp   $06                                      ; $7256: $FE $06
     jr   nc, jr_018_726D                          ; $7258: $30 $13
 
-    ld   hl, hActiveEntityVisualPosY                                ; $725A: $21 $EC $FF
+    ld   hl, hActiveEntityVisualPosY              ; $725A: $21 $EC $FF
     ldh  a, [hLinkPositionY]                      ; $725D: $F0 $99
     sub  [hl]                                     ; $725F: $96
 
-jr_018_7260:
+.jr_7260
     add  $03                                      ; $7260: $C6 $03
     cp   $06                                      ; $7262: $FE $06
     jr   nc, jr_018_726D                          ; $7264: $30 $07
 
-    ld   hl, $D201                                ; $7266: $21 $01 $D2
+    ld   hl, wD201                                ; $7266: $21 $01 $D2
     inc  [hl]                                     ; $7269: $34
     call IncrementEntityState                     ; $726A: $CD $12 $3B
 
@@ -395,11 +401,11 @@ Data_018_7280::
     db   $04, $0C, $14, $1C, $24, $2C, $34, $3C
 
 func_018_7288::
-    ld   a, [$D201]                               ; $7288: $FA $01 $D2
+    ld   a, [wD201]                               ; $7288: $FA $01 $D2
     cp   $FF                                      ; $728B: $FE $FF
-    jr   nz, jr_018_72A2                          ; $728D: $20 $13
+    jr   nz, .jr_72A2                             ; $728D: $20 $13
 
-    ld   hl, wEntitiesUnknowTableY                ; $728F: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $728F: $21 $D0 $C3
     add  hl, bc                                   ; $7292: $09
     ld   e, [hl]                                  ; $7293: $5E
     ld   d, b                                     ; $7294: $50
@@ -411,7 +417,7 @@ func_018_7288::
     ld   [hl], a                                  ; $729E: $77
     call IncrementEntityState                     ; $729F: $CD $12 $3B
 
-jr_018_72A2:
+.jr_72A2
     jp   label_018_7276                           ; $72A2: $C3 $76 $72
 
 func_018_72A5::
@@ -419,7 +425,7 @@ func_018_72A5::
     add  hl, bc                                   ; $72A8: $09
     ld   a, [hl]                                  ; $72A9: $7E
     and  a                                        ; $72AA: $A7
-    jr   nz, jr_018_72C5                          ; $72AB: $20 $18
+    jr   nz, .jr_72C5                             ; $72AB: $20 $18
 
     ld   hl, wEntitiesPhysicsFlagsTable           ; $72AD: $21 $40 $C3
     add  hl, bc                                   ; $72B0: $09
@@ -433,7 +439,7 @@ func_018_72A5::
     ldh  [hJingle], a                             ; $72C0: $E0 $F2
     call IncrementEntityState                     ; $72C2: $CD $12 $3B
 
-jr_018_72C5:
+.jr_72C5
     jp   label_018_7276                           ; $72C5: $C3 $76 $72
 
 func_018_72C8::
@@ -442,26 +448,26 @@ func_018_72C8::
     call AddEntityZSpeedToPos_18                  ; $72CE: $CD $98 $7E
     ldh  a, [hFrameCounter]                       ; $72D1: $F0 $E7
     and  $03                                      ; $72D3: $E6 $03
-    jr   nz, jr_018_72E1                          ; $72D5: $20 $0A
+    jr   nz, .jr_72E1                             ; $72D5: $20 $0A
 
     ld   hl, wEntitiesSpeedZTable                 ; $72D7: $21 $20 $C3
     add  hl, bc                                   ; $72DA: $09
     ld   a, [hl]                                  ; $72DB: $7E
     cp   $0C                                      ; $72DC: $FE $0C
-    jr   z, jr_018_72E1                           ; $72DE: $28 $01
+    jr   z, .jr_72E1                              ; $72DE: $28 $01
 
     inc  [hl]                                     ; $72E0: $34
 
-jr_018_72E1:
+.jr_72E1
     ldh  a, [hActiveEntityVisualPosY]             ; $72E1: $F0 $EC
     cp   $88                                      ; $72E3: $FE $88
-    jr   nc, jr_018_72EC                          ; $72E5: $30 $05
+    jr   nc, .jr_72EC                             ; $72E5: $30 $05
 
     ldh  a, [hActiveEntityPosX]                   ; $72E7: $F0 $EE
     cp   $A8                                      ; $72E9: $FE $A8
     ret  c                                        ; $72EB: $D8
 
-jr_018_72EC:
+.jr_72EC
     call IncrementEntityState                     ; $72EC: $CD $12 $3B
     ld   a, $FF                                   ; $72EF: $3E $FF
     jp   SetEntitySpriteVariant                   ; $72F1: $C3 $0C $3B

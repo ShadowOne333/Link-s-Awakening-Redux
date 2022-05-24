@@ -14,16 +14,16 @@ Data_003_5823::
 MoblinEntityHandler::
     ldh  a, [hMapId]                              ; $5827: $F0 $F7
     cp   MAP_BOWWOW_HIDEOUT                       ; $5829: $FE $15
-    jr   nz, jr_003_5835                          ; $582B: $20 $08
+    jr   nz, .jr_5835                             ; $582B: $20 $08
 
     ld   a, [wIsBowWowFollowingLink]              ; $582D: $FA $56 $DB
     cp   $80                                      ; $5830: $FE $80
     jp   nz, UnloadEntityAndReturn                ; $5832: $C2 $8D $3F
 
-jr_003_5835:
+.jr_5835
     ld   a, c                                     ; $5835: $79
-    ld   [$D153], a                               ; $5836: $EA $53 $D1
-    ld   de, Data_003_5917                        ; $5839: $11 $17 $59
+    ld   [wD153], a                               ; $5836: $EA $53 $D1
+    ld   de, Unknown009SpriteVariants             ; $5839: $11 $17 $59
     ; fallthrough
 
 ; Animate roaming enemy (Octorok, Moblin, Iron mask)
@@ -34,9 +34,9 @@ AnimateRoamingEnemy::
     add  hl, bc                                   ; $5845: $09
     ld   a, [hl]                                  ; $5846: $7E
 
-jr_003_5847:
+.jr_5847
     and  a                                        ; $5847: $A7
-    jr   z, jr_003_5858                           ; $5848: $28 $0E
+    jr   z, .jr_5858                              ; $5848: $28 $0E
 
     ld   hl, wEntitiesStateTable                  ; $584A: $21 $90 $C2
     add  hl, bc                                   ; $584D: $09
@@ -46,7 +46,7 @@ jr_003_5847:
     call GetEntityTransitionCountdown             ; $5853: $CD $05 $0C
     ld   [hl], $40                                ; $5856: $36 $40
 
-jr_003_5858:
+.jr_5858
     call ApplyRecoilIfNeeded_03                   ; $5858: $CD $A9 $7F
     call func_003_6E28                            ; $585B: $CD $28 $6E
     ldh  a, [hActiveEntityState]                  ; $585E: $F0 $F0
@@ -57,28 +57,28 @@ jr_003_5858:
     jr   z, jr_003_5896                           ; $5866: $28 $2E
 
     cp   $0A                                      ; $5868: $FE $0A
-    jr   nz, jr_003_5889                          ; $586A: $20 $1D
+    jr   nz, .jr_5889                             ; $586A: $20 $1D
 
     call GetEntityPrivateCountdown1               ; $586C: $CD $00 $0C
-    jr   nz, jr_003_5889                          ; $586F: $20 $18
+    jr   nz, .jr_5889                             ; $586F: $20 $18
 
     call func_003_7EFE                            ; $5871: $CD $FE $7E
     ld   hl, wEntitiesDirectionTable              ; $5874: $21 $80 $C3
     add  hl, bc                                   ; $5877: $09
     ld   a, e                                     ; $5878: $7B
     cp   [hl]                                     ; $5879: $BE
-    jr   nz, jr_003_5889                          ; $587A: $20 $0D
+    jr   nz, .jr_5889                             ; $587A: $20 $0D
 
     ldh  a, [hActiveEntityType]                   ; $587C: $F0 $EB
     cp   ENTITY_IRON_MASK                         ; $587E: $FE $24
-    jr   z, jr_003_5889                           ; $5880: $28 $07
+    jr   z, .jr_5889                              ; $5880: $28 $07
 
     cp   ENTITY_OCTOROK                           ; $5882: $FE $09
     jr   z, jr_003_588D                           ; $5884: $28 $07
 
     call SpawnMoblinArrow                         ; $5886: $CD $47 $59
 
-jr_003_5889:
+.jr_5889
     call func_003_7893                            ; $5889: $CD $93 $78
     ret                                           ; $588C: $C9
 
@@ -104,12 +104,12 @@ jr_003_5896:
     and  $03                                      ; $58AA: $E6 $03
     ld   [hl], a                                  ; $58AC: $77
     cp   $00                                      ; $58AD: $FE $00
-    jr   nz, jr_003_58B6                          ; $58AF: $20 $05
+    jr   nz, .jr_58B6                             ; $58AF: $20 $05
 
     call func_003_7EFE                            ; $58B1: $CD $FE $7E
     jr   jr_003_58B9                              ; $58B4: $18 $03
 
-jr_003_58B6:
+.jr_58B6
     call GetRandomByte                            ; $58B6: $CD $0D $28
 
 jr_003_58B9:
@@ -138,12 +138,12 @@ jr_003_58D7:
     add  hl, bc                                   ; $58DA: $09
     ld   a, [hl]                                  ; $58DB: $7E
     and  $0F                                      ; $58DC: $E6 $0F
-    jr   nz, jr_003_58E5                          ; $58DE: $20 $05
+    jr   nz, .jr_58E5                             ; $58DE: $20 $05
 
     call GetEntityTransitionCountdown             ; $58E0: $CD $05 $0C
     jr   nz, jr_003_58F6                          ; $58E3: $20 $11
 
-jr_003_58E5:
+.jr_58E5
     call GetRandomByte                            ; $58E5: $CD $0D $28
     and  $0F                                      ; $58E8: $E6 $0F
     or   $10                                      ; $58EA: $F6 $10
@@ -165,7 +165,7 @@ func_003_58FC::
     ld   hl, Data_003_5823                        ; $5902: $21 $23 $58
     add  hl, de                                   ; $5905: $19
     push hl                                       ; $5906: $E5
-    ld   hl, wEntitiesUnknowTableY                ; $5907: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $5907: $21 $D0 $C3
     add  hl, bc                                   ; $590A: $09
     inc  [hl]                                     ; $590B: $34
     ld   a, [hl]                                  ; $590C: $7E
@@ -177,9 +177,32 @@ func_003_58FC::
     or   [hl]                                     ; $5913: $B6
     jp   SetEntitySpriteVariant                   ; $5914: $C3 $0C $3B
 
-Data_003_5917::
-    db   $60, $03, $62, $03, $62, $23, $60, $23, $64, $03, $66, $03, $66, $23, $64, $23
-    db   $68, $03, $6A, $03, $6C, $03, $6E, $03, $6A, $23, $68, $23, $6E, $23, $6C, $23
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+Unknown009SpriteVariants::
+.variant0
+    db $60, OAM_GBC_PAL_3
+    db $62, OAM_GBC_PAL_3
+.variant1
+    db $62, OAM_GBC_PAL_3 | OAM_X_FLIP
+    db $60, OAM_GBC_PAL_3 | OAM_X_FLIP
+.variant2
+    db $64, OAM_GBC_PAL_3
+    db $66, OAM_GBC_PAL_3
+.variant3
+    db $66, OAM_GBC_PAL_3 | OAM_X_FLIP
+    db $64, OAM_GBC_PAL_3 | OAM_X_FLIP
+.variant4
+    db $68, OAM_GBC_PAL_3
+    db $6A, OAM_GBC_PAL_3
+.variant5
+    db $6C, OAM_GBC_PAL_3
+    db $6E, OAM_GBC_PAL_3
+.variant6
+    db $6A, OAM_GBC_PAL_3 | OAM_X_FLIP
+    db $68, OAM_GBC_PAL_3 | OAM_X_FLIP
+.variant7
+    db $6E, OAM_GBC_PAL_3 | OAM_X_FLIP
+    db $6C, OAM_GBC_PAL_3 | OAM_X_FLIP
 
 Data_003_5937::
     db   $08, $F8, $04, $FC
@@ -196,7 +219,7 @@ Data_003_5943::
 SpawnMoblinArrow::
     ld   a, ENTITY_MOBLIN_ARROW                   ; $5947: $3E $0C
     call SpawnNewEntity                           ; $5949: $CD $CA $64
-    jr   c, jr_003_598B                           ; $594C: $38 $3D
+    jr   c, ret_003_598B                          ; $594C: $38 $3D
 
     push bc                                       ; $594E: $C5
     ldh  a, [hMultiPurpose2]                      ; $594F: $F0 $D9
@@ -222,7 +245,7 @@ SpawnMoblinArrow::
     add  hl, de                                   ; $5972: $19
     ld   [hl], a                                  ; $5973: $77
 
-jr_003_5974:
+.jr_5974
     ld   hl, Data_003_5943                        ; $5974: $21 $43 $59
     add  hl, bc                                   ; $5977: $09
     ld   a, [hl]                                  ; $5978: $7E
@@ -238,7 +261,7 @@ jr_003_5974:
     ld   [hl], a                                  ; $5989: $77
     pop  bc                                       ; $598A: $C1
 
-jr_003_598B:
+ret_003_598B:
     ret                                           ; $598B: $C9
 
 Data_003_598C::
@@ -256,7 +279,7 @@ Data_003_5994::
 SpawnOctorokRock::
     ld   a, ENTITY_OCTOROK_ROCK                   ; $5998: $3E $0A
     call SpawnNewEntity                           ; $599A: $CD $CA $64
-    jr   c, jr_003_59D6                           ; $599D: $38 $37
+    jr   c, .jr_59D6                              ; $599D: $38 $37
 
     push bc                                       ; $599F: $C5
     ldh  a, [hMultiPurpose2]                      ; $59A0: $F0 $D9
@@ -293,7 +316,7 @@ SpawnOctorokRock::
     pop  bc                                       ; $59D4: $C1
     and  a                                        ; $59D5: $A7
 
-jr_003_59D6:
+.jr_59D6
 IF !__PATCH_0__
     ret                                           ; $59D6: $C9
 ENDC

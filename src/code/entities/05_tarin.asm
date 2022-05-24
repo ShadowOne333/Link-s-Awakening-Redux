@@ -1,21 +1,72 @@
-Data_005_4912::
-    db   $78, $02, $7A, $02, $7A, $22, $78, $22, $7C, $02, $7E, $02, $78, $02, $7A, $02
-    db   $70, $02, $72, $02, $74, $02, $76, $02, $76, $22, $74, $22, $72, $22, $70, $22
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+Tarin1SpriteVariants::
+.variant0
+    db $78, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $7A, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant1
+    db $7A, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $78, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant2
+    db $7C, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $7E, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant3
+    db $78, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $7A, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant4
+    db $70, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $72, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant5
+    db $74, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $76, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant6
+    db $76, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $74, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant7
+    db $72, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $70, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
-Data_005_4932::
-    db   $5A, $22, $58, $22, $58, $02, $5A, $02, $50, $02, $52, $02, $50, $02, $52, $02
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+Tarin3SpriteVariants::
+.variant0
+    db $5A, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $58, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $58, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $5A, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant2
+    db $50, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $52, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant3
+    db $50, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $52, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
 
-Data_005_4942::
-    db   $54, $02, $56, $02
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+Tarin4SpriteVariants::
+.variant0
+    db $54, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $56, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
 
-Data_005_4946::
-    db   $7A, $07, $7C, $07
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+Tarin2SpriteVariants::
+.variant0
+    db $7A, OAM_GBC_PAL_7 | OAM_DMG_PAL_0
+    db $7C, OAM_GBC_PAL_7 | OAM_DMG_PAL_0
 
-Data_005_494A::
-    db   $00, $00, $20, $02, $00, $08, $22, $02, $00, $00, $20, $02, $00, $08, $22, $02
+; define sprites and there OAM Attributes in a list
+Tarin1SpriteList::
+    ;  x    y    n°   OAM
+    db $00, $00, $20, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $00, $08, $22, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $00, $00, $20, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $00, $08, $22, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
 
-Data_005_495A::
-    db   $F1, $FA, $2A, $02, $F1, $02, $2A, $22, $00, $00, $24, $02, $00, $08, $28, $02
+; define sprites and there OAM Attributes in a list
+Tarin2SpriteList::
+    ;  x    y    n°   OAM
+    db $F1, $FA, $2A, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $F1, $02, $2A, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $00, $00, $24, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $00, $08, $28, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
 
 ; Entity handler for:
 ;  - All appearances of Tarin (except when with the bees)
@@ -28,19 +79,19 @@ TarinEntityHandler::
     ld   hl, wEntitiesPhysicsFlagsTable           ; $4971: $21 $40 $C3
     add  hl, bc                                   ; $4974: $09
     ld   [hl], $C4                                ; $4975: $36 $C4
-    ld   hl, wEntitiesUnknowTableY                ; $4977: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $4977: $21 $D0 $C3
     add  hl, bc                                   ; $497A: $09
     ld   a, [hl]                                  ; $497B: $7E
-    ld   hl, Data_005_494A                        ; $497C: $21 $4A $49
+    ld   hl, Tarin1SpriteList                     ; $497C: $21 $4A $49
     cp   $70                                      ; $497F: $FE $70
-    jr   nz, jr_005_4986                          ; $4981: $20 $03
+    jr   nz, .jr_4986                             ; $4981: $20 $03
 
-    ld   hl, Data_005_495A                        ; $4983: $21 $5A $49
+    ld   hl, Tarin2SpriteList                     ; $4983: $21 $5A $49
 
-jr_005_4986:
+.jr_4986
     ld   c, $04                                   ; $4986: $0E $04
     call RenderActiveEntitySpritesRect            ; $4988: $CD $E6 $3C
-    ld   hl, wEntitiesUnknowTableY                ; $498B: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $498B: $21 $D0 $C3
     add  hl, bc                                   ; $498E: $09
     ld   a, [hl]                                  ; $498F: $7E
     cp   $70                                      ; $4990: $FE $70
@@ -71,7 +122,7 @@ jr_005_4995:
     call SetEntitySpriteVariant                   ; $49B0: $CD $0C $3B
     ldh  a, [hLinkPositionY]                      ; $49B3: $F0 $99
     cp   $30                                      ; $49B5: $FE $30
-    jr   nc, jr_005_49CC                          ; $49B7: $30 $13
+    jr   nc, .jr_49CC                             ; $49B7: $30 $13
 
     ld   a, $01                                   ; $49B9: $3E $01
     ld   [wC10C], a                               ; $49BB: $EA $0C $C1
@@ -84,13 +135,13 @@ jr_005_4995:
     call SetEntitySpriteVariant                   ; $49C7: $CD $0C $3B
     jr   jr_005_49D1                              ; $49CA: $18 $05
 
-jr_005_49CC:
+.jr_49CC
     ld   hl, wEntitiesPrivateState4Table          ; $49CC: $21 $40 $C4
     add  hl, bc                                   ; $49CF: $09
     ld   [hl], b                                  ; $49D0: $70
 
 jr_005_49D1:
-    ld   de, Data_005_4912                        ; $49D1: $11 $12 $49
+    ld   de, Tarin1SpriteVariants                 ; $49D1: $11 $12 $49
     call RenderActiveEntitySpritesPair            ; $49D4: $CD $C0 $3B
     call ReturnIfNonInteractive_05                ; $49D7: $CD $3A $7A
     ldh  a, [hActiveEntityState]                  ; $49DA: $F0 $F0
@@ -104,28 +155,28 @@ func_005_49E5::
     call func_005_54C3                            ; $49E5: $CD $C3 $54
     ldh  a, [hLinkPositionY]                      ; $49E8: $F0 $99
     cp   $20                                      ; $49EA: $FE $20
-    jr   nc, jr_005_49FD                          ; $49EC: $30 $0F
+    jr   nc, .jr_49FD                             ; $49EC: $30 $0F
 
     ld   hl, wEntitiesPrivateState4Table          ; $49EE: $21 $40 $C4
     add  hl, bc                                   ; $49F1: $09
     ld   a, [hl]                                  ; $49F2: $7E
     and  a                                        ; $49F3: $A7
-    jr   nz, jr_005_49FD                          ; $49F4: $20 $07
+    jr   nz, .jr_49FD                             ; $49F4: $20 $07
 
     ld   [hl], $01                                ; $49F6: $36 $01
-    jp_open_dialog $021                           ; $49F8
+    jp_open_dialog Dialog021                      ; $49F8
 
-jr_005_49FD:
+.jr_49FD
     call ShouldLinkTalkToEntity_05                ; $49FD: $CD $06 $55
-    jr   nc, jr_005_4A0C                          ; $4A00: $30 $0A
+    jr   nc, .jr_4A0C                             ; $4A00: $30 $0A
 
     ld   a, [wLinkAttackStepAnimationCountdown]   ; $4A02: $FA $9B $C1
     and  a                                        ; $4A05: $A7
     ret  nz                                       ; $4A06: $C0
 
-    jp_open_dialog $00D                           ; $4A07
+    jp_open_dialog Dialog00D                      ; $4A07
 
-jr_005_4A0C:
+.jr_4A0C
     ld   hl, wC1AD                                ; $4A0C: $21 $AD $C1
     ld   [hl], b                                  ; $4A0F: $70
     ret                                           ; $4A10: $C9
@@ -157,20 +208,20 @@ func_005_4A17::
     ld   [hl], a                                  ; $4A37: $77
     jr   nc, jr_005_4A46                          ; $4A38: $30 $0C
 
-    ld   hl, wEntitiesUnknowTableR                ; $4A3A: $21 $90 $C3
+    ld   hl, wEntitiesPrivateState5Table          ; $4A3A: $21 $90 $C3
     add  hl, bc                                   ; $4A3D: $09
     ld   a, [hl]                                  ; $4A3E: $7E
     inc  a                                        ; $4A3F: $3C
     cp   $06                                      ; $4A40: $FE $06
-    jr   nz, jr_005_4A45                          ; $4A42: $20 $01
+    jr   nz, .jr_4A45                             ; $4A42: $20 $01
 
     xor  a                                        ; $4A44: $AF
 
-jr_005_4A45:
+.jr_4A45
     ld   [hl], a                                  ; $4A45: $77
 
 jr_005_4A46:
-    ld   hl, wEntitiesUnknowTableR                ; $4A46: $21 $90 $C3
+    ld   hl, wEntitiesPrivateState5Table          ; $4A46: $21 $90 $C3
     add  hl, bc                                   ; $4A49: $09
     ld   e, [hl]                                  ; $4A4A: $5E
     ld   d, b                                     ; $4A4B: $50
@@ -179,7 +230,7 @@ jr_005_4A46:
     ld   a, [hl]                                  ; $4A50: $7E
     call SetEntitySpriteVariant                   ; $4A51: $CD $0C $3B
     call GetEntityDropTimer                       ; $4A54: $CD $FB $0B
-    jr   nz, jr_005_4A9E                          ; $4A57: $20 $45
+    jr   nz, .jr_4A9E                             ; $4A57: $20 $45
 
     ld   a, ENTITY_BOMB                           ; $4A59: $3E $02
     call SpawnNewEntity_trampoline                ; $4A5B: $CD $86 $3B
@@ -217,23 +268,23 @@ jr_005_4A46:
     or   $10                                      ; $4A95: $F6 $10
     ld   [hl], a                                  ; $4A97: $77
     ld   a, $01                                   ; $4A98: $3E $01
-    ld   [$DB48], a                               ; $4A9A: $EA $48 $DB
+    ld   [wDB48], a                               ; $4A9A: $EA $48 $DB
     ret                                           ; $4A9D: $C9
 
-jr_005_4A9E:
+.jr_4A9E
     ld   hl, wEntitiesPrivateState3Table          ; $4A9E: $21 $D0 $C2
     add  hl, bc                                   ; $4AA1: $09
     ldh  a, [hFrameCounter]                       ; $4AA2: $F0 $E7
     and  $01                                      ; $4AA4: $E6 $01
-    jr   nz, jr_005_4AAE                          ; $4AA6: $20 $06
+    jr   nz, .jr_4AAE                             ; $4AA6: $20 $06
 
     ld   a, [hl]                                  ; $4AA8: $7E
     cp   $F0                                      ; $4AA9: $FE $F0
-    jr   nc, jr_005_4AAE                          ; $4AAB: $30 $01
+    jr   nc, .jr_4AAE                             ; $4AAB: $30 $01
 
     inc  [hl]                                     ; $4AAD: $34
 
-jr_005_4AAE:
+.jr_4AAE
     call UpdateEntityPosWithSpeed_05              ; $4AAE: $CD $B1 $7A
     call label_3B23                               ; $4AB1: $CD $23 $3B
     call GetEntityDropTimer                       ; $4AB4: $CD $FB $0B
@@ -242,12 +293,12 @@ jr_005_4AAE:
 
     ldh  a, [hActiveEntityPosY]                   ; $4ABB: $F0 $EF
     cp   $30                                      ; $4ABD: $FE $30
-    jr   nc, jr_005_4AC5                          ; $4ABF: $30 $04
+    jr   nc, .jr_4AC5                             ; $4ABF: $30 $04
 
     ld   [hl], $08                                ; $4AC1: $36 $08
     jr   jr_005_4AEC                              ; $4AC3: $18 $27
 
-jr_005_4AC5:
+.jr_4AC5
     ld   hl, wEntitiesSpeedZTable                 ; $4AC5: $21 $20 $C3
     add  hl, bc                                   ; $4AC8: $09
     inc  [hl]                                     ; $4AC9: $34
@@ -259,12 +310,12 @@ jr_005_4AC5:
     jr   z, jr_005_4ADA                           ; $4AD1: $28 $07
 
     and  $80                                      ; $4AD3: $E6 $80
-    jr   z, jr_005_4AD9                           ; $4AD5: $28 $02
+    jr   z, .jr_4AD9                              ; $4AD5: $28 $02
 
     inc  [hl]                                     ; $4AD7: $34
     inc  [hl]                                     ; $4AD8: $34
 
-jr_005_4AD9:
+.jr_4AD9
     dec  [hl]                                     ; $4AD9: $35
 
 jr_005_4ADA:
@@ -275,12 +326,12 @@ jr_005_4ADA:
     jr   z, jr_005_4AE9                           ; $4AE0: $28 $07
 
     and  $80                                      ; $4AE2: $E6 $80
-    jr   z, jr_005_4AE8                           ; $4AE4: $28 $02
+    jr   z, .jr_4AE8                              ; $4AE4: $28 $02
 
     inc  [hl]                                     ; $4AE6: $34
     inc  [hl]                                     ; $4AE7: $34
 
-jr_005_4AE8:
+.jr_4AE8
     dec  [hl]                                     ; $4AE8: $35
 
 jr_005_4AE9:
@@ -291,7 +342,7 @@ jr_005_4AEC:
     add  hl, bc                                   ; $4AEF: $09
     ld   a, [hl]                                  ; $4AF0: $7E
     and  $03                                      ; $4AF1: $E6 $03
-    jr   z, jr_005_4B01                           ; $4AF3: $28 $0C
+    jr   z, .jr_4B01                              ; $4AF3: $28 $0C
 
     ld   hl, wEntitiesSpeedXTable                 ; $4AF5: $21 $40 $C2
     add  hl, bc                                   ; $4AF8: $09
@@ -302,12 +353,12 @@ jr_005_4AEC:
     ld   a, JINGLE_BUMP                           ; $4AFD: $3E $09
     ldh  [hJingle], a                             ; $4AFF: $E0 $F2
 
-jr_005_4B01:
+.jr_4B01
     ld   hl, wEntitiesCollisionsTable             ; $4B01: $21 $A0 $C2
     add  hl, bc                                   ; $4B04: $09
     ld   a, [hl]                                  ; $4B05: $7E
     and  $0C                                      ; $4B06: $E6 $0C
-    jr   z, jr_005_4B16                           ; $4B08: $28 $0C
+    jr   z, .jr_4B16                              ; $4B08: $28 $0C
 
     ld   hl, wEntitiesSpeedYTable                 ; $4B0A: $21 $50 $C2
     add  hl, bc                                   ; $4B0D: $09
@@ -318,14 +369,14 @@ jr_005_4B01:
     ld   a, JINGLE_BUMP                           ; $4B12: $3E $09
     ldh  [hJingle], a                             ; $4B14: $E0 $F2
 
-jr_005_4B16:
+.jr_4B16
     call GetEntityDropTimer                       ; $4B16: $CD $FB $0B
     cp   $60                                      ; $4B19: $FE $60
-    jr   nc, jr_005_4B40                          ; $4B1B: $30 $23
+    jr   nc, ret_005_4B40                         ; $4B1B: $30 $23
 
     ldh  a, [hFrameCounter]                       ; $4B1D: $F0 $E7
     and  $03                                      ; $4B1F: $E6 $03
-    jr   nz, jr_005_4B40                          ; $4B21: $20 $1D
+    jr   nz, ret_005_4B40                         ; $4B21: $20 $1D
 
     ld   hl, wEntitiesSpeedXTable                 ; $4B23: $21 $40 $C2
     call func_005_4B2C                            ; $4B26: $CD $2C $4B
@@ -335,22 +386,22 @@ func_005_4B2C::
     add  hl, bc                                   ; $4B2C: $09
     ld   a, [hl]                                  ; $4B2D: $7E
     cp   $30                                      ; $4B2E: $FE $30
-    jr   z, jr_005_4B40                           ; $4B30: $28 $0E
+    jr   z, ret_005_4B40                          ; $4B30: $28 $0E
 
     cp   $D0                                      ; $4B32: $FE $D0
-    jr   z, jr_005_4B40                           ; $4B34: $28 $0A
+    jr   z, ret_005_4B40                          ; $4B34: $28 $0A
 
     ld   e, $01                                   ; $4B36: $1E $01
     bit  7, a                                     ; $4B38: $CB $7F
-    jr   z, jr_005_4B3E                           ; $4B3A: $28 $02
+    jr   z, .jr_4B3E                              ; $4B3A: $28 $02
 
     ld   e, $FF                                   ; $4B3C: $1E $FF
 
-jr_005_4B3E:
+.jr_4B3E
     add  e                                        ; $4B3E: $83
     ld   [hl], a                                  ; $4B3F: $77
 
-jr_005_4B40:
+ret_005_4B40:
     ret                                           ; $4B40: $C9
 
 func_005_4B41::
@@ -380,58 +431,58 @@ func_005_4B41::
     call func_005_7B04                            ; $4B6E: $CD $04 $7B
     add  $12                                      ; $4B71: $C6 $12
     cp   $24                                      ; $4B73: $FE $24
-    jr   nc, jr_005_4B86                          ; $4B75: $30 $0F
+    jr   nc, .jr_4B86                             ; $4B75: $30 $0F
 
     call func_005_7B14                            ; $4B77: $CD $14 $7B
     add  $12                                      ; $4B7A: $C6 $12
     cp   $24                                      ; $4B7C: $FE $24
-    jr   nc, jr_005_4B86                          ; $4B7E: $30 $06
+    jr   nc, .jr_4B86                             ; $4B7E: $30 $06
 
     ld   hl, wEntitiesPrivateState1Table          ; $4B80: $21 $B0 $C2
     add  hl, bc                                   ; $4B83: $09
     ld   [hl], $80                                ; $4B84: $36 $80
 
-jr_005_4B86:
+.jr_4B86
     jp   IncrementEntityState                     ; $4B86: $C3 $12 $3B
 
 func_005_4B89::
     call GetEntityTransitionCountdown             ; $4B89: $CD $05 $0C
     cp   $01                                      ; $4B8C: $FE $01
-    jr   nz, jr_005_4B95                          ; $4B8E: $20 $05
+    jr   nz, .jr_4B95                             ; $4B8E: $20 $05
 
-    jp_open_dialog $00A                           ; $4B90
+    jp_open_dialog Dialog00A                      ; $4B90
 
-jr_005_4B95:
+.jr_4B95
     and  a                                        ; $4B95: $A7
-    jr   z, jr_005_4B9D                           ; $4B96: $28 $05
+    jr   z, .jr_4B9D                              ; $4B96: $28 $05
 
     ld   a, $02                                   ; $4B98: $3E $02
     ldh  [hLinkInteractiveMotionBlocked], a       ; $4B9A: $E0 $A1
     ret                                           ; $4B9C: $C9
 
-jr_005_4B9D:
+.jr_4B9D
     ldh  a, [hFrameCounter]                       ; $4B9D: $F0 $E7
     and  $1F                                      ; $4B9F: $E6 $1F
-    jr   nz, jr_005_4BAB                          ; $4BA1: $20 $08
+    jr   nz, .jr_4BAB                             ; $4BA1: $20 $08
 
     call func_005_7B24                            ; $4BA3: $CD $24 $7B
     add  $08                                      ; $4BA6: $C6 $08
     call SetEntitySpriteVariant                   ; $4BA8: $CD $0C $3B
 
-jr_005_4BAB:
+.jr_4BAB
     ld   hl, wEntitiesPrivateState1Table          ; $4BAB: $21 $B0 $C2
     add  hl, bc                                   ; $4BAE: $09
     ld   a, [hl]                                  ; $4BAF: $7E
     and  a                                        ; $4BB0: $A7
-    jr   nz, jr_005_4BB6                          ; $4BB1: $20 $03
+    jr   nz, .jr_4BB6                             ; $4BB1: $20 $03
 
     call func_005_54C3                            ; $4BB3: $CD $C3 $54
 
-jr_005_4BB6:
+.jr_4BB6
     call ShouldLinkTalkToEntity_05                ; $4BB6: $CD $06 $55
     ret  nc                                       ; $4BB9: $D0
 
-    jp_open_dialog $00B                           ; $4BBA
+    jp_open_dialog Dialog00B                      ; $4BBA
 
 Data_005_4BBF::
     db   $78, $00
@@ -452,14 +503,14 @@ label_005_4BC1:
 
     and  $10                                      ; $4BDB: $E6 $10
     ld   e, $01                                   ; $4BDD: $1E $01
-    jr   z, jr_005_4BE3                           ; $4BDF: $28 $02
+    jr   z, .jr_4BE3                              ; $4BDF: $28 $02
 
     ld   e, $FF                                   ; $4BE1: $1E $FF
 
-jr_005_4BE3:
+.jr_4BE3
     ldh  a, [hFrameCounter]                       ; $4BE3: $F0 $E7
     and  $01                                      ; $4BE5: $E6 $01
-    jr   nz, jr_005_4BF0                          ; $4BE7: $20 $07
+    jr   nz, .ret_4BF0                            ; $4BE7: $20 $07
 
     ld   hl, wEntitiesSpeedXTable                 ; $4BE9: $21 $40 $C2
     add  hl, bc                                   ; $4BEC: $09
@@ -467,13 +518,13 @@ jr_005_4BE3:
     add  e                                        ; $4BEE: $83
     ld   [hl], a                                  ; $4BEF: $77
 
-jr_005_4BF0:
+.ret_4BF0
     ret                                           ; $4BF0: $C9
 
 jr_005_4BF1:
     ld   a, [wIsMarinFollowingLink]               ; $4BF1: $FA $73 $DB
     and  a                                        ; $4BF4: $A7
-    jr   nz, jr_005_4C07                          ; $4BF5: $20 $10
+    jr   nz, .jr_4C07                             ; $4BF5: $20 $10
 
     ld   a, [wHasInstrument3]                     ; $4BF7: $FA $67 $DB
     and  $02                                      ; $4BFA: $E6 $02
@@ -483,28 +534,28 @@ jr_005_4BF1:
     cp   $04                                      ; $4C02: $FE $04
     jp   nc, ClearEntityStatus_05                 ; $4C04: $D2 $4B $7B
 
-jr_005_4C07:
-    ld   a, [$DB48]                               ; $4C07: $FA $48 $DB
+.jr_4C07
+    ld   a, [wDB48]                               ; $4C07: $FA $48 $DB
     and  a                                        ; $4C0A: $A7
-    jr   nz, jr_005_4C14                          ; $4C0B: $20 $07
+    jr   nz, .jr_4C14                             ; $4C0B: $20 $07
 
     ld   a, [wSwordLevel]                         ; $4C0D: $FA $4E $DB
     and  a                                        ; $4C10: $A7
     jp   nz, ClearEntityStatus_05                 ; $4C11: $C2 $4B $7B
 
-jr_005_4C14:
+.jr_4C14
     ld   a, [wIsMarinFollowingLink]               ; $4C14: $FA $73 $DB
     and  a                                        ; $4C17: $A7
-    jr   nz, jr_005_4C24                          ; $4C18: $20 $0A
+    jr   nz, .jr_4C24                             ; $4C18: $20 $0A
 
-    ld   a, [$DB48]                               ; $4C1A: $FA $48 $DB
+    ld   a, [wDB48]                               ; $4C1A: $FA $48 $DB
     and  a                                        ; $4C1D: $A7
     jr   z, jr_005_4C43                           ; $4C1E: $28 $23
 
     cp   $01                                      ; $4C20: $FE $01
     jr   nz, jr_005_4C43                          ; $4C22: $20 $1F
 
-jr_005_4C24:
+.jr_4C24
     ld   hl, wEntitiesPosXTable                   ; $4C24: $21 $00 $C2
     add  hl, bc                                   ; $4C27: $09
     ld   [hl], $18                                ; $4C28: $36 $18
@@ -514,28 +565,28 @@ jr_005_4C24:
     call CopyEntityPositionToActivePosition       ; $4C30: $CD $8A $3D
     ldh  a, [hIsGBC]                              ; $4C33: $F0 $FE
     and  a                                        ; $4C35: $A7
-    jr   z, jr_005_4C3E                           ; $4C36: $28 $06
+    jr   z, .jr_4C3E                              ; $4C36: $28 $06
 
-    ld   de, Data_005_4946                        ; $4C38: $11 $46 $49
+    ld   de, Tarin2SpriteVariants                 ; $4C38: $11 $46 $49
     call RenderActiveEntitySpritesPair            ; $4C3B: $CD $C0 $3B
 
-jr_005_4C3E:
-    ld   de, Data_005_4942                        ; $4C3E: $11 $42 $49
+.jr_4C3E
+    ld   de, Tarin4SpriteVariants                 ; $4C3E: $11 $42 $49
     jr   jr_005_4C57                              ; $4C41: $18 $14
 
 jr_005_4C43:
     call func_005_4DCF                            ; $4C43: $CD $CF $4D
     ldh  a, [hFrameCounter]                       ; $4C46: $F0 $E7
     and  $1F                                      ; $4C48: $E6 $1F
-    jr   nz, jr_005_4C54                          ; $4C4A: $20 $08
+    jr   nz, .jr_4C54                             ; $4C4A: $20 $08
 
     call func_005_7B24                            ; $4C4C: $CD $24 $7B
     ld   hl, wEntitiesSpriteVariantTable          ; $4C4F: $21 $B0 $C3
     add  hl, bc                                   ; $4C52: $09
     ld   [hl], e                                  ; $4C53: $73
 
-jr_005_4C54:
-    ld   de, Data_005_4932                        ; $4C54: $11 $32 $49
+.jr_4C54
+    ld   de, Tarin3SpriteVariants                 ; $4C54: $11 $32 $49
 
 jr_005_4C57:
     call RenderActiveEntitySpritesPair            ; $4C57: $CD $C0 $3B
@@ -569,7 +620,7 @@ TarinShield0Handler::
     sub  $02                                      ; $4C7F: $D6 $02
     ldh  [hLinkPositionY], a                      ; $4C81: $E0 $99
     ; … and open the "Woah, wait" dialog.
-    jp_open_dialog $000                           ; $4C83
+    jp_open_dialog Dialog000                      ; $4C83
 .whoahWaitEnd
 
 
@@ -577,7 +628,7 @@ TarinShield0Handler::
     ret  nc                                       ; $4C8B: $D0
 
     ; Open the "There's your shield" dialog
-    call_open_dialog $054                         ; $4C8C
+    call_open_dialog Dialog054                    ; $4C8C
     jp   IncrementEntityState                     ; $4C91: $C3 $12 $3B
 
 ; This data is pushed into wObjPal8
@@ -600,13 +651,13 @@ TarinShield1Handler::
     ld   hl, wObjPal8                             ; $4CB0: $21 $88 $DC
     ld   de, data_005_4C94                        ; $4CB3: $11 $94 $4C
 
-jr_005_4CB6:
+.loop_4CB6
     ld   a, [de]                                  ; $4CB6: $1A
     ld   [hl+], a                                 ; $4CB7: $22
     inc  de                                       ; $4CB8: $13
     ld   a, l                                     ; $4CB9: $7D
     and  $07                                      ; $4CBA: $E6 $07
-    jr   nz, jr_005_4CB6                          ; $4CBC: $20 $F8
+    jr   nz, .loop_4CB6                           ; $4CBC: $20 $F8
 
     ld   a, $02                                   ; $4CBE: $3E $02
     ld   [wPaletteDataFlags], a                   ; $4CC0: $EA $D1 $DD
@@ -622,8 +673,8 @@ data_005_4cc6::
 ; Link lifts the shield
 TarinShield2Handler::
     ; Wait a number of frames to actually add the shield to the inventory
-    call GetEntityTransitionCountdown                 ; $4CC8: $CD $05 $0C
-    jr   nz, jr_005_4CE6                          ; $4CCB: $20 $19
+    call GetEntityTransitionCountdown             ; $4CC8: $CD $05 $0C
+    jr   nz, .jr_4CE6                             ; $4CCB: $20 $19
 
     ld   [wC167], a                               ; $4CCD: $EA $67 $C1
     ; Add the shield to the inventory
@@ -632,12 +683,12 @@ TarinShield2Handler::
 
     ld   a, $01                                   ; $4CD5: $3E $01
     ld   [wShieldLevel], a                        ; $4CD7: $EA $44 $DB
-    ld   a, LINK_ANIMATION_STATE_STANDING_SHIELD_DOWN       ; $4CDA: $3E $22
+    ld   a, LINK_ANIMATION_STATE_STANDING_SHIELD_DOWN ; $4CDA: $3E $22
     ldh  [hLinkAnimationState], a                 ; $4CDC: $E0 $9D
-    call_open_dialog $091                         ; $4CDE
+    call_open_dialog Dialog091                    ; $4CDE
     jp   IncrementEntityState                     ; $4CE3: $C3 $12 $3B
 
-jr_005_4CE6:
+.jr_4CE6
     ldh  a, [hLinkPositionX]                      ; $4CE6: $F0 $98
     ldh  [hActiveEntityPosX], a                   ; $4CE8: $E0 $EE
     ldh  a, [hLinkPositionY]                      ; $4CEA: $F0 $99
@@ -657,7 +708,7 @@ jr_005_4CE6:
     ret                                           ; $4D08: $C9
 
 TarinShield3Handler::
-    ld   a, [$DB48]                               ; $4D09: $FA $48 $DB
+    ld   a, [wDB48]                               ; $4D09: $FA $48 $DB
     and  a                                        ; $4D0C: $A7
     jr   z, jr_005_4D4D                           ; $4D0D: $28 $3E
 
@@ -665,20 +716,20 @@ TarinShield3Handler::
     jr   z, jr_005_4D38                           ; $4D11: $28 $25
 
     call ShouldLinkTalkToEntity_05                ; $4D13: $CD $06 $55
-    jr   nc, jr_005_4D2C                          ; $4D16: $30 $14
+    jr   nc, .jr_4D2C                             ; $4D16: $30 $14
 
     ld   a, [wIsMarinFollowingLink]               ; $4D18: $FA $73 $DB
     and  a                                        ; $4D1B: $A7
-    ld   a, $DD                                   ; $4D1C: $3E $DD
+    ld_dialog_low a, Dialog1DD ; "I lost my taste for honey" ; $4D1C: $3E $DD
     jr   nz, jr_005_4D35                          ; $4D1E: $20 $15
 
     ld   a, [wTradeSequenceItem]                  ; $4D20: $FA $0E $DB
     cp   $03                                      ; $4D23: $FE $03
     jr   nz, jr_005_4D33                          ; $4D25: $20 $0C
 
-    call_open_dialog $1C5                         ; $4D27
+    call_open_dialog Dialog1C5                    ; $4D27
 
-jr_005_4D2C:
+.jr_4D2C
     ld   a, [wIsMarinFollowingLink]               ; $4D2C: $FA $73 $DB
     and  a                                        ; $4D2F: $A7
     jr   nz, jr_005_4D5D                          ; $4D30: $20 $2B
@@ -686,7 +737,7 @@ jr_005_4D2C:
     ret                                           ; $4D32: $C9
 
 jr_005_4D33:
-    ld   a, $C5                                   ; $4D33: $3E $C5
+    ld_dialog_low a, Dialog1C5 ; "Got bananas on the beach" ; $4D33: $3E $C5
 
 jr_005_4D35:
     jp   OpenDialogInTable1                       ; $4D35: $C3 $73 $23
@@ -697,13 +748,13 @@ jr_005_4D38:
 
     ld   a, [wHasInstrument1]                     ; $4D3D: $FA $65 $DB
     bit  1, a                                     ; $4D40: $CB $4F
-    ld   a, $11                                   ; $4D42: $3E $11
-    jr   z, jr_005_4D48                           ; $4D44: $28 $02
+    ld_dialog_low a, Dialog011 ; "I'm tired…"     ; $4D42: $3E $11
+    jr   z, .jr_4D48                              ; $4D44: $28 $02
 
-    ld   a, $10                                   ; $4D46: $3E $10
+    ld_dialog_low a, Dialog010 ; "Snore…"         ; $4D46: $3E $10
 
-jr_005_4D48:
-    call OpenDialog                               ; $4D48: $CD $85 $23
+.jr_4D48
+    call OpenDialogInTable0                       ; $4D48: $CD $85 $23
 
 jr_005_4D4B:
     jr   jr_005_4D56                              ; $4D4B: $18 $09
@@ -712,20 +763,20 @@ jr_005_4D4D:
     call ShouldLinkTalkToEntity_05                ; $4D4D: $CD $06 $55
     ret  nc                                       ; $4D50: $D0
 
-    jp_open_dialog $055                           ; $4D51
+    jp_open_dialog Dialog055                      ; $4D51
 
 jr_005_4D56:
-    ld   a, [$DB48]                               ; $4D56: $FA $48 $DB
+    ld   a, [wDB48]                               ; $4D56: $FA $48 $DB
     cp   $01                                      ; $4D59: $FE $01
-    jr   nz, jr_005_4DA2                          ; $4D5B: $20 $45
+    jr   nz, ret_005_4DA2                         ; $4D5B: $20 $45
 
 jr_005_4D5D:
-    ld   hl, wEntitiesUnknowTableY                ; $4D5D: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $4D5D: $21 $D0 $C3
     add  hl, bc                                   ; $4D60: $09
     ld   a, [hl]                                  ; $4D61: $7E
     add  $07                                      ; $4D62: $C6 $07
     ld   [hl], a                                  ; $4D64: $77
-    jr   nc, jr_005_4DA2                          ; $4D65: $30 $3B
+    jr   nc, ret_005_4DA2                         ; $4D65: $30 $3B
 
     ld   a, ENTITY_TARIN                          ; $4D67: $3E $3F
     call SpawnNewEntity_trampoline                ; $4D69: $CD $86 $3B
@@ -758,17 +809,17 @@ jr_005_4D5D:
     add  hl, de                                   ; $4D9F: $19
     ld   [hl], $00                                ; $4DA0: $36 $00
 
-jr_005_4DA2:
+ret_005_4DA2:
     ret                                           ; $4DA2: $C9
 
 TarinShield4Handler::
     ld   a, [wDialogState]                        ; $4DA3: $FA $9F $C1
     and  a                                        ; $4DA6: $A7
-    jr   nz, jr_005_4DC6                          ; $4DA7: $20 $1D
+    jr   nz, ret_005_4DC6                         ; $4DA7: $20 $1D
 
-    ld   a, [wDialogAskSelectionIndex]                               ; $4DA9: $FA $77 $C1
+    ld   a, [wDialogAskSelectionIndex]            ; $4DA9: $FA $77 $C1
     and  a                                        ; $4DAC: $A7
-    jr   nz, jr_005_4DBD                          ; $4DAD: $20 $0E
+    jr   nz, .jr_4DBD                             ; $4DAD: $20 $0E
 
     ld   a, TRADING_ITEM_BANANAS                  ; $4DAF: $3E $04
     ld   [wTradeSequenceItem], a                  ; $4DB1: $EA $0E $DB
@@ -777,36 +828,42 @@ TarinShield4Handler::
     call CreateTradingItemEntity                  ; $4DB8: $CD $0C $0C
     jr   jr_005_4DC2                              ; $4DBB: $18 $05
 
-jr_005_4DBD:
-    call_open_dialog $1C9                         ; $4DBD
+.jr_4DBD
+    call_open_dialog Dialog1C9                    ; $4DBD
 
 jr_005_4DC2:
     call IncrementEntityState                     ; $4DC2: $CD $12 $3B
     ld   [hl], b                                  ; $4DC5: $70
 
-jr_005_4DC6:
+ret_005_4DC6:
     ret                                           ; $4DC6: $C9
 
-Data_005_4DC7::
-    db   $74, $07, $76, $07
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+Tarin6SpriteVariants::
+.variant0
+    db $74, OAM_GBC_PAL_7 | OAM_DMG_PAL_0
+    db $76, OAM_GBC_PAL_7 | OAM_DMG_PAL_0
 
-Data_005_4DCB::
-    db   $70, $00, $72, $00
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+Tarin5SpriteVariants::
+.variant0
+    db $70, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $72, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
 
 func_005_4DCF::
-    ld   a, [$DB48]                               ; $4DCF: $FA $48 $DB
+    ld   a, [wDB48]                               ; $4DCF: $FA $48 $DB
     cp   $02                                      ; $4DD2: $FE $02
     ret  nz                                       ; $4DD4: $C0
 
     ld   a, [wTradeSequenceItem]                  ; $4DD5: $FA $0E $DB
     cp   $04                                      ; $4DD8: $FE $04
-    jr   nc, jr_005_4DE3                          ; $4DDA: $30 $07
+    jr   nc, .jr_4DE3                             ; $4DDA: $30 $07
 
     ld   a, $78                                   ; $4DDC: $3E $78
-    ld   de, Data_005_4DC7                        ; $4DDE: $11 $C7 $4D
+    ld   de, Tarin6SpriteVariants                 ; $4DDE: $11 $C7 $4D
     jr   jr_005_4DF3                              ; $4DE1: $18 $10
 
-jr_005_4DE3:
+.jr_4DE3
     ldh  a, [hRoomStatus]                         ; $4DE3: $F0 $F8
     and  ROOM_STATUS_EVENT_2                      ; $4DE5: $E6 $20
     ret  z                                        ; $4DE7: $C8
@@ -814,7 +871,7 @@ jr_005_4DE3:
     ld   hl, wEntitiesPosYTable                   ; $4DE8: $21 $10 $C2
     add  hl, bc                                   ; $4DEB: $09
     ld   [hl], $4B                                ; $4DEC: $36 $4B
-    ld   de, Data_005_4DCB                        ; $4DEE: $11 $CB $4D
+    ld   de, Tarin5SpriteVariants                 ; $4DEE: $11 $CB $4D
     ld   a, $7C                                   ; $4DF1: $3E $7C
 
 jr_005_4DF3:

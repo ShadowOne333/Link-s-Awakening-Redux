@@ -35,28 +35,28 @@ include "code/entities/06_goponga_flower.asm"
 
 func_006_641A::
     call CheckLinkCollisionWithEnemy_trampoline   ; $641A: $CD $5A $3B
-    jr   nc, jr_006_643C                          ; $641D: $30 $1D
+    jr   nc, ret_006_643C                         ; $641D: $30 $1D
 
 label_006_641F:
     call CopyLinkFinalPositionToPosition          ; $641F: $CD $BE $0C
     call ResetPegasusBoots                        ; $6422: $CD $B6 $0C
     ld   a, [wC1A6]                               ; $6425: $FA $A6 $C1
     and  a                                        ; $6428: $A7
-    jr   z, jr_006_643C                           ; $6429: $28 $11
+    jr   z, ret_006_643C                          ; $6429: $28 $11
 
     ld   e, a                                     ; $642B: $5F
     ld   d, b                                     ; $642C: $50
-    ld   hl, wEntitiesUnknowTableR+15                                ; $642D: $21 $9F $C3
+    ld   hl, wEntitiesPrivateState5Table+15       ; $642D: $21 $9F $C3
     add  hl, de                                   ; $6430: $19
     ld   a, [hl]                                  ; $6431: $7E
     cp   $03                                      ; $6432: $FE $03
-    jr   nz, jr_006_643C                          ; $6434: $20 $06
+    jr   nz, ret_006_643C                         ; $6434: $20 $06
 
-    ld   hl, wEntitiesStatusTable + $0F                        ; $6436: $21 $8F $C2
+    ld   hl, wEntitiesStatusTable + $0F           ; $6436: $21 $8F $C2
     add  hl, de                                   ; $6439: $19
     ld   [hl], $00                                ; $643A: $36 $00
 
-jr_006_643C:
+ret_006_643C:
     ret                                           ; $643C: $C9
 
 ; Array indexed by direction
@@ -75,7 +75,7 @@ SetEntitySpriteVariantForDirection::
     ld   hl, Data_006_643D                        ; $6447: $21 $3D $64
     add  hl, de                                   ; $644A: $19
     push hl                                       ; $644B: $E5
-    ld   hl, wEntitiesUnknowTableY                ; $644C: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $644C: $21 $D0 $C3
     add  hl, bc                                   ; $644F: $09
     inc  [hl]                                     ; $6450: $34
     ld   a, [hl]                                  ; $6451: $7E
@@ -96,11 +96,11 @@ func_006_645D::
     jr   z, .jr_006_6468                          ; $6462: $28 $04
 
     cp   ENTITY_CRAZY_TRACY                       ; $6464: $FE $7B
-    jr   nz, .jr_006_6474                          ; $6466: $20 $0C
+    jr   nz, .jr_006_6474                         ; $6466: $20 $0C
 
 .jr_006_6468
     ldh  a, [hLinkPositionY]                      ; $6468: $F0 $99
-    ld   hl, hActiveEntityPosY                                ; $646A: $21 $EF $FF
+    ld   hl, hActiveEntityPosY                    ; $646A: $21 $EF $FF
     sub  [hl]                                     ; $646D: $96
     add  $14                                      ; $646E: $C6 $14
     cp   $2C                                      ; $6470: $FE $2C
@@ -108,7 +108,7 @@ func_006_645D::
 
 .jr_006_6474
     ldh  a, [hLinkPositionY]                      ; $6474: $F0 $99
-    ld   hl, hActiveEntityPosY                                ; $6476: $21 $EF $FF
+    ld   hl, hActiveEntityPosY                    ; $6476: $21 $EF $FF
     sub  [hl]                                     ; $6479: $96
     add  $14                                      ; $647A: $C6 $14
     cp   $28                                      ; $647C: $FE $28
@@ -354,11 +354,11 @@ func_006_6594::
     add  hl, bc                                   ; $659B: $09
     sub  [hl]                                     ; $659C: $96
     bit  7, a                                     ; $659D: $CB $7F
-    jr   z, jr_006_65A2                           ; $659F: $28 $01
+    jr   z, .jr_65A2                              ; $659F: $28 $01
 
     inc  e                                        ; $65A1: $1C
 
-jr_006_65A2:
+.jr_65A2
     ld   d, a                                     ; $65A2: $57
     ret                                           ; $65A3: $C9
 
@@ -369,11 +369,11 @@ func_006_65A4::
     add  hl, bc                                   ; $65AB: $09
     sub  [hl]                                     ; $65AC: $96
     bit  7, a                                     ; $65AD: $CB $7F
-    jr   nz, jr_006_65B2                          ; $65AF: $20 $01
+    jr   nz, .jr_65B2                             ; $65AF: $20 $01
 
     inc  e                                        ; $65B1: $1C
 
-jr_006_65B2:
+.jr_65B2
     ld   d, a                                     ; $65B2: $57
     ret                                           ; $65B3: $C9
 
@@ -383,32 +383,32 @@ func_006_65B4::
     ldh  [hMultiPurpose0], a                      ; $65B8: $E0 $D7
     ld   a, d                                     ; $65BA: $7A
     bit  7, a                                     ; $65BB: $CB $7F
-    jr   z, jr_006_65C1                           ; $65BD: $28 $02
+    jr   z, .jr_65C1                              ; $65BD: $28 $02
 
     cpl                                           ; $65BF: $2F
     inc  a                                        ; $65C0: $3C
 
-jr_006_65C1:
+.jr_65C1
     push af                                       ; $65C1: $F5
     call func_006_65A4                            ; $65C2: $CD $A4 $65
     ld   a, e                                     ; $65C5: $7B
     ldh  [hMultiPurpose1], a                      ; $65C6: $E0 $D8
     ld   a, d                                     ; $65C8: $7A
     bit  7, a                                     ; $65C9: $CB $7F
-    jr   z, jr_006_65CF                           ; $65CB: $28 $02
+    jr   z, .jr_65CF                              ; $65CB: $28 $02
 
     cpl                                           ; $65CD: $2F
     inc  a                                        ; $65CE: $3C
 
-jr_006_65CF:
+.jr_65CF
     pop  de                                       ; $65CF: $D1
     cp   d                                        ; $65D0: $BA
-    jr   nc, jr_006_65D7                          ; $65D1: $30 $04
+    jr   nc, .jr_65D7                             ; $65D1: $30 $04
 
     ldh  a, [hMultiPurpose0]                      ; $65D3: $F0 $D7
     jr   jr_006_65D9                              ; $65D5: $18 $02
 
-jr_006_65D7:
+.jr_65D7
     ldh  a, [hMultiPurpose1]                      ; $65D7: $F0 $D8
 
 jr_006_65D9:
@@ -480,14 +480,14 @@ label_006_7035:
     ld   [hl], a                                  ; $7051: $77
     ldh  a, [hIsSideScrolling]                    ; $7052: $F0 $F9
     and  a                                        ; $7054: $A7
-    jr   z, jr_006_705F                           ; $7055: $28 $08
+    jr   z, .jr_705F                              ; $7055: $28 $08
 
     ld   hl, wEntitiesSpeedYTable                 ; $7057: $21 $50 $C2
     add  hl, bc                                   ; $705A: $09
     ld   [hl], $F0                                ; $705B: $36 $F0
     jr   jr_006_706B                              ; $705D: $18 $0C
 
-jr_006_705F:
+.jr_705F
     ld   hl, wEntitiesSpeedZTable                 ; $705F: $21 $20 $C3
     add  hl, de                                   ; $7062: $19
     ld   [hl], $10                                ; $7063: $36 $10
@@ -528,7 +528,7 @@ Data_006_773C::
 func_006_783C::
     call ReturnIfNonInteractive_06                ; $783C: $CD $C6 $64
 
-jr_006_783F:
+.jr_783F
     ldh  a, [hFrameCounter]                       ; $783F: $F0 $E7
     rra                                           ; $7841: $1F
     rra                                           ; $7842: $1F

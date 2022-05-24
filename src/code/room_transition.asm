@@ -102,7 +102,7 @@ ApplyRoomTransition::
 
     ; Clear variables
     call ClearLinkPositionIncrement               ; $793D: $CD $8E $17
-    ldh  [hLinkVelocityZ], a                               ; $7940: $E0 $A3
+    ldh  [hLinkVelocityZ], a                      ; $7940: $E0 $A3
     ld   [wRoomTransitionState], a                ; $7942: $EA $24 $C1
 
     ; Save Link's initial position on the new map
@@ -134,7 +134,7 @@ ApplyRoomTransition::
     jr   z, .bottomCaseEnd                        ; $7965: $28 $13
 
     cp   OBJECT_ROCKY_CAVE_DOOR ; or Evil Eagle tower left side? ; $7967: $FE $E1
-    jr   z, .unstuckLink                        ; $7969: $28 $06
+    jr   z, .unstuckLink                          ; $7969: $28 $06
 
     ld   a, [wCollisionType]                      ; $796B: $FA $33 $C1
     and  a                                        ; $796E: $A7
@@ -461,7 +461,7 @@ RoomTransitionPrepareHandler::
     jr   nz, .colorDungeonEnd                     ; $7AB2: $20 $09
 
     ; force update the background tiles
-    ld   a, $01                                   ; $7AB4: $3E $01
+    ld   a, TILESET_LOAD_WORLD                    ; $7AB4: $3E $01
     ldh  [hNeedsUpdatingBGTiles], a               ; $7AB6: $E0 $90
 
     ; Replace objects $56 and $57 by object $0D
@@ -527,38 +527,45 @@ ENDC
 
     ld   c, a                                     ; $7B05: $4F
     cp   $25                                      ; $7B06: $FE $25
-    jr   nc, jr_002_7B14                          ; $7B08: $30 $0A
+    jr   nc, .jr_002_7B14                         ; $7B08: $30 $0A
 
+    ; If the music track has precedence over the PowerUp track,
+    ; skip the power-up music.
     ld   b, $00                                   ; $7B0A: $06 $00
     ld   hl, MusicOverridesPowerUpTrack           ; $7B0C: $21 $20 $41
     add  hl, bc                                   ; $7B0F: $09
     ld   a, [hl]                                  ; $7B10: $7E
     and  a                                        ; $7B11: $A7
-    jr   nz, jr_002_7B2A                          ; $7B12: $20 $16
+    jr   nz, .overridePowerUpTrack                ; $7B12: $20 $16
 
-jr_002_7B14:
+.jr_002_7B14
+
     ld   a, [wActivePowerUp]                      ; $7B14: $FA $7C $D4
     and  a                                        ; $7B17: $A7
     jr   z, SetNextMusicTrack                     ; $7B18: $28 $13
 
-    ldh  a, [hFFBD]                               ; $7B1A: $F0 $BD
+    ldh  a, [hDefaultMusicTrackAlt]               ; $7B1A: $F0 $BD
     cp   MUSIC_ACTIVE_POWER_UP                    ; $7B1C: $FE $49
     jr   z, SetNextMusicTrack.setMusicTrack       ; $7B1E: $28 $13
 
     call SetNextMusicTrack                        ; $7B20: $CD $2D $7B
     ld   a, MUSIC_ACTIVE_POWER_UP                 ; $7B23: $3E $49
     ldh  [hNextMusicTrackToFadeInto], a           ; $7B25: $E0 $B1
-    ldh  [hFFBD], a                               ; $7B27: $E0 $BD
+    ldh  [hDefaultMusicTrackAlt], a               ; $7B27: $E0 $BD
     ret                                           ; $7B29: $C9
 
-jr_002_7B2A:
+.overridePowerUpTrack
+    ; Copy the actual (non-power-up) music track to hDefaultMusicTrackAlt
     ld   a, c                                     ; $7B2A: $79
-    ldh  [hFFBD], a                               ; $7B2B: $E0 $BD
+    ldh  [hDefaultMusicTrackAlt], a               ; $7B2B: $E0 $BD
+    ; fallthrough
 
+; Inputs:
+;   c   index of the music track to play
 SetNextMusicTrack::
     ld   a, c                                     ; $7B2D: $79
     ldh  [hNextMusicTrackToFadeInto], a           ; $7B2E: $E0 $B1
-    call ResetMusicFadeTimer                               ; $7B30: $CD $EA $27
+    call ResetMusicFadeTimer                      ; $7B30: $CD $EA $27
 
 .setMusicTrack
     ld   a, c                                     ; $7B33: $79
@@ -805,9 +812,9 @@ label_002_7C50:
     ret  nz                                       ; $7C68: $C0
 
     ld   e, $01                                   ; $7C69: $1E $01
-    ldh  a, [hObjectUnderEntity]                               ; $7C6B: $F0 $AF
+    ldh  a, [hObjectUnderEntity]                  ; $7C6B: $F0 $AF
     cp   $0E                                      ; $7C6D: $FE $0E
-    jr   nz, jr_002_7C88                          ; $7C6F: $20 $17
+    jr   nz, .jr_7C88                             ; $7C6F: $20 $17
 
     ldh  a, [hMapRoom]                            ; @TODO Likely involves the river rapids area
     cp   UNKNOWN_ROOM_3E                          ; possibly for determining the leftward push
@@ -824,7 +831,7 @@ label_002_7C50:
     ld   e, $00                                   ; $7C84: $1E $00
     jr   jr_002_7C8B                              ; $7C86: $18 $03
 
-jr_002_7C88:
+.jr_7C88
     sub  $E7                                      ; $7C88: $D6 $E7
     ld   e, a                                     ; $7C8A: $5F
 

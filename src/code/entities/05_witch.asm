@@ -32,7 +32,7 @@ func_005_47C0::
     ld   hl, Data_005_4780                        ; $47CA: $21 $80 $47
     add  hl, de                                   ; $47CD: $19
     ld   c, $04                                   ; $47CE: $0E $04
-    jp   RenderActiveEntitySpritesRect           ; $47D0: $C3 $E6 $3C
+    jp   RenderActiveEntitySpritesRect            ; $47D0: $C3 $E6 $3C
 
 WitchEntityHandler::
     push bc                                       ; $47D3: $C5
@@ -53,7 +53,7 @@ WitchEntityHandler::
     ld   a, $40                                   ; $47EA: $3E $40
     ld   [hl], a                                  ; $47EC: $77
     call func_005_47C0                            ; $47ED: $CD $C0 $47
-    ld   hl, wEntitiesUnknowTableY                ; $47F0: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $47F0: $21 $D0 $C3
     add  hl, bc                                   ; $47F3: $09
     inc  [hl]                                     ; $47F4: $34
     ld   a, [hl]                                  ; $47F5: $7E
@@ -123,7 +123,7 @@ jr_005_484A:
     call ShouldLinkTalkToEntity_05                ; $484A: $CD $06 $55
     ret  nc                                       ; $484D: $D0
 
-    jp_open_dialog $00C                           ; $484E
+    jp_open_dialog Dialog00C                      ; $484E
 
 jr_005_4853:
     xor  a                                        ; $4853: $AF
@@ -160,7 +160,7 @@ func_005_487D::
     cp   $04                                      ; $4886: $FE $04
     ret  nz                                       ; $4888: $C0
 
-    call_open_dialog $009                         ; $4889
+    call_open_dialog Dialog009                    ; $4889
     call GetEntityTransitionCountdown             ; $488E: $CD $05 $0C
     ld   [hl], $C0                                ; $4891: $36 $C0
     jp   IncrementEntityState                     ; $4893: $C3 $12 $3B
@@ -172,7 +172,7 @@ func_005_4896::
 
     ld   a, [wMusicTrackTiming]                   ; $489B: $FA $0B $C1
     and  a                                        ; $489E: $A7
-    jr   nz, jr_005_48AE                          ; $489F: $20 $0D
+    jr   nz, .jr_48AE                             ; $489F: $20 $0D
 
     ldh  a, [hDefaultMusicTrack]                  ; $48A1: $F0 $B0
     ld   [wMusicTrackToPlay], a                   ; $48A3: $EA $68 $D3
@@ -180,9 +180,9 @@ func_005_4896::
     ld   [wMusicTrackTiming], a                   ; $48A8: $EA $0B $C1
     ld   [wC167], a                               ; $48AB: $EA $67 $C1
 
-jr_005_48AE:
+.jr_48AE
     ldh  [hLinkInteractiveMotionBlocked], a       ; $48AE: $E0 $A1
-    ld   hl, wEntitiesUnknowTableY                ; $48B0: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $48B0: $21 $D0 $C3
     add  hl, bc                                   ; $48B3: $09
     inc  [hl]                                     ; $48B4: $34
     inc  [hl]                                     ; $48B5: $34
@@ -195,7 +195,7 @@ jr_005_48AE:
     ld   [wC167], a                               ; $48BF: $EA $67 $C1
     ldh  a, [hDefaultMusicTrack]                  ; $48C2: $F0 $B0
     ld   [wMusicTrackToPlay], a                   ; $48C4: $EA $68 $D3
-    call_open_dialog $0FE                         ; $48C7
+    call_open_dialog Dialog0FE                    ; $48C7
     jp   IncrementEntityState                     ; $48CC: $C3 $12 $3B
 
 func_005_48CF::
@@ -235,8 +235,7 @@ func_005_48F7::
     jp   IncrementEntityState                     ; $4906: $C3 $12 $3B
 
 func_005_4909::
-    ld   a, $7E                                   ; $4909: $3E $7E
-    call OpenDialogInTable1                       ; $490B: $CD $73 $23
+    call_open_dialog Dialog17E ; "Good job!"      ; $4909: $3E $7E $CD $73 $23
     jp   IncrementEntityState                     ; $490E: $C3 $12 $3B
 
 func_005_4911::

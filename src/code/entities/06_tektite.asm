@@ -1,5 +1,11 @@
-Data_006_78B7::
-    db   $58, $02, $58, $22, $5A, $02, $5A, $22
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+TektiteSpriteVariants::
+.variant0
+    db $58, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $58, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $5A, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $5A, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 Data_006_78BF::
     db   $10, $F0, $10, $F0
@@ -8,10 +14,10 @@ Data_006_78C3::
     db   $10, $10, $F0, $F0
 
 TektiteEntityHandler::
-    ld   de, Data_006_78B7                        ; $78C7: $11 $B7 $78
+    ld   de, TektiteSpriteVariants                ; $78C7: $11 $B7 $78
     call RenderActiveEntitySpritesPair            ; $78CA: $CD $C0 $3B
 
-jr_006_78CD:
+.jr_78CD
     call ReturnIfNonInteractive_06                ; $78CD: $CD $C6 $64
     call ApplyRecoilIfNeeded_06                   ; $78D0: $CD $F7 $64
     call label_3B39                               ; $78D3: $CD $39 $3B
@@ -21,18 +27,18 @@ jr_006_78CD:
     add  hl, bc                                   ; $78DF: $09
     ld   a, [hl]                                  ; $78E0: $7E
     and  $03                                      ; $78E1: $E6 $03
-    jr   z, jr_006_78E8                           ; $78E3: $28 $03
+    jr   z, .jr_78E8                              ; $78E3: $28 $03
 
     call func_006_7979                            ; $78E5: $CD $79 $79
 
-jr_006_78E8:
+.jr_78E8
     ld   a, [hl]                                  ; $78E8: $7E
     and  $0C                                      ; $78E9: $E6 $0C
-    jr   z, jr_006_78F0                           ; $78EB: $28 $03
+    jr   z, .jr_78F0                              ; $78EB: $28 $03
 
     call func_006_797E                            ; $78ED: $CD $7E $79
 
-jr_006_78F0:
+.jr_78F0
     ldh  a, [hActiveEntityState]                  ; $78F0: $F0 $F0
     and  a                                        ; $78F2: $A7
     jr   nz, jr_006_7921                          ; $78F3: $20 $2C
@@ -41,7 +47,7 @@ jr_006_78F0:
     add  hl, bc                                   ; $78F8: $09
     ld   a, [hl]                                  ; $78F9: $7E
     and  $80                                      ; $78FA: $E6 $80
-    jr   z, jr_006_7918                           ; $78FC: $28 $1A
+    jr   z, .jr_7918                              ; $78FC: $28 $1A
 
     xor  a                                        ; $78FE: $AF
     ld   [hl], a                                  ; $78FF: $77
@@ -57,7 +63,7 @@ jr_006_78F0:
     ld   a, $01                                   ; $7913: $3E $01
     jp   SetEntitySpriteVariant                   ; $7915: $C3 $0C $3B
 
-jr_006_7918:
+.jr_7918
     call AddEntityZSpeedToPos_06                  ; $7918: $CD $7A $65
     ld   hl, wEntitiesSpeedZTable                 ; $791B: $21 $20 $C3
     add  hl, bc                                   ; $791E: $09
@@ -65,7 +71,7 @@ jr_006_7918:
     ret                                           ; $7920: $C9
 
 jr_006_7921:
-    ld   hl, wEntitiesUnknowTableY                ; $7921: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $7921: $21 $D0 $C3
     add  hl, bc                                   ; $7924: $09
     inc  [hl]                                     ; $7925: $34
     ld   a, [hl]                                  ; $7926: $7E
@@ -106,12 +112,12 @@ jr_006_7921:
     ld   [hl], a                                  ; $7963: $77
     call GetRandomByte                            ; $7964: $CD $0D $28
     and  $01                                      ; $7967: $E6 $01
-    jr   z, jr_006_7970                           ; $7969: $28 $05
+    jr   z, .jr_7970                              ; $7969: $28 $05
 
     ld   a, $14                                   ; $796B: $3E $14
     call ApplyVectorTowardsLink_trampoline        ; $796D: $CD $AA $3B
 
-jr_006_7970:
+.jr_7970
     ld   hl, wEntitiesStateTable                  ; $7970: $21 $90 $C2
     add  hl, bc                                   ; $7973: $09
     xor  a                                        ; $7974: $AF

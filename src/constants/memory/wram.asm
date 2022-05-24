@@ -45,9 +45,8 @@ wLinkOAMBuffer::
 wDynamicOAMBuffer::
   ds 4 * 28 ; C030 - C09F
 
-; Unlabeled
-wC0A0::
-  ds $60 ; C0A0
+; Unused
+ds $60 ; C0A0-C0FF
 
 ; Table of the scrollX offset to add for each screen section being drawn
 wScrollXOffsetForSection::
@@ -61,16 +60,15 @@ wLCDSectionIndex::
 wIntroBGYOffset::
   ds 1 ; C106
 
-; Unlabeled
-wC107:
-  ds 1 ; C107
+; Unused
+ds 1 ; C107
 
-; TODO comment
+; Index of the player's name letter being drawn in a dialog
 wNameIndex::
   ds 1 ; C108
 
-; Unlabeled
-wC109:
+; Dialog ID to display in the text debugger
+wTextDebuggerDialogId::
   ds 1 ; C109
 
 ; Unlabeled
@@ -359,6 +357,11 @@ wC143::
   ds 1 ; C143
 
 ; TODO comment
+; Possible values:
+; 0 = false
+; 1 = true
+; 2 = true
+; 3 = true (?pushing with shield?)
 wIsLinkPushing:: ; C144
   ds 1
 
@@ -508,6 +511,7 @@ wLinkPlayingOcarinaCountdown:
 
 ; Unlabeled
 ; maybe it is wHasBoomerangUnlocked
+; Fishing-related
 wC167:
   ds 1 ; C167
 
@@ -828,8 +832,9 @@ wOcarinaMenuOpening::
 wOcarinaMenuClosing::
   ds 1 ; C1B9
 
-; Unlabeled
-wC1BA::
+; This is set when start is pressed and the ocarina menu is open,
+; the ocarina menu is closed first before the inventory menu is closed.
+wCloseInventoryAfterOcarinaMenuClosed::
   ds 1 ; C1BA
 
 ; Number of consecutives frames during which the player is slipping
@@ -1078,7 +1083,7 @@ wEntitiesSpeedZAccTable::
 ; bit 4: display shadow on posZ > 0 if set,
 ; bit 5: item is pickable,
 ; bit 6: doesn't react to projectiles if set (arrow, hookshot, etc.),
-; bit 7: doesn't hurt Link if set (Link's go through)
+; bit 7: doesn't hurt Link on collision if set
 wEntitiesPhysicsFlagsTable::
   ds $10 ; C340 - C34F
 
@@ -1094,8 +1099,7 @@ wEntitiesHitboxFlagsTable::
 wEntitiesHealthTable::
   ds $10 ; C360 - C36F
 
-; Unused value
-; TODO discripe more specific
+; Unused value, likely declared for entities but never actually used.
 wEntitiesUnusedTableA::
   ds $10 ; C370 - C37F
 
@@ -1107,8 +1111,8 @@ wEntitiesUnusedTableA::
 wEntitiesDirectionTable::
   ds $10 ; C380 - C38F
 
-; TODO comment
-wEntitiesUnknowTableR::
+; Entity-specific state.
+wEntitiesPrivateState5Table::
   ds $10 ; C390 - C39F
 
 ; Type of the entity
@@ -1179,8 +1183,13 @@ wC3CE::
 wC3CF::
   ds 1 ; C3CF
 
-; TODO comment
-wEntitiesUnknowTableY::
+; How often should an entity speed be updated.
+;
+; For instance, a value of 4 means that the entity speedX or speedY
+; will be updated every 4 frames.
+;
+; Each entity uses this value differently.
+wEntitiesInertiaTable::
   ds $10 ; C3D0 - C3DF
 
 ; Room id of the entity
@@ -1240,20 +1249,27 @@ wEntitiesDropTimerTable::
 wEntitiesLoadOrderTable::
   ds $10 ; C460 - C46F
 
-; TODO find better name
-; Some physics flags?
-; Used by func_015_7995
-; Possible values: 02, 03
-wEntitiesUnknowTableI::
+; Entity ground effect modifier
+;
+; Possible values:
+;  0: on standard solid ground
+;  1: ???
+;  2: on shallow water (draws ripples)
+;  3: on tall grass (draws pushed-away grasses)
+wEntitiesGroundStatusTable::
   ds $10 ; C470 - C47F
 
-; TODO find better name
-; Some kind of countdown
-wEntitiesUnknowTableV::
+; Entity-specific countdown 3
+wEntitiesPrivateCountdown3Table::
   ds $10 ; C480 - C48F
 
-; TODO comment
-wEntitiesUnknowTableW::
+; Is the entity being lifted by Link?
+;
+; Possible values:
+;  0:   not lifted
+;  1-3: being lifted (during the animation)
+;  4:   lifted
+wEntitiesLiftedTable::
   ds $10 ; C490 - C49F
 
 ; Is the entity recoiling from a power hit
@@ -1291,8 +1307,8 @@ wEntitiesUnknowTableJ::
 wAlternateBackgroundEnabled::
   ds 1 ; C500
 
-; Unlabeled
-wC501::
+; If an OwlEvent entity is active, the index of the entity is stored here (only used to trigger the owl on getting the tail key)
+wOwlEntityIndex::
   ds 1 ; C501
 
 ; Unlabeled
@@ -1303,15 +1319,15 @@ wC502::
 wC503::
   ds 1 ; C503
 
-; Unlabeled
+; Unused? (only written to zero, not read anywhere)
 wC504::
   ds 1 ; C504
 
-; Unlabeled
-wC505::
+; List of 4 items that are available in the shop, filled depending on your current state in the game and what you have bought already.
+wShopItemList::
   ds 4 ; C505 - C508
 
-; Index of the item we are grabbing in the shop
+; Type of the item we are grabbing in the shop (special shop type numbers, see shop code)
 wItemPickedUpInShop::
   ds 1 ; C509
 
@@ -1319,12 +1335,12 @@ wItemPickedUpInShop::
 wBlockItemUsage::
   ds 1 ; C50A
 
-; Unlabeled
-wC50B::
+; Position index of item picked up in shop, left most item is 0, right most 3
+wIndexPickedUpInShop::
   ds 1 ; C50B
 
-; Unlabeled
-wC50C::
+; Entity index of a picked up rock (only used by the crow on the castle to trigger flying away)
+wPickedUpRockIndex::
   ds 1 ; C50C
 
 ; Unlabeled
@@ -1686,13 +1702,454 @@ wD115::
 wD116::
   ds 1 ; D116
 
-; not used
-wD117::
-  ds $9E ; D117 - D1B4
+; Unlabeled
+ds ($D150 - $D117)
 
 ; Unlabeled
+wD150::
+  ds 1 ; D150
+
+; Unlabeled
+wD151::
+  ds 1 ; D151
+
+; Unlabeled
+wD152::
+  ds 1 ; D152
+
+; Unlabeled
+wD153::
+  ds 1 ; D153
+
+; Unlabeled
+wD154::
+  ds 1 ; D154
+
+;
+; This section is used for:
+; - Link's position history (during gameplay)
+; - Photo album display and print
+;
+UNION ; Link's position history
+
+; History of Link's last 32 horizontal positions
+; (Used for NPCs that follow Link)
+wLinkPositionXHistory::
+  ds $20 ; D155
+
+; History of Link's last 32 vertical positions
+; (Used for NPCs that follow Link)
+wLinkPositionYHistory::
+  ds $20 ; D175
+
+; History of Link's last 32 Z positions
+; (Used for NPCs that follow Link)
+wLinkPositionZHistory::
+  ds $20 ; D195
+
+; History of Link's directions ($10)
+wLinkDirectionHistory::
+  ds $20 ; D1B5
+
+NEXTU ; Photo album display and print
+
+; Unused
+ds $13
+
+wD168::
+  ds 1 ; D168
+
+wD169::
+  ds 1 ; D169
+
+wD16A::
+  ds 1 ; D16A
+
+wD16B::
+  ds 1 ; D16B
+
+wD16C::
+  ds 1 ; D16C
+
+wD16D::
+  ds 1 ; D16D
+
+wD16E::
+  ds 1 ; D16E
+
+wD16F::
+  ds 1 ; D16F
+
+wD170::
+  ds 1 ; D170
+
+wD171::
+  ds 1 ; D171
+
+wD172::
+  ds 1 ; D172
+
+wD173::
+  ds 1 ; D173
+
+wD174::
+  ds 1 ; D174
+
+wD175::
+  ds 1 ; D175
+
+wD176::
+  ds 1 ; D176
+
+wD177::
+  ds 1 ; D177
+
+wD178::
+  ds 1 ; D178
+
+wD179::
+  ds 1 ; D179
+
+wD17A::
+  ds 1 ; D17A
+
+wD17B::
+  ds 1 ; D17B
+
+wD17C::
+  ds 1 ; D17C
+
+wD17D::
+  ds 1 ; D17D
+
+wD17E::
+  ds 1 ; D17E
+
+wD17F::
+  ds 1 ; D17F
+
+wD180::
+  ds 1 ; D180
+
+wD181::
+  ds 1 ; D181
+
+wD182::
+  ds 1 ; D182
+
+; Unlabeled
+wD183::
+  ds 1 ; D183
+
+; Unlabeled
+wD184::
+  ds 1 ; D184
+
+; Unlabeled
+wD185::
+  ds 1 ; D185
+
+; Unlabeled
+wD186::
+  ds 1 ; D186
+
+; Unlabeled
+wD187::
+  ds 1 ; D187
+
+; Unlabeled
+wD188::
+  ds 1 ; D188
+
+; Unlabeled
+wD189::
+  ds 1 ; D189
+
+; Unlabeled
+wD18A::
+  ds 1 ; D18A
+
+; Unlabeled
+wD18B::
+  ds 1 ; D18B
+
+; Unlabeled
+wD18C::
+  ds 1 ; D18C
+
+; Unlabeled
+wD18D::
+  ds 1 ; D18D
+
+; Unlabeled
+wD18E::
+  ds 1 ; D18E
+
+; Unlabeled
+wD18F::
+  ds 1 ; D18F
+
+; Unlabeled
+wD190::
+  ds 1 ; D190
+
+; Unlabeled
+wD191::
+  ds 1 ; D191
+
+; Unlabeled
+wD192::
+  ds 1 ; D192
+
+; Unlabeled
+wD193::
+  ds 1 ; D193
+
+; Unlabeled
+wD194::
+  ds 1 ; D194
+
+; Unlabeled
+wD195::
+  ds 1 ; D195
+
+; Unlabeled
+wD196::
+  ds 1 ; D196
+
+; Unlabeled
+wD197::
+  ds 1 ; D197
+
+; Unlabeled
+wD198::
+  ds 1 ; D198
+
+; Unlabeled
+wD199::
+  ds 1 ; D199
+
+; Unlabeled
+wD19A::
+  ds $12 ; D19A
+
+wD1AC::
+  ds $9; ; D1AC
+
 wD1B5::
-  ds $64 ; D1B5 - D218
+  ds 1 ; D1B5
+
+; Unlabeled
+wD1B6::
+  ds 1 ; D1B6
+
+; Unlabeled
+wD1B7::
+  ds 1 ; D1B7
+
+; Unlabeled
+wD1B8::
+  ds 1 ; D1B8
+
+; Unlabeled
+wD1B9::
+  ds 1 ; D1B9
+
+; Unlabeled
+wD1BA::
+  ds 1 ; D1BA
+
+; Unlabeled
+wD1BB::
+  ds 1 ; D1BB
+
+; Unlabeled
+wD1BC::
+  ds 1 ; D1BC
+
+; Unlabeled
+wD1BD::
+  ds 1 ; D1BD
+
+; Unlabeled
+wD1BE::
+  ds 1 ; D1BE
+
+; Unlabeled
+wD1BF::
+  ds 1 ; D1BF
+
+; Unlabeled
+wD1C0::
+  ds 1 ; D1C0
+
+; Unlabeled
+wD1C1::
+  ds 1 ; D1C1
+
+; Unlabeled
+wD1C2::
+  ds 1 ; D1C2
+
+; Unused
+ds $2
+
+; Unlabeled
+wD1C5::
+  ds 1 ; D1C5
+
+; Unlabeled
+wD1C6::
+  ds 1 ; D1C6
+
+; Unlabeled
+wD1C7::
+  ds 1 ; D1C7
+
+; Unlabeled
+wD1C8::
+  ds 1 ; D1C8
+
+; Unlabeled
+wD1C9::
+  ds 1 ; D1C9
+
+; Unlabeled
+wD1CA::
+  ds 1 ; D1CA
+
+; Unlabeled
+wD1CB::
+  ds 1 ; D1CB
+
+; Unlabeled
+wD1CC::
+  ds 1 ; D1CC
+
+; Unlabeled
+wD1CD::
+  ds 1 ; D1CD
+
+; Unlabeled
+wD1CE::
+  ds 1 ; D1CE
+
+; Unlabeled
+wD1CF::
+  ds 1 ; D1CF
+
+; Unlabeled
+wD1D0::
+  ds 1 ; D1D0
+
+; Unlabeled
+wD1D1::
+  ds 1 ; D1D1
+
+; Unused
+ds ($D200 - $D1D2)
+
+ENDU
+
+; Unlabeled
+wD200::
+  ds 1 ; D200
+
+; Unlabeled
+wD201::
+  ds 1 ; D201
+
+; Unlabeled
+wD202::
+  ds 1 ; D202
+
+; Unlabeled
+wD203::
+  ds 1 ; D203
+
+; Unlabeled
+wD204::
+  ds 1 ; D204
+
+; Unlabeled
+wD205::
+  ds 1 ; D205
+
+; Unlabeled
+wD206::
+  ds 1 ; D206
+
+; Unlabeled
+wD207::
+  ds 1 ; D207
+
+; Unlabeled
+wD208::
+  ds 1 ; D208
+
+; Unlabeled
+wD209::
+  ds 1 ; D209
+
+; Unlabeled
+wD20A::
+  ds 1 ; D20A
+
+; Unlabeled
+wD20B::
+  ds 1 ; D20B
+
+; Unlabeled
+wD20C::
+  ds 1 ; D20C
+
+; Unlabeled
+wD20D::
+  ds 1 ; D20D
+
+; Unlabeled
+wD20E::
+  ds 1 ; D20E
+
+; Unlabeled
+wD20F::
+  ds 1 ; D20F
+
+; Unlabeled
+wD210::
+  ds 1 ; D210
+
+; Unlabeled
+wD211::
+  ds 1 ; D211
+
+; Unlabeled
+wD212::
+  ds 1 ; D212
+
+; Unlabeled
+wD213::
+  ds 1 ; D213
+
+; Unlabeled
+wD214::
+  ds 1 ; D214
+
+; Unlabeled
+wD215::
+  ds 1 ; D215
+
+; Unlabeled
+wD216::
+  ds 1 ; D216
+
+; Unlabeled
+wD217::
+  ds 1 ; D217
+
+; Unlabeled
+wD218::
+  ds 1 ; D218
 
 ; Current form of the Final Nightmare (0-5)
 wFinalNightmareForm::
@@ -1761,6 +2218,12 @@ wD228::
 ; not used
 wD229::
   ds 215 ; D220 - D2FF
+
+;
+; Audio section
+;
+
+wAudioSection::
 
 ; Note transpose value applied to all channels. Should be multiple of 2.
 wMusicTranspose::
@@ -2363,7 +2826,7 @@ wDungeonMinimap::
 wD4C0::
   ds $40 ; D4C0 - D4FF
 
-; Unlabeled
+; BG tilemap under a dialog box?
 wD500::
   ds $80 ; D500 - D57F
 
@@ -2384,32 +2847,54 @@ wD5C2::
 wD5C4::
   ds 60 ; D5C4 - D600
 
-; Data structures for copying data to vram during blanking times.
-; 0 if background copy was executed
-wRequests::               ; D600
-  ds 1
+;
+; Data structures for copying data to VRAM (tilemaps or tile data) during blanking times.
+;
+; The game mostly uses these commands to copy tilemaps; hence the modes to copy either rows or
+; columns of data. However it is also occasionally used to copy tile data (the actual pixels),
+; the most common example being the dialog letters.
+;
+; Draw commands are either decoded from static data (like the rooms objects), or built
+; dynamically at runtime (like the inventory).
+;
+; There can be several wDrawCommands stacked together in this area.
+;
 
-; Request destination address (big endian)
-wRequest:
-; Request destination address (big endian)
-wRequestDestination:
+wDrawCommandsSection::
+
+; Size of all cumulated wDrawCommandsSize
+; When 0, no wDrawCommand is executed on vblank.
+wDrawCommandsSize::
+  ds 1 ; D600
+
+; Format of a wDrawCommand data structure
+; (This is the address of first one in memory; but several of them can be stacked.)
+wDrawCommand::
 ; Request destination address high byte
-wRequestDestinationHigh::
+.destinationHigh
   ds 1 ; D601
-
 ; Request destination address low byte
-wRequestDestinationLow::
+.destinationLow
   ds 1 ; D602
-
 ; Request data length and mode.
 ; bits 0-6: data length,
-; bits 7-8: copy mode (see BG_COPY_MODE_* constants)
-wRequestLength::
+; bits 7-8: copy mode (see DC_* constants)
+.length
   ds 1 ; D603
-
-; Request data (variable length)
-wRequestData:
-  ds 244  ; D604 - D6F7
+; Request data
+;
+; There are $4F bytes reserved for data - except when drawing
+; the dungeon minimap, where the end of the data is used as a temporary
+; buffer to store the minimap tilemap.
+.data
+UNION
+  ds $F4  ; D604 - D6F7
+NEXTU
+  ds $4D ; D604 - D651
+; Temporary storage for the tilemap of the dungeon minimap.
+wMinimapTilemap::
+  ds $A7 ; D651 - D6F7
+ENDU
 
 ; Animation stage during a switchable object animation.
 ;
@@ -2450,7 +2935,8 @@ wLCDControl::
 wTilesetToLoad::
   ds 1 ; D6FE
 
-; TODO comment
+; Index of a tilemap that will be copied to VRAM on next vblank.
+; See TILEMAP_* constants for possible values.
 wBGMapToLoad::
   ds 1 ; D6FF
 
@@ -2460,8 +2946,9 @@ wBGMapToLoad::
 ; When loading a new room, room data is read and decoded into this
 ; area.
 ;
-; NB: this area is also used in RAM bank 2, where it contains
-; the object attributes.
+; Notes on wram hiftability:
+; - This area is also used in RAM bank 2, where it contains the object attributes.
+; - wRoomObjectsArea must be $10-bytes aligned (otherwise various copy loops break)
 ;
 ; First section is FF values padding…
 wRoomObjectsArea::
@@ -2493,44 +2980,8 @@ wAButtonSlot::
   ds 1 ; DB01
 
 ; TODO comment
-wInventoryItem1::
-  ds 1 ; DB02
-
-; TODO comment
-wInventoryItem2::
-  ds 1 ; DB03
-
-; TODO comment
-wInventoryItem3::
-  ds 1 ; DB04
-
-; TODO comment
-wInventoryItem4::
-  ds 1 ; DB05
-
-; TODO comment
-wInventoryItem5::
-  ds 1 ; DB06
-
-; TODO comment
-wInventoryItem6::
-  ds 1 ; DB07
-
-; TODO comment
-wInventoryItem7::
-  ds 1 ; DB08
-
-; TODO comment
-wInventoryItem8::
-  ds 1 ; DB09
-
-; TODO comment
-wInventoryItem9::
-  ds 1 ; DB0A
-
-; TODO comment
-wInventoryItem10::
-  ds 1 ; DB0B
+wInventoryItems::
+  ds INVENTORY_SLOT_COUNT - 2 ; DB02-DB0B
 
 ; TODO comment
 wHasFlippers::
@@ -2663,9 +3114,9 @@ wRichardSpokenFlag::
 wIsBowWowFollowingLink::
   ds 1 ; DB56
 
-; Death count (one per save slot)
+; Current file death count (first is low, second is high, third is unused)
 wDeathCount::
-  ds 3 ; DB57 DB59
+  ds 3 ; DB57 DB58 DB59
 
 ; Number of hearts ($08 = 1 heart)
 wHealth::
@@ -2764,8 +3215,8 @@ wHasInstrument6::
 
 ; @TODO Dungeon 1-9 *flags*, not instrument checks
 ; bit 0: miniboss clear
-; bit 1: set if true
-; bit 2: (?)
+; bit 1: has instrument
+; bit 2: is eagle's tower collapsed
 ; 0 = false
 wHasInstrument7::
   ds 1 ; DB6B
@@ -2853,8 +3304,9 @@ wBoomerangTradedItem::
 wKidSaveHintIndex::
   ds 1 ; DB7E
 
-; Unlabeled
-wDB7F::
+; Set to $01 or $02 if you handed over your trade sequence item to someone and have not gotten the next one yet.
+; wTradeSequenceItem will still indicate where you are in the sequence, and wExchangingTradeSequenceItem will hide the item from your inventory menu.
+wExchangingTradeSequenceItem::
   ds 1 ; DB7F
 
 ; Names of the saved files.
@@ -3092,28 +3544,28 @@ wFile3DeathCountHigh::
 wFile3DeathCountLow::
   ds 1 ; DC05
 
-; Unlabeled
-wDC06::
+; Amount of health for file 1, needs to be wFile1MaxHealth * 8 or the game crashes while drawing the file selection menu
+wFile1Health::
   ds 1 ; DC06
 
-; Unlabeled
-wDC07::
+; Amount of health for file 2, needs to be wFile2MaxHealth * 8 or the game crashes while drawing the file selection menu
+wFile2Health::
   ds 1 ; DC07
 
-; Unlabeled
-wDC08::
+; Amount of health for file 3, needs to be wFile3MaxHealth * 8 or the game crashes while drawing the file selection menu
+wFile3Health::
   ds 1 ; DC08
 
-; Unlabeled
-wDC09::
+; Amount of maximum health for file 1, used to draw the hearts on the file selection menu
+wFile1MaxHealth::
   ds 1 ; DC09
 
-; Unlabeled
-wDC0A::
+; Amount of maximum health for file 2, used to draw the hearts on the file selection menu
+wFile2MaxHealth::
   ds 1 ; DC0A
 
-; Unlabeled
-wDC0B::
+; Amount of maximum health for file 3, used to draw the hearts on the file selection menu
+wFile3MaxHealth::
   ds 1 ; DC0B
 
 ; Photos 1-8 (bitfield)
@@ -3171,13 +3623,30 @@ wObjPal7::
 wObjPal8::
   ds 8 ; DC88 - DC8F
 
-; Unlabeled
-wDC90::
+; This seems to be some secondary wDrawCommands buffer used during map scrolling.
+;
+; TODO: find a better name
+
+; Size of all cumulated wDrawCommandsSize
+; When 0, no wDrawCommand is executed on vblanks
+wDrawCommandsAltSize::
   ds 1 ; DC90
 
-; Unlabeled
-wDC91::
-  ds $2F ; DC91 - DCBF
+; Secondary wDrawCommand destination (higher byte)
+wDrawCommandAlt::
+.destinationHigh
+  ds 1 ; DC91
+; Secondary wDrawCommand destination (lower byte)
+.destinationLow
+  ds 1 ; DC92
+; Secondary wDrawCommand data length and options
+; bits 0-6: data length,
+; bits 7-8: copy mode (see BG_COPY_MODE_* constants)
+.length
+  ds 1 ; DC93
+; Secondary wDrawCommand data
+.data
+  ds $2C ; DC93 - DCBF
 
 ; Unlabeled
 wDCC0::
@@ -3279,11 +3748,38 @@ wFarcallAdressLow::
 wFarcallReturnBank::
   ds 1 ; DE04
 
-; maximal depth the stack can grow
-wStackMax equ $DE05
+wDE05:
+  ds 1 ; DE05
+
+wDE06:
+  ds 1 ; DE06
+
+wDE07:
+  ds 1 ; DE07
+
+wDE08:
+  ds 1 ; DE08
+
+wDE09:
+  ds 1 ; DE09
+
+wDE0A:
+  ds 1 ; DE0A
+
+wDE0B:
+  ds 1 ; DE0B
+
 ; top of WRAM is used as Stack
 wStack::
-  ds $DFFF - $DE05 +1 ; DE05 - DFFF
+  ds $DFFF - @ + 1 ; DE04 - DFFF
 
 ; init puts the SP here
 wStackTop equ $DFFF
+
+section "WRAM Bank2", wramx[$D000], bank[2]
+
+; TODO
+
+; Something rombank and photographs related
+w2_D16A EQU $D16A
+

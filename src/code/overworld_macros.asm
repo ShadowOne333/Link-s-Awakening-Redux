@@ -1,18 +1,18 @@
 ApplyOverworldObjectMacro::
-    push de                                      ; $7578: $D5
-    ld   a, d                                    ; $7579: $7A
-    sub  $F5                                     ; $757A: $D6 $F5
-    sla  a                                       ; $757C: $CB $27
-    ld   d, $00                                  ; $757E: $16 $00
-    ld   e, a                                    ; $7580: $5F
-    ld   hl, OverworldMacrosHandlers             ; $7581: $21 $8B $75
-    add  hl, de                                  ; $7584: $19
-    ldi  a, [hl]                                 ; $7585: $2A
-    ld   h, [hl]                                 ; $7586: $66
-    ld   l, a                                    ; $7587: $6F
-    pop  de                                      ; $7588: $D1
-    ld   a, e                                    ; $7589: $7B
-    jp   hl                                      ; $758A: $E9
+    push de                                       ; $7578: $D5
+    ld   a, d                                     ; $7579: $7A
+    sub  $F5                                      ; $757A: $D6 $F5
+    sla  a                                        ; $757C: $CB $27
+    ld   d, $00                                   ; $757E: $16 $00
+    ld   e, a                                     ; $7580: $5F
+    ld   hl, OverworldMacrosHandlers              ; $7581: $21 $8B $75
+    add  hl, de                                   ; $7584: $19
+    ldi  a, [hl]                                  ; $7585: $2A
+    ld   h, [hl]                                  ; $7586: $66
+    ld   l, a                                     ; $7587: $6F
+    pop  de                                       ; $7588: $D1
+    ld   a, e                                     ; $7589: $7B
+    jp   hl                                       ; $758A: $E9
 
 OverworldMacrosHandlers::                        ; $758B
 ._00 dw TreeMacroHandler
@@ -30,13 +30,13 @@ TreeMacroHandler::
     add  $11                                      ; $759E: $C6 $11
     ld   e, a                                     ; $75A0: $5F
     and  $0F                                      ; $75A1: $E6 $0F
-    jr   nz, jr_024_75A9                          ; $75A3: $20 $04
+    jr   nz, .jr_75A9                             ; $75A3: $20 $04
 
     ld   a, e                                     ; $75A5: $7B
     sub  $10                                      ; $75A6: $D6 $10
     ld   e, a                                     ; $75A8: $5F
 
-jr_024_75A9:
+.jr_75A9
     ld   d, $00                                   ; $75A9: $16 $00
     ld   hl, wRoomObjectsArea                     ; $75AB: $21 $00 $D7
     add  hl, de                                   ; $75AE: $19
@@ -53,11 +53,11 @@ jr_024_75B7:
     ldh  a, [hMultiPurpose0]                      ; $75BB: $F0 $D7
     and  $40                                      ; $75BD: $E6 $40
     ld   d, $F1                                   ; $75BF: $16 $F1
-    jr   z, jr_024_75C5                           ; $75C1: $28 $02
+    jr   z, .jr_75C5                              ; $75C1: $28 $02
 
     ld   d, $0F                                   ; $75C3: $16 $0F
 
-jr_024_75C5:
+.jr_75C5
     ld   a, l                                     ; $75C5: $7D
     add  d                                        ; $75C6: $82
     ld   l, a                                     ; $75C7: $6F
@@ -72,27 +72,27 @@ jr_024_75CD:
     ld   a, [hl]                                  ; $75CD: $7E
     cp   $10                                      ; $75CE: $FE $10
     ld   a, $25                                   ; $75D0: $3E $25
-    jr   c, jr_024_75D6                           ; $75D2: $38 $02
+    jr   c, .jr_75D6                              ; $75D2: $38 $02
 
     add  $04                                      ; $75D4: $C6 $04
 
-jr_024_75D6:
+.jr_75D6
     ld   [hl+], a                                 ; $75D6: $22
     ld   a, [hl]                                  ; $75D7: $7E
     cp   $10                                      ; $75D8: $FE $10
     ld   a, $26                                   ; $75DA: $3E $26
-    jr   c, jr_024_75E0                           ; $75DC: $38 $02
+    jr   c, .jr_75E0                              ; $75DC: $38 $02
 
     add  $04                                      ; $75DE: $C6 $04
 
-jr_024_75E0:
+.jr_75E0
     ld   [hl-], a                                 ; $75E0: $32
     ld   a, l                                     ; $75E1: $7D
     add  $10                                      ; $75E2: $C6 $10
     ld   l, a                                     ; $75E4: $6F
     ld   a, [hl]                                  ; $75E5: $7E
     cp   $8A                                      ; $75E6: $FE $8A
-    jr   nc, jr_024_75F4                          ; $75E8: $30 $0A
+    jr   nc, .jr_75F4                             ; $75E8: $30 $0A
 
     cp   $10                                      ; $75EA: $FE $10
     ld   a, $27                                   ; $75EC: $3E $27
@@ -101,14 +101,14 @@ jr_024_75E0:
     ld   a, $2A                                   ; $75F0: $3E $2A
     jr   jr_024_75F6                              ; $75F2: $18 $02
 
-jr_024_75F4:
+.jr_75F4
     ld   a, $82                                   ; $75F4: $3E $82
 
 jr_024_75F6:
     ld   [hl+], a                                 ; $75F6: $22
     ld   a, [hl]                                  ; $75F7: $7E
     cp   $8A                                      ; $75F8: $FE $8A
-    jr   nc, jr_024_7606                          ; $75FA: $30 $0A
+    jr   nc, .jr_7606                             ; $75FA: $30 $0A
 
     cp   $10                                      ; $75FC: $FE $10
     ld   a, $28                                   ; $75FE: $3E $28
@@ -117,13 +117,13 @@ jr_024_75F6:
     ld   a, $29                                   ; $7602: $3E $29
     jr   jr_024_7608                              ; $7604: $18 $02
 
-jr_024_7606:
+.jr_7606
     ld   a, $83                                   ; $7606: $3E $83
 
 jr_024_7608:
     ld   [hl], a                                  ; $7608: $77
 
-jr_024_7609:
+.jr_7609
     inc  bc                                       ; $7609: $03
     ret                                           ; $760A
 
@@ -138,7 +138,7 @@ CatfishMawMacroHandler::
     call func_024_7625                            ; $7619: $CD $25 $76
     ld   bc, Data_024_760B                        ; $761C: $01 $0B $76
     ld   de, Data_024_7612                        ; $761F: $11 $12 $76
-    jp   Func_358B                               ; $7622: $C3 $8B $35
+    jp   Func_358B                                ; $7622: $C3 $8B $35
 
 func_024_7625::
     dec  bc                                       ; $7625: $0B
@@ -161,7 +161,7 @@ TwoDoorsHouseMacroHandler::
     call func_024_7625                            ; $764E: $CD $25 $76
     ld   bc, Data_024_762E                        ; $7651: $01 $2E $76
     ld   de, Data_024_763E                        ; $7654: $11 $3E $76
-    jp   Func_358B                               ; $7657: $C3 $8B $35
+    jp   Func_358B                                ; $7657: $C3 $8B $35
 
 Data_024_765A::
     db $00, $01, $02, $10, $11, $12, $20, $21, $22, $FF
@@ -174,7 +174,7 @@ LargeHouseMacroHandler::
     call func_024_7625                            ; $766E: $CD $25 $76
     ld   bc, Data_024_765A                        ; $7671: $01 $5A $76
     ld   de, Data_024_7664                        ; $7674: $11 $64 $76
-    jp   Func_358B                               ; $7677: $C3 $8B $35
+    jp   Func_358B                                ; $7677: $C3 $8B $35
 
 Data_024_767A::
     db $00, $01, $02, $10, $11, $12, $FF
@@ -187,7 +187,7 @@ PalaceDoorMacroHandler::
     call func_024_7625                            ; $7688: $CD $25 $76
     ld   bc, Data_024_767A                        ; $768B: $01 $7A $76
     ld   de, Data_024_7681                        ; $768E: $11 $81 $76
-    jp   Func_358B                               ; $7691: $C3 $8B $35
+    jp   Func_358B                                ; $7691: $C3 $8B $35
 
 Data_024_7694::
     db   $00, $01, $10, $11, $FF
@@ -205,12 +205,12 @@ StonePigHeadMacroHandler::
     ld   de, Data_024_7699                        ; $76A8: $11 $99 $76
     ldh  a, [hRoomStatus]                         ; $76AB: $F0 $F8
     and  ROOM_STATUS_DOOR_OPEN_UP                 ; $76AD: $E6 $04
-    jr   z, jr_024_76B4                           ; $76AF: $28 $03
+    jr   z, .jr_76B4                              ; $76AF: $28 $03
 
     ld   de, Data_024_769D                        ; $76B1: $11 $9D $76
 
-jr_024_76B4:
-    jp   Func_358B                               ; $76B4: $C3 $8B $35
+.jr_76B4
+    jp   Func_358B                                ; $76B4: $C3 $8B $35
 
 Data_024_76B7::
     db $00, $01, $10, $11, $FF
@@ -238,7 +238,7 @@ func_024_76EA::
     call func_024_7625                            ; $76EB: $CD $25 $76
     ld   bc, Data_024_76CD                        ; $76EE: $01 $CD $76
     ld   de, Data_024_76DC                        ; $76F1: $11 $DC $76
-    jp   Func_358B                               ; $76F4: $C3 $8B $35
+    jp   Func_358B                                ; $76F4: $C3 $8B $35
 
 Data_024_76F7::
     db $00, $01, $02, $10, $11, $12, $FF
@@ -251,7 +251,7 @@ SmallHouseMacroHandler::
     call func_024_7625                            ; $7705: $CD $25 $76
     ld   bc, Data_024_76F7                        ; $7708: $01 $F7 $76
     ld   de, Data_024_76FE                        ; $770B: $11 $FE $76
-    jp   Func_358B                               ; $770E: $C3 $8B $35
+    jp   Func_358B                                ; $770E: $C3 $8B $35
 
 ; Palette data?
 Data_024_7711::

@@ -169,7 +169,7 @@ AnimateEntity::
     ld   a, [hl]                                  ; $3A23: $7E
     ldh  [hActiveEntityState], a                  ; $3A24: $E0 $F0
 
-    ld   hl, wEntitiesSpriteVariantTable                                ; $3A26: $21 $B0 $C3
+    ld   hl, wEntitiesSpriteVariantTable          ; $3A26: $21 $B0 $C3
     add  hl, bc                                   ; $3A29: $09
     ld   a, [hl]                                  ; $3A2A: $7E
     ldh  [hActiveEntitySpriteVariant], a          ; $3A2B: $E0 $F1
@@ -181,7 +181,7 @@ AnimateEntity::
     ldh  a, [hActiveEntityType]                   ; $3A35: $F0 $EB
     cp   ENTITY_RAFT_RAFT_OWNER                   ; $3A37: $FE $6A
     jr   nz, .raftManEnd                          ; $3A39: $20 $05
-    ldh  a, [slowWalkingSpeed]                               ; $3A3B: $F0 $B2
+    ldh  a, [hLinkSlowWalkingSpeed]               ; $3A3B: $F0 $B2
     and  a                                        ; $3A3D: $A7
     jr   nz, .entityLifted                        ; $3A3E: $20 $06
 .raftManEnd
@@ -464,7 +464,7 @@ RenderActiveEntitySpritesPair::
     ld   c, a                                     ; $3BDA: $4F
     ; (if the entity is X-flipped, adjust sprite 0 position)
     ldh  a, [hActiveEntityFlipAttribute]          ; $3BDB: $F0 $ED
-    and  OAMF_XFLIP                               ; $3BDD: $E6 $20
+    and  OAM_X_FLIP                               ; $3BDD: $E6 $20
     rra                                           ; $3BDF: $1F
     rra                                           ; $3BE0: $1F
     ld   hl, hActiveEntityPosX                    ; $3BE1: $21 $EE $FF
@@ -513,12 +513,12 @@ RenderActiveEntitySpritesPair::
     and  a                                        ; $3C12: $A7
     jr   z, .paletteFlip0End                      ; $3C13: $28 $0C
     ldh  a, [hActiveEntityFlipAttribute]          ; $3C15: $F0 $ED
-    and  OAMF_PAL1                                ; $3C17: $E6 $10
+    and  OAM_DMG_PAL_1                            ; $3C17: $E6 $10
     jr   z, .paletteFlip0End                      ; $3C19: $28 $06
-    ; …invert the color palette data.
+    ; …invert the color palette data and set 3th bit.
     ld   a, [de]                                  ; $3C1B: $1A
-    and  $FF ^ OAMF_PALMASK                       ; $3C1C: $E6 $F8
-    or   $04                                      ; $3C1E: $F6 $04
+    and  $FF ^ OAM_GBC_PAL_MASK                   ; $3C1C: $E6 $F8
+    or   OAM_GBC_PAL_4                            ; $3C1E: $F6 $04
     ld   [de], a                                  ; $3C20: $12
 .paletteFlip0End
     inc  de                                       ; $3C21: $13
@@ -534,8 +534,8 @@ RenderActiveEntitySpritesPair::
     ld   c, a                                     ; $3C29: $4F
     ; (if the entity is X-flipped, adjust sprite 0 position)
     ldh  a, [hActiveEntityFlipAttribute]          ; $3C2A: $F0 $ED
-    and  OAMF_XFLIP                               ; $3C2C: $E6 $20
-    xor  $20                                      ; $3C2E: $EE $20
+    and  OAM_X_FLIP                               ; $3C2C: $E6 $20
+    xor  OAM_X_FLIP                               ; $3C2E: $EE $20
     rra                                           ; $3C30: $1F
     rra                                           ; $3C31: $1F
     ld   hl, hActiveEntityPosX                    ; $3C32: $21 $EE $FF
@@ -572,11 +572,11 @@ RenderActiveEntitySpritesPair::
     and  a                                        ; $3C54: $A7
     jr   z, .paletteFlip1End                      ; $3C55: $28 $0C
     ldh  a, [hActiveEntityFlipAttribute]          ; $3C57: $F0 $ED
-    and  OAMF_PAL1                                ; $3C59: $E6 $10
+    and  OAM_DMG_PAL_1                            ; $3C59: $E6 $10
     jr   z, .paletteFlip1End                      ; $3C5B: $28 $06
     ; …invert the color palette data.
     ld   a, [de]                                  ; $3C5D: $1A
-    and  $FF ^ OAMF_PALMASK                       ; $3C5E: $E6 $F8
+    and  $FF ^ OAM_GBC_PAL_MASK                   ; $3C5E: $E6 $F8
     or   $04                                      ; $3C60: $F6 $04
     ld   [de], a                                  ; $3C62: $12
 .paletteFlip1End
@@ -680,10 +680,10 @@ RenderActiveEntitySprite::
     ldh  a, [hActiveEntityFlipAttribute]          ; $3CC3: $F0 $ED
     and  a                                        ; $3CC5: $A7
     jr   z, .paletteFlipEnd                       ; $3CC6: $28 $08
-    ; …invert the color palette data.
+    ; …invert the color palette data and set the 3th bit.
     ld   a, [hl]                                  ; $3CC8: $7E
-    and  $FF ^ OAMF_PALMASK                       ; $3CC9: $E6 $F8
-    or   $04                                      ; $3CCB: $F6 $04
+    and  $FF ^ OAM_GBC_PAL_MASK                   ; $3CC9: $E6 $F8
+    or   OAM_GBC_PAL_4                            ; $3CCB: $F6 $04
     ld   [de], a                                  ; $3CCD: $12
     jr   .functionEnd                             ; $3CCE: $18 $06
 .paletteFlipEnd
@@ -812,10 +812,10 @@ RenderActiveEntitySpritesRect::
     ldh  a, [hActiveEntityFlipAttribute]          ; $3D34: $F0 $ED
     and  a                                        ; $3D36: $A7
     jr   z, .paletteFlipEnd                       ; $3D37: $28 $06
-    ; …invert the color palette data.
+    ; …invert the color palette data and set the 3th bit.
     ld   a, [de]                                  ; $3D39: $1A
-    and  $FF ^ OAMF_PALMASK                       ; $3D3A: $E6 $F8
-    or   $04                                      ; $3D3C: $F6 $04
+    and  $FF ^ OAM_GBC_PAL_MASK                   ; $3D3A: $E6 $F8
+    or   OAM_GBC_PAL_4                            ; $3D3C: $F6 $04
     ld   [de], a                                  ; $3D3E: $12
 .paletteFlipEnd
 
@@ -1125,7 +1125,7 @@ BossIntro::
 .endIf:
     ld   [wMusicTrackToPlay], a                   ; $3F11: $EA $68 $D3
 
-ldh  [hFFBD], a                                   ; $3F14: $E0 $BD
+    ldh  [hDefaultMusicTrackAlt], a               ; $3F14: $E0 $BD
     ld   a, [wTransitionSequenceCounter]          ; $3F16: $FA $6B $C1
     cp   $04                                      ; $3F19: $FE $04
     ret  nz                                       ; $3F1B: $C0
@@ -1134,13 +1134,13 @@ ldh  [hFFBD], a                                   ; $3F14: $E0 $BD
     ldh  a, [hActiveEntityType]                   ; $3F1C: $F0 $EB
     cp   ENTITY_DESERT_LANMOLA                    ; $3F1E: $FE $87
     jr   nz, .endDesertLanmola                    ; $3F20: $20 $04
-    ld   a, $DA                                   ; $3F22: $3E $DA
+    ld_dialog_low a, Dialog0DA                    ; $3F22: $3E $DA
     jr   .openDialog                              ; $3F24: $18 $1F
 .endDesertLanmola:
 
     cp   ENTITY_GRIM_CREEPER                      ; $3F26: $FE $BC
     jr   nz, .endGrimCreeper                      ; $3F28: $20 $04
-    ld   a, $26                                   ; $3F2A: $3E $26
+    ld_dialog_low a, Dialog026                    ; $3F2A: $3E $26
     jr   .openDialog                              ; $3F2C: $18 $17
 .endGrimCreeper:
 
@@ -1160,7 +1160,7 @@ ldh  [hFFBD], a                                   ; $3F14: $E0 $BD
     add  hl, de                                   ; $3F43: $19
     ld   a, [hl]                                  ; $3F44: $7E
 .openDialog:
-    jp   OpenDialog                               ; $3F45: $C3 $85 $23
+    jp   OpenDialogInTable0                       ; $3F45: $C3 $85 $23
 
 data_3F48::
     db 1, 2, 4, 8, $10, $20, $40, $80             ; $3F48

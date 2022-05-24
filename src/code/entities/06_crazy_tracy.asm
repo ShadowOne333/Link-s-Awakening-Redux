@@ -47,7 +47,7 @@ CrazyTracyEntityHandler::
     ldh  [hActiveEntityVisualPosY], a             ; $5EBA: $E0 $EC
 
     ; Configure Link appearance
-    ld   a, LINK_ANIMATION_STATE_GOT_ITEM       ; $5EBC: $3E $6C
+    ld   a, LINK_ANIMATION_STATE_GOT_ITEM         ; $5EBC: $3E $6C
     ldh  [hLinkAnimationState], a                 ; $5EBE: $E0 $9D
     ld   a, $02                                   ; $5EC0: $3E $02
     ldh  [hLinkInteractiveMotionBlocked], a       ; $5EC2: $E0 $A1
@@ -91,7 +91,7 @@ CrazyTracyEntityHandler::
     and  $F0                                      ; $5EF5: $E6 $F0
     ld   e, a                                     ; $5EF7: $5F
     ld   d, b                                     ; $5EF8: $50
-    ld   hl, CrazyTracySpriteAttributes                        ; $5EF9: $21 $63 $5E
+    ld   hl, CrazyTracySpriteAttributes           ; $5EF9: $21 $63 $5E
     add  hl, de                                   ; $5EFC: $19
     ldh  a, [hActiveEntityVisualPosY]             ; $5EFD: $F0 $EC
     sub  $04                                      ; $5EFF: $D6 $04
@@ -115,7 +115,7 @@ CrazyTracyEntityHandler::
 ; Set c if Link is close to Tracy, and pressed a button to talk to her.
 ShouldLinkTalkToTracy::
     ldh  a, [hLinkPositionY]                      ; $5F23: $F0 $99
-    ld   hl, hActiveEntityPosY                                ; $5F25: $21 $EF $FF
+    ld   hl, hActiveEntityPosY                    ; $5F25: $21 $EF $FF
     sub  [hl]                                     ; $5F28: $96
     add  $28                                      ; $5F29: $C6 $28
     cp   $50                                      ; $5F2B: $FE $50
@@ -126,7 +126,7 @@ CrazyTracyGreetingHandler::
     ret  nc                                       ; $5F33: $D0
 
     ; Open Tracy greeting dialog
-    call_open_dialog $017                         ; $5F34
+    call_open_dialog Dialog017                    ; $5F34
     ld   hl, wDialogState                         ; $5F39: $21 $9F $C1
     set  7, [hl]                                  ; $5F3C: $CB $FE
 
@@ -152,7 +152,7 @@ CrazyTracyGreetingHandler::
     jp   IncrementEntityState                     ; $5F51: $C3 $12 $3B
 
 CrazyTracyProposingPriceHandler::
-    call ShouldLinkTalkToTracy                            ; $5F54: $CD $23 $5F
+    call ShouldLinkTalkToTracy                    ; $5F54: $CD $23 $5F
     ret  nc                                       ; $5F57: $D0
 
     ; If Link doesn’t already have the medecine…
@@ -165,12 +165,12 @@ CrazyTracyProposingPriceHandler::
     add  hl, bc                                   ; $5F61: $09
     ld   a, [hl]                                  ; $5F62: $7E
     and  $01                                      ; $5F63: $E6 $01
-    ld   a, $018                                  ; $5F65: $3E $18
+    ld_dialog_low a, Dialog018 ; "Will you give 28 Rupees?" ; $5F65: $3E $18
     jr   z, .priceEnd                             ; $5F67: $28 $02
-    ld   a, $019                                  ; $5F69: $3E $19
+    ld_dialog_low a, Dialog019 ; "How about 42 Rupees?" ; $5F69: $3E $19
 .priceEnd
 
-    call OpenDialog                               ; $5F6B: $CD $85 $23
+    call OpenDialogInTable0                       ; $5F6B: $CD $85 $23
     ld   hl, wDialogState                         ; $5F6E: $21 $9F $C1
     set  7, [hl]                                  ; $5F71: $CB $FE
     jp   IncrementEntityState                     ; $5F73: $C3 $12 $3B
@@ -178,7 +178,7 @@ CrazyTracyProposingPriceHandler::
 
     ; Link already has a medecine in the inventory:
     ; open the "No medecine for you!" dialog.
-    call_open_dialog $01C                         ; $5F76
+    call_open_dialog Dialog01C                    ; $5F76
     ld   hl, wDialogState                         ; $5F7B: $21 $9F $C1
     set  7, [hl]                                  ; $5F7E: $CB $FE
     ret                                           ; $5F80: $C9
@@ -198,9 +198,9 @@ Data_006_5F8D::
 CrazyTracySellingHandler::
     ld   a, [wDialogState]                        ; $5F91: $FA $9F $C1
     and  a                                        ; $5F94: $A7
-    jp   nz, CrazyTracySellingHandler.return                 ; $5F95: $C2 $1B $60
+    jp   nz, CrazyTracySellingHandler.return      ; $5F95: $C2 $1B $60
 
-    ld   a, [wDialogAskSelectionIndex]                               ; $5F98: $FA $77 $C1
+    ld   a, [wDialogAskSelectionIndex]            ; $5F98: $FA $77 $C1
     and  a                                        ; $5F9B: $A7
     jr   nz, .refusedMedecine
 
@@ -234,7 +234,7 @@ CrazyTracySellingHandler::
     ld   [wPurchasedMedecineCount], a             ; $5FC3: $EA $75 $DB
     jr   nz, .buy                                 ; $5FC6: $20 $0D
     ; Open "I'll give you a discount dialog"
-    call_open_dialog $01E                         ; $5FC8
+    call_open_dialog Dialog01E                    ; $5FC8
     ld   hl, wDialogState                         ; $5FCD: $21 $9F $C1
     set  7, [hl]                                  ; $5FD0: $CB $FE
     jp   IncrementEntityState                     ; $5FD2: $C3 $12 $3B
@@ -277,10 +277,10 @@ CrazyTracySellingHandler::
 
 .refusedMedecine
     ; Open the "Too bad" dialog
-    ld   a, $01D                                   ; $600D: $3E $1D
+    ld   a, $01D                                  ; $600D: $3E $1D
 
 .openFinalDialog
-    call OpenDialog                               ; $600F: $CD $85 $23
+    call OpenDialogInTable0                       ; $600F: $CD $85 $23
     ld   hl, wDialogState                         ; $6012: $21 $9F $C1
     set  7, [hl]                                  ; $6015: $CB $FE
     call IncrementEntityState                     ; $6017: $CD $12 $3B
@@ -311,7 +311,7 @@ CrazyTracyBonusHandler::
     ; Also fill hearts
     ld   a, $FF                                   ; $6035: $3E $FF
     ld   [wAddHealthBuffer], a                    ; $6037: $EA $93 $DB
-    call_open_dialog $19A                         ; $603A
+    call_open_dialog Dialog19A                    ; $603A
     ld   hl, wDialogState                         ; $603F: $21 $9F $C1
     set  7, [hl]                                  ; $6042: $CB $FE
 .fillHeartsEnd

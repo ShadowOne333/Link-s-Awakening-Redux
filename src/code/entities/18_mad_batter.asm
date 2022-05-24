@@ -26,19 +26,19 @@ MadBatterState0Handler::
     ld   a, [wMaxMagicPowder]                     ; $4F05: $FA $76 $DB
     ld   hl, MadBatterUpgradedMaximumTable        ; $4F08: $21 $90 $4F
     cp   [hl]                                     ; $4F0B: $BE
-    jr   nz, jr_018_4F1D                          ; $4F0C: $20 $0F
+    jr   nz, .ret_4F1D                            ; $4F0C: $20 $0F
 
     inc  hl                                       ; $4F0E: $23
     ld   a, [wMaxBombs]                           ; $4F0F: $FA $77 $DB
     cp   [hl]                                     ; $4F12: $BE
-    jr   nz, jr_018_4F1D                          ; $4F13: $20 $08
+    jr   nz, .ret_4F1D                            ; $4F13: $20 $08
 
     inc  hl                                       ; $4F15: $23
     ld   a, [wMaxArrows]                          ; $4F16: $FA $78 $DB
     cp   [hl]                                     ; $4F19: $BE
     jp   z, ClearEntityStatusBank18               ; $4F1A: $CA $08 $7F
 
-jr_018_4F1D:
+.ret_4F1D
     ret                                           ; $4F1D: $C9
 
 MadBatterState1Handler::
@@ -55,14 +55,14 @@ MadBatterState1Handler::
     jp   IncrementEntityState                     ; $4F34: $C3 $12 $3B
 
 MadBatterState2Handler::
-    call MadBatterRenderSmallSprite                            ; $4F37: $CD $C3 $50
+    call MadBatterRenderSmallSprite               ; $4F37: $CD $C3 $50
     call GetEntityTransitionCountdown             ; $4F3A: $CD $05 $0C
     jr   nz, .jr_018_4F44                         ; $4F3D: $20 $05
 
     ld   [hl], $60                                ; $4F3F: $36 $60
     jp   IncrementEntityState                     ; $4F41: $C3 $12 $3B
 
-.jr_018_4F44:
+.jr_018_4F44
     ld   e, $FC                                   ; $4F44: $1E $FC
     sub  $08                                      ; $4F46: $D6 $08
     and  $10                                      ; $4F48: $E6 $10
@@ -70,7 +70,7 @@ MadBatterState2Handler::
 
     ld   e, $04                                   ; $4F4C: $1E $04
 
-.jr_018_4F4E:
+.jr_018_4F4E
     ld   hl, wEntitiesSpeedXTable                 ; $4F4E: $21 $40 $C2
     add  hl, bc                                   ; $4F51: $09
     ld   [hl], e                                  ; $4F52: $73
@@ -80,7 +80,7 @@ MadBatterState2Handler::
     jp   UpdateEntityPosWithSpeed_18              ; $4F59: $C3 $5F $7E
 
 MadBatterState3Handler::
-    call MadBatterRenderSmallSprite                            ; $4F5C: $CD $C3 $50
+    call MadBatterRenderSmallSprite               ; $4F5C: $CD $C3 $50
     call GetEntityTransitionCountdown             ; $4F5F: $CD $05 $0C
     ret  nz                                       ; $4F62: $C0
 
@@ -105,15 +105,17 @@ MadBatterState4Handler::
     call GetEntityTransitionCountdown             ; $4F84: $CD $05 $0C
     ret  nz                                       ; $4F87: $C0
 
-    ld   a, $E1                                   ; $4F88: $3E $E1
-    call OpenDialogAtBottom                            ; $4F8A: $CD $80 $50
+    ld_dialog_low a, Dialog0E1 ; "You woke me up" ; $4F88: $3E $E1
+    call OpenDialogAtBottom                       ; $4F8A: $CD $80 $50
     jp   IncrementEntityState                     ; $4F8D: $C3 $12 $3B
 
 MadBatterUpgradedMaximumTable::
     db   $40, $60, $60
 
-Data_018_4F93::
-    db   $E2, $E3, $E4
+MadBatterUpgradeDialogs::
+._0 db_dialog_low Dialog0E2 ; "More Magic Powder"
+._1 db_dialog_low Dialog0E3 ; "More Bombs"
+._2 db_dialog_low Dialog0E4 ; "More arrows"
 
 MadBatterState5Handler::
     call RenderMadBatterSprite                    ; $4F96: $CD $A8 $50
@@ -127,14 +129,14 @@ jr_018_4F9E:
     ld   e, [hl]                                  ; $4FA2: $5E
     ld   d, $00                                   ; $4FA3: $16 $00
     ld   a, e                                     ; $4FA5: $7B
-    ld   [$D201], a                               ; $4FA6: $EA $01 $D2
+    ld   [wD201], a                               ; $4FA6: $EA $01 $D2
     inc  a                                        ; $4FA9: $3C
     cp   $03                                      ; $4FAA: $FE $03
-    jr   nz, jr_018_4FAF                          ; $4FAC: $20 $01
+    jr   nz, .jr_4FAF                             ; $4FAC: $20 $01
 
     xor  a                                        ; $4FAE: $AF
 
-jr_018_4FAF:
+.jr_4FAF
     ld   [hl], a                                  ; $4FAF: $77
     ld   hl, MadBatterUpgradedMaximumTable        ; $4FB0: $21 $90 $4F
     add  hl, de                                   ; $4FB3: $19
@@ -144,10 +146,10 @@ jr_018_4FAF:
     cp   [hl]                                     ; $4FB9: $BE
     jr   z, jr_018_4F9E                           ; $4FBA: $28 $E2
 
-    ld   hl, Data_018_4F93                        ; $4FBC: $21 $93 $4F
+    ld   hl, MadBatterUpgradeDialogs              ; $4FBC: $21 $93 $4F
     add  hl, de                                   ; $4FBF: $19
     ld   a, [hl]                                  ; $4FC0: $7E
-    call OpenDialogAtBottom                            ; $4FC1: $CD $80 $50
+    call OpenDialogAtBottom                       ; $4FC1: $CD $80 $50
     jp   IncrementEntityState                     ; $4FC4: $C3 $12 $3B
 
 MadBatterState6Handler::
@@ -157,9 +159,9 @@ MadBatterState6Handler::
     ret  nz                                       ; $4FCE: $C0
 
     call IncrementEntityState                     ; $4FCF: $CD $12 $3B
-    ld   a, [wDialogAskSelectionIndex]                               ; $4FD2: $FA $77 $C1
+    ld   a, [wDialogAskSelectionIndex]            ; $4FD2: $FA $77 $C1
     and  a                                        ; $4FD5: $A7
-    jr   nz, jr_018_5001                          ; $4FD6: $20 $29
+    jr   nz, .jr_5001                             ; $4FD6: $20 $29
 
     ld   a, ENTITY_MAD_BATTER                     ; $4FD8: $3E $CA
     call SpawnNewEntity_trampoline                ; $4FDA: $CD $86 $3B
@@ -183,7 +185,7 @@ MadBatterState6Handler::
     ld   [hl], $C0                                ; $4FFE: $36 $C0
     ret                                           ; $5000: $C9
 
-jr_018_5001:
+.jr_5001
     dec  [hl]                                     ; $5001: $35
     dec  [hl]                                     ; $5002: $35
     ret                                           ; $5003: $C9
@@ -197,10 +199,10 @@ MadBatterState7Handler::
     ret  nz                                       ; $5012: $C0
 
     call ClearEntitySpeed                         ; $5013: $CD $7F $3D
-    ld   a, $E5                                   ; $5016: $3E $E5
-    call OpenDialogAtBottom                            ; $5018: $CD $80 $50
+    ld_dialog_low a, Dialog0E5 ; "Take care!"     ; $5016: $3E $E5
+    call OpenDialogAtBottom                       ; $5018: $CD $80 $50
     call IncrementEntityState                     ; $501B: $CD $12 $3B
-    ld   a, [$D201]                               ; $501E: $FA $01 $D2
+    ld   a, [wD201]                               ; $501E: $FA $01 $D2
     ld   e, a                                     ; $5021: $5F
     ld   d, b                                     ; $5022: $50
     ld   hl, MadBatterUpgradedMaximumTable        ; $5023: $21 $90 $4F
@@ -212,27 +214,27 @@ MadBatterState7Handler::
     ld   d, a                                     ; $502D: $57
     ld   a, e                                     ; $502E: $7B
     and  a                                        ; $502F: $A7
-    jr   nz, jr_018_5044                          ; $5030: $20 $12
+    jr   nz, .jr_5044                             ; $5030: $20 $12
 
     ld   hl, wMagicPowderCount                    ; $5032: $21 $4C $DB
     ld   [hl], d                                  ; $5035: $72
     ld   d, $0C                                   ; $5036: $16 $0C
-    call GiveInventoryItem_trampoline                               ; $5038: $CD $6B $3E
+    call GiveInventoryItem_trampoline             ; $5038: $CD $6B $3E
     xor  a                                        ; $503B: $AF
     ld   [wHasToadstool], a                       ; $503C: $EA $4B $DB
     ld   a, REPLACE_TILES_MAGIC_POWDER            ; $503F: $3E $0B
     ldh  [hReplaceTiles], a                       ; $5041: $E0 $A5
     ret                                           ; $5043: $C9
 
-jr_018_5044:
+.jr_5044
     cp   $01                                      ; $5044: $FE $01
-    jr   nz, jr_018_504D                          ; $5046: $20 $05
+    jr   nz, .jr_504D                             ; $5046: $20 $05
 
     ld   hl, wBombCount                           ; $5048: $21 $4D $DB
     ld   [hl], d                                  ; $504B: $72
     ret                                           ; $504C: $C9
 
-jr_018_504D:
+.jr_504D
     ld   hl, wArrowCount                          ; $504D: $21 $45 $DB
     ld   [hl], d                                  ; $5050: $72
     ret                                           ; $5051: $C9
@@ -247,13 +249,13 @@ MadBatterState8Handler::
     add  hl, bc                                   ; $505D: $09
     ld   a, [hl]                                  ; $505E: $7E
     and  a                                        ; $505F: $A7
-    jr   nz, jr_018_5067                          ; $5060: $20 $05
+    jr   nz, .jr_5067                             ; $5060: $20 $05
 
     inc  [hl]                                     ; $5062: $34
     ld   a, JINGLE_SWORD_BEAM                     ; $5063: $3E $3B
     ldh  [hJingle], a                             ; $5065: $E0 $F2
 
-jr_018_5067:
+.jr_5067
     call UpdateEntityYPosWithSpeed_18             ; $5067: $CD $62 $7E
     ld   hl, wEntitiesSpeedYTable                 ; $506A: $21 $50 $C2
     add  hl, bc                                   ; $506D: $09
@@ -264,7 +266,7 @@ jr_018_5067:
     cp   $F0                                      ; $5073: $FE $F0
     ret  c                                        ; $5075: $D8
 
-    call SetRoomStatus20                            ; $5076: $CD $B9 $7F
+    call SetRoomStatus20                          ; $5076: $CD $B9 $7F
     xor  a                                        ; $5079: $AF
     ld   [wC167], a                               ; $507A: $EA $67 $C1
     jp   ClearEntityStatusBank18                  ; $507D: $C3 $08 $7F
@@ -276,7 +278,7 @@ OpenDialogAtBottom::
     ld   a, $20                                   ; $5084: $3E $20
     ldh  [hLinkPositionY], a                      ; $5086: $E0 $99
     ld   a, e                                     ; $5088: $7B
-    call OpenDialog                               ; $5089: $CD $85 $23
+    call OpenDialogInTable0                       ; $5089: $CD $85 $23
     pop  af                                       ; $508C: $F1
     ldh  [hLinkPositionY], a                      ; $508D: $E0 $99
     ret                                           ; $508F: $C9
@@ -291,17 +293,23 @@ RenderMadBatterSprite::
     ld   hl, Data_018_5090                        ; $50A8: $21 $90 $50
     ldh  a, [hFrameCounter]                       ; $50AB: $F0 $E7
     and  $08                                      ; $50AD: $E6 $08
-    jr   z, jr_018_50B4                           ; $50AF: $28 $03
+    jr   z, .jr_50B4                              ; $50AF: $28 $03
 
     ld   hl, Data_018_509C                        ; $50B1: $21 $9C $50
 
-jr_018_50B4:
+.jr_50B4
     ld   c, $03                                   ; $50B4: $0E $03
     call RenderActiveEntitySpritesRect            ; $50B6: $CD $E6 $3C
     jr   func_018_50D2                            ; $50B9: $18 $17
 
-Data_018_50BB::
-    db   $7E, $03, $7E, $23, $7E, $43, $7E, $63
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+MadBatterSpriteVariants::
+.variant0
+    db $7E, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $7E, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $7E, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_Y_FLIP
+    db $7E, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_Y_FLIP | OAM_X_FLIP
 
 MadBatterRenderSmallSprite::
     ldh  a, [hFrameCounter]                       ; $50C3: $F0 $E7
@@ -310,7 +318,7 @@ MadBatterRenderSmallSprite::
     rra                                           ; $50C7: $1F
     and  $01                                      ; $50C8: $E6 $01
     ldh  [hActiveEntitySpriteVariant], a          ; $50CA: $E0 $F1
-    ld   de, Data_018_50BB                        ; $50CC: $11 $BB $50
+    ld   de, MadBatterSpriteVariants              ; $50CC: $11 $BB $50
     call RenderActiveEntitySpritesPair            ; $50CF: $CD $C0 $3B
 
 func_018_50D2::
@@ -338,11 +346,11 @@ label_018_50E2:
     ld   a, d                                     ; $50F1: $7A
     bit  1, a                                     ; $50F2: $CB $4F
     ld   a, $E4                                   ; $50F4: $3E $E4
-    jr   z, jr_018_50FA                           ; $50F6: $28 $02
+    jr   z, .jr_50FA                              ; $50F6: $28 $02
 
     ld   a, $44                                   ; $50F8: $3E $44
 
-jr_018_50FA:
+.jr_50FA
     ld   [wBGPalette], a                          ; $50FA: $EA $97 $DB
     ret                                           ; $50FD: $C9
 
@@ -378,7 +386,7 @@ func_018_5174::
     call GetEntityTransitionCountdown             ; $517A: $CD $05 $0C
     ld   c, $0C                                   ; $517D: $0E $0C
     cp   $B0                                      ; $517F: $FE $B0
-    jr   c, jr_018_5190                           ; $5181: $38 $0D
+    jr   c, .jr_5190                              ; $5181: $38 $0D
 
     sub  $B0                                      ; $5183: $D6 $B0
     rra                                           ; $5185: $1F
@@ -390,15 +398,15 @@ func_018_5174::
     add  hl, de                                   ; $518E: $19
     ld   c, [hl]                                  ; $518F: $4E
 
-jr_018_5190:
+.jr_5190
     ld   hl, Data_018_5110                        ; $5190: $21 $10 $51
     ldh  a, [hFrameCounter]                       ; $5193: $F0 $E7
     and  $04                                      ; $5195: $E6 $04
-    jr   z, jr_018_519C                           ; $5197: $28 $03
+    jr   z, .jr_519C                              ; $5197: $28 $03
 
     ld   hl, Data_018_5140                        ; $5199: $21 $40 $51
 
-jr_018_519C:
+.jr_519C
     call RenderActiveEntitySpritesRect            ; $519C: $CD $E6 $3C
     ld   a, $04                                   ; $519F: $3E $04
     jp   func_015_7964_trampoline                 ; $51A1: $C3 $A0 $3D

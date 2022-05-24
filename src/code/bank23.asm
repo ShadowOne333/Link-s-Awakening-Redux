@@ -298,34 +298,34 @@ func_023_7E95::
     ld   hl, Data_023_7610                        ; $7EB4: $21 $10 $76
     add  hl, de                                   ; $7EB7: $19
     push hl                                       ; $7EB8: $E5
-    ld   de, wRequestDestinationHigh              ; $7EB9: $11 $01 $D6
+    ld   de, wDrawCommand                         ; $7EB9: $11 $01 $D6
     ld   c, $18                                   ; $7EBC: $0E $18
 
-jr_023_7EBE:
+.loop_7EBE
     ld   a, [hl+]                                 ; $7EBE: $2A
     ld   [de], a                                  ; $7EBF: $12
     inc  de                                       ; $7EC0: $13
     dec  c                                        ; $7EC1: $0D
-    jr   nz, jr_023_7EBE                          ; $7EC2: $20 $FA
+    jr   nz, .loop_7EBE                           ; $7EC2: $20 $FA
 
     pop  hl                                       ; $7EC4: $E1
     ldh  a, [hIsGBC]                              ; $7EC5: $F0 $FE
     and  a                                        ; $7EC7: $A7
     ret  z                                        ; $7EC8: $C8
 
-    ld   de, wDC91                                ; $7EC9: $11 $91 $DC
+    ld   de, wDrawCommandAlt                      ; $7EC9: $11 $91 $DC
     ld   a, [wD00D]                               ; $7ECC: $FA $0D $D0
     cp   $50                                      ; $7ECF: $FE $50
-    jr   z, jr_023_7EEE                           ; $7ED1: $28 $1B
+    jr   z, .jr_7EEE                              ; $7ED1: $28 $1B
 
     cp   $51                                      ; $7ED3: $FE $51
-    jr   z, jr_023_7EEE                           ; $7ED5: $28 $17
+    jr   z, .jr_7EEE                              ; $7ED5: $28 $17
 
     cp   $52                                      ; $7ED7: $FE $52
-    jr   z, jr_023_7EEE                           ; $7ED9: $28 $13
+    jr   z, .jr_7EEE                              ; $7ED9: $28 $13
 
     cp   $53                                      ; $7EDB: $FE $53
-    jr   z, jr_023_7EEE                           ; $7EDD: $28 $0F
+    jr   z, .jr_7EEE                              ; $7EDD: $28 $0F
 
     ld   a, [hl+]                                 ; $7EDF: $2A
     ld   [de], a                                  ; $7EE0: $12
@@ -342,7 +342,7 @@ jr_023_7EBE:
     ld   [de], a                                  ; $7EEC: $12
     ret                                           ; $7EED: $C9
 
-jr_023_7EEE:
+.jr_7EEE
     ld   a, [hl+]                                 ; $7EEE: $2A
     ld   [de], a                                  ; $7EEF: $12
     inc  de                                       ; $7EF0: $13
@@ -355,11 +355,11 @@ jr_023_7EEE:
     ld   hl, Data_023_7E80                        ; $7EF8: $21 $80 $7E
     ld   c, $15                                   ; $7EFB: $0E $15
 
-jr_023_7EFD:
+.loop_7EFD
     ld   a, [hl+]                                 ; $7EFD: $2A
     ld   [de], a                                  ; $7EFE: $12
     inc  de                                       ; $7EFF: $13
     dec  c                                        ; $7F00: $0D
-    jr   nz, jr_023_7EFD                          ; $7F01: $20 $FA
+    jr   nz, .loop_7EFD                           ; $7F01: $20 $FA
 
     ret                                           ; $7F03: $C9

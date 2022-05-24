@@ -2,17 +2,7 @@
 
 ; Constants
 
-NAME_LENGTH                EQU 5
-
-; Copy modes for CopyDataToBGMap
-; Copy the data from source to dest, progressing horizontally
-BG_COPY_MODE_ROW                 equ $00
-; Copy a single byte from source to dest, progressing horizontally
-BG_COPY_MODE_ROW_SINGLE_VALUE    equ $40
-; Copy the data from source to dest, progressing vertically
-BG_COPY_MODE_COLUMN              equ $80
-; Copy a single byte from source to dest, progressing vertically
-BG_COPY_MODE_COLUMN_SINGLE_VALUE equ $C0
+NAME_LENGTH                equ 5
 
 ; Values for wGameplayType
 GAMEPLAY_INTRO             equ $00
@@ -380,6 +370,12 @@ STAIRCASE_NONE     equ $00 ; no staircase in the room
 STAIRCASE_INACTIVE equ $01 ; staircase in the room, but can't be used yet (e.g. when Link just landed on top of it)
 STAIRCASE_ACTIVE   equ $02 ; staircase in the room, can be used
 
+; Price to pay to play the Trendy game
+TRENDY_GAME_PRICE         equ 10
+
+; Price to pay to use the raft
+RAFT_GAME_PRICE           equ 100
+
 ; Price to pay to play the fishing game
 FISHING_GAME_PRICE        equ 10
 
@@ -439,3 +435,12 @@ DROP_COUNTDOWN_TIME equ $18 ; frames dropped entity is blinking before despawn
 SWORD_RECOIL_GENIE_JAR_DEFAULT  equ $20
 SWORD_RECOIL_GENIE_JAR_STRONGER equ $30
 SWORD_RECOIL_DEFAULT            equ $30
+
+; constants for wIsBowWowFollowingLink
+;
+; There exist code, where multiple checks are done.
+; All values are combined with OR-operations and then masked once.
+; To avoid collisions, the highest bit is used here for KIDNAPPED.
+BOW_WOW_AT_HOME   equ $00
+BOW_WOW_FOLLOWING equ $01
+BOW_WOW_KIDNAPPED equ $80

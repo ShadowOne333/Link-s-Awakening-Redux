@@ -1,6 +1,29 @@
-Data_018_5EB7::
-    db   $60, $01, $62, $01, $62, $21, $60, $21, $64, $01, $66, $01, $66, $21, $64, $21
-    db   $68, $01, $6A, $01, $6C, $01, $6E, $01, $6A, $21, $68, $21, $6E, $21, $6C, $21
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+MarinAtTalTalAndInStoreSpriteVariants::
+.variant0
+    db $60, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $62, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant1
+    db $62, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $60, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant2
+    db $64, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $66, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant3
+    db $66, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $64, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant4
+    db $68, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $6A, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant5
+    db $6C, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $6E, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+.variant6
+    db $6A, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $68, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant7
+    db $6E, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $6C, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 MarinAtTalTalHeightsEntityHandler::
     ld   a, [wHasInstrument7]                     ; $5ED7: $FA $6B $DB
@@ -22,8 +45,8 @@ MarinAtTalTalHeightsEntityHandler::
     jp   nz, TarinAtTalTalHeights                 ; $5EF3: $C2 $F5 $60
 
     ld   a, c                                     ; $5EF6: $79
-    ld   [wMarinEntityIndex], a                               ; $5EF7: $EA $0F $C5
-    ld   de, Data_018_5EB7                        ; $5EFA: $11 $B7 $5E
+    ld   [wMarinEntityIndex], a                   ; $5EF7: $EA $0F $C5
+    ld   de, MarinAtTalTalAndInStoreSpriteVariants ; $5EFA: $11 $B7 $5E
     call RenderActiveEntitySpritesPair            ; $5EFD: $CD $C0 $3B
     call func_018_7D60                            ; $5F00: $CD $60 $7D
     call AddEntityZSpeedToPos_18                  ; $5F03: $CD $98 $7E
@@ -35,13 +58,13 @@ MarinAtTalTalHeightsEntityHandler::
     add  hl, bc                                   ; $5F0F: $09
     ld   a, [hl]                                  ; $5F10: $7E
     and  a                                        ; $5F11: $A7
-    ldh  [hMultiPurposeG], a                               ; $5F12: $E0 $E8
-    jr   z, jr_018_5F1A                           ; $5F14: $28 $04
+    ldh  [hMultiPurposeG], a                      ; $5F12: $E0 $E8
+    jr   z, .jr_5F1A                              ; $5F14: $28 $04
 
     and  $80                                      ; $5F16: $E6 $80
     jr   z, jr_018_5F20                           ; $5F18: $28 $06
 
-jr_018_5F1A:
+.jr_5F1A
     ld   [hl], b                                  ; $5F1A: $70
     ld   hl, wEntitiesSpeedZTable                 ; $5F1B: $21 $20 $C3
     add  hl, bc                                   ; $5F1E: $09
@@ -65,7 +88,7 @@ jr_018_5F20:
 ._0C dw MarinAtTalTalHeightsStateCHandler
 
 func_018_5F3D::
-    ld   hl, wEntitiesUnknowTableY                ; $5F3D: $21 $D0 $C3
+    ld   hl, wEntitiesInertiaTable                ; $5F3D: $21 $D0 $C3
     add  hl, bc                                   ; $5F40: $09
     ld   [hl], b                                  ; $5F41: $70
     ret                                           ; $5F42: $C9
@@ -81,33 +104,33 @@ MarinAtTalTalHeightsState0Handler::
     cp   $90                                      ; $5F53: $FE $90
     ret  nc                                       ; $5F55: $D0
 
-    call_open_dialog $235                         ; $5F56
+    call_open_dialog Dialog235                    ; $5F56
     jp   IncrementEntityState                     ; $5F5B: $C3 $12 $3B
 
 func_018_5F5E::
-    ldh  a, [hMultiPurposeG]                               ; $5F5E: $F0 $E8
+    ldh  a, [hMultiPurposeG]                      ; $5F5E: $F0 $E8
     and  a                                        ; $5F60: $A7
-    jr   z, jr_018_5F66                           ; $5F61: $28 $03
+    jr   z, .jr_5F66                              ; $5F61: $28 $03
 
     and  $80                                      ; $5F63: $E6 $80
     ret  z                                        ; $5F65: $C8
 
-jr_018_5F66:
+.jr_5F66
     ldh  a, [hFrameCounter]                       ; $5F66: $F0 $E7
     and  $3F                                      ; $5F68: $E6 $3F
-    jr   nz, jr_018_5F72                          ; $5F6A: $20 $06
+    jr   nz, .ret_5F72                            ; $5F6A: $20 $06
 
     ld   hl, wEntitiesSpeedZTable                 ; $5F6C: $21 $20 $C3
     add  hl, bc                                   ; $5F6F: $09
     ld   [hl], $10                                ; $5F70: $36 $10
 
-jr_018_5F72:
+.ret_5F72
     ret                                           ; $5F72: $C9
 
 MarinAtTalTalHeightsState1Handler::
     call func_018_5F5E                            ; $5F73: $CD $5E $5F
     call ReturnIfNonInteractive_18                ; $5F76: $CD $E8 $7D
-    call_open_dialog $236                         ; $5F79
+    call_open_dialog Dialog236                    ; $5F79
     jp   IncrementEntityState                     ; $5F7E: $C3 $12 $3B
 
 MarinAtTalTalHeightsState2Handler::
@@ -134,7 +157,7 @@ MarinAtTalTalHeightsState3Handler::
     ld   [hl], e                                  ; $5FA7: $73
     ld   a, [wC1A4]                               ; $5FA8: $FA $A4 $C1
     and  a                                        ; $5FAB: $A7
-    jr   z, jr_018_5FBF                           ; $5FAC: $28 $11
+    jr   z, .jr_5FBF                              ; $5FAC: $28 $11
 
     ldh  a, [hLinkPositionX]                      ; $5FAE: $F0 $98
     ld   hl, wEntitiesPosXTable                   ; $5FB0: $21 $00 $C2
@@ -147,7 +170,7 @@ MarinAtTalTalHeightsState3Handler::
     ld   [hl], a                                  ; $5FBD: $77
     ret                                           ; $5FBE: $C9
 
-jr_018_5FBF:
+.jr_5FBF
     xor  a                                        ; $5FBF: $AF
     ld   [wLinkAttackStepAnimationCountdown], a   ; $5FC0: $EA $9B $C1
 
@@ -169,7 +192,7 @@ MarinAtTalTalHeightsState4Handler::
     call GetEntityTransitionCountdown             ; $5FE1: $CD $05 $0C
     ret  nz                                       ; $5FE4: $C0
 
-    call_open_dialog $237                         ; $5FE5
+    call_open_dialog Dialog237                    ; $5FE5
     jp   IncrementEntityState                     ; $5FEA: $C3 $12 $3B
 
 MarinAtTalTalHeightsState5Handler::
@@ -177,7 +200,7 @@ MarinAtTalTalHeightsState5Handler::
     call ReturnIfNonInteractive_18                ; $5FF0: $CD $E8 $7D
     ld   a, $02                                   ; $5FF3: $3E $02
     ldh  [hLinkInteractiveMotionBlocked], a       ; $5FF5: $E0 $A1
-    call_open_dialog $238                         ; $5FF7
+    call_open_dialog Dialog238                    ; $5FF7
     jp   IncrementEntityState                     ; $5FFC: $C3 $12 $3B
 
 MarinAtTalTalHeightsState6Handler::
@@ -185,7 +208,7 @@ MarinAtTalTalHeightsState6Handler::
     ld   a, $02                                   ; $6002: $3E $02
     ldh  [hLinkInteractiveMotionBlocked], a       ; $6004: $E0 $A1
     call ReturnIfNonInteractive_18                ; $6006: $CD $E8 $7D
-    call_open_dialog $239                         ; $6009
+    call_open_dialog Dialog239                    ; $6009
     ld   hl, wEntitiesPrivateState1Table          ; $600E: $21 $B0 $C2
     add  hl, bc                                   ; $6011: $09
     ld   [hl], b                                  ; $6012: $70
@@ -234,11 +257,11 @@ MarinAtTalTalHeightsStateAHandler::
     ldh  [hLinkInteractiveMotionBlocked], a       ; $6059: $E0 $A1
     ldh  a, [hActiveEntityVisualPosY]             ; $605B: $F0 $EC
     cp   $3E                                      ; $605D: $FE $3E
-    jr   c, jr_018_6064                           ; $605F: $38 $03
+    jr   c, .jr_6064                              ; $605F: $38 $03
 
     jp   IncrementEntityState                     ; $6061: $C3 $12 $3B
 
-jr_018_6064:
+.jr_6064
     ld   hl, wEntitiesSpeedYTable                 ; $6064: $21 $50 $C2
     add  hl, bc                                   ; $6067: $09
     ld   [hl], $06                                ; $6068: $36 $06
@@ -269,14 +292,14 @@ MarinAtTalTalHeightsStateCHandler::
     ld   a, $02                                   ; $6093: $3E $02
     ldh  [hLinkInteractiveMotionBlocked], a       ; $6095: $E0 $A1
     call GetEntityTransitionCountdown             ; $6097: $CD $05 $0C
-    jr   z, jr_018_60A3                           ; $609A: $28 $07
+    jr   z, .jr_60A3                              ; $609A: $28 $07
 
     ld   hl, wEntitiesDirectionTable              ; $609C: $21 $80 $C3
     add  hl, bc                                   ; $609F: $09
     ld   [hl], $02                                ; $60A0: $36 $02
     ret                                           ; $60A2: $C9
 
-jr_018_60A3:
+.jr_60A3
     ld   hl, wEntitiesSpeedXTable                 ; $60A3: $21 $40 $C2
     add  hl, bc                                   ; $60A6: $09
     ld   [hl], $F4                                ; $60A7: $36 $F4
@@ -286,20 +309,20 @@ jr_018_60A3:
     call AddEntitySpeedToPos_18                   ; $60AF: $CD $6C $7E
     ldh  a, [hActiveEntityPosX]                   ; $60B2: $F0 $EE
     cp   $F0                                      ; $60B4: $FE $F0
-    jr   nz, jr_018_60C7                          ; $60B6: $20 $0F
+    jr   nz, .jr_60C7                             ; $60B6: $20 $0F
 
     xor  a                                        ; $60B8: $AF
     ld   [wC167], a                               ; $60B9: $EA $67 $C1
 IF __PATCH_0__
-    ld   [$db74], a
+    ld   [wDB74], a
 ENDC
-    ld   hl, wOverworldRoomStatus + $08                                ; $60BC: $21 $08 $D8
+    ld   hl, wOverworldRoomStatus + $08           ; $60BC: $21 $08 $D8
     set  4, [hl]                                  ; $60BF: $CB $E6
     ld   a, [hl]                                  ; $60C1: $7E
     ldh  [hRoomStatus], a                         ; $60C2: $E0 $F8
     jp   ClearEntityStatusBank18                  ; $60C4: $C3 $08 $7F
 
-jr_018_60C7:
+.jr_60C7
     call func_018_7EB2                            ; $60C7: $CD $B2 $7E
     ld   a, e                                     ; $60CA: $7B
     xor  $01                                      ; $60CB: $EE $01
@@ -309,12 +332,35 @@ jr_018_60C7:
     pop  bc                                       ; $60D3: $C1
     ret                                           ; $60D4: $C9
 
-Data_018_60D5::
-    db   $50, $02, $52, $02, $52, $22, $50, $22, $54, $02, $56, $02, $56, $22, $54, $22
-    db   $58, $02, $5A, $02, $5C, $02, $5E, $02, $5A, $22, $58, $22, $5E, $22, $5C, $22
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+MarinAtTalTal2SpriteVariants::
+.variant0
+    db $50, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $52, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant1
+    db $52, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $50, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant2
+    db $54, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $56, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant3
+    db $56, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $54, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant4
+    db $58, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $5A, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant5
+    db $5C, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+    db $5E, OAM_GBC_PAL_2 | OAM_DMG_PAL_0
+.variant6
+    db $5A, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $58, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant7
+    db $5E, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $5C, OAM_GBC_PAL_2 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 TarinAtTalTalHeights:
-    ld   de, Data_018_60D5                        ; $60F5: $11 $D5 $60
+    ld   de, MarinAtTalTal2SpriteVariants         ; $60F5: $11 $D5 $60
     call RenderActiveEntitySpritesPair            ; $60F8: $CD $C0 $3B
     call func_018_7D60                            ; $60FB: $CD $60 $7D
     ldh  a, [hActiveEntityState]                  ; $60FE: $F0 $F0
@@ -336,10 +382,10 @@ TarinAtTalTalHeightsState0Handler::
     cp   $70                                      ; $611A: $FE $70
     ret  nc                                       ; $611C: $D0
 
-    call_open_dialog $23B                         ; $611D
+    call_open_dialog Dialog23B                    ; $611D
     ld   a, $03                                   ; $6122: $3E $03
     ldh  [hLinkDirection], a                      ; $6124: $E0 $9E
-    ld   a, [wMarinEntityIndex]                               ; $6126: $FA $0F $C5
+    ld   a, [wMarinEntityIndex]                   ; $6126: $FA $0F $C5
     ld   e, a                                     ; $6129: $5F
     ld   d, b                                     ; $612A: $50
     ld   hl, wEntitiesDirectionTable              ; $612B: $21 $80 $C3
@@ -358,7 +404,7 @@ TarinAtTalTalHeightsState1Handler::
     add  hl, de                                   ; $6141: $19
     ld   [hl], $03                                ; $6142: $36 $03
     call ReturnIfNonInteractive_18                ; $6144: $CD $E8 $7D
-    call_open_dialog $23A                         ; $6147
+    call_open_dialog Dialog23A                    ; $6147
     jp   IncrementEntityState                     ; $614C: $C3 $12 $3B
 
 TarinAtTalTalHeightsState2Handler::
@@ -370,13 +416,13 @@ TarinAtTalTalHeightsState2Handler::
     ld   [hl], $03                                ; $6158: $36 $03
     ld   a, [wDialogCharacterIndex]               ; $615A: $FA $70 $C1
     cp   $22                                      ; $615D: $FE $22
-    jr   c, jr_018_6163                           ; $615F: $38 $02
+    jr   c, .jr_6163                              ; $615F: $38 $02
 
     ld   [hl], $01                                ; $6161: $36 $01
 
-jr_018_6163:
+.jr_6163
     call ReturnIfNonInteractive_18                ; $6163: $CD $E8 $7D
-    ld   a, [wMarinEntityIndex]                               ; $6166: $FA $0F $C5
+    ld   a, [wMarinEntityIndex]                   ; $6166: $FA $0F $C5
     ld   e, a                                     ; $6169: $5F
     ld   d, b                                     ; $616A: $50
     ld   hl, wEntitiesStateTable                  ; $616B: $21 $90 $C2

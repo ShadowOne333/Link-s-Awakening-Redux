@@ -1,18 +1,30 @@
-Data_006_4F2C::
-    db   $44, $01, $44, $21, $46, $01, $46, $21
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+HardHatBeetleSpriteVariants::
+.variant0
+    db $44, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $44, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $46, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $46, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
-Data_006_4F34::
-    db   $64, $01, $64, $21, $66, $01, $66, $21
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+HardHatBeetleCaveBSpriteVariants::
+.variant0
+    db $64, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $64, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $66, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $66, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 HardHatBeetleEntityHandler::
-    ld   de, Data_006_4F2C                        ; $4F3C: $11 $2C $4F
+    ld   de, HardHatBeetleSpriteVariants          ; $4F3C: $11 $2C $4F
     ldh  a, [hMapId]                              ; $4F3F: $F0 $F7
     cp   MAP_CAVE_B                               ; $4F41: $FE $0A
-    jr   nz, jr_006_4F48                          ; $4F43: $20 $03
+    jr   nz, .render                              ; $4F43: $20 $03
 
-    ld   de, Data_006_4F34                        ; $4F45: $11 $34 $4F
+    ld   de, HardHatBeetleCaveBSpriteVariants     ; $4F45: $11 $34 $4F
 
-jr_006_4F48:
+.render:
     call RenderActiveEntitySpritesPair            ; $4F48: $CD $C0 $3B
     call ReturnIfNonInteractive_06                ; $4F4B: $CD $C6 $64
     call ApplyRecoilIfNeeded_06                   ; $4F4E: $CD $F7 $64
@@ -28,7 +40,7 @@ jr_006_4F48:
     ldh  a, [hFrameCounter]                       ; $4F64: $F0 $E7
     xor  c                                        ; $4F66: $A9
     and  $03                                      ; $4F67: $E6 $03
-    jr   nz, jr_006_4FAF                          ; $4F69: $20 $44
+    jr   nz, ret_006_4FAF                         ; $4F69: $20 $44
 
     call GetRandomByte                            ; $4F6B: $CD $0D $28
     xor  c                                        ; $4F6E: $A9
@@ -42,13 +54,13 @@ jr_006_4F48:
     add  hl, bc                                   ; $4F81: $09
     ld   a, [hl]                                  ; $4F82: $7E
     and  $0C                                      ; $4F83: $E6 $0C
-    jr   z, jr_006_4F8C                           ; $4F85: $28 $05
+    jr   z, .jr_4F8C                              ; $4F85: $28 $05
 
     ld   hl, wEntitiesSpeedYTable                 ; $4F87: $21 $50 $C2
     add  hl, bc                                   ; $4F8A: $09
     ld   [hl], b                                  ; $4F8B: $70
 
-jr_006_4F8C:
+.jr_4F8C
     ldh  a, [hMultiPurpose1]                      ; $4F8C: $F0 $D8
     ld   hl, wEntitiesSpeedXTable                 ; $4F8E: $21 $40 $C2
     call func_006_4FA3                            ; $4F91: $CD $A3 $4F
@@ -56,28 +68,28 @@ jr_006_4F8C:
     add  hl, bc                                   ; $4F97: $09
     ld   a, [hl]                                  ; $4F98: $7E
     and  $03                                      ; $4F99: $E6 $03
-    jr   z, jr_006_4FA2                           ; $4F9B: $28 $05
+    jr   z, .ret_4FA2                             ; $4F9B: $28 $05
 
     ld   hl, wEntitiesSpeedXTable                 ; $4F9D: $21 $40 $C2
     add  hl, bc                                   ; $4FA0: $09
     ld   [hl], b                                  ; $4FA1: $70
 
-jr_006_4FA2:
+.ret_4FA2
     ret                                           ; $4FA2: $C9
 
 func_006_4FA3::
     add  hl, bc                                   ; $4FA3: $09
     sub  [hl]                                     ; $4FA4: $96
-    jr   z, jr_006_4FAF                           ; $4FA5: $28 $08
+    jr   z, ret_006_4FAF                          ; $4FA5: $28 $08
 
     bit  7, a                                     ; $4FA7: $CB $7F
-    jr   z, jr_006_4FAE                           ; $4FA9: $28 $03
+    jr   z, .jr_4FAE                              ; $4FA9: $28 $03
 
     dec  [hl]                                     ; $4FAB: $35
-    jr   jr_006_4FAF                              ; $4FAC: $18 $01
+    jr   ret_006_4FAF                             ; $4FAC: $18 $01
 
-jr_006_4FAE:
+.jr_4FAE
     inc  [hl]                                     ; $4FAE: $34
 
-jr_006_4FAF:
+ret_006_4FAF:
     ret                                           ; $4FAF: $C9

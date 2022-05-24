@@ -10,22 +10,22 @@ ManboAndFishesEntityHandler::
     ld   hl, wEntitiesPosYTable                   ; $4507: $21 $10 $C2
     add  hl, bc                                   ; $450A: $09
     ld   [hl], $3E                                ; $450B: $36 $3E
-    ld   a, [$D214]                               ; $450D: $FA $14 $D2
+    ld   a, [wD214]                               ; $450D: $FA $14 $D2
     and  a                                        ; $4510: $A7
-    jr   z, jr_018_4517                           ; $4511: $28 $04
+    jr   z, .jr_4517                              ; $4511: $28 $04
 
     dec  a                                        ; $4513: $3D
-    ld   [$D214], a                               ; $4514: $EA $14 $D2
+    ld   [wD214], a                               ; $4514: $EA $14 $D2
 
-jr_018_4517:
-    ld   a, [$D218]                               ; $4517: $FA $18 $D2
+.jr_4517
+    ld   a, [wD218]                               ; $4517: $FA $18 $D2
     and  a                                        ; $451A: $A7
-    jr   z, jr_018_4521                           ; $451B: $28 $04
+    jr   z, .jr_4521                              ; $451B: $28 $04
 
     dec  a                                        ; $451D: $3D
-    ld   [$D218], a                               ; $451E: $EA $18 $D2
+    ld   [wD218], a                               ; $451E: $EA $18 $D2
 
-jr_018_4521:
+.jr_4521
     call func_018_4833                            ; $4521: $CD $33 $48
     call func_018_7D36                            ; $4524: $CD $36 $7D
     ldh  a, [hActiveEntityState]                  ; $4527: $F0 $F0
@@ -40,14 +40,14 @@ jr_018_4521:
 ManboAndFishesState0Handler::
     ld   a, [wOcarinaSongFlags]                   ; $4536: $FA $49 $DB
     and  MANBO_MAMBO_FLAG                         ; $4539: $E6 $02
-    jr   z, jr_018_4547                           ; $453B: $28 $0A
+    jr   z, .jr_4547                              ; $453B: $28 $0A
 
     call func_018_7D7C                            ; $453D: $CD $7C $7D
     jr   nc, func_018_455C                        ; $4540: $30 $1A
 
-    jp_open_dialog $189                           ; $4542
+    jp_open_dialog Dialog189                      ; $4542
 
-jr_018_4547:
+.jr_4547
 IF __PATCH_0__
     ld   a, $02
     ld   [wC167], a
@@ -59,7 +59,7 @@ ENDC
     ld   a, $2F                                   ; $454D: $3E $2F
     ldh  [hLinkPositionX], a                      ; $454F: $E0 $98
     call ClearLinkPositionIncrement               ; $4551: $CD $8E $17
-    call_open_dialog $185                         ; $4554
+    call_open_dialog Dialog185                    ; $4554
     call IncrementEntityState                     ; $4559: $CD $12 $3B
 
 func_018_455C::
@@ -75,14 +75,14 @@ ManboAndFishesState1Handler::
     and  a                                        ; $4569: $A7
     ret  nz                                       ; $456A: $C0
 
-    ld   a, [wDialogAskSelectionIndex]                               ; $456B: $FA $77 $C1
+    ld   a, [wDialogAskSelectionIndex]            ; $456B: $FA $77 $C1
     and  a                                        ; $456E: $A7
     jr   nz, jr_018_4581                          ; $456F: $20 $10
 
     ld   e, INVENTORY_SLOT_COUNT -1               ; $4571: $1E $0B
     ld   hl, wBButtonSlot                         ; $4573: $21 $00 $DB
 
-jr_018_4576:
+.loop_4576
     ld   a, [hl+]                                 ; $4576: $2A
     cp   INVENTORY_OCARINA                        ; $4577: $FE $09
     jr   z, jr_018_458A                           ; $4579: $28 $0F
@@ -90,22 +90,22 @@ jr_018_4576:
     dec  e                                        ; $457B: $1D
     ld   a, e                                     ; $457C: $7B
     cp   $FF                                      ; $457D: $FE $FF
-    jr   nz, jr_018_4576                          ; $457F: $20 $F5
+    jr   nz, .loop_4576                           ; $457F: $20 $F5
 
 jr_018_4581:
     call IncrementEntityState                     ; $4581: $CD $12 $3B
     ld   [hl], b                                  ; $4584: $70
-    jp_open_dialog $18A                           ; $4585
+    jp_open_dialog Dialog18A                      ; $4585
 
 jr_018_458A:
     call IncrementEntityState                     ; $458A: $CD $12 $3B
-    jp_open_dialog $187                           ; $458D
+    jp_open_dialog Dialog187                      ; $458D
 
 ; Manbo singing his song
 ManboAndFishesSingHandler::
     ld   a, [wDialogState]                        ; $4592: $FA $9F $C1
     and  a                                        ; $4595: $A7
-    jr   nz, jr_018_45B6                          ; $4596: $20 $1E
+    jr   nz, ret_018_45B6                         ; $4596: $20 $1E
 
     ld   a, MUSIC_MANBO_MAMBO                     ; $4598: $3E $30
     ld   [wMusicTrackToPlay], a                   ; $459A: $EA $68 $D3
@@ -113,15 +113,15 @@ ManboAndFishesSingHandler::
 
 func_018_45A0::
     xor  a                                        ; $45A0: $AF
-    ld   [$D210], a                               ; $45A1: $EA $10 $D2
-    ld   [$D211], a                               ; $45A4: $EA $11 $D2
-    ld   [$D212], a                               ; $45A7: $EA $12 $D2
-    ld   [$D213], a                               ; $45AA: $EA $13 $D2
-    ld   [$D217], a                               ; $45AD: $EA $17 $D2
-    ld   [$D214], a                               ; $45B0: $EA $14 $D2
-    ld   [$D218], a                               ; $45B3: $EA $18 $D2
+    ld   [wD210], a                               ; $45A1: $EA $10 $D2
+    ld   [wD211], a                               ; $45A4: $EA $11 $D2
+    ld   [wD212], a                               ; $45A7: $EA $12 $D2
+    ld   [wD213], a                               ; $45AA: $EA $13 $D2
+    ld   [wD217], a                               ; $45AD: $EA $17 $D2
+    ld   [wD214], a                               ; $45B0: $EA $14 $D2
+    ld   [wD218], a                               ; $45B3: $EA $18 $D2
 
-jr_018_45B6:
+ret_018_45B6:
     ret                                           ; $45B6: $C9
 
 Data_018_45B7::
@@ -149,39 +149,39 @@ ManboAndFishesState3Handler::
     ld   a, $02                                   ; $46A1: $3E $02
     ldh  [hLinkInteractiveMotionBlocked], a       ; $46A3: $E0 $A1
     ld   [wC167], a                               ; $46A5: $EA $67 $C1
-    ld   a, [$D210]                               ; $46A8: $FA $10 $D2
+    ld   a, [wD210]                               ; $46A8: $FA $10 $D2
     add  $01                                      ; $46AB: $C6 $01
-    ld   [$D210], a                               ; $46AD: $EA $10 $D2
-    ld   a, [$D211]                               ; $46B0: $FA $11 $D2
+    ld   [wD210], a                               ; $46AD: $EA $10 $D2
+    ld   a, [wD211]                               ; $46B0: $FA $11 $D2
     adc  $00                                      ; $46B3: $CE $00
-    ld   [$D211], a                               ; $46B5: $EA $11 $D2
-    ld   a, [$D211]                               ; $46B8: $FA $11 $D2
+    ld   [wD211], a                               ; $46B5: $EA $11 $D2
+    ld   a, [wD211]                               ; $46B8: $FA $11 $D2
     cp   $05                                      ; $46BB: $FE $05
-    jr   nz, jr_018_46CF                          ; $46BD: $20 $10
+    jr   nz, .jr_46CF                             ; $46BD: $20 $10
 
-    ld   a, [$D210]                               ; $46BF: $FA $10 $D2
+    ld   a, [wD210]                               ; $46BF: $FA $10 $D2
     cp   $F0                                      ; $46C2: $FE $F0
-    jr   nz, jr_018_46CF                          ; $46C4: $20 $09
+    jr   nz, .jr_46CF                             ; $46C4: $20 $09
 
     call IncrementEntityState                     ; $46C6: $CD $12 $3B
     call GetEntityTransitionCountdown             ; $46C9: $CD $05 $0C
     ld   [hl], $20                                ; $46CC: $36 $20
     ret                                           ; $46CE: $C9
 
-jr_018_46CF:
-    ld   a, [$D212]                               ; $46CF: $FA $12 $D2
+.jr_46CF
+    ld   a, [wD212]                               ; $46CF: $FA $12 $D2
     inc  a                                        ; $46D2: $3C
     cp   $14                                      ; $46D3: $FE $14
-    jr   nz, jr_018_46DF                          ; $46D5: $20 $08
+    jr   nz, .jr_46DF                             ; $46D5: $20 $08
 
-    ld   a, [$D213]                               ; $46D7: $FA $13 $D2
+    ld   a, [wD213]                               ; $46D7: $FA $13 $D2
     inc  a                                        ; $46DA: $3C
-    ld   [$D213], a                               ; $46DB: $EA $13 $D2
+    ld   [wD213], a                               ; $46DB: $EA $13 $D2
     xor  a                                        ; $46DE: $AF
 
-jr_018_46DF:
-    ld   [$D212], a                               ; $46DF: $EA $12 $D2
-    ld   a, [$D213]                               ; $46E2: $FA $13 $D2
+.jr_46DF
+    ld   [wD212], a                               ; $46DF: $EA $12 $D2
+    ld   a, [wD213]                               ; $46E2: $FA $13 $D2
     ld   e, a                                     ; $46E5: $5F
     ld   d, b                                     ; $46E6: $50
     ld   hl, Data_018_4605                        ; $46E7: $21 $05 $46
@@ -197,33 +197,33 @@ jr_018_46DF:
     ld   hl, Data_018_4653                        ; $46F9: $21 $53 $46
     add  hl, de                                   ; $46FC: $19
     ld   a, [hl]                                  ; $46FD: $7E
-    ld   [$D215], a                               ; $46FE: $EA $15 $D2
-    ld   a, [$D211]                               ; $4701: $FA $11 $D2
+    ld   [wD215], a                               ; $46FE: $EA $15 $D2
+    ld   a, [wD211]                               ; $4701: $FA $11 $D2
     ld   d, a                                     ; $4704: $57
-    ld   a, [$D210]                               ; $4705: $FA $10 $D2
+    ld   a, [wD210]                               ; $4705: $FA $10 $D2
     ld   e, a                                     ; $4708: $5F
     cp   $CC                                      ; $4709: $FE $CC
-    jr   nz, jr_018_4712                          ; $470B: $20 $05
+    jr   nz, .jr_4712                             ; $470B: $20 $05
 
     ld   a, d                                     ; $470D: $7A
     cp   $00                                      ; $470E: $FE $00
     jr   z, jr_018_4722                           ; $4710: $28 $10
 
-jr_018_4712:
+.jr_4712
     ld   a, e                                     ; $4712: $7B
     cp   $BE                                      ; $4713: $FE $BE
-    jr   nz, jr_018_471C                          ; $4715: $20 $05
+    jr   nz, .ret_471C                            ; $4715: $20 $05
 
     ld   a, d                                     ; $4717: $7A
     cp   $05                                      ; $4718: $FE $05
     jr   z, jr_018_471D                           ; $471A: $28 $01
 
-jr_018_471C:
+.ret_471C
     ret                                           ; $471C: $C9
 
 jr_018_471D:
     ld   a, $28                                   ; $471D: $3E $28
-    ld   [$D214], a                               ; $471F: $EA $14 $D2
+    ld   [wD214], a                               ; $471F: $EA $14 $D2
 
 jr_018_4722:
     call GetEntityPrivateCountdown1               ; $4722: $CD $00 $0C
@@ -235,7 +235,7 @@ Data_018_4728::
 
 ManboAndFishesGrantSongHandler::
     call GetEntityTransitionCountdown             ; $4734: $CD $05 $0C
-    jr   nz, jr_018_4746                          ; $4737: $20 $0D
+    jr   nz, .jr_4746                             ; $4737: $20 $0D
 
     ld   [hl], $70                                ; $4739: $36 $70
     ld   a, MUSIC_TOOL_ACQUIRED                   ; $473B: $3E $10
@@ -243,7 +243,7 @@ ManboAndFishesGrantSongHandler::
     ld   [wC167], a                               ; $4740: $EA $67 $C1
     call IncrementEntityState                     ; $4743: $CD $12 $3B
 
-jr_018_4746:
+.jr_4746
     ld   a, $02                                   ; $4746: $3E $02
     ldh  [hLinkInteractiveMotionBlocked], a       ; $4748: $E0 $A1
     jp   func_018_455C                            ; $474A: $C3 $5C $45
@@ -254,7 +254,7 @@ Data_018_474D::
 ManboAndFishesState5Handler::
     call func_018_455C                            ; $474F: $CD $5C $45
     call GetEntityTransitionCountdown             ; $4752: $CD $05 $0C
-    jr   nz, jr_018_476A                          ; $4755: $20 $13
+    jr   nz, .jr_476A                             ; $4755: $20 $13
 
     ld   a, FROGS_SONG_OF_THE_SOUL_FLAG           ; $4757: $3E $01
     ld   [wSelectedSongIndex], a                  ; $4759: $EA $4A $DB
@@ -266,15 +266,15 @@ ManboAndFishesState5Handler::
     ld   [hl], b                                  ; $4768: $70
     ret                                           ; $4769: $C9
 
-jr_018_476A:
+.jr_476A
     cp   $08                                      ; $476A: $FE $08
-    jr   nz, jr_018_4774                          ; $476C: $20 $06
+    jr   nz, .jr_4774                             ; $476C: $20 $06
 
     dec  [hl]                                     ; $476E: $35
-    call_open_dialog $188                         ; $476F
+    call_open_dialog Dialog188                    ; $476F
 
-jr_018_4774:
-    ld   a, LINK_ANIMATION_STATE_GOT_ITEM       ; $4774: $3E $6C
+.jr_4774
+    ld   a, LINK_ANIMATION_STATE_GOT_ITEM         ; $4774: $3E $6C
     ldh  [hLinkAnimationState], a                 ; $4776: $E0 $9D
     ld   a, $02                                   ; $4778: $3E $02
     ldh  [hLinkInteractiveMotionBlocked], a       ; $477A: $E0 $A1
@@ -299,9 +299,23 @@ Data_018_478F::
     db   $00, $08, $48, $00, $10, $00, $4A, $00, $10, $08, $4C, $00, $F8, $10, $60, $00
     db   $08, $10, $4E, $00, $18, $10, $62, $00, $00, $18, $5E, $00, $10, $18, $5E, $40
 
-Data_018_481F::
-    db   $FF, $FF, $FF, $FF, $64, $00, $66, $00, $64, $40, $66, $40, $66, $60, $64, $60
-    db   $66, $20, $64, $20
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+ManboAndFishes1SpriteVariants::
+.variant0
+    db $FF, OAM_GBC_PAL_7 | OAM_DMG_PAL_1 | OAM_BANK_1 | OAM_Y_FLIP | OAM_X_FLIP | OAM_PRIORITY
+    db $FF, OAM_GBC_PAL_7 | OAM_DMG_PAL_1 | OAM_BANK_1 | OAM_Y_FLIP | OAM_X_FLIP | OAM_PRIORITY
+.variant1
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.varaiant2
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_Y_FLIP
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_Y_FLIP
+.variant3
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_Y_FLIP | OAM_X_FLIP
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_Y_FLIP | OAM_X_FLIP
+.variant4
+    db $66, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $64, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 func_018_4833::
     ld   hl, wEntitiesPrivateState1Table          ; $4833: $21 $B0 $C2
@@ -311,7 +325,7 @@ func_018_4833::
     ldh  a, [hActiveEntityVisualPosY]             ; $483A: $F0 $EC
     add  $03                                      ; $483C: $C6 $03
     ldh  [hActiveEntityVisualPosY], a             ; $483E: $E0 $EC
-    ld   de, Data_018_481F                        ; $4840: $11 $1F $48
+    ld   de, ManboAndFishes1SpriteVariants        ; $4840: $11 $1F $48
     call RenderActiveEntitySpritesPair            ; $4843: $CD $C0 $3B
     ld   a, $02                                   ; $4846: $3E $02
     call func_015_7964_trampoline                 ; $4848: $CD $A0 $3D
@@ -321,7 +335,7 @@ func_018_4833::
 
     ld   a, $03                                   ; $4853: $3E $03
 
-jr_018_4855:
+.jr_4855
     jr   jr_018_485C                              ; $4855: $18 $05
 
 jr_018_4857:
@@ -368,10 +382,35 @@ Data_018_4894::
 Data_018_48A0::
     db   $00, $FC, $7C, $00
 
-Data_018_48A4::
-    db   $00, $04, $78, $00, $00, $0C, $7E, $00, $68, $00, $6A, $00, $6C, $00, $6E, $00
-    db   $70, $00, $70, $20, $6A, $20, $68, $20, $6E, $20, $6C, $20, $72, $00, $74, $00
-    db   $74, $20, $72, $20
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+ManboAndFishes2SpriteVariants::
+.variant0
+    db $00, OAM_GBC_PAL_4 | OAM_DMG_PAL_0
+    db $78, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant1
+    db $00, OAM_GBC_PAL_4 | OAM_DMG_PAL_0 | OAM_BANK_1
+    db $7E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant2
+    db $68, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $6A, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant3
+    db $6C, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant4
+    db $70, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $70, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant5
+    db $6A, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $68, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant6
+    db $6E, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $6C, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.varaiant7
+    db $72, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+    db $74, OAM_GBC_PAL_0 | OAM_DMG_PAL_0
+.variant8
+    db $74, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $72, OAM_GBC_PAL_0 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 label_018_48C8::
     call func_018_48DE
@@ -382,16 +421,16 @@ label_018_48C8::
     rra                                           ; $48D0: $1F
     and  $01                                      ; $48D1: $E6 $01
     call SetEntitySpriteVariant                   ; $48D3: $CD $0C $3B
-    ld   a, [$D215]                               ; $48D6: $FA $15 $D2
+    ld   a, [wD215]                               ; $48D6: $FA $15 $D2
     and  a                                        ; $48D9: $A7
     ret  z                                        ; $48DA: $C8
 
     jp   SetEntitySpriteVariant                   ; $48DB: $C3 $0C $3B
 
 func_018_48DE::
-    ld   a, [$D214]                               ; $48DE: $FA $14 $D2
+    ld   a, [wD214]                               ; $48DE: $FA $14 $D2
     and  a                                        ; $48E1: $A7
-    jr   z, jr_018_4904                           ; $48E2: $28 $20
+    jr   z, .jr_4904                              ; $48E2: $28 $20
 
     ldh  a, [hActiveEntityPosX]                   ; $48E4: $F0 $EE
     sub  $18                                      ; $48E6: $D6 $18
@@ -408,27 +447,27 @@ func_018_48DE::
     ld   a, $07                                   ; $4900: $3E $07
     ldh  [hActiveEntitySpriteVariant], a          ; $4902: $E0 $F1
 
-jr_018_4904:
+.jr_4904
     ldh  a, [hActiveEntitySpriteVariant]          ; $4904: $F0 $F1
     cp   $02                                      ; $4906: $FE $02
     jr   nc, jr_018_491D                          ; $4908: $30 $13
 
     ld   hl, Data_018_4894                        ; $490A: $21 $94 $48
     dec  a                                        ; $490D: $3D
-    jr   nz, jr_018_4913                          ; $490E: $20 $03
+    jr   nz, .jr_4913                             ; $490E: $20 $03
 
     ld   hl, Data_018_48A0                        ; $4910: $21 $A0 $48
 
-jr_018_4913:
+.jr_4913
     ld   c, $03                                   ; $4913: $0E $03
     call RenderActiveEntitySpritesRect            ; $4915: $CD $E6 $3C
     ld   a, $03                                   ; $4918: $3E $03
     jp   func_015_7964_trampoline                 ; $491A: $C3 $A0 $3D
 
 jr_018_491D:
-    ld   de, Data_018_48A4                        ; $491D: $11 $A4 $48
+    ld   de, ManboAndFishes2SpriteVariants        ; $491D: $11 $A4 $48
     call RenderActiveEntitySpritesPair            ; $4920: $CD $C0 $3B
 
-jr_018_4923:
+.jr_4923
     ld   a, $02                                   ; $4923: $3E $02
     jp   func_015_7964_trampoline                 ; $4925: $C3 $A0 $3D

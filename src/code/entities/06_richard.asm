@@ -1,33 +1,56 @@
-Data_006_4000::
-    db   $50, $03, $52, $03, $54, $03, $56, $03, $50, $03, $52, $03, $54, $03, $56, $03
-    db   $58, $03, $5A, $03, $5C, $03, $5E, $03, $5A, $23, $58, $23, $5E, $23, $5C, $23
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+RichardSpriteVariants::
+.variant0
+    db $50, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $52, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant1
+    db $54, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $56, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant2
+    db $50, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $52, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant3
+    db $54, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $56, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant4
+    db $58, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $5A, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant5
+    db $5C, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+    db $5E, OAM_GBC_PAL_3 | OAM_DMG_PAL_0
+.variant6
+    db $5A, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $58, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant7
+    db $5E, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
+    db $5C, OAM_GBC_PAL_3 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 RichardEntityHandler::
     ld   a, $21                                   ; $4020: $3E $21
     ldh  [hActiveEntityVisualPosY], a             ; $4022: $E0 $EC
-    ld   de, Data_006_4000                        ; $4024: $11 $00 $40
+    ld   de, RichardSpriteVariants                ; $4024: $11 $00 $40
     call RenderActiveEntitySpritesPair            ; $4027: $CD $C0 $3B
     call ReturnIfNonInteractive_06                ; $402A: $CD $C6 $64
     ldh  a, [hFrameCounter]                       ; $402D: $F0 $E7
     and  $1F                                      ; $402F: $E6 $1F
-    jr   nz, jr_006_403B                          ; $4031: $20 $08
+    jr   nz, .jr_403B                             ; $4031: $20 $08
 
     call func_006_65B4                            ; $4033: $CD $B4 $65
     ld   hl, wEntitiesDirectionTable              ; $4036: $21 $80 $C3
     add  hl, bc                                   ; $4039: $09
     ld   [hl], e                                  ; $403A: $73
 
-jr_006_403B:
-    call SetEntitySpriteVariantForDirection                            ; $403B: $CD $41 $64
+.jr_403B
+    call SetEntitySpriteVariantForDirection       ; $403B: $CD $41 $64
     ld   hl, wEntitiesPrivateState1Table          ; $403E: $21 $B0 $C2
     add  hl, bc                                   ; $4041: $09
     ld   a, [hl]                                  ; $4042: $7E
     and  a                                        ; $4043: $A7
-    jr   nz, jr_006_4049                          ; $4044: $20 $03
+    jr   nz, .jr_4049                             ; $4044: $20 $03
 
     call func_006_641A                            ; $4046: $CD $1A $64
 
-jr_006_4049:
+.jr_4049
     ldh  a, [hActiveEntityState]                  ; $4049: $F0 $F0
     JP_TABLE                                      ; $404B
 ._00 dw RichardState0Handler
@@ -54,38 +77,38 @@ RichardState1Handler::
 
     ld   a, [wIsBowWowFollowingLink]              ; $406C: $FA $56 $DB
     and  a                                        ; $406F: $A7
-    jr   z, jr_006_4077                           ; $4070: $28 $05
+    jr   z, .jr_4077                              ; $4070: $28 $05
 
-    ld   e, $2D                                   ; $4072: $1E $2D
+    ld_dialog_low e, Dialog12D ; "Do not bring that beast here" ; $4072: $1E $2D
     jp   label_006_40C1                           ; $4074: $C3 $C1 $40
 
-jr_006_4077:
+.jr_4077
     ldh  a, [hRoomStatus]                         ; $4077: $F0 $F8
     and  ROOM_STATUS_EVENT_1                      ; $4079: $E6 $10
-    jr   z, jr_006_4083                           ; $407B: $28 $06
+    jr   z, .jr_4083                              ; $407B: $28 $06
 
     ld   a, [wGoldenLeavesCount]                  ; $407D: $FA $15 $DB
     and  a                                        ; $4080: $A7
     jr   nz, jr_006_40A0                          ; $4081: $20 $1D
 
-jr_006_4083:
+.jr_4083
     ldh  a, [hRoomStatus]                         ; $4083: $F0 $F8
     or   $10                                      ; $4085: $F6 $10
     ldh  [hRoomStatus], a                         ; $4087: $E0 $F8
-    ld   [wIndoorBRoomStatus + $C7], a                               ; $4089: $EA $C7 $DA
-    call_open_dialog $13A                         ; $408C
+    ld   [wIndoorBRoomStatus + $C7], a            ; $4089: $EA $C7 $DA
+    call_open_dialog Dialog13A                    ; $408C
     ld   a, [wRichardSpokenFlag]                  ; $4091: $FA $55 $DB
     cp   $02                                      ; $4094: $FE $02
-    jr   nc, jr_006_409D                          ; $4096: $30 $05
+    jr   nc, .jr_409D                             ; $4096: $30 $05
 
     ld   a, $02                                   ; $4098: $3E $02
     ld   [wRichardSpokenFlag], a                  ; $409A: $EA $55 $DB
 
-jr_006_409D:
+.jr_409D
     jp   IncrementEntityState                     ; $409D: $C3 $12 $3B
 
 jr_006_40A0:
-    ld   e, $3F                                   ; $40A0: $1E $3F
+    ld_dialog_low e, Dialog13F ; "You must find all the leaves" ; $40A0: $1E $3F
     cp   $05                                      ; $40A2: $FE $05
     jr   c, label_006_40C1                        ; $40A4: $38 $1B
 
@@ -101,21 +124,21 @@ jr_006_40A0:
     ld   [wGoldenLeavesCount], a                  ; $40B8: $EA $15 $DB
     ld   a, REPLACE_TILES_GOLDEN_LEAF             ; $40BB: $3E $09
     ldh  [hReplaceTiles], a                       ; $40BD: $E0 $A5
-    ld   e, $3D                                   ; $40BF: $1E $3D
+    ld_dialog_low e, Dialog13D ; "You have recovered all of the leaves!" ; $40BF: $1E $3D
 
 label_006_40C1:
     ld   a, e                                     ; $40C1: $7B
     jp   OpenDialogInTable1                       ; $40C2: $C3 $73 $23
 
 RichardState2Handler::
-    ld   a, [wDialogAskSelectionIndex]                               ; $40C5: $FA $77 $C1
+    ld   a, [wDialogAskSelectionIndex]            ; $40C5: $FA $77 $C1
     and  a                                        ; $40C8: $A7
-    ld   a, $3B                                   ; $40C9: $3E $3B
-    jr   z, jr_006_40CF                           ; $40CB: $28 $02
+    ld_dialog_low a, Dialog13B ; "I am impressed" ; $40C9: $3E $3B
+    jr   z, .jr_40CF                              ; $40CB: $28 $02
 
-    ld   a, $3C                                   ; $40CD: $3E $3C
+    ld_dialog_low a, Dialog13C ; "Just get out of there!" ; $40CD: $3E $3C
 
-jr_006_40CF:
+.jr_40CF
     call OpenDialogInTable1                       ; $40CF: $CD $73 $23
     call IncrementEntityState                     ; $40D2: $CD $12 $3B
     ld   [hl], $01                                ; $40D5: $36 $01
@@ -123,11 +146,11 @@ jr_006_40CF:
 
 RichardState3Handler::
     call GetEntityTransitionCountdown             ; $40D8: $CD $05 $0C
-    jr   nz, jr_006_40E0                          ; $40DB: $20 $03
+    jr   nz, .jr_40E0                             ; $40DB: $20 $03
 
     call IncrementEntityState                     ; $40DD: $CD $12 $3B
 
-jr_006_40E0:
+.jr_40E0
     ld   hl, wEntitiesSpeedXTable                 ; $40E0: $21 $40 $C2
     add  hl, bc                                   ; $40E3: $09
     ld   [hl], $F8                                ; $40E4: $36 $F8
@@ -139,12 +162,12 @@ RichardState4Handler::
 
     ld   a, [wGoldenLeavesCount]                  ; $40EE: $FA $15 $DB
     cp   SLIME_KEY                                ; $40F1: $FE $06
-    ld   a, $3E                                   ; $40F3: $3E $3E
-    jr   z, jr_006_40F9                           ; $40F5: $28 $02
+    ld_dialog_low a, Dialog13E ; "I am forever in your debt" ; $40F3: $3E $3E
+    jr   z, .jr_40F9                              ; $40F5: $28 $02
 
-    ld   a, $3D                                   ; $40F7: $3E $3D
+    ld_dialog_low a, Dialog13D ; "You have recovered all of the leaves!" ; $40F7: $3E $3D
 
-jr_006_40F9:
+.jr_40F9
     call OpenDialogInTable1                       ; $40F9: $CD $73 $23
 
 jr_006_40FC:

@@ -24,7 +24,7 @@ MagicPowderSprinkleEntityHandler::
     add  $07                                      ; $7983: $C6 $07
     sub  $08                                      ; $7985: $D6 $08
     and  $F0                                      ; $7987: $E6 $F0
-    ldh  [hSwordIntersectedAreaX], a              ; $7989: $E0 $CE
+    ldh  [hIntersectedObjectLeft], a              ; $7989: $E0 $CE
     swap a                                        ; $798B: $CB $37
     ld   hl, wEntitiesPosYTable                   ; $798D: $21 $10 $C2
     add  hl, bc                                   ; $7990: $09
@@ -33,7 +33,7 @@ MagicPowderSprinkleEntityHandler::
     add  $07                                      ; $7993: $C6 $07
     sub  $10                                      ; $7995: $D6 $10
     and  $F0                                      ; $7997: $E6 $F0
-    ldh  [hSwordIntersectedAreaY], a              ; $7999: $E0 $CD
+    ldh  [hIntersectedObjectTop], a               ; $7999: $E0 $CD
     or   c                                        ; $799B: $B1
     ld   c, a                                     ; $799C: $4F
     ld   b, $00                                   ; $799D: $06 $00
@@ -47,12 +47,12 @@ MagicPowderSprinkleEntityHandler::
     ld   a, [hl]                                  ; $79A8: $7E
     ldh  [hObjectUnderEntity], a                  ; $79A9: $E0 $AF
     cp   $D3                                      ; $79AB: $FE $D3
-    jr   z, jr_018_79B3                           ; $79AD: $28 $04
+    jr   z, .jr_79B3                              ; $79AD: $28 $04
 
     cp   $5C                                      ; $79AF: $FE $5C
     jr   nz, jr_018_79CF                          ; $79B1: $20 $1C
 
-jr_018_79B3:
+.jr_79B3
     ld   a, [wIsIndoor]                           ; $79B3: $FA $A5 $DB
     and  a                                        ; $79B6: $A7
     jr   nz, jr_018_79CF                          ; $79B7: $20 $16
@@ -79,7 +79,7 @@ jr_018_79CF:
 
     ldh  a, [hIsGBC]                              ; $79DB: $F0 $FE
     and  a                                        ; $79DD: $A7
-    jr   z, jr_018_79F0                           ; $79DE: $28 $10
+    jr   z, .jr_79F0                              ; $79DE: $28 $10
 
     ld   a, [wLinkMotionState]                    ; $79E0: $FA $1C $C1
     cp   LINK_MOTION_REVOLVING_DOOR               ; $79E3: $FE $05
@@ -93,7 +93,7 @@ jr_018_79CF:
     and  a                                        ; $79EE: $A7
     ret  nz                                       ; $79EF: $C0
 
-jr_018_79F0:
+.jr_79F0
     ld   a, $AC                                   ; $79F0: $3E $AC
     ld   [hl], a                                  ; $79F2: $77
     ld   [wDDD8], a                               ; $79F3: $EA $D8 $DD
@@ -112,30 +112,30 @@ jr_018_79F0:
     ld   [hl], $80                                ; $7A0B: $36 $80
     ld   hl, wEntitiesPosXTable                   ; $7A0D: $21 $00 $C2
     add  hl, bc                                   ; $7A10: $09
-    ldh  a, [hSwordIntersectedAreaX]              ; $7A11: $F0 $CE
+    ldh  a, [hIntersectedObjectLeft]              ; $7A11: $F0 $CE
     ld   [hl], a                                  ; $7A13: $77
     ld   hl, wEntitiesPosYTable                   ; $7A14: $21 $10 $C2
     add  hl, bc                                   ; $7A17: $09
-    ldh  a, [hSwordIntersectedAreaY]              ; $7A18: $F0 $CD
+    ldh  a, [hIntersectedObjectTop]               ; $7A18: $F0 $CD
     ld   [hl], a                                  ; $7A1A: $77
     ld   hl, wC1A2                                ; $7A1B: $21 $A2 $C1
     inc  [hl]                                     ; $7A1E: $34
     ld   a, [wC3CD]                               ; $7A1F: $FA $CD $C3
     and  a                                        ; $7A22: $A7
-    jr   z, jr_018_7A39                           ; $7A23: $28 $14
+    jr   z, .jr_7A39                              ; $7A23: $28 $14
 
     sub  $04                                      ; $7A25: $D6 $04
     ld   [wC3CD], a                               ; $7A27: $EA $CD $C3
     ldh  a, [hIsGBC]                              ; $7A2A: $F0 $FE
     and  a                                        ; $7A2C: $A7
-    jr   z, jr_018_7A39                           ; $7A2D: $28 $0A
+    jr   z, .jr_7A39                              ; $7A2D: $28 $0A
 
     ld   a, $40                                   ; $7A2F: $3E $40
     ld   [wDDD6], a                               ; $7A31: $EA $D6 $DD
     ld   a, $0B                                   ; $7A34: $3E $0B
     ld   [wDDD7], a                               ; $7A36: $EA $D7 $DD
 
-jr_018_7A39:
+.jr_7A39
     call GetEntityTransitionCountdown             ; $7A39: $CD $05 $0C
     ld   [hl], b                                  ; $7A3C: $70
     ld   a, $12                                   ; $7A3D: $3E $12
@@ -163,16 +163,16 @@ label_018_7A4B:
 
 label_018_7A5D:
     call GetEntityDropTimer                       ; $7A5D: $CD $FB $0B
-    jr   nz, jr_018_7AB9                          ; $7A60: $20 $57
+    jr   nz, ret_018_7AB9                         ; $7A60: $20 $57
 
     ld   hl, wEntitiesPosXTable                   ; $7A62: $21 $00 $C2
     add  hl, bc                                   ; $7A65: $09
     ld   a, [hl]                                  ; $7A66: $7E
-    ldh  [hSwordIntersectedAreaX], a              ; $7A67: $E0 $CE
+    ldh  [hIntersectedObjectLeft], a              ; $7A67: $E0 $CE
     ld   hl, wEntitiesPosYTable                   ; $7A69: $21 $10 $C2
     add  hl, bc                                   ; $7A6C: $09
     ld   a, [hl]                                  ; $7A6D: $7E
-    ldh  [hSwordIntersectedAreaY], a              ; $7A6E: $E0 $CD
+    ldh  [hIntersectedObjectTop], a               ; $7A6E: $E0 $CD
     ld   hl, wEntitiesPrivateState1Table          ; $7A70: $21 $B0 $C2
     add  hl, bc                                   ; $7A73: $09
     ld   d, [hl]                                  ; $7A74: $56
@@ -191,13 +191,13 @@ label_018_7A5D:
     dec  [hl]                                     ; $7A8B: $35
     ld   a, [wC3CD]                               ; $7A8C: $FA $CD $C3
     cp   $0C                                      ; $7A8F: $FE $0C
-    jr   nc, jr_018_7AB2                          ; $7A91: $30 $1F
+    jr   nc, .jr_7AB2                             ; $7A91: $30 $1F
 
     add  $04                                      ; $7A93: $C6 $04
     ld   [wC3CD], a                               ; $7A95: $EA $CD $C3
     ldh  a, [hIsGBC]                              ; $7A98: $F0 $FE
     and  a                                        ; $7A9A: $A7
-    jr   z, jr_018_7AB2                           ; $7A9B: $28 $15
+    jr   z, .jr_7AB2                              ; $7A9B: $28 $15
 
     ld   a, [wLinkMotionState]                    ; $7A9D: $FA $1C $C1
     cp   $05                                      ; $7AA0: $FE $05
@@ -212,12 +212,12 @@ label_018_7A5D:
     ld   a, $0B                                   ; $7AAD: $3E $0B
     ld   [wDDD7], a                               ; $7AAF: $EA $D7 $DD
 
-jr_018_7AB2:
+.jr_7AB2
     ld   de, Data_018_7962                        ; $7AB2: $11 $62 $79
     push de                                       ; $7AB5: $D5
     jp   label_018_7B1D                           ; $7AB6: $C3 $1D $7B
 
-jr_018_7AB9:
+ret_018_7AB9:
     ret                                           ; $7AB9: $C9
 
 Data_018_7ABA::
@@ -250,25 +250,25 @@ label_018_7B1D:
     call label_2887                               ; $7B1D: $CD $87 $28
     ldh  a, [hIsGBC]                              ; $7B20: $F0 $FE
     and  a                                        ; $7B22: $A7
-    jr   z, jr_018_7B2C                           ; $7B23: $28 $07
+    jr   z, .jr_7B2C                              ; $7B23: $28 $07
 
     push bc                                       ; $7B25: $C5
     ld   a, $18                                   ; $7B26: $3E $18
     call func_91D                                 ; $7B28: $CD $1D $09
     pop  bc                                       ; $7B2B: $C1
 
-jr_018_7B2C:
-    ld   a, [wRequests]                           ; $7B2C: $FA $00 $D6
+.jr_7B2C
+    ld   a, [wDrawCommandsSize]                   ; $7B2C: $FA $00 $D6
     ld   e, a                                     ; $7B2F: $5F
     ld   d, $00                                   ; $7B30: $16 $00
-    ld   hl, wRequestDestinationHigh              ; $7B32: $21 $01 $D6
+    ld   hl, wDrawCommand                         ; $7B32: $21 $01 $D6
     add  hl, de                                   ; $7B35: $19
     add  $0A                                      ; $7B36: $C6 $0A
-    ld   [wRequests], a                           ; $7B38: $EA $00 $D6
+    ld   [wDrawCommandsSize], a                   ; $7B38: $EA $00 $D6
     pop  de                                       ; $7B3B: $D1
-    ldh  a, [hFFCF]                               ; $7B3C: $F0 $CF
+    ldh  a, [hIntersectedObjectBGAddressHigh]     ; $7B3C: $F0 $CF
     ld   [hl+], a                                 ; $7B3E: $22
-    ldh  a, [hFFD0]                               ; $7B3F: $F0 $D0
+    ldh  a, [hIntersectedObjectBGAddressLow]      ; $7B3F: $F0 $D0
     ld   [hl+], a                                 ; $7B41: $22
     ld   a, $81                                   ; $7B42: $3E $81
     ld   [hl+], a                                 ; $7B44: $22
@@ -278,9 +278,9 @@ jr_018_7B2C:
     ld   a, [de]                                  ; $7B48: $1A
     inc  de                                       ; $7B49: $13
     ld   [hl+], a                                 ; $7B4A: $22
-    ldh  a, [hFFCF]                               ; $7B4B: $F0 $CF
+    ldh  a, [hIntersectedObjectBGAddressHigh]     ; $7B4B: $F0 $CF
     ld   [hl+], a                                 ; $7B4D: $22
-    ldh  a, [hFFD0]                               ; $7B4E: $F0 $D0
+    ldh  a, [hIntersectedObjectBGAddressLow]      ; $7B4E: $F0 $D0
     inc  a                                        ; $7B50: $3C
     ld   [hl+], a                                 ; $7B51: $22
     ld   a, $81                                   ; $7B52: $3E $81

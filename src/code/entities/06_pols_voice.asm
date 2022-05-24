@@ -1,24 +1,30 @@
-Data_006_7373::
-    db   $70, $01, $70, $21, $72, $01, $72, $21
+; define sprite variants by selecting tile n° and setting OAM attributes (palette + flags) in a list
+PolsVoiceSpriteVariants::
+.variant0
+    db $70, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $70, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
+.variant1
+    db $72, OAM_GBC_PAL_1 | OAM_DMG_PAL_0
+    db $72, OAM_GBC_PAL_1 | OAM_DMG_PAL_0 | OAM_X_FLIP
 
 PolsVoiceEntityHandler::
     ld   a, [wLinkPlayingOcarinaCountdown]        ; $737B: $FA $66 $C1
     cp   $01                                      ; $737E: $FE $01
-    jr   nz, jr_006_73AD                          ; $7380: $20 $2B
+    jr   nz, .jr_73AD                             ; $7380: $20 $2B
 
     ld   a, [wOcarinaSongFlags]                   ; $7382: $FA $49 $DB
     and  BALLAD_OF_THE_WIND_FISH_FLAG             ; $7385: $E6 $04
-    jr   z, jr_006_73AD                           ; $7387: $28 $24
+    jr   z, .jr_73AD                              ; $7387: $28 $24
 
     ld   a, [wSelectedSongIndex]                  ; $7389: $FA $4A $DB
     and  a                                        ; $738C: $A7
-    jr   nz, jr_006_73AD                          ; $738D: $20 $1E
+    jr   nz, .jr_73AD                             ; $738D: $20 $1E
 
     ldh  a, [hActiveEntityStatus]                 ; $738F: $F0 $EA
     cp   $01                                      ; $7391: $FE $01
-    jr   z, jr_006_73AD                           ; $7393: $28 $18
+    jr   z, .jr_73AD                              ; $7393: $28 $18
 
-    ld   hl, wEntitiesUnknowTableV                ; $7395: $21 $80 $C4
+    ld   hl, wEntitiesPrivateCountdown3Table      ; $7395: $21 $80 $C4
     add  hl, bc                                   ; $7398: $09
     ld   [hl], $1F                                ; $7399: $36 $1F
     ld   hl, wEntitiesStatusTable                 ; $739B: $21 $80 $C2
@@ -31,8 +37,8 @@ PolsVoiceEntityHandler::
     ld   [hl], $13                                ; $73AA: $36 $13
     ret                                           ; $73AC: $C9
 
-jr_006_73AD:
-    ld   de, Data_006_7373                        ; $73AD: $11 $73 $73
+.jr_73AD
+    ld   de, PolsVoiceSpriteVariants              ; $73AD: $11 $73 $73
     call RenderActiveEntitySpritesPair            ; $73B0: $CD $C0 $3B
     call ReturnIfNonInteractive_06                ; $73B3: $CD $C6 $64
     call ApplyRecoilIfNeeded_06                   ; $73B6: $CD $F7 $64
@@ -74,13 +80,13 @@ func_006_73E0::
     call GetRandomByte                            ; $73F9: $CD $0D $28
     and  $07                                      ; $73FC: $E6 $07
     cp   $06                                      ; $73FE: $FE $06
-    jr   c, jr_006_7409                           ; $7400: $38 $07
+    jr   c, .jr_7409                              ; $7400: $38 $07
 
     ld   a, $0A                                   ; $7402: $3E $0A
     call ApplyVectorTowardsLink_trampoline        ; $7404: $CD $AA $3B
     jr   jr_006_741F                              ; $7407: $18 $16
 
-jr_006_7409:
+.jr_7409
     ld   e, a                                     ; $7409: $5F
     ld   d, b                                     ; $740A: $50
     ld   hl, Data_006_73D4                        ; $740B: $21 $D4 $73

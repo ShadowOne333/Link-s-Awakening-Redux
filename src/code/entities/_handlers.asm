@@ -32,7 +32,7 @@ EntityHandlersTable::
 ._10 far_pointer HidingGhiniEntityHandler
 ._11 far_pointer GiantGhiniEntityHandler
 ._12 far_pointer GhiniEntityHandler
-._13 far_pointer HeartContainerTilesTable
+._13 far_pointer HeartContainerSpriteVariants
 ._14 far_pointer MoblinSwordEntityHandler ; $14
 ._15 far_pointer AntiFairyEntityHandler
 ._16 far_pointer SparkClockwiseEntityHandler
@@ -50,8 +50,8 @@ EntityHandlersTable::
 ._22 far_pointer WizrobeProjectileEntityHandler
 ._23 far_pointer LikeLikeEntityHandler
 ._24 far_pointer IronMaskEntityHandler ; $24
-._25 far_pointer EntityExplosionDisplayList ; small exploding ennemy
-._26 far_pointer EntityExplosionDisplayList ; small exploding ennemy 2
+._25 far_pointer EntityExplosionSpriteVariants ; small exploding ennemy
+._26 far_pointer EntityExplosionSpriteVariants ; small exploding ennemy 2
 ._27 far_pointer SpikeTrapEntityHandler
 ._28 far_pointer MimicEntityHandler ; $28
 ._29 far_pointer MiniMoldromEntityHandler
@@ -181,7 +181,7 @@ EntityHandlersTable::
 ._A5 far_pointer SideViewPlatformEntityHandler
 ._A6 far_pointer SideViewWeightsEntityHandler
 ._A7 far_pointer SmashablePillarEntityHandler
-._A8 far_pointer EntityA8Handler ; $A8
+._A8 far_pointer WreckingBallEntityHandler ; $A8
 ._A9 far_pointer BlooperEntityHandler
 ._AA far_pointer CheepCheepHorizontalEntityHandler
 ._AB far_pointer CheepCheepVerticalEntityHandler
@@ -277,7 +277,7 @@ func_020_4303::
     xor  a                                        ; $4309: $AF
     ld   [wC5A0], a                               ; $430A: $EA $A0 $C5
     ld   [wC10C], a                               ; $430D: $EA $0C $C1
-    ldh  [slowWalkingSpeed], a                               ; $4310: $E0 $B2
+    ldh  [hLinkSlowWalkingSpeed], a               ; $4310: $E0 $B2
     ld   [wC117], a                               ; $4312: $EA $17 $C1
     ld   [wC19D], a                               ; $4315: $EA $9D $C1
     ld   [wC147], a                               ; $4318: $EA $47 $C1
@@ -329,8 +329,8 @@ EntityInitHandlersTable::
 ._22 dw   EntityInitWithRandomDirection
 ._23 dw   IncrementEntityState
 ._24 dw   EntityInitWithRandomDirection
-._25 dw   EntityInitSmallExplosion
-._26 dw   EntityInitSmallExplosion
+._25 dw   EntityExplosionSpriteVariants
+._26 dw   EntityExplosionSpriteVariants
 ._27 dw   EntityInitWithRandomDirection
 ._28 dw   EntityInitWithRandomDirection
 ._29 dw   label_3DAB
@@ -550,10 +550,10 @@ EntityInitHandlersTable::
 ; Returns:
 ;   de   an address
 GetEntityInitHandler::
-    ldh  a, [hActiveEntityType]                     ; $4518: $F0 $EB
+    ldh  a, [hActiveEntityType]                   ; $4518: $F0 $EB
     ld   e, a                                     ; $451A: $5F
     ld   d, $00                                   ; $451B: $16 $00
-    ld   hl, EntityInitHandlersTable                        ; $451D: $21 $22 $43
+    ld   hl, EntityInitHandlersTable              ; $451D: $21 $22 $43
     sla  e                                        ; $4520: $CB $23
     rl   d                                        ; $4522: $CB $12
     add  hl, de                                   ; $4524: $19
