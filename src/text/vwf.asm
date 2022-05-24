@@ -170,7 +170,7 @@ initVWF:
 	jr z, .bottomTextbox
 	ld a, $42
  .bottomTextbox:
-	ld [wRequestDestinationLow], a	; Forces the BG copy to the first letter's position
+	ld [wDrawCommand.destinationLow], a	; Forces the BG copy to the first letter's position
 
 	ld   d, $00
 	ld   bc, CURR_CHAR_GFX
