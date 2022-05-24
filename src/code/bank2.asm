@@ -5785,12 +5785,8 @@ IF QOL		; Collision stuff for lifting message?
     cp   $FF                                      ; $6B86: $FE $FF
 ELSE
     cp   $8A                                      ; $6B86: $FE $8A
-<<<<<<< HEAD
 ENDC
-    jr   nz, jr_002_6B99                          ; $6B88: $20 $0F
-=======
     jr   nz, .jr_6B99                             ; $6B88: $20 $0F
->>>>>>> 2b7d5289b419caaa986f30443e90c7cc0f0f598e
 
     ld   a, [wC5A6]                               ; $6B8A: $FA $A6 $C5
     and  a                                        ; $6B8D: $A7
@@ -7131,19 +7127,14 @@ jr_002_72EC:
 
     inc  a                                        ; $72F2: $3C
     ld   [wC5A6], a                               ; $72F3: $EA $A6 $C5
-<<<<<<< HEAD
+
 IF QOL		; Message when lifting rocks or heavy objects
     ld   [$0000], a				  ; $72F6: $EA $00 $00
     nop						  ; $72F9: $00
 ELSE
     ld   a, e                                     ; $72F6: $7B
-    call func_002_74FE                            ; $72F7: $CD $FE $74
-ENDC
-=======
-
-    ld   a, e                                     ; $72F6: $7B
     call OpenDialogInTable0AndClearIncrement      ; $72F7: $CD $FE $74
->>>>>>> 2b7d5289b419caaa986f30443e90c7cc0f0f598e
+ENDC
 
 jr_002_72FA:
     ld   a, [wIsRunningWithPegasusBoots]          ; $72FA: $FA $4A $C1

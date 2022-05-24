@@ -2950,12 +2950,9 @@ IF NO_THIEF_DOWNSIDES
 	nop		; $1887: $00, Skip increment 
 ELSE
     inc  [hl]                                     ; $1887: $34
-<<<<<<< HEAD
 ENDC
-    ld   a, [$DC0C]                               ; $1888: $FA $0C $DC
-=======
     ld   a, [wPhotos1]                            ; $1888: $FA $0C $DC
->>>>>>> 2b7d5289b419caaa986f30443e90c7cc0f0f598e
+
     or   $40                                      ; $188B: $F6 $40
     ld   [wPhotos1], a                            ; $188D: $EA $0C $DC
     ld   a, $01                                   ; $1890: $3E $01

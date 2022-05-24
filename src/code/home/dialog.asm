@@ -25,11 +25,11 @@ ExecuteDialog::
     ; mask wDialogNextCharPosition around $10
     
 IF VWF
-	ld   a, [wDialogBoxPosIndexHi]
-	and  a
-	ld   a, [wDialogBoxPosIndex]
+    ld   a, [wDialogBoxPosIndexHi]
+    and  a
+    ld   a, [wDialogBoxPosIndex]
 ELSE
-	ld   a, [wDialogCharacterIndexHi]             ; $2334: $FA $64 $C1
+    ld   a, [wDialogCharacterIndexHi]             ; $2334: $FA $64 $C1
     and  a                                        ; $2337: $A7
     ld   a, [wDialogCharacterIndex]               ; $2338: $FA $70 $C1
 ENDC
@@ -393,11 +393,11 @@ DialogLetterAnimationEndHandler::
     ldi  [hl], a                                  ; $2514: $22
     push hl                                       ; $2515: $E5
 IF VWF
-	ld   a, [wDialogBoxPosIndex]               ; $2516: $FA $70 $C1
+    ld   a, [wDialogBoxPosIndex]		  ; $2516: $FA $70 $C1
 ELSE
-	ld   a, [wDialogCharacterIndex]               ; $2516: $FA $70 $C1
+    ld   a, [wDialogCharacterIndex]               ; $2516: $FA $70 $C1
 ENDC
-	and  $1F                                      ; $2519: $E6 $1F
+    and  $1F                                      ; $2519: $E6 $1F
     ld   c, a                                     ; $251B: $4F
     ld   hl, Data_01C_45A1                        ; $251C: $21 $A1 $45
     add  hl, bc                                   ; $251F: $09
@@ -586,9 +586,9 @@ ENDC
     ldh  [hMultiPurpose1], a                      ; $2608: $E0 $D8
     ld   e, a                                   ; $260A: $5F
 IF VWF
-	ld   a, BANK(saveLetterWidths)
+    ld   a, BANK(saveLetterWidths)
     ld   [MBC3SelectBank], a
-	call saveLetterWidths
+    call saveLetterWidths
 ENDC
     ld   a, BANK(AsciiToTileMap)                  ; $260B: $3E $1C
     ld   [MBC3SelectBank], a                      ; $260D: $EA $00 $21
@@ -627,7 +627,7 @@ ENDC
     ld   e, a                                     ; $2643: $5F
     ld   d, $00                                   ; $2644: $16 $00
 IF VWF
-	call variableWidthFont
+    call variableWidthFont
 ENDC
 IF __DO_CHECK_DAKUTEN__
     ld   hl, DakutenTable
@@ -693,11 +693,11 @@ data_2693::
 
 DialogBreakHandler::
 IF VWF
-	ld   a, [wDialogBoxPosIndex]               ; $2695: $FA $70 $C1
+    ld   a, [wDialogBoxPosIndex]		  ; $2695: $FA $70 $C1
 ELSE
-	ld   a, [wDialogCharacterIndex]               ; $2695: $FA $70 $C1
+    ld   a, [wDialogCharacterIndex]               ; $2695: $FA $70 $C1
 ENDC
-	and  $1F                                      ; $2698: $E6 $1F
+    and  $1F                                      ; $2698: $E6 $1F
     jr   nz, .jp_26E1                             ; $269A: $20 $45
     ld   a, [wUpcomingChar]                               ; $269C: $FA $C3 $C3
     cp   $FF                                      ; $269F: $FE $FF

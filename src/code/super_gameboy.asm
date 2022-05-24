@@ -6,19 +6,13 @@
 ; and upload the colored frame data if needed.
 SuperGameBoyInit::
     ; If running on GBC, return immediately
-<<<<<<< HEAD
-    ldh  a, [hIsGBC]                             ; $6A22: $F0 $FE
-    and  a                                       ; $6A24: $A7
-IF SGB_BORDER
-    nop						 ; $6A25: $00
-ELSE
-    ret  nz                                      ; $6A25: $C0
-ENDC
-=======
     ldh  a, [hIsGBC]                              ; $6A22: $F0 $FE
     and  a                                        ; $6A24: $A7
+IF SGB_BORDER
+    nop						  ; $6A25: $00
+ELSE
     ret  nz                                       ; $6A25: $C0
->>>>>>> 2b7d5289b419caaa986f30443e90c7cc0f0f598e
+ENDC
 
     ; Wait for 30 frames
     ld   bc, $1E                                  ; $6A26: $01 $1E $00

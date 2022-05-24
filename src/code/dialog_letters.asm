@@ -1,37 +1,10 @@
-<<<<<<< HEAD
-func_01C_49F1::
-    IF VWF
-	ld   a, [wDialogBoxPosIndex]
-	ELSE
-	ld   a, [wDialogCharacterIndex]                             ; $49F1: $FA $70 $C1
-	ENDC
-    and  %00011111                              ; $49F4: $E6 $1F
-    ld   e, a                                   ; $49F6: $5F
-    ld   d, $00                                 ; $49F7: $16 $00
-    ld   c, $01                                 ; $49F9: $0E $01
-    ld   b, $00                                 ; $49FB: $06 $00
-    ld   hl, DialogCharacterYTable              ; $49FD: $21 $81 $45
-    add  hl, de                                 ; $4A00: $19
-    ld   a, [hl]                                ; $4A01: $7E
-    ld   hl, $D600                              ; $4A02: $21 $00 $D6
-    add  hl, bc                                 ; $4A05: $09
-    ldi  [hl], a                                ; $4A06: $22
-    push hl                                     ; $4A07: $E5
-    ld   hl, DialogCharacterXTable              ; $4A08: $21 $61 $45
-    add  hl, de                                 ; $4A0B: $19
-    ld   a, [hl]                                ; $4A0C: $7E
-    pop  hl                                     ; $4A0D: $E1
-    ldi  [hl], a                                ; $4A0E: $22
-    ld   a, $4F                                 ; $4A0F: $3E $4F
-    ldi  [hl], a                                ; $4A11: $22
-    ld   a, $FF                                 ; $4A12: $3E $FF
-    ldi  [hl], a                                ; $4A14: $22
-    ld   [hl], $00                              ; $4A15: $36 $00
-    ret                                         ; $4A17: $C9
-=======
 ; Configure a wDrawCommand to write pixels for a black tile to the VRAM of the next letter.
 ClearLetterPixels::
-    ld   a, [wDialogCharacterIndex]               ; $49F1: $FA $70 $C1
+    IF VWF
+	ld   a, [wDialogBoxPosIndex]
+    ELSE
+        ld   a, [wDialogCharacterIndex]               ; $49F1: $FA $70 $C1
+    ENDC
     and  %00011111                                ; $49F4: $E6 $1F
     ld   e, a                                     ; $49F6: $5F
     ld   d, $00                                   ; $49F7: $16 $00
@@ -41,7 +14,7 @@ ClearLetterPixels::
     add  hl, de                                   ; $4A00: $19
     ld   a, [hl]                                  ; $4A01: $7E
 
-ld   hl, wDrawCommandsSize                        ; $4A02: $21 $00 $D6
+    ld   hl, wDrawCommandsSize                    ; $4A02: $21 $00 $D6
     add  hl, bc                                   ; $4A05: $09
     ldi  [hl], a ; wDrawCommand.destinationHigh   ; $4A06: $22
 
@@ -63,7 +36,6 @@ ld   hl, wDrawCommandsSize                        ; $4A02: $21 $00 $D6
     ; End of wDrawCommand
     ld   [hl], $00 ; wDrawCommand.data + 1        ; $4A15: $36 $00
     ret                                           ; $4A17: $C9
->>>>>>> 2b7d5289b419caaa986f30443e90c7cc0f0f598e
 
 Data_01C_4A18::
     db   $61, $41, $81, $21, $A1, $81, $61, $A1, $41, $C1

@@ -47,16 +47,13 @@ LinkPassOutHandler::
 
     ld   a, LINK_ANIMATION_STATE_NO_UPDATE        ; $421C: $3E $FF ; $421C: $3E $FF
     ldh  [hLinkAnimationState], a                 ; $421E: $E0 $9D ; $421E: $E0 $9D
-<<<<<<< HEAD
+
 IF NO_THIEF_DOWNSIDES
-	call ThiefEventCheck		; $4220: $CD $00 $91
+	call ThiefEventCheck			  ; $4220: $CD $00 $91
 	nop
 	nop
 ELSE
-=======
-
     ; Increment the death count
->>>>>>> 2b7d5289b419caaa986f30443e90c7cc0f0f598e
     ld   a, [wDeathCount]                         ; $4220: $FA $57 $DB ; $4220: $FA $57 $DB
     add  $01                                      ; $4223: $C6 $01 ; $4223: $C6 $01
 ENDC

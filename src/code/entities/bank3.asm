@@ -4557,7 +4557,7 @@ IF QOL		; Acorns and Pieces of Power Messages and SFX
     ld   a, MUSIC_ACTIVE_POWER_UP		  ; $6413: $3E $49
     ld   [wMusicTrackToPlay], a                   ; $6415: $EA $68 $D3
     ld   a, MUSIC_NONE				  ; $6418: $3E $00
-    ldh  [hFFBD], a                               ; $641A: $E0 $BD
+    ldh  [hDefaultMusicTrackAlt], a               ; $641A: $E0 $BD
     ldh  [$00], a				  ; $641C: $E0 $00
 ELSE
     ld   [wDialogGotItem], a                      ; $6404: $EA $A9 $C1
