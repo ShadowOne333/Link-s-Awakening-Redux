@@ -2952,7 +2952,6 @@ ELSE
     inc  [hl]                                     ; $1887: $34
 ENDC
     ld   a, [wPhotos1]                            ; $1888: $FA $0C $DC
-
     or   $40                                      ; $188B: $F6 $40
     ld   [wPhotos1], a                            ; $188D: $EA $0C $DC
     ld   a, $01                                   ; $1890: $3E $01
