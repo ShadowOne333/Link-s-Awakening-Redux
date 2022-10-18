@@ -166,7 +166,7 @@ ELSE
     ld   c, a
     ld   b, $00
     call ReadTileValueFromDiacriticsTable
-IF __DIACRITICS_SUPPORT__
+IF __DIACRITICS_SUPPORT__ || REDUX
     ldh  [hDialogBackgroundTile], a
 ENDC
     pop  bc
@@ -643,7 +643,7 @@ FileCreationInteractiveHandler::
     ; If START is pressed, record the save file name
     ldh  a, [hJoypadState]                        ; $4AB2: $F0 $CC
     and  J_START                                  ; $4AB4: $E6 $80
-IF __DIACRITICS_SUPPORT__
+IF __DIACRITICS_SUPPORT__ || REDUX
     jp   z, .validationEnd
 ELSE
     jr   z, .validationEnd                        ; $4AB6: $28 $71
@@ -728,7 +728,7 @@ Data_001_4B30::
     db   $58, $58, $58, $58, $58, $58, $58, $58   ; $4B58 ; $4B58
     db   $68, $68, $68, $68, $68, $68, $68, $68   ; $4B60 ; $4B60
     db   $68, $68, $68, $68, $68, $68, $68, $68   ; $4B68 ; $4B68
-IF __DIACRITICS_SUPPORT__
+IF __DIACRITICS_SUPPORT__ || REDUX
     db   $78, $78, $78, $78, $78, $78, $78, $78
     db   $78, $78, $78, $78, $78, $78, $78, $78
 ENDC
@@ -742,7 +742,7 @@ Data_001_4B70::
     db   $54, $5C, $64, $6C, $74, $7C, $84, $8C   ; $4B98 ; $4B98
     db   $14, $1C, $24, $2C, $34, $3C, $44, $4C   ; $4BA0 ; $4BA0
     db   $54, $5C, $64, $6C, $74, $7C, $84, $8C   ; $4BA8 ; $4BA8
-IF __DIACRITICS_SUPPORT__
+IF __DIACRITICS_SUPPORT__ || REDUX
     db   $14, $1C, $24, $2C, $34, $3C, $44, $4C
     db   $54, $5C, $64, $6C, $74, $7C, $84, $8C
 ENDC
