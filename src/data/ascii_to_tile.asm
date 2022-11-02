@@ -68,5 +68,3 @@ ELSE
 ;        UP  DOWN LEFT RIGHT                                            BLANK
     db  $34, $35, $36, $37, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , $7e, 0  , 0
 ENDC
-
-DiacriticsTable:
