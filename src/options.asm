@@ -89,6 +89,10 @@ BANK_1C_VAR = 1
 ; __DIACRITICS_SUPPORT__
 ;   Adds support for two diacritical marks on separate tiles above
 ;   letters.
+;
+; __SKIP_DIALOG_SUPPORT__
+;   Pressing the B button will skip the remaining dialog and close the
+;   text box immediately (for most dialog; some is marked as unskippable).
 
 __PATCH_0__ = FALSE ; Applies to JP1+, EN1+, DE, FR
 __PATCH_1__ = FALSE ; Applies to DE, FR
@@ -98,6 +102,7 @@ __PATCH_4__ = FALSE ; Applies to DE1+, JP2+, EN2+, FR1+
 __PATCH_8__ = FALSE ; Applies to JP1+
 __PATCH_9__ = FALSE ; Applies to DE, JP
 __PATCH_A__ = 0 ; 1 in JP, 2 in DE
+__SKIP_DIALOG_SUPPORT__ = FALSE ; TRUE in DE, FR
 __DIACRITICS_SUPPORT__ = FALSE ; TRUE in JP, DE
 __USE_FIXED_DIALOG_BANKS__ = FALSE ; TRUE in JP
 
@@ -214,8 +219,9 @@ __PATCH_0__ = TRUE
 __PATCH_2__ = TRUE
 __PATCH_3__ = TRUE
 __PATCH_4__ = TRUE
-;__PATCH_8__ = TRUE
 __PATCH_9__ = TRUE		; Space for Totaka's song in File Menu
+__SKIP_DIALOG_SUPPORT__ = TRUE
+;__PATCH_8__ = TRUE
 ;__PATCH_A__ = 2
 ;__PATCH_B__ = 2
 
@@ -242,6 +248,7 @@ __PATCH_2__ = TRUE
 IF (VERSION > 0)
 __PATCH_4__ = TRUE
 ENDC
+__SKIP_DIALOG_SUPPORT__ = TRUE
 
 ELIF ("{LANG}" == "DE")
 LANG_DE = TRUE
@@ -271,6 +278,7 @@ __PATCH_A__ = 2
 IF (VERSION > 0)
 __PATCH_4__ = TRUE
 ENDC
+__SKIP_DIALOG_SUPPORT__ = TRUE
 ENDC
 
 IF !DEF(DEBUG_SAVE_BOMB_COUNT)
