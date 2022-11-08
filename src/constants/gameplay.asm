@@ -13,7 +13,7 @@ GAMEPLAY_FILE_DELETE       equ $04
 GAMEPLAY_FILE_COPY         equ $05
 GAMEPLAY_FILE_SAVE         equ $06
 GAMEPLAY_WORLD_MAP         equ $07
-GAMEPLAY_PEACH_PIC         equ $08 ; also used for the Eagle's Tower collapse cutscene
+GAMEPLAY_CUTSCENE          equ $08
 GAMEPLAY_MARIN_BEACH       equ $09
 GAMEPLAY_WF_MURAL          equ $0A
 GAMEPLAY_WORLD             equ $0B
@@ -328,7 +328,7 @@ CHEST_RUPEES_500       equ $1F ; POI: Unused
 CHEST_SEASHELL         equ $20
 ; Miscellaneous
 CHEST_MESSAGE          equ $21 ; used in Catfish's Maw
-CHEST_GEL              equ $22 ; green slime enemy
+CHEST_ZOL              equ $22 ; green slime enemy
 
 ; Values for wTradeSequenceItem
 TRADING_ITEM_NONE              equ $00

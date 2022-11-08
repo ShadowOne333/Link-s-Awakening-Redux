@@ -105,7 +105,7 @@ SlimeEyeState0Handler::
     cp   $02                                      ; $4A05: $FE $02
     jr   nc, .ret_4A2C                            ; $4A07: $30 $23
 
-    ld   a, ENTITY_GEL                            ; $4A09: $3E $1B
+    ld   a, ENTITY_ZOL                            ; $4A09: $3E $1B
     call SpawnNewEntity_trampoline                ; $4A0B: $CD $86 $3B
     call GetRandomByte                            ; $4A0E: $CD $0D $28
     and  $3F                                      ; $4A11: $E6 $3F
@@ -545,7 +545,7 @@ jr_004_4E2E:
     cp   $FF                                      ; $4E45: $FE $FF
     jr   nz, jr_004_4E2E                          ; $4E47: $20 $E5
 
-    jp   DropHeartContainer                       ; $4E49: $C3 $51 $57
+    jp   DropHeartContainer_04                    ; $4E49: $C3 $51 $57
 
 jr_004_4E4C:
     jp   ClearEntityStatusBank04                  ; $4E4C: $C3 $7A $6D
