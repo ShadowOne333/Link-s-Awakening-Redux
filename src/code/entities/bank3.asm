@@ -3875,10 +3875,10 @@ HidingSlimeKeyEntityHandler::
     jr   nz, jr_003_604C                          ; $6015: $20 $35
 
     dec  [hl]                                     ; $6017: $35
+
     ld   a, [wIsIndoor]                           ; $6018: $FA $A5 $DB
     and  a                                        ; $601B: $A7
     jr   nz, .jr_6029                             ; $601C: $20 $0B
-
     ldh  a, [hMapRoom]                            ; $601E: $F0 $F6
     cp   ROOM_OW_POTHOLE_FIELD_SLIME_KEY          ; Overworld Pothole Field - Slime Key
     jr   nz, .jr_6029                             ; $6022: $20 $05
@@ -3889,6 +3889,7 @@ HidingSlimeKeyEntityHandler::
 .jr_6029
     ld   hl, wGoldenLeavesCount                   ; $6029: $21 $15 $DB
     call IncreaseValueAtHLClampAt99               ; $602C: $CD $73 $63
+.jr_602F
     call MarkRoomCompleted                        ; $602F: $CD $2A $51
     ld   hl, hRoomStatus                          ; $6032: $21 $F8 $FF
     res  4, [hl]                                  ; $6035: $CB $A6
@@ -3906,6 +3907,7 @@ HidingSlimeKeyEntityHandler::
 .openDialog
     ld   a, e                                     ; $6047: $7B
     call OpenDialogInTable0                       ; $6048: $CD $85 $23
+.jr_604B
     xor  a                                        ; $604B: $AF
 
 jr_003_604C:

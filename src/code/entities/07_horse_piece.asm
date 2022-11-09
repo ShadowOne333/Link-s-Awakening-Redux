@@ -79,7 +79,12 @@ Data_007_764B::
     db   $F0, $F4, $00, $0C, $10, $0C, $00, $F4
 
 Data_007_7653::
+IF BUGFIXES
+; Fix horse heads (Rando)
+    db   $00, $01, $00, $00
+ELSE
     db   $00, $01, $04, $00
+ENDC
 
 func_007_7657::
     call GetEntityTransitionCountdown             ; $7657: $CD $05 $0C

@@ -1406,7 +1406,6 @@ jr_014_54D1:
     sub  $16                                      ; $54D3: $D6 $16
     cp   $5E                                      ; $54D5: $FE $5E
     jr   c, ret_014_54E7                          ; $54D7: $38 $0E
-
     ldh  a, [hLinkPositionY]                      ; $54D9: $F0 $99
     dec  a                                        ; $54DB: $3D
     ldh  [hLinkPositionY], a                      ; $54DC: $E0 $99

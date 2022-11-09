@@ -4572,6 +4572,11 @@ label_002_5C33:
     jr   .loop_5CFE                               ; $5D1F: $18 $DD
 
 .jr_5D21
+IF BUGFIXES
+; Fix writting wrong room status (Rando)
+; The normal rom contains a pretty nasty bug where door closing triggers in D7/D8 can effect doors in dungeons D1-D6. This fix should prevent this.
+    call GetRoomStatusAddress			  ; $5D21: $CD $9F $5B
+ELSE
     ld   hl, wOverworldRoomStatus                 ; $5D21: $21 $00 $D8
     ld   a, [wIsIndoor]                           ; $5D24: $FA $A5 $DB
     and  a                                        ; $5D27: $A7
@@ -4589,6 +4594,7 @@ label_002_5C33:
     ld   e, a                                     ; $5D38: $5F
     ld   d, $00                                   ; $5D39: $16 $00
     add  hl, de                                   ; $5D3B: $19
+ENDC
     push hl                                       ; $5D3C: $E5
     ld   a, [wC189]                               ; $5D3D: $FA $89 $C1
     ld   e, a                                     ; $5D40: $5F
@@ -5024,7 +5030,12 @@ ENDC
     cp   $FF                                      ; $6334: $FE $FF
     jr   nz, .savewTimeToNextLowHealthSFX         ; $6336: $20 $07
     ; play low hearts sound
+IF SLOW_HEALTH_BEEP
+    ; Decrement time to play the low health sound
+    ld   a, $60             		          ; $6338: $3E $60
+ELSE
     ld   a, LOW_HEALTH_SFX_PAUSE                  ; $6338: $3E $30
+ENDC
     ld   hl, hWaveSfx                             ; $633A: $21 $F3 $FF
     ld   [hl], WAVE_SFX_LOW_HEARTS                ; $633D: $36 $04
 
@@ -6622,6 +6633,7 @@ jr_002_6FE3:
     ld   a, [wGoldenLeavesCount]                  ; $7002: $FA $15 $DB
     cp   SLIME_KEY                                ; $7005: $FE $06
     ld_dialog_low e, Dialog231 ; "Slime Keyhole"  ; $7007: $1E $31
+
     jr   nz, jr_002_703E                          ; $7009: $20 $33
 
     jr   jr_002_7015                              ; $700B: $18 $08

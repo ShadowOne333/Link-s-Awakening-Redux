@@ -200,10 +200,10 @@ build-all: $(games)
 
 # Build Redux version
 redux: $(redux)
-	rm -f $(games)
-	rm -f $(games:%.gbc=src/main.%.o)
-	rm -f $(games:.gbc=.map)
-	rm -f $(games:.gbc=.sym)
+	rm -f $(games) azle-r2.gbc
+	rm -f $(games:%.gbc=src/main.%.o) src/main.azle-r2.o
+	rm -f $(games:.gbc=.map) azle-r2.map
+	rm -f $(games:.gbc=.sym) azle-r2.sym
 
 # Test the default revision.
 test: build

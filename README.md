@@ -57,6 +57,20 @@ So what does this hack do specifically?
 	- Guardian Acorns and Pieces of Power are quick pickups. No more long text interrupting game play.
 	- No more low health beeping.
 
+* Bugfixes and other features:
+	- Fix wrong warps (Randomizer)
+	- Fix writting wrong room status (Doors in D7/D8 affect doors in D1-D6)  (Randomizer)
+	- Reduce horse heads odds (1/2 chance instead of 1/4)  (Randomizer)
+	- Allow a max of 3 firerod fires
+	- Allow a max of two bombs to be placed
+	- Allow a max of 3 arrows in the air
+	- Reduced the delay between arrow shots
+	- Allow the bridge photo with a follower (Randomizer)
+	- Allow the photographer with Bow Wow saved (Randomizer)
+	- Allow the Bow Wow photo with a follower (Randomizer)
+	- Allow the Richard photo when the castle is opened (Randomizer)
+	- Allow Richard photo without the Slime Key (Randomizer)
+
 
 -------------------
 
@@ -157,6 +171,7 @@ Link's Awakening Redux:
 * vince94 - [Photo Album Translation](https://www.romhacking.net/hacks/2361/)
 * IcePenguin - [Quality of Life Improvements](https://www.romhacking.net/hacks/3597/)
 * Tzepish - [Font Improvement hack](https://www.romhacking.net/hacks/927/)
+* Daid - [LADX Randomizer](https://github.com/daid/LADXR)
 * Jayro - [Script and header fixes](https://gbatemp.net/download/the-legend-of-zelda-links-awakening-dx-redux.37295/)
 
 Link's Awakening DX Disassembly:

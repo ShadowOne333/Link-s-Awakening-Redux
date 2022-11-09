@@ -1994,7 +1994,12 @@ UseItem::
     jr   nz, .return                              ; $12DF: $20 $0C
 
     ld   a, [wActiveProjectileCount]              ; $12E1: $FA $4D $C1
+IF BUGFIXES
+; Allow a max of 3 firerod fires
+    cp   $03
+ELSE
     cp   $02                                      ; $12E4: $FE $02
+ENDC
     jr   nc, .return                              ; $12E6: $30 $05
 
     ld   a, $0E | ATTACK_STEP_ITEM_MAGIC_ROD      ; $12E8: $3E $8E
@@ -2085,7 +2090,12 @@ func_020_4B4A_trampoline::
 
 PlaceBomb::
     ld   a, [wHasPlacedBomb]                      ; $135A: $FA $4E $C1
+IF BUGFIXES
+; Allow two bombs to be placed
+    cp   $02
+ELSE
     cp   $01                                      ; $135D: $FE $01
+ENDC
     ret  nc                                       ; $135F: $D0
 
     ld   a, [wBombCount]                          ; $1360: $FA $4D $DB
@@ -2153,9 +2163,19 @@ ShootArrow::
     ret  nz                                       ; $13C1: $C0
     ; return if maximal amount of arrows are allready in the air
     ld   a, [wActiveProjectileCount]              ; $13C2: $FA $4D $C1
+IF BUGFIXES
+; Allow a max of 3 arrows in the air
+    cp   $03
+ELSE
     cp   ARROW_MAX_ACTIVE_COUNT                   ; $13C5: $FE $02
+ENDC
     jr   nc, label_140F.return                    ; $13C7: $30 $65
+IF BUGFIXES
+; Reduce delay between arrow shots
+    ld   a, $0A
+ELSE
     ld   a, $10                                   ; $13C9: $3E $10
+ENDC
     ld   [wIsShootingArrow], a                    ; $13CB: $EA $4C $C1
     ld   a, [wArrowCount]                         ; $13CE: $FA $45 $DB
     and  a                                        ; $13D1: $A7
@@ -2990,7 +3010,12 @@ ENDC
     inc  hl                                       ; $18CB: $23
     inc  c                                        ; $18CC: $0C
     ld   a, c                                     ; $18CD: $79
+IF BUGFIXES
+; Fix wrong warp (Rando)
+    cp   $03                                      ; $18CE: $FE $03
+ELSE
     cp   $04                                      ; $18CE: $FE $04
+ENDC
     jr   nz, .loop                                ; $18D0: $20 $E8
 
 .break

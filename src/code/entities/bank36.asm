@@ -51,7 +51,11 @@ func_036_403A::
     or   [hl]                                     ; $4048: $B6
     ld   hl, wIsRoosterFollowingLink              ; $4049: $21 $7B $DB
     or   [hl]                                     ; $404C: $B6
+IF BUGFIXES
+; Allow bridge photo with follower (Rando)
+ELSE
     call nz, UnloadEntity                         ; $404D: $C4 $8D $3F
+ENDC
     call PointHLToEntityPosX                      ; $4050: $CD $23 $6C
     ld   [hl], $E8                                ; $4053: $36 $E8
     call PointHLToEntityPosY                      ; $4055: $CD $28 $6C
@@ -72,7 +76,11 @@ jr_036_4063:
 
     ld   a, [de]                                  ; $406B: $1A
     and  a                                        ; $406C: $A7
+IF BUGFIXES
+; Allow bridge photo with follower
+ELSE
     ret  nz                                       ; $406D: $C0
+ENDC
 
 .jr_406E
     inc  de                                       ; $406E: $13
@@ -578,7 +586,11 @@ func_036_436D::
     call CopyDataToVRAM                           ; $438F: $CD $13 $0A
     ld   a, [wIsMarinFollowingLink]               ; $4392: $FA $73 $DB
     ld   hl, wIsBowWowFollowingLink               ; $4395: $21 $56 $DB
+IF BUGFIXES
+; Allow photographer with Bow Wow saved (Rando)
+ELSE
     or   [hl]                                     ; $4398: $B6
+ENDC
     ld   hl, wIsGhostFollowingLink                ; $4399: $21 $79 $DB
     or   [hl]                                     ; $439C: $B6
     ld   hl, wIsRoosterFollowingLink              ; $439D: $21 $7B $DB
@@ -622,7 +634,12 @@ func_036_43BD::
     or   [hl]                                     ; $43D7: $B6
     ld   hl, wIsRoosterFollowingLink              ; $43D8: $21 $7B $DB
     or   [hl]                                     ; $43DB: $B6
+IF BUGFIXES
+; Allow photographer with Bow Wow saved
+    and  $00
+ELSE
     and  LOW(~BOW_WOW_KIDNAPPED)                  ; $43DC: $E6 $7F
+ENDC
     jr   z, .jr_43E6                              ; $43DE: $28 $06
 
     call_open_dialog Dialog2AD                    ; $43E0
@@ -8316,7 +8333,11 @@ SpawnPhotographer::
     ld   hl, wIsBowWowFollowingLink               ; $717D: $21 $56 $DB
     or   [hl]                                     ; $7180: $B6
     and  LOW(~BOW_WOW_KIDNAPPED)                  ; $7181: $E6 $7F
+IF BUGFIXES
+; Allow photographer with Bow Wow saved
+ELSE
     ret  nz                                       ; $7183: $C0
+ENDC
 
     push bc                                       ; $7184: $C5
     ld   a, [wCurrentBank]                        ; $7185: $FA $AF $DB
@@ -8366,7 +8387,11 @@ label_036_71AD:
 .jr_71C7
     ld   a, [wIsBowWowFollowingLink]              ; $71C7: $FA $56 $DB
     and  a                                        ; $71CA: $A7
+IF BUGFIXES
+; Allow photographer with Bow Wow saved
+ELSE
     jp   nz, IsInteractiveMotionAllowed.allow     ; $71CB: $C2 $88 $72
+ENDC
 
     ld   a, [wIsMarinFollowingLink]               ; $71CE: $FA $73 $DB
     ld   hl, wIsGhostFollowingLink                ; $71D1: $21 $79 $DB
@@ -8374,7 +8399,11 @@ label_036_71AD:
     ld   hl, wIsRoosterFollowingLink              ; $71D5: $21 $7B $DB
     or   [hl]                                     ; $71D8: $B6
     and  a                                        ; $71D9: $A7
+IF BUGFIXES
+; Allow Bow Wow photo with follower (Rando)
+ELSE
     jp   nz, IsInteractiveMotionAllowed.allow     ; $71DA: $C2 $88 $72
+ENDC
 
     ldh  a, [hLinkPositionX]                      ; $71DD: $F0 $98
     cp   $38                                      ; $71DF: $FE $38
@@ -8396,7 +8425,11 @@ label_036_71AD:
 label_036_71FA:
     ld   a, [wOverworldRoomStatus + $79]          ; $71FA: $FA $79 $D8
     and  $10                                      ; $71FD: $E6 $10
+IF BUGFIXES
+; Allow Richard photo when the castle is opened (Rando)
+ELSE
     jp   nz, IsInteractiveMotionAllowed.allow     ; $71FF: $C2 $88 $72
+ENDC
 
     ld   a, [wPhotos2]                            ; $7202: $FA $0D $DC
     and  $02                                      ; $7205: $E6 $02
@@ -8430,14 +8463,22 @@ label_036_7228:
 
     ld   a, [wGoldenLeavesCount]                  ; $722F: $FA $15 $DB
     cp   SLIME_KEY                                ; $7232: $FE $06
+IF BUGFIXES
+; Allow Richard photo without the Slime Key (Rando)
+ELSE
     jr   nz, IsInteractiveMotionAllowed.allow     ; $7234: $20 $52
+ENDC
 
     ld   hl, wIndoorARoomStatus                   ; $7236: $21 $00 $D9
     ld   de, $E3                                  ; $7239: $11 $E3 $00
     add  hl, de                                   ; $723C: $19
     ld   a, [hl]                                  ; $723D: $7E
     and  $40                                      ; $723E: $E6 $40
+IF BUGFIXES
+; Allow Richard photo without the Slime Key
+ELSE
     jr   z, IsInteractiveMotionAllowed.allow      ; $7240: $28 $46
+ENDC
 
     ldh  a, [hLinkPositionX]                      ; $7242: $F0 $98
     cp   $25                                      ; $7244: $FE $25
