@@ -195,9 +195,9 @@ TitleLogoTitles::
 incbin "gfx/intro/title.dmg.2bpp"
 FontTiles::
 IF VWF
-incbin "gfx/fonts/font.dmg.vwf.2bpp"
+incbin "gfx/fonts/font.vwf.2bpp"
 ELSE
-incbin "gfx/fonts/font.dmg.2bpp"
+incbin "gfx/fonts/font.2bpp"
 ENDC
 Overworld2Tiles::
 IF VWF
@@ -500,9 +500,9 @@ incbin "gfx/menus/menu.cgb.2bpp"
 incbin "gfx/menus/save_menu.cgb.2bpp"
 incbin "gfx/intro/title.cgb.2bpp"
 IF VWF
-incbin "gfx/fonts/font.cgb.vwf.2bpp"
+incbin "gfx/fonts/font.vwf.2bpp"
 ELSE
-incbin "gfx/fonts/font.cgb.2bpp"
+incbin "gfx/fonts/font.2bpp" ; unused
 ENDC
 incbin "gfx/world/overworld_2.cgb.2bpp"
 

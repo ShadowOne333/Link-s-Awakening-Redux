@@ -4,3 +4,8 @@
 
 - Certain texts get their starting letter erased for some reason (Dialogs 0DE, 0F0, 119, 11B, 124, 133, 135, 13C, 180, 1AA, 1AB, 1AC, 1B0, 1B1, 1B2)
 Seems like the first letter gets replaced by an 8x8 tile (2nd to last or last tile) with letters or a blank space from the first or 2nd line. (Something related to the last letter it prints before @, as that's when it overwrites the letter)
+
+
+(Non-VWF related)
+- Fix the Tunic glitch, mentioned inside entities.asm
+- Keep the Color Dungeon gravestone opened once it has been opened
