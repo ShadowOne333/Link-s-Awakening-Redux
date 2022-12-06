@@ -589,7 +589,7 @@ ENDC
     ld   e, a                                     ; $260A: $5F
 IF VWF
     ld   a, BANK(saveLetterWidths)
-    ld   [MBC3SelectBank], a
+    ld   [rSelectROMBank], a
     call saveLetterWidths
 ENDC
     ld   a, BANK(CodepointToTileMap)              ; $260B: $3E $1C
