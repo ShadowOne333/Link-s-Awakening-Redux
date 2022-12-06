@@ -165,7 +165,7 @@ ENDC
     ; Else, render a non-interactive transition effect.
 
     ld   a, BANK(ApplyFadeToWhite_DMG)            ; $027C: $3E $14
-    ld   [MBC3SelectBank], a                      ; $027E: $EA $00 $21
+    ld   [rSelectROMBank], a                      ; $027E: $EA $00 $21
 
     ; Increment frame count for the transition effect
     ld   a, [wTransitionGfxFrameCount]            ; $0281: $FA $80 $C1
@@ -214,7 +214,7 @@ ENDC
 .transitionDone
     ; Render transition effect
     ld   a, BANK(RenderTransitionEffect)          ; $02B7: $3E $14
-    ld   [MBC3SelectBank], a                      ; $02B9: $EA $00 $21
+    ld   [rSelectROMBank], a                      ; $02B9: $EA $00 $21
     pop  af                                       ; $02BC: $F1
     call RenderTransitionEffect                   ; $02BD: $CD $38 $50
 
@@ -343,14 +343,10 @@ ENDC
     xor  a                                        ; $0353: $AF
     ld   [wPaletteToLoadForTileMap], a            ; $0354: $EA $D2 $DD
 
-    ;
-    ; Render Window
-    ;
-    callsw UpdateWindowPosition                   ; $0357: $3E $01 $CD $0C $08 $CD $4B $5F
+    ; Hide any sprites that should be hidden
+    ; (behind the window or dialog box)
+    callsw HideSprites                            ; $0357: $3E $01 $CD $0C $08 $CD $4B $5F
 
-    ;
-    ;
-    ;
 .waitForNextFrame
     ; Animate inventory window
     callsw func_01F_7F80                          ; $035F: $3E $1F $CD $0C $08 $CD $80 $7F
