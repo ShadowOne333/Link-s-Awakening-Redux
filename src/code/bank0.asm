@@ -469,9 +469,9 @@ RestoreStackedBank::
     call SwitchBank                               ; $0AB1: $CD $0C $08
     ret                                           ; $0AB4: $C9
 
-func_AB5::
+ChangeBGColumnPaletteAndExecuteDrawCommands::
     push af                                       ; $0AB5: $F5
-    callsb func_024_5C1A                          ; $0AB6: $3E $24 $EA $00 $21 $CD $1A $5C
+    callsb ChangeBGColumnPalette                  ; $0AB6: $3E $24 $EA $00 $21 $CD $1A $5C
     ld   de, wDrawCommand                         ; $0ABE: $11 $01 $D6
     call ExecuteDrawCommands                      ; $0AC1: $CD $27 $29
     jr   RestoreStackedBank                       ; $0AC4: $18 $EA
@@ -552,11 +552,17 @@ CopyObjectsAttributesToWRAM2::
     ld   [rSelectROMBank], a                      ; $0B2B: $EA $00 $21
     ret                                           ; $0B2E: $C9
 
-; On GBC, copy some overworld objects to ram bank 2
+; On GBC, copy the overworld object at [hl] to ram bank 2.
+;
+; This is used when the inventory menu is exited to restore the background objects
+; as they were modified (i.e. cut grass, holes dug with the shovel, etc.)
+;
+;
 ; Inputs:
-;   a  data bank?
-;   hl destination in RAM bank 2
-func_2BF::
+;   a  bit7: If not set, check if the object at address hl is in a specific ignore list.
+;      bit0-6: Bank number to return to after this function is finished.
+;   hl source in RAM bank 0 and destination in RAM bank 2
+BackupObjectInRAM2::
     ldh  [hMultiPurpose2], a                      ; $0B2F: $E0 $D9
     ldh  a, [hIsGBC]                              ; $0B31: $F0 $FE
     and  a                                        ; $0B33: $A7
@@ -570,7 +576,7 @@ func_2BF::
     ldh  a, [hMultiPurpose2]                      ; $0B3B: $F0 $D9
     and  $80                                      ; $0B3D: $E6 $80
     jr   nz, .else                                ; $0B3F: $20 $0A
-    callsb func_020_6E50                          ; $0B41: $3E $20 $EA $00 $21 $CD $50 $6E
+    callsb CheckOverworldObjectIgnoreList         ; $0B41: $3E $20 $EA $00 $21 $CD $50 $6E
     jr   c, .endIf                                ; $0B49: $38 $09
 .else
     ld   b, [hl]                                  ; $0B4B: $46
@@ -611,11 +617,11 @@ CopyBGMapFromBank::
     ; hl += $168
     ld   de, $168                                 ; $0B72: $11 $68 $01
     add  hl, de                                   ; $0B75: $19
-    ; Switch to RAM bank 1
+    ; Switch to VRAM bank 1
     ld   a, $01                                   ; $0B76: $3E $01
     ld   [rVBK], a                                ; $0B78: $E0 $4F
     call CopyToBGMap0                             ; $0B7A: $CD $96 $0B
-    ; Switch back to RAM bank 0
+    ; Switch back to VRAM bank 0
     xor  a                                        ; $0B7D: $AF
     ld   [rVBK], a                                ; $0B7E: $E0 $4F
 .gbcEnd
@@ -1551,7 +1557,7 @@ WorldInteractiveHandler::
     dec  e                                        ; $1009: $1D
 
 .label_100A
-    callsb func_020_5C9C                          ; $100A: $3E $20 $EA $00 $21 $CD $9C $5C
+    callsb DrawInventorySlots                     ; $100A: $3E $20 $EA $00 $21 $CD $9C $5C
 
 label_1012::
     callsw func_014_54F8                          ; $1012: $3E $14 $CD $0C $08 $CD $F8 $54
@@ -1631,10 +1637,10 @@ ApplyGotItem::
 
 InitGotItemSequence::
     ldh  a, [hPressedButtonsMask]                 ; $107F: $F0 $CB
-    and  $B0                                      ; $1081: $E6 $B0
+    and  J_A | J_B | J_START                      ; $1081: $E6 $B0
     jr   nz, .jp_10DB                             ; $1083: $20 $56
     ldh  a, [hPressedButtonsMask]                 ; $1085: $F0 $CB
-    and  $40                                      ; $1087: $E6 $40
+    and  J_SELECT                                 ; $1087: $E6 $40
     jr   z, .jp_10DB                              ; $1089: $28 $50
     ld   a, [wD45F]                               ; $108B: $FA $5F $D4
     inc  a                                        ; $108E: $3C
@@ -2520,7 +2526,7 @@ CheckItemsSwordCollision::
     ret                                           ; $16F7: $C9
 
 .label_16F8
-    ld   a, $17                                   ; $16F8: $3E $17
+    ld   a, NOISE_SFX_UNKNOWN_17                  ; $16F8: $3E $17
     ldh  [hNoiseSfx], a                           ; $16FA: $E0 $F4
     ret                                           ; $16FC: $C9
 
@@ -2919,7 +2925,7 @@ ENDC
     ld   a, $30                                   ; $1963: $3E $30
     ldh  [hDungeonTitleMessageCountdown], a       ; $1965: $E0 $B4
     xor  a                                        ; $1967: $AF
-    ld   [hSwitchBlocksState], a                  ; $1968: $EA $FB $D6
+    ld   [wSwitchBlocksState], a                  ; $1968: $EA $FB $D6
     ld   [wSwitchableObjectAnimationStage], a     ; $196B: $EA $F8 $D6
 
 .label_196E
@@ -3068,7 +3074,8 @@ ENDC
 
 func_1A22::
     callsb func_020_6C4F                          ; $1A22: $3E $20 $EA $00 $21 $CD $4F $6C
-    callsb func_020_55CA                          ; $1A2A: $3E $20 $EA $00 $21 $CD $CA $55
+    callsb FadeOutMusic                           ; $1A2A: $3E $20 $EA $00 $21 $CD $CA $55
+    ; Return to previous ROM bank callsite
     ld   a, [wCurrentBank]                        ; $1A32: $FA $AF $DB
     ld   [rSelectROMBank], a                      ; $1A35: $EA $00 $21
     ret                                           ; $1A38: $C9
@@ -3076,6 +3083,7 @@ func_1A22::
 func_1A39::
     callsb func_020_6C7A                          ; $1A39: $3E $20 $EA $00 $21 $CD $7A $6C
     callsb func_020_563B                          ; $1A41: $3E $20 $EA $00 $21 $CD $3B $56
+    ; Return to previous ROM bank callsite
     ld   a, [wCurrentBank]                        ; $1A49: $FA $AF $DB
     ld   [rSelectROMBank], a                      ; $1A4C: $EA $00 $21
     ret                                           ; $1A4F: $C9
@@ -3335,8 +3343,8 @@ UpdateSwitchBlockTiles::
     ld   hl, hLinkInteractiveMotionBlocked        ; $1EE1: $21 $A1 $FF
     ld   [hl], $01                                ; $1EE4: $36 $01
 
-    ; de = [hSwitchBlocksState]
-    ld   hl, hSwitchBlocksState                   ; $1EE6: $21 $FB $D6
+    ; de = [wSwitchBlocksState]
+    ld   hl, wSwitchBlocksState                   ; $1EE6: $21 $FB $D6
     ld   e, [hl]                                  ; $1EE9: $5E
     ld   d, $00                                   ; $1EEA: $16 $00
     inc  a                                        ; $1EEC: $3C
@@ -3344,11 +3352,11 @@ UpdateSwitchBlockTiles::
     ; On stage 3…
     cp   03                                       ; $1EED: $FE $03
     jr   nz, .stage3End                           ; $1EEF: $20 $0A
-    ; Invert second bit of hSwitchBlocksState (toggle between 0 and 2)
+    ; Invert second bit of wSwitchBlocksState (toggle between 0 and 2)
     push af                                       ; $1EF1: $F5
-    ld   a, [hSwitchBlocksState]                  ; $1EF2: $FA $FB $D6
+    ld   a, [wSwitchBlocksState]                  ; $1EF2: $FA $FB $D6
     xor  $02                                      ; $1EF5: $EE $02
-    ld   [hSwitchBlocksState], a                  ; $1EF7: $EA $FB $D6
+    ld   [wSwitchBlocksState], a                  ; $1EF7: $EA $FB $D6
     pop  af                                       ; $1EFA: $F1
 .stage3End
 
@@ -3702,7 +3710,7 @@ ENDC
 
 .specialCasesEnd
 
-    ld   a, [wBButtonSlot]                        ; $20CF: $FA $00 $DB
+    ld   a, [wInventoryItems.BButtonSlot]         ; $20CF: $FA $00 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $20D2: $FE $03
     jr   nz, .jr_20DD                             ; $20D4: $20 $07
     ldh  a, [hPressedButtonsMask]                 ; $20D6: $F0 $CB
@@ -3711,7 +3719,7 @@ ENDC
     ret                                           ; $20DC: $C9
 
 .jr_20DD
-    ld   a, [wAButtonSlot]                        ; $20DD: $FA $01 $DB
+    ld   a, [wInventoryItems.AButtonSlot]         ; $20DD: $FA $01 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $20E0: $FE $03
 IF __OPTIMIZATIONS_1__
     ret  nz
@@ -4048,18 +4056,18 @@ DoUpdateBGRegion::
     ld   b, $00                                   ; $224C: $06 $00
     ld   c, [hl]                                  ; $224E: $4E
 
-    ; If running on GBC…
+    ; When on the GBC Overworld, read the object value from WRAM2 instead
+    ; (See BackupObjectInRAM2)
     ldh  a, [hIsGBC]                              ; $224F: $F0 $FE
     and  a                                        ; $2251: $A7
     jr   z, .ramSwitchEnd                         ; $2252: $28 $0E
-    ; … and is indoor…
     ld   a, [wIsIndoor]                           ; $2254: $FA $A5 $DB
     and  a                                        ; $2257: $A7
     jr   nz, .ramSwitchEnd                        ; $2258: $20 $08
-    ; … switch to RAM Bank 2,
+    ; Switch to RAM Bank 2,
     ld   a, $02                                   ; $225A: $3E $02
     ld   [rSVBK], a                               ; $225C: $E0 $70
-    ; read hl,
+    ; read the object value,
     ld   c, [hl]                                  ; $225E: $4E
     ; switch back to RAM Bank 0.
     xor  a                                        ; $225F: $AF
@@ -5892,7 +5900,7 @@ LoadRoom::
     cp   ROOM_INDOOR_A_GORIYA                     ; $3195: $FE $F5
     jr   nz, .goriyaRoomEnd                       ; $3197: $20 $0D
     ld   a, [wTradeSequenceItem]                  ; $3199: $FA $0E $DB
-    cp   INVENTORY_MAGNIFYING_LENS                ; $319C: $FE $0E
+    cp   TRADING_ITEM_MAGNIFYING_LENS             ; $319C: $FE $0E
     jr   nz, .goriyaRoomEnd                       ; $319E: $20 $06
     ld   bc, IndoorsAF5Alt                        ; $31A0: $01 $55 $78
     jp   .parseRoomHeader                         ; $31A3: $C3 $3A $32
@@ -6734,7 +6742,7 @@ label_3527::
     ld   a, $1A                                   ; $3527: $3E $1A
 
 label_3529::
-    call func_2BF                                 ; $3529: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $3529: $CD $2F $0B
     ret                                           ; $352C: $C9
 
 ; Copy an object from the room data to the active room
@@ -6898,7 +6906,7 @@ label_35CB::
 
 label_35E8::
     ld   a, $24                                   ; $35E8: $3E $24
-    call func_2BF                                 ; $35EA: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $35EA: $CD $2F $0B
     ret                                           ; $35ED: $C9
 
 label_35EE::

@@ -1163,7 +1163,7 @@ jr_014_5360:
 
 .jr_537D
     ld   e, $10                                   ; $537D: $1E $10
-    ld   a, [wBButtonSlot]                        ; $537F: $FA $00 $DB
+    ld   a, [wInventoryItems.BButtonSlot]         ; $537F: $FA $00 $DB
     cp   d                                        ; $5382: $BA
     jr   nz, .jr_5389                             ; $5383: $20 $04
 
@@ -1171,7 +1171,7 @@ jr_014_5360:
     jr   jr_014_5391                              ; $5387: $18 $08
 
 .jr_5389
-    ld   a, [wAButtonSlot]                        ; $5389: $FA $01 $DB
+    ld   a, [wInventoryItems.AButtonSlot]         ; $5389: $FA $01 $DB
     cp   d                                        ; $538C: $BA
     jr   z, jr_014_5391                           ; $538D: $28 $02
 
@@ -1682,7 +1682,7 @@ jr_014_5677:
 
 jr_014_5679:
     ld   a, $94                                   ; $5679: $3E $94
-    call func_2BF                                 ; $567B: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $567B: $CD $2F $0B
     call label_2887                               ; $567E: $CD $87 $28
     ldh  a, [hIsGBC]                              ; $5681: $F0 $FE
     and  a                                        ; $5683: $A7
@@ -1847,7 +1847,7 @@ label_014_5743:
 label_014_5767:
     ld   [hl], $C6                                ; $5767: $36 $C6
     ld   a, $94                                   ; $5769: $3E $94
-    call func_2BF                                 ; $576B: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $576B: $CD $2F $0B
     call label_2887                               ; $576E: $CD $87 $28
     ldh  a, [hIsGBC]                              ; $5771: $F0 $FE
     and  a                                        ; $5773: $A7
@@ -1922,7 +1922,7 @@ label_014_57E1:
     add  hl, de                                   ; $57E4: $19
     ld   [hl], $E8                                ; $57E5: $36 $E8
     ld   a, $94                                   ; $57E7: $3E $94
-    call func_2BF                                 ; $57E9: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $57E9: $CD $2F $0B
     call label_2887                               ; $57EC: $CD $87 $28
     ldh  a, [hIsGBC]                              ; $57EF: $F0 $FE
     and  a                                        ; $57F1: $A7

@@ -27,7 +27,7 @@ ManboAndFishesEntityHandler::
 
 .jr_4521
     call func_018_4833                            ; $4521: $CD $33 $48
-    call func_018_7D36                            ; $4524: $CD $36 $7D
+    call PushLinkOutOfEntity_18                   ; $4524: $CD $36 $7D
     ldh  a, [hActiveEntityState]                  ; $4527: $F0 $F0
     JP_TABLE                                      ; $4529
 ._00 dw ManboAndFishesState0Handler
@@ -79,8 +79,8 @@ ManboAndFishesState1Handler::
     and  a                                        ; $456E: $A7
     jr   nz, jr_018_4581                          ; $456F: $20 $10
 
-    ld   e, INVENTORY_SLOT_COUNT -1               ; $4571: $1E $0B
-    ld   hl, wBButtonSlot                         ; $4573: $21 $00 $DB
+    ld   e, INVENTORY_SLOT_COUNT - 1              ; $4571: $1E $0B
+    ld   hl, wInventoryItems.BButtonSlot          ; $4573: $21 $00 $DB
 
 .loop_4576
     ld   a, [hl+]                                 ; $4576: $2A

@@ -54,7 +54,7 @@ func_004_6E92::
 jr_004_6ECA:
     call func_004_73FE                            ; $6ECA: $CD $FE $73
     call CopyEntityPositionToActivePosition       ; $6ECD: $CD $8A $3D
-    call ApplySolidCollision_04                   ; $6ED0: $CD $E3 $7B
+    call PushLinkOutOfEntity_04                   ; $6ED0: $CD $E3 $7B
     call func_004_73B7                            ; $6ED3: $CD $B7 $73
     ldh  a, [hActiveEntityState]                  ; $6ED6: $F0 $F0
     cp   $03                                      ; $6ED8: $FE $03
@@ -430,7 +430,7 @@ label_004_7104:
     call IncrementEntityState                     ; $7104: $CD $12 $3B
 
 func_004_7107::
-    ld   a, $20                                   ; $7107: $3E $20
+    ld   a, NOISE_SFX_ELECTRICITY                 ; $7107: $3E $20
     ldh  [hNoiseSfx], a                           ; $7109: $E0 $F4
 
 ret_004_710B:
@@ -492,7 +492,7 @@ jr_004_7152:
     ld   [hl], $10                                ; $715E: $36 $10
 
 func_004_7160::
-    ld   a, $21                                   ; $7160: $3E $21
+    ld   a, NOISE_SFX_UNKNOWN_21                  ; $7160: $3E $21
     ldh  [hNoiseSfx], a                           ; $7162: $E0 $F4
 
 ret_004_7164:

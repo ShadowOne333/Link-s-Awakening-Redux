@@ -259,7 +259,7 @@ OwlState1Handler::
 
 OwlState2Handler::
     call ReturnIfNonInteractive_06                ; $6972: $CD $C6 $64
-    call func_006_641A                            ; $6975: $CD $1A $64
+    call PushLinkOutOfEntity_06                   ; $6975: $CD $1A $64
     ld   a, [wTransitionSequenceCounter]          ; $6978: $FA $6B $C1
     cp   $04                                      ; $697B: $FE $04
     ret  nz                                       ; $697D: $C0
@@ -357,7 +357,7 @@ jr_006_6A05:
     and  $07                                      ; $6A07: $E6 $07
     jr   nz, .jr_6A0F                             ; $6A09: $20 $04
 
-    ld   a, $05                                   ; $6A0B: $3E $05
+    ld   a, NOISE_SFX_CUT_GRASS                   ; $6A0B: $3E $05
     ldh  [hNoiseSfx], a                           ; $6A0D: $E0 $F4
 
 .jr_6A0F

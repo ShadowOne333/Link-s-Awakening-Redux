@@ -136,7 +136,7 @@ KikiOpenDialog::
     ret                                           ; $58DD: $C9
 
 jr_007_58DE:
-    call func_007_7CF0                            ; $58DE: $CD $F0 $7C
+    call PushLinkOutOfEntity_07                   ; $58DE: $CD $F0 $7C
     call func_007_7D43                            ; $58E1: $CD $43 $7D
     jr   nc, func_007_58FA                        ; $58E4: $30 $14
 
@@ -421,15 +421,15 @@ jr_007_5A2A:
     ld   hl, wRoomObjectsArea + $25               ; $5A8E: $21 $25 $D7
     ld   [hl], $DB                                ; $5A91: $36 $DB
     ld   a, $87                                   ; $5A93: $3E $87
-    call func_2BF                                 ; $5A95: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $5A95: $CD $2F $0B
     ld   hl, wRoomObjectsArea + $35               ; $5A98: $21 $35 $D7
     ld   [hl], $DB                                ; $5A9B: $36 $DB
     ld   a, $87                                   ; $5A9D: $3E $87
-    call func_2BF                                 ; $5A9F: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $5A9F: $CD $2F $0B
     ld   hl, wRoomObjectsArea + $45               ; $5AA2: $21 $45 $D7
     ld   [hl], $DB                                ; $5AA5: $36 $DB
     ld   a, $87                                   ; $5AA7: $3E $87
-    jp   func_2BF                                 ; $5AA9: $C3 $2F $0B
+    jp   BackupObjectInRAM2                       ; $5AA9: $C3 $2F $0B
 
 func_007_5AAC::
     call GetEntityTransitionCountdown             ; $5AAC: $CD $05 $0C

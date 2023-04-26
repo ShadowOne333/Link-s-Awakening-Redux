@@ -66,7 +66,7 @@ func_019_4DBC::
 func_019_4E00::
     ld   de, Unknown064SpriteVariants             ; $4E00: $11 $B8 $4D
     call RenderActiveEntitySpritesPair            ; $4E03: $CD $C0 $3B
-    jp   func_019_7CA2                            ; $4E06: $C3 $A2 $7C
+    jp   PushLinkOutOfEntity_19                   ; $4E06: $C3 $A2 $7C
 
 func_019_4E09::
     ld   a, $02                                   ; $4E09: $3E $02
@@ -357,7 +357,7 @@ func_019_500D::
 
 .jr_5034
     call ReturnIfNonInteractive_19                ; $5034: $CD $3D $7D
-    call func_019_7CA2                            ; $5037: $CD $A2 $7C
+    call PushLinkOutOfEntity_19                   ; $5037: $CD $A2 $7C
     ldh  a, [hFrameCounter]                       ; $503A: $F0 $E7
     and  $7F                                      ; $503C: $E6 $7F
     jr   nz, .jr_504A                             ; $503E: $20 $0A
@@ -669,7 +669,7 @@ FlyingRoosterState0Handler::
     ld   hl, wRoomObjects + $45                   ; $521F: $21 $56 $D7
     ld   [hl], $C6                                ; $5222: $36 $C6
     ld   a, $99                                   ; $5224: $3E $99
-    call func_2BF                                 ; $5226: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $5226: $CD $2F $0B
     ld   a, $50                                   ; $5229: $3E $50
     ldh  [hIntersectedObjectLeft], a              ; $522B: $E0 $CE
     ld   a, $30                                   ; $522D: $3E $30
@@ -744,7 +744,7 @@ FlyingRoosterState0Handler::
     ld   a, $4B                                   ; $529E: $3E $4B
     ld   [hl+], a                                 ; $52A0: $22
     ld   [hl], b                                  ; $52A1: $70
-    ld   a, $11                                   ; $52A2: $3E $11
+    ld   a, NOISE_SFX_BLOCK_RUMBLE                ; $52A2: $3E $11
     ldh  [hNoiseSfx], a                           ; $52A4: $E0 $F4
     call IncrementEntityState                     ; $52A6: $CD $12 $3B
     jr   FlyingRoosterState1Handler               ; $52A9: $18 $06
@@ -770,11 +770,11 @@ FlyingRoosterState1Handler::
     ld   hl, wRoomObjects + $25                   ; $52CC: $21 $36 $D7
     ld   [hl], $91                                ; $52CF: $36 $91
     ld   a, $99                                   ; $52D1: $3E $99
-    call func_2BF                                 ; $52D3: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $52D3: $CD $2F $0B
     ld   hl, wRoomObjects + $35                   ; $52D6: $21 $46 $D7
     ld   [hl], $5E                                ; $52D9: $36 $5E
     ld   a, $99                                   ; $52DB: $3E $99
-    call func_2BF                                 ; $52DD: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $52DD: $CD $2F $0B
     ld   a, $50                                   ; $52E0: $3E $50
     ldh  [hIntersectedObjectLeft], a              ; $52E2: $E0 $CE
     ld   a, $20                                   ; $52E4: $3E $20

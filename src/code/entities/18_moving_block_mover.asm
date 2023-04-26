@@ -14,7 +14,7 @@ MovingBlockMoverEntityHandler::
     sub  [hl]                                     ; $53E7: $96
     jr   c, .jr_53ED                              ; $53E8: $38 $03
 
-    call func_018_7D3B                            ; $53EA: $CD $3B $7D
+    call PushLinkOutOfEntity_18.forcePush         ; $53EA: $CD $3B $7D
 
 .jr_53ED
     ld   hl, hLinkPositionX                       ; $53ED: $21 $98 $FF
@@ -32,12 +32,12 @@ MovingBlockMoverEntityHandler::
     jr   nc, jr_018_5466                          ; $5403: $30 $61
 
     ld   e, $20                                   ; $5405: $1E $20
-    ld   a, [wBButtonSlot]                        ; $5407: $FA $00 $DB
+    ld   a, [wInventoryItems.BButtonSlot]         ; $5407: $FA $00 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $540A: $FE $03
     jr   z, .jr_5417                              ; $540C: $28 $09
 
     ld   e, $10                                   ; $540E: $1E $10
-    ld   a, [wAButtonSlot]                        ; $5410: $FA $01 $DB
+    ld   a, [wInventoryItems.AButtonSlot]         ; $5410: $FA $01 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $5413: $FE $03
     jr   nz, jr_018_5466                          ; $5415: $20 $4F
 

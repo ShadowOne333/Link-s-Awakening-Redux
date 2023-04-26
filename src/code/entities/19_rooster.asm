@@ -169,7 +169,7 @@ jr_019_5A9F:
     and  a                                        ; $5AA9: $A7
     ret  nz                                       ; $5AAA: $C0
 
-    ld   a, [wBButtonSlot]                        ; $5AAB: $FA $00 $DB
+    ld   a, [wInventoryItems.BButtonSlot]         ; $5AAB: $FA $00 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $5AAE: $FE $03
     jr   nz, .jr_5AB9                             ; $5AB0: $20 $07
 
@@ -180,7 +180,7 @@ jr_019_5A9F:
     ret                                           ; $5AB8: $C9
 
 .jr_5AB9
-    ld   a, [wAButtonSlot]                        ; $5AB9: $FA $01 $DB
+    ld   a, [wInventoryItems.AButtonSlot]         ; $5AB9: $FA $01 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $5ABC: $FE $03
     ret  nz                                       ; $5ABE: $C0
 
@@ -210,7 +210,7 @@ jr_019_5AC4:
     call GetEntityTransitionCountdown             ; $5AE1: $CD $05 $0C
     ld   [hl], $02                                ; $5AE4: $36 $02
     ld   hl, hWaveSfx                             ; $5AE6: $21 $F3 $FF
-    ld   [hl], $02                                ; $5AE9: $36 $02
+    ld   [hl], WAVE_SFX_ZIP                       ; $5AE9: $36 $02
     call IncrementEntityState                     ; $5AEB: $CD $12 $3B
     ld   [hl], $01                                ; $5AEE: $36 $01
     ld   a, $02                                   ; $5AF0: $3E $02

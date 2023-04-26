@@ -33,7 +33,7 @@ include "code/entities/06_goponga_flower.asm"
 ;
 ; ----------------------------------------------------------------------
 
-func_006_641A::
+PushLinkOutOfEntity_06::
     call CheckLinkCollisionWithEnemy_trampoline   ; $641A: $CD $5A $3B
     jr   nc, ret_006_643C                         ; $641D: $30 $1D
 
@@ -88,8 +88,8 @@ SetEntitySpriteVariantForDirection::
     or   [hl]                                     ; $6459: $B6
     jp   SetEntitySpriteVariant                   ; $645A: $C3 $0C $3B
 
-; Should Link talk to Entity
-func_006_645D::
+; Should Link interact with Entity
+CheckLinkInteractionWithEntity_06::
     ld   e, b                                     ; $645D: $58
     ldh  a, [hActiveEntityType]                   ; $645E: $F0 $EB
     cp   ENTITY_GRANDPA_ULRIRA                    ; $6460: $FE $77
@@ -464,7 +464,7 @@ label_006_702A:
 label_006_7035:
     ld   a, TRANSCIENT_VFX_POOF                   ; $7035: $3E $02
     call AddTranscientVfx                         ; $7037: $CD $C7 $0C
-    ld   a, $13                                   ; $703A: $3E $13
+    ld   a, NOISE_SFX_ENEMY_DESTROYED             ; $703A: $3E $13
     ldh  [hNoiseSfx], a                           ; $703C: $E0 $F4
     ret                                           ; $703E: $C9
 

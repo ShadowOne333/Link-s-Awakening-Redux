@@ -48,7 +48,7 @@ GenieState0Handler::
     add  hl, de                                   ; $4043: $19
     ld   [hl], $08                                ; $4044: $36 $08
     call label_3E34                               ; $4046: $CD $34 $3E
-    ld   a, $29                                   ; $4049: $3E $29
+    ld   a, NOISE_SFX_UNKNOWN_29                  ; $4049: $3E $29
     ldh  [hNoiseSfx], a                           ; $404B: $E0 $F4
     ret                                           ; $404D: $C9
 
@@ -283,7 +283,7 @@ jr_004_41A9:
 jr_004_41AC:
     call DecrementEntityIgnoreHitsCountdown       ; $41AC: $CD $56 $0C
     call label_3B70                               ; $41AF: $CD $70 $3B
-    call ApplySolidCollision_04                   ; $41B2: $CD $E3 $7B
+    call PushLinkOutOfEntity_04                   ; $41B2: $CD $E3 $7B
     ldh  a, [hActiveEntityPosX]                   ; $41B5: $F0 $EE
     ld   hl, hLinkPositionX                       ; $41B7: $21 $98 $FF
     sub  [hl]                                     ; $41BA: $96
@@ -299,7 +299,7 @@ jr_004_41AC:
     jr   nc, jr_004_4210                          ; $41CB: $30 $43
 
     call ResetPegasusBoots                        ; $41CD: $CD $B6 $0C
-    ld   a, [wBButtonSlot]                        ; $41D0: $FA $00 $DB
+    ld   a, [wInventoryItems.BButtonSlot]         ; $41D0: $FA $00 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $41D3: $FE $03
     jr   nz, .jr_41DF                             ; $41D5: $20 $08
 
@@ -310,7 +310,7 @@ jr_004_41AC:
     jr   jr_004_4210                              ; $41DD: $18 $31
 
 .jr_41DF
-    ld   a, [wAButtonSlot]                        ; $41DF: $FA $01 $DB
+    ld   a, [wInventoryItems.AButtonSlot]         ; $41DF: $FA $01 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $41E2: $FE $03
     jr   nz, jr_004_4210                          ; $41E4: $20 $2A
 
@@ -334,7 +334,7 @@ jr_004_41EC:
     ldh  a, [hLinkDirection]                      ; $4201: $F0 $9E
     ld   [wC15D], a                               ; $4203: $EA $5D $C1
     ld   hl, hWaveSfx                             ; $4206: $21 $F3 $FF
-    ld   [hl], $02                                ; $4209: $36 $02
+    ld   [hl], WAVE_SFX_ZIP                       ; $4209: $36 $02
     call GetEntityTransitionCountdown             ; $420B: $CD $05 $0C
     ld   [hl], $08                                ; $420E: $36 $08
 
@@ -724,7 +724,7 @@ jr_004_4438:
     ld   hl, wEntitiesPrivateCountdown2Table      ; $447D: $21 $00 $C3
     add  hl, bc                                   ; $4480: $09
     ld   [hl], $10                                ; $4481: $36 $10
-    ld   a, $28                                   ; $4483: $3E $28
+    ld   a, NOISE_SFX_UNKNOWN_28                  ; $4483: $3E $28
     ldh  [hNoiseSfx], a                           ; $4485: $E0 $F4
 
 .jr_4487
@@ -958,7 +958,7 @@ func_004_4575::
     ld   a, $1F                                   ; $45E6: $3E $1F
     call ApplyVectorTowardsLink_trampoline        ; $45E8: $CD $AA $3B
     pop  bc                                       ; $45EB: $C1
-    ld   a, $28                                   ; $45EC: $3E $28
+    ld   a, NOISE_SFX_UNKNOWN_28                  ; $45EC: $3E $28
     ldh  [hNoiseSfx], a                           ; $45EE: $E0 $F4
 
 .ret_45F0

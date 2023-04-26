@@ -112,8 +112,8 @@ func_036_4077::
     call func_036_4365                            ; $408E: $CD $65 $43
     jp   IncrementEntityState                     ; $4091: $C3 $12 $3B
 
-Data_036_4094::
-    db   $FF, $7F, $00, $00, $71, $44, $7F, $7D
+PhotographerPaletteA::
+    rgb  #F8F8F8, #000000, #881888, #F858F8
 
 func_036_409C::
     call func_036_4365                            ; $409C: $CD $65 $43
@@ -126,7 +126,7 @@ func_036_409C::
 
     ld   [hl], a                                  ; $40A8: $77
     di                                            ; $40A9: $F3
-    ld   de, Data_036_4094                        ; $40AA: $11 $94 $40
+    ld   de, PhotographerPaletteA                 ; $40AA: $11 $94 $40
     ld   hl, wObjPal7                             ; $40AD: $21 $80 $DC
 
 .loop_40B0
@@ -258,7 +258,7 @@ func_036_4153::
 
 func_036_4161::
     call func_036_4365                            ; $4161: $CD $65 $43
-    ld   a, $40                                   ; $4164: $3E $40
+    ld   a, NOISE_SFX_UNKNOWN_40                  ; $4164: $3E $40
     ldh  [hNoiseSfx], a                           ; $4166: $E0 $F4
     ld   a, GAMEPLAY_PHOTO_BRIDGE                 ; $4168: $3E $1A
     ld   [wGameplayType], a                       ; $416A: $EA $95 $DB
@@ -271,7 +271,7 @@ func_036_4161::
 label_036_4178:
     ld   de, Unknown074SpriteVariants             ; $4178: $11 $F2 $48
     call RenderActiveEntitySpritesPair            ; $417B: $CD $C0 $3B
-    call func_036_6B5C                            ; $417E: $CD $5C $6B
+    call PushLinkOutOfEntity_36                   ; $417E: $CD $5C $6B
     call ReturnIfNonInteractive_36.allowInactiveEntity ; $4181: $CD $46 $6A
     ldh  a, [hActiveEntityState]                  ; $4184: $F0 $F0
     and  a                                        ; $4186: $A7
@@ -316,7 +316,7 @@ func_036_41B2::
     ldh  [rLCDC], a                               ; $41C4: $E0 $40
     pop  bc                                       ; $41C6: $C1
     di                                            ; $41C7: $F3
-    ld   de, Data_036_4094                        ; $41C8: $11 $94 $40
+    ld   de, PhotographerPaletteA                 ; $41C8: $11 $94 $40
     ld   hl, wObjPal7                             ; $41CB: $21 $80 $DC
     ld   a, $02                                   ; $41CE: $3E $02
     ldh  [rSVBK], a                               ; $41D0: $E0 $70
@@ -471,7 +471,7 @@ label_036_429A:
     call RenderActiveEntitySpritesRect            ; $42C5: $CD $E6 $3C
     ld   a, $06                                   ; $42C8: $3E $06
     call func_015_7964_trampoline                 ; $42CA: $CD $A0 $3D
-    call func_036_6B5C                            ; $42CD: $CD $5C $6B
+    call PushLinkOutOfEntity_36                   ; $42CD: $CD $5C $6B
     call CheckLinkCollisionWithEnemy_trampoline   ; $42D0: $CD $5A $3B
     ret                                           ; $42D3: $C9
 
@@ -487,7 +487,7 @@ label_036_429A:
     call RenderActiveEntitySpritesRect            ; $42E5: $CD $E6 $3C
     ld   a, $03                                   ; $42E8: $3E $03
     call func_015_7964_trampoline                 ; $42EA: $CD $A0 $3D
-    call func_036_6B5C                            ; $42ED: $CD $5C $6B
+    call PushLinkOutOfEntity_36                   ; $42ED: $CD $5C $6B
     call CheckLinkCollisionWithEnemy_trampoline   ; $42F0: $CD $5A $3B
     call ReturnIfNonInteractive_36.allowInactiveEntity ; $42F3: $CD $46 $6A
     ldh  a, [hActiveEntityState]                  ; $42F6: $F0 $F0
@@ -1110,7 +1110,7 @@ func_036_467F::
     and  a                                        ; $4688: $A7
     jr   nz, .jr_469A                             ; $4689: $20 $0F
 
-    ld   a, $40                                   ; $468B: $3E $40
+    ld   a, NOISE_SFX_UNKNOWN_40                  ; $468B: $3E $40
     ldh  [hNoiseSfx], a                           ; $468D: $E0 $F4
     ld   hl, wBGPalette                           ; $468F: $21 $97 $DB
     xor  a                                        ; $4692: $AF
@@ -1436,7 +1436,7 @@ func_036_4830::
     jp   IncrementEntityState                     ; $4863: $C3 $12 $3B
 
 func_036_4866::
-    ld   a, $40                                   ; $4866: $3E $40
+    ld   a, NOISE_SFX_UNKNOWN_40                  ; $4866: $3E $40
     ldh  [hNoiseSfx], a                           ; $4868: $E0 $F4
     ld   a, GAMEPLAY_PHOTO_ULRIRA                 ; $486A: $3E $13
     ld   [wGameplayType], a                       ; $486C: $EA $95 $DB
@@ -1864,8 +1864,8 @@ func_036_4A77::
 ._09 dw func_036_4BC3                             ; $4A93
 ._0A dw func_036_4BCF                             ; $4A95
 
-Data_036_4A97::
-    db   $FF, $7F, $00, $00, $71, $44, $7F, $7D
+PhotographerPaletteB::
+    rgb  #F8F8F8, #000000, #881888, #F858F8
 
 func_036_4A9F::
     push bc                                       ; $4A9F: $C5
@@ -1885,7 +1885,7 @@ func_036_4A9F::
     di                                            ; $4ABE: $F3
     ld   a, $02                                   ; $4ABF: $3E $02
     ldh  [rSVBK], a                               ; $4AC1: $E0 $70
-    ld   de, Data_036_4A97                        ; $4AC3: $11 $97 $4A
+    ld   de, PhotographerPaletteB                 ; $4AC3: $11 $97 $4A
     ld   hl, wObjPal7                             ; $4AC6: $21 $80 $DC
 
 .loop_4AC9
@@ -2073,7 +2073,7 @@ func_036_4BCF::
     and  a                                        ; $4BD2: $A7
     ret  nz                                       ; $4BD3: $C0
 
-    ld   a, $40                                   ; $4BD4: $3E $40
+    ld   a, NOISE_SFX_UNKNOWN_40                  ; $4BD4: $3E $40
     ldh  [hNoiseSfx], a                           ; $4BD6: $E0 $F4
     ld   a, GAMEPLAY_PHOTO_ZORA                   ; $4BD8: $3E $17
     ld   [wGameplayType], a                       ; $4BDA: $EA $95 $DB
@@ -2223,7 +2223,7 @@ HardhitBeetleEntityHandler::
     call func_036_4F4E                            ; $4CBD: $CD $4E $4F
     ldh  a, [hActiveEntityStatus]                 ; $4CC0: $F0 $EA
     cp   $05                                      ; $4CC2: $FE $05
-    jp   nz, label_036_5C3C                       ; $4CC4: $C2 $3C $5C
+    jp   nz, AnimateBossAgony_1836                ; $4CC4: $C2 $3C $5C
 
     ldh  a, [hFrameCounter]                       ; $4CC7: $F0 $E7
     and  $1F                                      ; $4CC9: $E6 $1F
@@ -2300,9 +2300,8 @@ func_036_4D03::
     call_open_dialog Dialog26F                    ; $4D32
     jr   jr_036_4D6E                              ; $4D37: $18 $35
 
-Data_036_4D39::
-    db   $1F, $00, $1F, $00, $1F, $01, $1F, $02, $1F
-    db   $03, $31, $07, $44, $0B, $40, $3A, $A5, $7C
+ColorDungeonBossPalette::
+    rgb   #F80000, #F80000, #F84000, #F88000, #F8C000, #88C808, #20D010, #009070, #2828F8
 
 func_036_4D4B::
     call DecrementEntityIgnoreHitsCountdown       ; $4D4B: $CD $56 $0C
@@ -2336,7 +2335,7 @@ jr_036_4D6E:
     and  $FE                                      ; $4D73: $E6 $FE
     ld   e, a                                     ; $4D75: $5F
     ld   d, $00                                   ; $4D76: $16 $00
-    ld   hl, Data_036_4D39                        ; $4D78: $21 $39 $4D
+    ld   hl, ColorDungeonBossPalette              ; $4D78: $21 $39 $4D
     add  hl, de                                   ; $4D7B: $19
     ld   a, [wObjPal8 + 2*2]                      ; $4D7C: $FA $8C $DC
     cp   [hl]                                     ; $4D7F: $BE
@@ -2758,7 +2757,7 @@ func_036_501C::
 
 func_036_503C::
     call func_036_6C89                            ; $503C: $CD $89 $6C
-    ld   a, $01                                   ; $503F: $3E $01
+    ld   a, WAVE_SFX_SEASHELL                     ; $503F: $3E $01
     ldh  [hWaveSfx], a                            ; $5041: $E0 $F3
     ld   d, $0C                                   ; $5043: $16 $0C
     call GiveInventoryItem_trampoline             ; $5045: $CD $6B $3E
@@ -3234,7 +3233,7 @@ TunicFairyState8::
     ld   [wBGOriginLow], a                        ; $5321: $EA $2F $C1
     ld   [wBGOriginHigh], a                       ; $5324: $EA $2E $C1
     ld   hl, wLCDControl                          ; $5327: $21 $FD $D6
-    res  5, [hl]                                  ; $532A: $CB $AE
+    res  LCDCB_WINON, [hl]                        ; $532A: $CB $AE
     call IncrementEntityState                     ; $532C: $CD $12 $3B
     ret                                           ; $532F: $C9
 
@@ -3430,7 +3429,7 @@ func_036_54B0::
     and  a                                        ; $54B8: $A7
     ret  z                                        ; $54B9: $C8
 
-    ld   a, [wBButtonSlot]                        ; $54BA: $FA $00 $DB
+    ld   a, [wInventoryItems.BButtonSlot]         ; $54BA: $FA $00 $DB
     cp   INVENTORY_MAGIC_POWDER                   ; $54BD: $FE $0C
     jr   nz, .jr_54C8                             ; $54BF: $20 $07
 
@@ -3441,7 +3440,7 @@ func_036_54B0::
     jr   jr_036_54D3                              ; $54C6: $18 $0B
 
 .jr_54C8
-    ld   a, [wAButtonSlot]                        ; $54C8: $FA $01 $DB
+    ld   a, [wInventoryItems.AButtonSlot]         ; $54C8: $FA $01 $DB
     cp   INVENTORY_MAGIC_POWDER                   ; $54CB: $FE $0C
     ret  nz                                       ; $54CD: $C0
 
@@ -3467,7 +3466,7 @@ GiantBuzzBlobEntityHandler::
     call func_036_5844                            ; $54E9: $CD $44 $58
     ldh  a, [hActiveEntityStatus]                 ; $54EC: $F0 $EA
     cp   $05                                      ; $54EE: $FE $05
-    jp   nz, label_036_5C3C                       ; $54F0: $C2 $3C $5C
+    jp   nz, AnimateBossAgony_1836                ; $54F0: $C2 $3C $5C
 
     ld   a, [wMagicPowderCount]                   ; $54F3: $FA $4C $DB
     and  a                                        ; $54F6: $A7
@@ -4217,7 +4216,7 @@ ColorGuardianRedEntityHandler::
     and  a                                        ; $595B: $A7
     jr   nz, .jr_5964                             ; $595C: $20 $06
 
-    call func_036_6B5C                            ; $595E: $CD $5C $6B
+    call PushLinkOutOfEntity_36                   ; $595E: $CD $5C $6B
     call CheckLinkCollisionWithEnemy_trampoline   ; $5961: $CD $5A $3B
 
 .jr_5964
@@ -4663,7 +4662,7 @@ AvalaunchEntityHandler::
     call label_3CD9                               ; $5C01: $CD $D9 $3C
     ldh  a, [hActiveEntityStatus]                 ; $5C04: $F0 $EA
     cp   $05                                      ; $5C06: $FE $05
-    jr   nz, label_036_5C3C                       ; $5C08: $20 $32
+    jr   nz, AnimateBossAgony_1836                ; $5C08: $20 $32
 
     call BossIntro                                ; $5C0A: $CD $E8 $3E
     call ReturnIfNonInteractive_36                ; $5C0D: $CD $40 $6A
@@ -4697,7 +4696,8 @@ AvalaunchEntityHandler::
 ._09 dw AvalaunchState9Handler
 ._0A dw AvalaunchStateAHandler
 
-label_036_5C3C:
+; Kill boss or mini-boss enemy with explosions
+AnimateBossAgony_1836::
     ld   hl, wEntitiesPrivateState5Table          ; $5C3C: $21 $90 $C3
     add  hl, bc                                   ; $5C3F: $09
     ld   a, [hl]                                  ; $5C40: $7E
@@ -4738,7 +4738,7 @@ func_036_5C69::
     ret                                           ; $5C71: $C9
 
 .jr_5C72
-    ld   a, $1A                                   ; $5C72: $3E $1A
+    ld   a, NOISE_SFX_1A                          ; $5C72: $3E $1A
     ldh  [hNoiseSfx], a                           ; $5C74: $E0 $F4
     call label_27DD                               ; $5C76: $CD $DD $27
     call DidKillEnemy                             ; $5C79: $CD $50 $3F
@@ -4779,7 +4779,7 @@ func_036_5CAB::
     ldh  [hMultiPurpose1], a                      ; $5CB1: $E0 $D8
     ld   a, TRANSCIENT_VFX_POOF                   ; $5CB3: $3E $02
     call AddTranscientVfx                         ; $5CB5: $CD $C7 $0C
-    ld   a, $13                                   ; $5CB8: $3E $13
+    ld   a, NOISE_SFX_ENEMY_DESTROYED             ; $5CB8: $3E $13
     ldh  [hNoiseSfx], a                           ; $5CBA: $E0 $F4
     ret                                           ; $5CBC: $C9
 
@@ -5755,7 +5755,7 @@ RotoswitchBlueEntityHandler::
     add  hl, bc                                   ; $6244: $09
     ld   [hl], $FF                                ; $6245: $36 $FF
     call func_036_63C2                            ; $6247: $CD $C2 $63
-    call func_036_6B5C                            ; $624A: $CD $5C $6B
+    call PushLinkOutOfEntity_36                   ; $624A: $CD $5C $6B
     ld   a, [wRoomEventEffectExecuted]            ; $624D: $FA $8F $C1
     and  a                                        ; $6250: $A7
     jr   z, .jr_625F                              ; $6251: $28 $0C
@@ -6871,7 +6871,7 @@ ColorShellState8Handler::
     sub  ENTITY_COLOR_SHELL_RED                   ; $68B8: $D6 $E9
     add  $67                                      ; $68BA: $C6 $67
     ld   [hl], a                                  ; $68BC: $77
-    ld   a, $04                                   ; $68BD: $3E $04
+    ld   a, NOISE_SFX_DOOR_UNLOCKED               ; $68BD: $3E $04
     ldh  [hNoiseSfx], a                           ; $68BF: $E0 $F4
     jr   ret_036_68EB                             ; $68C1: $18 $28
 
@@ -7383,7 +7383,7 @@ ApplyRecoilIfNeeded_36::
 .return
     ret                                           ; $6B5B: $C9
 
-func_036_6B5C::
+PushLinkOutOfEntity_36::
     call CheckLinkCollisionWithEnemy_trampoline   ; $6B5C: $CD $5A $3B
     jr   nc, jr_036_6B88                          ; $6B5F: $30 $27
 
@@ -7691,32 +7691,35 @@ jr_036_6CBF:
 ret_036_6CC0:
     ret                                           ; $6CC0: $C9
 
-Data_036_6CC1::
-    db   $FF, $47, $39, $0E, $C7, $00, $00, $00   ; $6CC1
+; Color Dungeon dynamic palettes
 
-Data_036_6CC9::
-    db   $8C, $31, $C4, $26, $24, $15, $00, $00   ; $6CC9
+ColorDungeonBGPalette1:: ; BG7
+    rgb   #F8F888, #C88818, #383000, #000000
 
-Data_036_6CD1::
-    db   $FF, $47, $87, $7D, $83, $3C, $00, $00   ; $6CD1
+ColorDungeonBGPalette2:: ; BG7, probably
+    rgb   #606060, #20B048, #204828, #000000
 
-Data_036_6CD9::
-    db   $0D, $76, $45, $7D, $A4, $3C, $00, $00   ; $6CD9
+ColorDungeonBGPalette3:: ; BG7
+    rgb   #F8F888, #3860F8, #182078, #000000
 
-Data_036_6CE1::
-    db   $F3, $51, $00, $00, $6D, $0D, $17, $17   ; $6CE1
+ColorDungeonBGPalette4:: ; BG7: fairy water
+    rgb   #6880E8, #2850F8, #202878, #000000
 
-Data_036_6CE9::
-    db   $F3, $51, $00, $00, $00, $7C, $AE, $7E   ; $6CE9
+ColorDungeonOBJPalette1:: ; OBJ7: rock guy miniboss
+    rgb   #9878A0, #000000, #685818, #B8C028
 
-Data_036_6CF1::
-    db   $FF, $47, $F3, $51, $67, $28, $00, $00   ; $6CF1
+ColorDungeonOBJPalette2:: ; OBJ7: buzzblob miniboss
+    rgb   #9878A0, #000000, #0000F8, #70A8F8
 
-Data_036_6CF9::
-    db   $FF, $47, $F3, $51, $67, $28, $00, $00   ; $6CF9
+ColorDungeonOBJPalette3:: ; OBJ7
+    rgb   #F8F888, #9878A0, #381850, #000000
 
-Data_036_6D01::
-    db   $F3, $51, $00, $00, $B4, $01, $FF, $7F, $F3, $51, $00, $00, $A5, $7C, $FF, $7F
+ColorDungeonOBJPalette4:: ; OBJ7
+    rgb   #F8F888, #9878A0, #381850, #000000
+
+ColorDungeonBossBasePalette:: ; OBJ6 and OBJ7: boss
+    rgb   #9878A0, #000000, #A06800, #F8F8F8
+    rgb   #9878A0, #000000, #2828F8, #F8F8F8
 
 Data_036_6D11:: ; indexed by hMapRoom
     db   $00, $04, $00, $00, $00, $00, $00, $03, $00, $03, $01, $01, $00, $01, $01, $00
@@ -7728,14 +7731,14 @@ Data_036_6D27::
 
 Data_036_6D3B::
     dw   $0000
-    dw   Data_036_6CC1
-    dw   Data_036_6CC9
-    dw   Data_036_6CD1
-    dw   Data_036_6CD9
-    dw   Data_036_6CE1
-    dw   Data_036_6CE9
-    dw   Data_036_6CF1
-    dw   Data_036_6CF9
+    dw   ColorDungeonBGPalette1
+    dw   ColorDungeonBGPalette2
+    dw   ColorDungeonBGPalette3
+    dw   ColorDungeonBGPalette4
+    dw   ColorDungeonOBJPalette1
+    dw   ColorDungeonOBJPalette2
+    dw   ColorDungeonOBJPalette3
+    dw   ColorDungeonOBJPalette4
 
 func_036_6D4D::
     ldh  a, [hMapId]                              ; $6D4D: $F0 $F7
@@ -7775,7 +7778,7 @@ func_036_6D4D::
     bit  7, a                                     ; $6D7F: $CB $7F
     jr   z, .jr_6D8E                              ; $6D81: $28 $0B
 
-    ld   hl, Data_036_6D01                        ; $6D83: $21 $01 $6D
+    ld   hl, ColorDungeonBossBasePalette          ; $6D83: $21 $01 $6D
     ld   de, wObjPal7                             ; $6D86: $11 $80 $DC
     ld   bc, $10                                  ; $6D89: $01 $10 $00
     jr   jr_036_6D9E                              ; $6D8C: $18 $10
@@ -8205,11 +8208,23 @@ jr_036_708E:
     pop  bc                                       ; $7094: $C1
     ret                                           ; $7095: $C9
 
-Data_036_7096::
-    db   $80, $26, $95, $63, $20, $3A, $75, $6B, $A0, $51, $35, $73, $08, $7D, $18, $7F
-    db   $AD, $78, $F9, $7E, $50, $5C, $DA, $76, $12, $40, $BB, $6A, $15, $30, $BC, $66
-    db   $17, $14, $BD, $5E, $D7, $04, $FD, $56, $37, $05, $1D, $57, $97, $09, $3D, $5B
-    db   $F5, $09, $5C, $5B, $10, $0A, $5A, $5B, $4B, $06, $79, $57, $A0, $02, $95, $57
+InstrumentPalette::
+    rgb  #00A048, #A8E0C0
+    rgb  #008870, #A8D8D0
+    rgb  #0068A0, #A8C8E0
+    rgb  #4040F8, #C0C0F8
+    rgb  #6828F0, #C8B8F8
+    rgb  #8010B8, #D0B0E8
+    rgb  #900080, #D8A8D0
+    rgb  #A80060, #E0A8C8
+    rgb  #B80028, #E8A8B8
+    rgb  #B83008, #E8B8A8
+    rgb  #B84808, #E8C0A8
+    rgb  #B86010, #E8C8B0
+    rgb  #A87810, #E0D0B0
+    rgb  #808010, #D0D0B0
+    rgb  #589008, #C8D8A8
+    rgb  #00A800, #A8E0A8
 
 cycleInstrumentItemColor::
     ld   a, [wPaletteUnknownE]                    ; $70D6: $FA $D5 $DD
@@ -8231,7 +8246,7 @@ ENDC
     and  $3C                                      ; $70E7: $E6 $3C
     ld   e, a                                     ; $70E9: $5F
     ld   d, $00                                   ; $70EA: $16 $00
-    ld   hl, Data_036_7096                        ; $70EC: $21 $96 $70
+    ld   hl, InstrumentPalette                    ; $70EC: $21 $96 $70
     add  hl, de                                   ; $70EF: $19
     ld   de, wObjPal2 + 2*2                       ; $70F0: $11 $5C $DC
 
@@ -8361,7 +8376,7 @@ label_036_71AD:
     and  $20                                      ; $71B0: $E6 $20
     jp   nz, IsInteractiveMotionAllowed.allow     ; $71B2: $C2 $88 $72
 
-    ld   hl, wBButtonSlot                         ; $71B5: $21 $00 $DB
+    ld   hl, wInventoryItems.BButtonSlot          ; $71B5: $21 $00 $DB
     ld   e, INVENTORY_SLOT_COUNT                  ; $71B8: $1E $0C
 
 .loop_71BA

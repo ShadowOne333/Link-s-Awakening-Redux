@@ -59,7 +59,7 @@ jr_004_770E:
     cp   $04                                      ; $771C: $FE $04
     jr   nc, .jr_7723                             ; $771E: $30 $03
 
-    call ApplySolidCollision_04                   ; $7720: $CD $E3 $7B
+    call PushLinkOutOfEntity_04                   ; $7720: $CD $E3 $7B
 
 .jr_7723
     ldh  a, [hActiveEntityState]                  ; $7723: $F0 $F0
@@ -185,8 +185,8 @@ jr_004_7839:
 
 .jr_7845
     push bc                                       ; $7845: $C5
-    ld   hl, wBButtonSlot                         ; $7846: $21 $00 $DB
-    ld   c, INVENTORY_SLOT_COUNT -1               ; $7849: $0E $0B
+    ld   hl, wInventoryItems.BButtonSlot          ; $7846: $21 $00 $DB
+    ld   c, INVENTORY_SLOT_COUNT - 1              ; $7849: $0E $0B
 
 jr_004_784B:
     ld   a, [wBoomerangTradedItem]                ; $784B: $FA $7D $DB
@@ -206,8 +206,8 @@ jr_004_7859:
     cp   $FF                                      ; $785B: $FE $FF
     jr   nz, jr_004_784B                          ; $785D: $20 $EC
 
-    ld   hl, wBButtonSlot                         ; $785F: $21 $00 $DB
-    ld   c, INVENTORY_SLOT_COUNT -1               ; $7862: $0E $0B
+    ld   hl, wInventoryItems.BButtonSlot          ; $785F: $21 $00 $DB
+    ld   c, INVENTORY_SLOT_COUNT - 1              ; $7862: $0E $0B
 
 jr_004_7864:
     ld   a, [wBoomerangTradedItem]                ; $7864: $FA $7D $DB
@@ -476,7 +476,7 @@ jr_004_79AB:
     cp   $04                                      ; $79BB: $FE $04
     jr   nz, jr_004_79D9                          ; $79BD: $20 $1A
 
-    ld   hl, wBButtonSlot                         ; $79BF: $21 $00 $DB
+    ld   hl, wInventoryItems.BButtonSlot          ; $79BF: $21 $00 $DB
     ld   d, INVENTORY_SLOT_COUNT                  ; $79C2: $16 $0C
 
 .loop_79C4
@@ -501,7 +501,7 @@ jr_004_79D9:
     cp   $06                                      ; $79D9: $FE $06
     jr   nz, jr_004_79F7                          ; $79DB: $20 $1A
 
-    ld   hl, wBButtonSlot                         ; $79DD: $21 $00 $DB
+    ld   hl, wInventoryItems.BButtonSlot          ; $79DD: $21 $00 $DB
     ld   d, INVENTORY_SLOT_COUNT                  ; $79E0: $16 $0C
 
 .loop_79E2
@@ -526,7 +526,7 @@ jr_004_79F7:
     cp   $03                                      ; $79F7: $FE $03
     jr   nz, jr_004_7A0C                          ; $79F9: $20 $11
 
-    ld   hl, wBButtonSlot                         ; $79FB: $21 $00 $DB
+    ld   hl, wInventoryItems.BButtonSlot          ; $79FB: $21 $00 $DB
     ld   d, INVENTORY_SLOT_COUNT                  ; $79FE: $16 $0C
 
 jr_004_7A00:
@@ -704,7 +704,7 @@ func_004_7AED::
 
     ld   a, ENTITY_MAD_BATTER                     ; $7AF3: $3E $CA
     call SpawnNewEntity_trampoline                ; $7AF5: $CD $86 $3B
-    ld   a, $26                                   ; $7AF8: $3E $26
+    ld   a, NOISE_SFX_UNKNOWN_26                  ; $7AF8: $3E $26
     ldh  [hNoiseSfx], a                           ; $7AFA: $E0 $F4
     ldh  a, [hMultiPurpose0]                      ; $7AFC: $F0 $D7
     ld   hl, wEntitiesPosXTable                   ; $7AFE: $21 $00 $C2
@@ -861,7 +861,7 @@ func_004_7BB7::
     jp   RenderActiveEntitySprite                 ; $7BE0: $C3 $77 $3C
 
 ; Disallow Link going through a solid object
-ApplySolidCollision_04::
+PushLinkOutOfEntity_04::
     call CheckLinkCollisionWithEnemy_trampoline   ; $7BE3: $CD $5A $3B
     jr   nc, .ret_7C05                            ; $7BE6: $30 $1D
 

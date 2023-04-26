@@ -66,7 +66,7 @@ InitSaveFiles::
 
     ld   e, $00                                   ; $46C3: $1E $00
     ld   d, $00                                   ; $46C5: $16 $00
-    ld   bc, SaveGame1.main + wBButtonSlot - wOverworldRoomStatus ; $46C7: $01 $05 $A4
+    ld   bc, SaveGame1.main + wInventoryItems.BButtonSlot - wOverworldRoomStatus ; $46C7: $01 $05 $A4
 .loop
     ld   hl, DebugSaveFileData                    ; $46CA: $21 $67 $46
     add  hl, de                                   ; $46CD: $19
@@ -824,13 +824,17 @@ func_001_5888::
     cp   $0C                                      ; $5891: $FE $0C
     jr   nz, .loop_588D                           ; $5893: $20 $F8
 
-func_001_5895::
+InitializeInventoryBar::
+    ; Set the window to the bottom of the screen
     ld   a, $80                                   ; $5895: $3E $80
     ld   [wWindowY], a                            ; $5897: $EA $9A $DB
     ld   a, $07                                   ; $589A: $3E $07
     ld   [rWX], a                                 ; $589C: $E0 $4B
+    ; Set wSubscreenScrollIncrement to be $08 (closing/closed), so it's
+    ; ready to be flipped to $F8 if inventory is opened
     ld   a, $08                                   ; $589E: $3E $08
-    ld   [wC150], a                               ; $58A0: $EA $50 $C1
+    ld   [wSubscreenScrollIncrement], a           ; $58A0: $EA $50 $C1
+    ; Inventory is not currently appearing
     xor  a                                        ; $58A3: $AF
     ld   [wInventoryAppearing], a                 ; $58A4: $EA $4F $C1
 
@@ -2385,7 +2389,7 @@ func_001_6162::
     ld   [rOBP1], a                               ; $6179: $E0 $49
     ldh  [hBaseScrollY], a                        ; $617B: $E0 $97
     ldh  [hBaseScrollX], a                        ; $617D: $E0 $96
-    ld   [hSwitchBlocksState], a                  ; $617F: $EA $FB $D6
+    ld   [wSwitchBlocksState], a                  ; $617F: $EA $FB $D6
     ld   [wSwitchableObjectAnimationStage], a     ; $6182: $EA $F8 $D6
     ld   a, $18                                   ; $6185: $3E $18
     ldh  [hButtonsInactiveDelay], a               ; $6187: $E0 $B5

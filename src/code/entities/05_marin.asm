@@ -213,7 +213,7 @@ jr_005_4F39:
 
     ld   de, MarinCreditsSpriteVariants           ; $4F3D: $11 $2A $4E
     call RenderActiveEntitySpritesPair            ; $4F40: $CD $C0 $3B
-    call func_005_54C3                            ; $4F43: $CD $C3 $54
+    call PushLinkOutOfEntity_05                   ; $4F43: $CD $C3 $54
     ld   a, [wGameplayType]                       ; $4F46: $FA $95 $DB
     cp   GAMEPLAY_WORLD_MAP                       ; $4F49: $FE $07
     ret  z                                        ; $4F4B: $C8
@@ -268,8 +268,8 @@ func_005_4F64::
     jp_open_dialog Dialog195                      ; $4F90
 
 .jr_005_4F95
-    ld   e, INVENTORY_SLOT_COUNT -1               ; $4F95: $1E $0B
-    ld   hl, wBButtonSlot                         ; $4F97: $21 $00 $DB
+    ld   e, INVENTORY_SLOT_COUNT - 1              ; $4F95: $1E $0B
+    ld   hl, wInventoryItems.BButtonSlot          ; $4F97: $21 $00 $DB
 
 .loop_4F9A
     ld   a, [hl+]                                 ; $4F9A: $2A
@@ -313,8 +313,8 @@ func_005_4F64::
 
 .jr_4FD0
     push bc                                       ; $4FD0: $C5
-    ld   c, INVENTORY_SLOT_COUNT -1               ; $4FD1: $0E $0B
-    ld   hl, wBButtonSlot                         ; $4FD3: $21 $00 $DB
+    ld   c, INVENTORY_SLOT_COUNT - 1              ; $4FD1: $0E $0B
+    ld   hl, wInventoryItems.BButtonSlot          ; $4FD3: $21 $00 $DB
 
 .jr_005_4FD6
     ld   a, [hl+]                                 ; $4FD6: $2A
@@ -837,7 +837,7 @@ func_005_52DB::
 
 func_005_5312::
     call ReturnIfNonInteractive_05                ; $5312: $CD $3A $7A
-    call func_005_54C3                            ; $5315: $CD $C3 $54
+    call PushLinkOutOfEntity_05                   ; $5315: $CD $C3 $54
     call ShouldLinkTalkToEntity_05                ; $5318: $CD $06 $55
     ret  nc                                       ; $531B: $D0
 
@@ -845,7 +845,7 @@ func_005_5312::
 
 ; Add item to inventory slot (used for assigning the shield)
 AssignItemToSlot:
-    ld   hl, wBButtonSlot                         ; $5321: $21 $00 $DB
+    ld   hl, wInventoryItems.BButtonSlot          ; $5321: $21 $00 $DB
     ld   e, INVENTORY_SLOT_COUNT                  ; $5324: $1E $0C
 
     ; Search if a matching item exists in inventory
@@ -857,7 +857,7 @@ AssignItemToSlot:
     dec  e                                        ; $532A: $1D
     jr   nz, .searchLoop                          ; $532B: $20 $F9
 
-    ld   hl, wBButtonSlot                         ; $532D: $21 $00 $DB
+    ld   hl, wInventoryItems.BButtonSlot          ; $532D: $21 $00 $DB
 
     ; Check for first empty slot, add item to it and return
 .assignLoop

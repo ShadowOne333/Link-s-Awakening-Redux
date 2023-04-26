@@ -138,7 +138,7 @@ wDialogIndexHi:
 wEnemyWasKilled:
   ds 1 ; C113
 
-; Delay for repeatin the NOISE_SFX_SEA_WAVES sound effect
+; Delay for repeating the NOISE_SFX_SEA_WAVES sound effect
 ; Plays when reaching $A0
 wNoiseSfxSeaWavesCounter::
   ds 1 ; C114
@@ -261,11 +261,11 @@ wRoomTransitionTargetScrollX::
 wRoomTransitionTargetScrollY::
   ds 1 ; C12D
 
-; Position of the first visible background tile (high byte)
+; Position of the first visible background tile (high byte) (Y = 00 or 02)
 wBGOriginHigh::
   ds 1 ; C12E
 
-; Position of the first visible background tile (low byte)
+; Position of the first visible background tile (low byte) (X = 00 or 14)
 wBGOriginLow::
   ds 1 ; C12F
 
@@ -369,7 +369,7 @@ wIsLinkPushing:: ; C144
 wC145::
   ds 1 ; C145
 
-; Is Link in the air (jumping with the feather, flying with roaster, etc)?
+; Is Link in the air (jumping with the feather, flying with rooster, etc)?
 ; Possible values:
 ; 0 = not in the air
 ; 1 = ?
@@ -409,16 +409,34 @@ wActiveProjectileCount::
 wHasPlacedBomb::
   ds 1 ; C14E
 
-; TODO comment
+; Whether the inventory screen (window) is currently in the process
+; of appearing. (In the original DMG version, this is set to 1 when
+; the window is scrolling either in or out, but in the DX version it's
+; only 1 when the inventory screen is fading in, not out.)
+;
+; Possible values:
+; 0 = Regular interactive handling
+; 1 = Inventory screen is appearing (DMG only: or disappearing)
 wInventoryAppearing::
   ds 1 ; C14F
 
-; Unlabeled
-wC150::
+; Inventory screen (window) scroll direction and scroll increment
+; (remnant from the original DMG game, as the inventory screen
+; doesn't scroll in DX)
+;
+; Contains a signed byte saying how much to increment wWindowY by
+; when wInventoryAppearing is true. Or you could think of it as
+; bit 7 (the sign bit) saying whether it should scroll up (1) or down (0),
+; and the remaining bits containing the increment value.
+;
+; Possible values:
+; $F8 = Scroll up by 8 pixels each frame
+; $08 = Scroll down by 8 pixels each frame
+wSubscreenScrollIncrement::
   ds 1 ; C150
 
 ; Unlabeled
-wC151::
+wInventoryShouldScroll::
   ds 1 ; C151
 
 ; Unlabeled
@@ -497,7 +515,8 @@ wC162:
 wIsOnLowHeath::
   ds 1 ; C163
 
-; TODO comment
+; High byte of index of character in a dialog text
+; (See also wDialogCharacterIndex)
 wDialogCharacterIndexHi:
   ds 1 ; C164
 
@@ -549,7 +568,8 @@ wC16E:
 wDialogOpenCloseAnimationFrame:
   ds 1 ; C16F
 
-; TODO comment
+; Low byte of index of character in a dialog text
+; (See also wDialogCharacterIndexHi)
 wDialogCharacterIndex:
   ds 1 ; C170
 
@@ -1149,7 +1169,7 @@ wC3C1::
   ds 2 ; C3C1 - C3C2
 
 ; Unlabeled
-wUpcomingChar::
+wDialogNextChar::
   ds 1 ; C3C3
 
 ; Unlabeled
@@ -2891,8 +2911,8 @@ wDrawCommand::
 .destinationLow
   ds 1 ; D602
 ; Request data length and mode.
-; bits 0-6: data length,
-; bits 7-8: copy mode (see DC_* constants)
+; bits 0-5: data length,
+; bits 6-7: copy mode (see DC_* constants)
 .length
   ds 1 ; D603
 ; Request data
@@ -2933,7 +2953,7 @@ wRoomSwitchableObject::
 ; Values:
 ;  0  blocks of kind A lowered, blocks of kind B raised
 ;  2  blocks of kind A raised, blocks of kind B lowered
-hSwitchBlocksState::
+wSwitchBlocksState::
   ds 1 ; D6FB
 
 ; TODO comment
@@ -2960,7 +2980,7 @@ wBGMapToLoad::
 ; When loading a new room, room data is read and decoded into this
 ; area.
 ;
-; Notes on wram hiftability:
+; Notes on wram shiftability:
 ; - This area is also used in RAM bank 2, where it contains the object attributes.
 ; - wRoomObjectsArea must be $10-bytes aligned (otherwise various copy loops break)
 ;
@@ -2986,15 +3006,16 @@ wIndoorBRoomStatus::
   ds $100 ; DA00
 
 ; TODO comment
-wBButtonSlot::
+wInventoryItems::
+.BButtonSlot::
   ds 1 ; DB00
 
 ; TODO comment
-wAButtonSlot::
+.AButtonSlot::
   ds 1 ; DB01
 
 ; TODO comment
-wInventoryItems::
+.subscreen
   ds INVENTORY_SLOT_COUNT - 2 ; DB02-DB0B
 
 ; TODO comment
@@ -3041,7 +3062,7 @@ wGoldenLeavesCount::
   ds 1 ; DB15
 
 ; Beginning of dungeon item flags.
-; 5 bytes fo each dungeon.
+; 5 bytes for each dungeon.
 ; For each dungeon:
 ; byte 0 = has map?,
 ; byte 1 = has compass?
@@ -3105,7 +3126,8 @@ wBombCount::
 wSwordLevel::
   ds 1 ; DB4E
 
-; default value is 5
+; The player's name
+; Name is padded with $00 (spaces) to the max length (default length is 5) 
 wName::
   ds NAME_LENGTH ; DB4F - DB53
 
@@ -3442,17 +3464,21 @@ wSaveSlot::
 wSaveFilesCount::
   ds 1 ; DBA7
 
-; Unlabeled
+; Unused
 wDBA8::
   ds 1 ; DBA8
 
-; Unlabeled
-wDBA9::
+; The currently selected character in the name entry menu
+wNameEntryCurrentChar::
   ds 1 ; DBA9
 
-; Unlabeled
-wDBAA::
-  ds 2 ; DBAA - DBAB
+; The current character in the save slot name
+wSaveSlotNameCharIndex::
+  ds 1 ; DBAA
+
+; Unused
+wDBAB::
+  ds 1 ; DBAB
 
 ; Unlabeled
 wDBAC::

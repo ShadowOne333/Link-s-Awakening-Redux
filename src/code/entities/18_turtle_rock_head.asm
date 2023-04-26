@@ -68,7 +68,7 @@ TurtleRockHeadEntityHandler::
     cp   $05                                      ; $7365: $FE $05
     jr   z, jr_018_737E                           ; $7367: $28 $15
 
-    call func_018_7F0F                            ; $7369: $CD $0F $7F
+    call AnimateBossAgony_18                      ; $7369: $CD $0F $7F
     ld   hl, wEntitiesStatusTable                 ; $736C: $21 $80 $C2
     add  hl, bc                                   ; $736F: $09
     ld   a, [hl]                                  ; $7370: $7E
@@ -91,7 +91,7 @@ jr_018_737E:
     cp   $05                                      ; $7389: $FE $05
     jr   nc, .jr_7392                             ; $738B: $30 $05
 
-    call func_018_7D36                            ; $738D: $CD $36 $7D
+    call PushLinkOutOfEntity_18                   ; $738D: $CD $36 $7D
     jr   jr_018_7395                              ; $7390: $18 $03
 
 .jr_7392
@@ -185,7 +185,7 @@ TurtleRockHeadState3Handler::
     cp   $06                                      ; $741C: $FE $06
     jr   z, .jr_746E                              ; $741E: $28 $4E
 
-    ld   a, $13                                   ; $7420: $3E $13
+    ld   a, NOISE_SFX_ENEMY_DESTROYED             ; $7420: $3E $13
     ldh  [hNoiseSfx], a                           ; $7422: $E0 $F4
     ld   a, ENTITY_TURTLE_ROCK_HEAD               ; $7424: $3E $7F
     call SpawnNewEntity_trampoline                ; $7426: $CD $86 $3B
@@ -557,7 +557,7 @@ jr_018_76C9:
     ld   [wInvincibilityCounter], a               ; $770B: $EA $C7 $DB
     ld   a, $08                                   ; $770E: $3E $08
     ld   [wSubtractHealthBuffer], a               ; $7710: $EA $94 $DB
-    ld   a, $03                                   ; $7713: $3E $03
+    ld   a, WAVE_SFX_LINK_HURT                    ; $7713: $3E $03
     ldh  [hWaveSfx], a                            ; $7715: $E0 $F3
 
 jr_018_7717:

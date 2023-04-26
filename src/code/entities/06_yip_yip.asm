@@ -141,7 +141,7 @@ YipYipEntityHandler::
     cp   $02                                      ; $5A69: $FE $02
     jr   nc, jr_006_5A98                          ; $5A6B: $30 $2B
 
-    call func_006_645D                            ; $5A6D: $CD $5D $64
+    call CheckLinkInteractionWithEntity_06        ; $5A6D: $CD $5D $64
     jr   nc, jr_006_5A98                          ; $5A70: $30 $26
 
     ld_dialog_low e, Dialog023                    ; $5A72: $1E $23
@@ -199,7 +199,7 @@ YipYipState2Handler::
     call_open_dialog Dialog184                    ; $5AC7
 
 func_006_5ACC::
-    ld   a, $18                                   ; $5ACC: $3E $18
+    ld   a, WAVE_SFX_CHAIN_CHOMP                  ; $5ACC: $3E $18
     ldh  [hWaveSfx], a                            ; $5ACE: $E0 $F3
 
 ret_006_5AD0:

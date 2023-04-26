@@ -100,7 +100,7 @@ EaglesTowerOpeningState1Handler::
     cp   $A0                                      ; $6230: $FE $A0
     jr   nz, .jr_6238                             ; $6232: $20 $04
 
-    ld   a, $1D                                   ; $6234: $3E $1D
+    ld   a, NOISE_SFX_UNKNOWN_1D                  ; $6234: $3E $1D
     ldh  [hNoiseSfx], a                           ; $6236: $E0 $F4
 
 .jr_6238
@@ -221,17 +221,17 @@ EaglesTowerOpeningState6Handler::
     ld   a, $E1                                   ; $62CD: $3E $E1
     ld   [hl], a                                  ; $62CF: $77
     ld   a, $99                                   ; $62D0: $3E $99
-    call func_2BF                                 ; $62D2: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $62D2: $CD $2F $0B
     ld   hl, wRoomObjects + $35                   ; $62D5: $21 $46 $D7
     ld   a, $77                                   ; $62D8: $3E $77
     ld   [hl], a                                  ; $62DA: $77
     ld   a, $99                                   ; $62DB: $3E $99
-    call func_2BF                                 ; $62DD: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $62DD: $CD $2F $0B
     ld   hl, wRoomObjects + $45                   ; $62E0: $21 $56 $D7
     ld   a, $77                                   ; $62E3: $3E $77
     ld   [hl], a                                  ; $62E5: $77
     ld   a, $99                                   ; $62E6: $3E $99
-    call func_2BF                                 ; $62E8: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $62E8: $CD $2F $0B
     call func_019_6374                            ; $62EB: $CD $74 $63
     call func_019_63B5                            ; $62EE: $CD $B5 $63
     jp   ClearEntityStatus_19                     ; $62F1: $C3 $61 $7E
@@ -592,7 +592,7 @@ AnimateDungeonDoorOpening:
 ._03 dw func_019_68F9                             ; $6858
 
 func_019_685A::
-    ld   a, $04                                   ; $685A: $3E $04
+    ld   a, NOISE_SFX_DOOR_UNLOCKED               ; $685A: $3E $04
     ldh  [hNoiseSfx], a                           ; $685C: $E0 $F4
     call GetEntityTransitionCountdown             ; $685E: $CD $05 $0C
     ld   [hl], $AC                                ; $6861: $36 $AC
@@ -606,7 +606,7 @@ func_019_686B::
     jr   nz, .jr_6877                             ; $6870: $20 $05
 
     ld   hl, hNoiseSfx                            ; $6872: $21 $F4 $FF
-    ld   [hl], $2E                                ; $6875: $36 $2E
+    ld   [hl], NOISE_SFX_UNKNOWN_2E               ; $6875: $36 $2E
 
 .jr_6877
     and  a                                        ; $6877: $A7
@@ -811,19 +811,19 @@ jr_019_693D:
     ld   [hl+], a                                 ; $6972: $22
     ld   hl, wRoomObjects + $01                   ; $6973: $21 $12 $D7
     ld   a, $99                                   ; $6976: $3E $99
-    call func_2BF                                 ; $6978: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $6978: $CD $2F $0B
     inc  hl                                       ; $697B: $23
     ld   a, $99                                   ; $697C: $3E $99
-    call func_2BF                                 ; $697E: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $697E: $CD $2F $0B
     inc  hl                                       ; $6981: $23
     ld   a, $99                                   ; $6982: $3E $99
-    call func_2BF                                 ; $6984: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $6984: $CD $2F $0B
     inc  hl                                       ; $6987: $23
     ld   a, $99                                   ; $6988: $3E $99
-    call func_2BF                                 ; $698A: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $698A: $CD $2F $0B
     inc  hl                                       ; $698D: $23
     ld   a, $99                                   ; $698E: $3E $99
-    call func_2BF                                 ; $6990: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $6990: $CD $2F $0B
     ld   hl, wRoomObjects + $11                   ; $6993: $21 $22 $D7
     ld   a, $B3                                   ; $6996: $3E $B3
     ld   [hl+], a                                 ; $6998: $22
@@ -837,19 +837,19 @@ jr_019_693D:
     ld   [hl+], a                                 ; $69A4: $22
     ld   hl, wRoomObjects + $11                   ; $69A5: $21 $22 $D7
     ld   a, $99                                   ; $69A8: $3E $99
-    call func_2BF                                 ; $69AA: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $69AA: $CD $2F $0B
     inc  hl                                       ; $69AD: $23
     ld   a, $99                                   ; $69AE: $3E $99
-    call func_2BF                                 ; $69B0: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $69B0: $CD $2F $0B
     inc  hl                                       ; $69B3: $23
     ld   a, $99                                   ; $69B4: $3E $99
-    call func_2BF                                 ; $69B6: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $69B6: $CD $2F $0B
     inc  hl                                       ; $69B9: $23
     ld   a, $99                                   ; $69BA: $3E $99
-    call func_2BF                                 ; $69BC: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $69BC: $CD $2F $0B
     inc  hl                                       ; $69BF: $23
     ld   a, $99                                   ; $69C0: $3E $99
-    call func_2BF                                 ; $69C2: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $69C2: $CD $2F $0B
     ld   hl, wRoomObjects + $21                   ; $69C5: $21 $32 $D7
     ld   a, $AD                                   ; $69C8: $3E $AD
     ld   [hl+], a                                 ; $69CA: $22
@@ -863,19 +863,19 @@ jr_019_693D:
     ld   [hl+], a                                 ; $69D6: $22
     ld   hl, wRoomObjects + $21                   ; $69D7: $21 $32 $D7
     ld   a, $99                                   ; $69DA: $3E $99
-    call func_2BF                                 ; $69DC: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $69DC: $CD $2F $0B
     inc  hl                                       ; $69DF: $23
     ld   a, $99                                   ; $69E0: $3E $99
-    call func_2BF                                 ; $69E2: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $69E2: $CD $2F $0B
     inc  hl                                       ; $69E5: $23
     ld   a, $99                                   ; $69E6: $3E $99
-    call func_2BF                                 ; $69E8: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $69E8: $CD $2F $0B
     inc  hl                                       ; $69EB: $23
     ld   a, $99                                   ; $69EC: $3E $99
-    call func_2BF                                 ; $69EE: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $69EE: $CD $2F $0B
     inc  hl                                       ; $69F1: $23
     ld   a, $99                                   ; $69F2: $3E $99
-    call func_2BF                                 ; $69F4: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $69F4: $CD $2F $0B
     ld   hl, wRoomObjects + $31                   ; $69F7: $21 $42 $D7
     ld   a, $AE                                   ; $69FA: $3E $AE
     ld   [hl+], a                                 ; $69FC: $22
@@ -889,19 +889,19 @@ jr_019_693D:
     ld   [hl+], a                                 ; $6A08: $22
     ld   hl, wRoomObjects + $31                   ; $6A09: $21 $42 $D7
     ld   a, $99                                   ; $6A0C: $3E $99
-    call func_2BF                                 ; $6A0E: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $6A0E: $CD $2F $0B
     inc  hl                                       ; $6A11: $23
     ld   a, $99                                   ; $6A12: $3E $99
-    call func_2BF                                 ; $6A14: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $6A14: $CD $2F $0B
     inc  hl                                       ; $6A17: $23
     ld   a, $99                                   ; $6A18: $3E $99
-    call func_2BF                                 ; $6A1A: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $6A1A: $CD $2F $0B
     inc  hl                                       ; $6A1D: $23
     ld   a, $99                                   ; $6A1E: $3E $99
-    call func_2BF                                 ; $6A20: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $6A20: $CD $2F $0B
     inc  hl                                       ; $6A23: $23
     ld   a, $99                                   ; $6A24: $3E $99
-    call func_2BF                                 ; $6A26: $CD $2F $0B
+    call BackupObjectInRAM2                       ; $6A26: $CD $2F $0B
     call func_019_7F0E                            ; $6A29: $CD $0E $7F
     set  4, [hl]                                  ; $6A2C: $CB $E6
     xor  a                                        ; $6A2E: $AF

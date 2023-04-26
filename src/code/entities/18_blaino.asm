@@ -5,7 +5,7 @@ BlainoEntityHandler::
     call func_018_68EA                            ; $64CC: $CD $EA $68
     ldh  a, [hActiveEntityStatus]                 ; $64CF: $F0 $EA
     cp   $01                                      ; $64D1: $FE $01
-    jp   z, func_018_7F0F                         ; $64D3: $CA $0F $7F
+    jp   z, AnimateBossAgony_18                   ; $64D3: $CA $0F $7F
 
     call ReturnIfNonInteractive_18                ; $64D6: $CD $E8 $7D
     call BossIntro                                ; $64D9: $CD $E8 $3E
@@ -159,7 +159,7 @@ label_018_65B8:
     cp   $01                                      ; $65BB: $FE $01
     jr   nz, .jr_65C3                             ; $65BD: $20 $04
 
-    ld   a, $0A                                   ; $65BF: $3E $0A
+    ld   a, NOISE_SFX_SHOOT_ARROW                 ; $65BF: $3E $0A
     ldh  [hNoiseSfx], a                           ; $65C1: $E0 $F4
 
 .jr_65C3

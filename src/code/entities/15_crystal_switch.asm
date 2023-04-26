@@ -17,7 +17,7 @@ CrystalSwitchEntityHandler::
     call ReturnIfNonInteractive_15                ; $4338: $CD $0D $7B
     call DecrementEntityIgnoreHitsCountdown       ; $433B: $CD $56 $0C
     call label_3B70                               ; $433E: $CD $70 $3B
-    call func_015_7A6E                            ; $4341: $CD $6E $7A
+    call PushLinkOutOfEntity_15                   ; $4341: $CD $6E $7A
     call label_3B23                               ; $4344: $CD $23 $3B
     ld   hl, wEntitiesFlashCountdownTable         ; $4347: $21 $20 $C4
     add  hl, bc                                   ; $434A: $09
@@ -34,7 +34,7 @@ CrystalSwitchEntityHandler::
     ld   [wSwitchableObjectAnimationStage], a     ; $4358: $EA $F8 $D6
     call GetEntityTransitionCountdown             ; $435B: $CD $05 $0C
     ld   [hl], $18                                ; $435E: $36 $18
-    ld   a, $0E                                   ; $4360: $3E $0E
+    ld   a, WAVE_SFX_SWITCH_BUTTON                ; $4360: $3E $0E
     ldh  [hWaveSfx], a                            ; $4362: $E0 $F3
 
 .ret_4364
