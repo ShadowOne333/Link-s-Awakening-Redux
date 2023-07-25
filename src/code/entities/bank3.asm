@@ -1750,7 +1750,7 @@ ENDC
     cp   $02                                      ; $5104: $FE $02
     jr   z, .powerBraceletEnd                     ; $5106: $28 $04
 
-    ; increment the Power bracelet lebel.
+    ; increment the Power bracelet level.
     ld   hl, wPowerBraceletLevel                  ; $5108: $21 $43 $DB
     inc  [hl]                                     ; $510B: $34
 .powerBraceletEnd
@@ -2065,7 +2065,7 @@ ret_003_5406:
     ret                                           ; $5406: $C9
 
 SmashRock::
-    ld   a, ENTITY_ENTITY_LIFTABLE_ROCK           ; $5407: $3E $05
+    ld   a, ENTITY_LIFTABLE_ROCK                  ; $5407: $3E $05
     call SpawnNewEntity                           ; $5409: $CD $CA $64
     ret  c                                        ; $540C: $D8
 
@@ -3230,7 +3230,7 @@ KeyDropPointEntityHandler::
     ; If dropped in the quicksand mark the angler key
     ; as available in the quicksand cave by setting the room flags.
     ld   hl, wOverworldRoomStatus + ROOM_OW_YARNA_LANMOLA ; $5C8E: $21 $CE $D8
-    set  4, [hl]                                  ; $5C91: $CB $E6
+    set  OW_ROOM_STATUS_FLAG_CHANGED, [hl]        ; $5C91: $CB $E6
     ld   hl, wIndoorARoomStatus + ROOM_INDOOR_A_QUICKSAND_CAVE ; $5C93: $21 $F8 $D9
     set  5, [hl]                                  ; $5C96: $CB $EE
     ret                                           ; $5C98: $C9
@@ -5216,7 +5216,7 @@ jr_003_6865:
     ld   d, $00                                   ; $686C: $16 $00
     add  hl, de                                   ; $686E: $19
     ld   a, [hl]                                  ; $686F: $7E
-    or   ROOM_STATUS_DOOR_OPEN_UP                 ; $6870: $F6 $04
+    or   OW_ROOM_STATUS_OPENED                    ; $6870: $F6 $04
     ld   [hl], a                                  ; $6872: $77
     ldh  [hRoomStatus], a                         ; $6873: $E0 $F8
     jp   label_003_51F5                           ; $6875: $C3 $F5 $51
@@ -5390,7 +5390,7 @@ func_003_68F8::
 .jr_003_6964
     call func_014_5526_trampoline                 ; $6964: $CD $78 $21
 
-    ld   a, ENTITY_ENTITY_LIFTABLE_ROCK           ; $6967: $3E $05
+    ld   a, ENTITY_LIFTABLE_ROCK                  ; $6967: $3E $05
     call SpawnNewEntity                           ; $6969: $CD $CA $64
     jr   c, .return                               ; $696C: $38 $32
 
@@ -7177,7 +7177,7 @@ jr_003_7304:
 .openBossDefeatedDialog
     ld   a, e                                     ; $7325: $7B
     call OpenDialogInTable0                       ; $7326: $CD $85 $23
-    ld   a, MUSIC_BOSS_DEFEAT                    ; $7329: $3E $5E
+    ld   a, MUSIC_BOSS_DEFEAT                     ; $7329: $3E $5E
     ld   [wMusicTrackToPlay], a                   ; $732B: $EA $68 $D3
     jr   jr_003_733E                              ; $732E: $18 $0E
 
@@ -7931,7 +7931,7 @@ jr_003_7737:
     cp   ENTITY_HOOKSHOT_CHAIN                    ; $7741: $FE $03
     jr   z, jr_003_779A                           ; $7743: $28 $55
 
-    cp   ENTITY_ENTITY_LIFTABLE_ROCK              ; $7745: $FE $05
+    cp   ENTITY_LIFTABLE_ROCK                     ; $7745: $FE $05
     jr   nz, .jr_7751                             ; $7747: $20 $08
 
     push de                                       ; $7749: $D5
@@ -8555,7 +8555,7 @@ ApplyEntityPhysics::
     cp   ENTITY_WRECKING_BALL                     ; $7AF1: $FE $A8
     jr   z, .jr_7AF9                              ; $7AF3: $28 $04
 
-    cp   ENTITY_ENTITY_LIFTABLE_ROCK              ; $7AF5: $FE $05
+    cp   ENTITY_LIFTABLE_ROCK                     ; $7AF5: $FE $05
     jr   nz, jr_003_7B0E                          ; $7AF7: $20 $15
 
 .jr_7AF9
@@ -8815,7 +8815,7 @@ jr_003_7C2B:
     cp   ENTITY_HOOKSHOT_CHAIN                    ; $7C4F: $FE $03
     jr   nz, .jr_7C5A                             ; $7C51: $20 $07
 
-    ld   a, [wD6F9]                               ; $7C53: $FA $F9 $D6
+    ld   a, [wLinkStandingOnSwitchBlock]          ; $7C53: $FA $F9 $D6
     and  a                                        ; $7C56: $A7
     jp   nz, setCarryFlagAndReturn                ; $7C57: $C2 $A7 $7C
 
@@ -8934,7 +8934,7 @@ ApplySwordIntersectionWithObjects::
     cp   LINK_MOTION_REVOLVING_DOOR               ; $7CEC: $FE $05
     ret  z                                        ; $7CEE: $C8
 
-    ld   a, [wDDD6]                               ; $7CEF: $FA $D6 $DD
+    ld   a, [wBGPaletteTransitionEffect]          ; $7CEF: $FA $D6 $DD
     and  a                                        ; $7CF2: $A7
     jp   nz, jr_003_7E03                          ; $7CF3: $C2 $03 $7E
 
@@ -9001,7 +9001,7 @@ ApplySwordIntersectionWithObjects::
     jr   z, .jr_7D63                              ; $7D57: $28 $0A
 
     ld   a, $40                                   ; $7D59: $3E $40
-    ld   [wDDD6], a                               ; $7D5B: $EA $D6 $DD
+    ld   [wBGPaletteTransitionEffect], a          ; $7D5B: $EA $D6 $DD
     ld   a, $0B                                   ; $7D5E: $3E $0B
     ld   [wDDD7], a                               ; $7D60: $EA $D7 $DD
 

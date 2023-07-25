@@ -1725,7 +1725,7 @@ InitGotItemSequence::
     xor  a                                        ; $111F: $AF
     ld   [wInvincibilityCounter], a               ; $1120: $EA $C7 $DB
     ldh  [hLinkPhysicsModifier], a                ; $1123: $E0 $9C
-    ld   [wDDD6], a                               ; $1125: $EA $D6 $DD
+    ld   [wBGPaletteTransitionEffect], a          ; $1125: $EA $D6 $DD
     ld   [wDDD7], a                               ; $1128: $EA $D7 $DD
     ld   [wD464], a                               ; $112B: $EA $64 $D4
     call label_27F2                               ; $112E: $CD $F2 $27
@@ -2412,7 +2412,7 @@ label_1637::
     ld   [wC16D], a                               ; $1650: $EA $6D $C1
 
 label_1653::
-    ld   a, ENTITY_ENTITY_LIFTABLE_ROCK           ; $1653: $3E $05
+    ld   a, ENTITY_LIFTABLE_ROCK                  ; $1653: $3E $05
     call SpawnPlayerProjectile                    ; $1655: $CD $2F $14
     jr   c, .dropRandomItem                       ; $1658: $38 $22
 
@@ -2624,7 +2624,7 @@ DisplayTransientVfxForLinkRunning::
     cp   GROUND_VFX_SHALLOW_WATER                 ; $176E: $FE $05
     jr   z, .shallowWater                         ; $1770: $28 $0F
 
-    ld   a, NOISE_SFX_FOOTSTEP                        ; $1772: $3E $07
+    ld   a, NOISE_SFX_FOOTSTEP                    ; $1772: $3E $07
     ldh  [hNoiseSfx], a                           ; $1774: $E0 $F4
     ldh  a, [hLinkPositionY]                      ; $1776: $F0 $99
     add  a, $06                                   ; $1778: $C6 $06
@@ -2757,7 +2757,7 @@ LinkMotionMapFadeOutHandler::
     ldh  [hBaseScrollX], a                        ; $185B: $E0 $96
     ldh  [hBaseScrollY], a                        ; $185D: $E0 $97
     ldh  [hDungeonTitleMessageCountdown], a       ; $185F: $E0 $B4
-    ld   [wDDD6], a                               ; $1861: $EA $D6 $DD
+    ld   [wBGPaletteTransitionEffect], a          ; $1861: $EA $D6 $DD
     ld   [wDDD7], a                               ; $1864: $EA $D7 $DD
 
     ld   e, $10                                   ; $1867: $1E $10
@@ -3832,7 +3832,7 @@ func_014_5526_trampoline::
     jp   ReloadSavedBank                          ; $2180: $C3 $1D $08
 
 label_2183::
-    ld   a, ENTITY_ENTITY_LIFTABLE_ROCK           ; $2183: $3E $05
+    ld   a, ENTITY_LIFTABLE_ROCK                  ; $2183: $3E $05
     call SpawnPlayerProjectile                    ; $2185: $CD $2F $14
 
 IF __OPTIMIZATIONS_1__
@@ -5088,9 +5088,9 @@ LoadIntroSequenceTiles::
 ; Copy title screen tiles to tiles memory
 LoadTitleScreenTiles::
     ; Load title logo
-    ld   a, BANK(TitleLogoTitles)                 ; $2DA7: $3E $0F
+    ld   a, BANK(TitleLogoTiles)                  ; $2DA7: $3E $0F
     call SwitchAdjustedBank                       ; $2DA9: $CD $13 $08
-    ld   hl, TitleLogoTitles                      ; $2DAC: $21 $00 $49
+    ld   hl, TitleLogoTiles                       ; $2DAC: $21 $00 $49
     ld   de, vTiles1                              ; $2DAF: $11 $00 $88
     ld   bc, TILE_SIZE * $70                      ; $2DB2: $01 $00 $07
     call CopyData                                 ; $2DB5: $CD $14 $29
@@ -5101,11 +5101,11 @@ LoadTitleScreenTiles::
 
     ldh  a, [hIsGBC]                              ; $2DBD: $F0 $FE
     and  a                                        ; $2DBF: $A7
-    jr   nz, .dxTilesDMG                          ; $2DC0: $20 $05
-    ld   hl, TitleDXTilesCGB                      ; $2DC2: $21 $00 $5C
+    jr   nz, .dxTilesCGB                          ; $2DC0: $20 $05
+    ld   hl, TitleDXTilesDMG                      ; $2DC2: $21 $00 $5C
     jr   .dxTilesEnd                              ; $2DC5: $18 $03
-.dxTilesDMG
-    ld   hl, TitleDXTilesDMG                      ; $2DC7: $21 $00 $58
+.dxTilesCGB
+    ld   hl, TitleDXTilesCGB                      ; $2DC7: $21 $00 $58
 .dxTilesEnd
 
     ld   de, vTiles0 + $400                       ; $2DCA: $11 $00 $84

@@ -191,7 +191,7 @@ MenuTiles::
 incbin "gfx/menus/menu.dmg.2bpp"
 SaveMenuTiles::
 incbin "gfx/menus/save_menu.dmg.2bpp"
-TitleLogoTitles::
+TitleLogoTiles::
 incbin "gfx/intro/title.dmg.2bpp"
 FontTiles::
 IF VWF
@@ -414,7 +414,7 @@ include "code/bank23.asm"
 section "bank24",romx[$4000],bank[$24]
 include "data/object_attributes/indoors_b.asm"
 include "code/background_colors.asm"
-include "data/backgrounds/palettes.asm"
+include "data/backgrounds/forest_palettes.asm"
 include "code/overworld_macros.asm"
 
 section "bank25",romx[$4000],bank[$25]
@@ -590,10 +590,10 @@ incbin "gfx/characters/oam_photographer.2bpp"
 CreditsRollTiles::
 incbin "gfx/ending/credits_roll.2bpp"
 TitleDXTiles::
-TitleDXTilesDMG::
-incbin "gfx/intro/title_dx.dmg.2bpp"
 TitleDXTilesCGB::
 incbin "gfx/intro/title_dx.cgb.2bpp"
+TitleDXTilesDMG::
+incbin "gfx/intro/title_dx.dmg.2bpp"
 MarinPortraitTiles::
 incbin "gfx/ending/oam_marin_portrait.2bpp"
 MarinPortraitOverlayTiles::

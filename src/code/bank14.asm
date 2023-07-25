@@ -545,7 +545,7 @@ jr_014_4CB2:
     sub  [hl]                                     ; $4CBF: $96
     jr   nz, .jr_4CC7                             ; $4CC0: $20 $05
 
-    ld   a, [wDDD6]                               ; $4CC2: $FA $D6 $DD
+    ld   a, [wBGPaletteTransitionEffect]          ; $4CC2: $FA $D6 $DD
     and  a                                        ; $4CC5: $A7
     ret  z                                        ; $4CC6: $C8
 
@@ -574,7 +574,7 @@ jr_014_4CB2:
     ret  nz                                       ; $4CEA: $C0
 
 .jr_4CEB
-    ld   a, [wDDD6]                               ; $4CEB: $FA $D6 $DD
+    ld   a, [wBGPaletteTransitionEffect]          ; $4CEB: $FA $D6 $DD
     and  $80                                      ; $4CEE: $E6 $80
     jr   nz, jr_014_4D0B                          ; $4CF0: $20 $19
 
@@ -624,7 +624,7 @@ jr_014_4D22:
     jr   nz, .jr_4D32                             ; $4D2C: $20 $04
 
     xor  a                                        ; $4D2E: $AF
-    ld   [wDDD6], a                               ; $4D2F: $EA $D6 $DD
+    ld   [wBGPaletteTransitionEffect], a          ; $4D2F: $EA $D6 $DD
 
 .jr_4D32
     ld   a, [wDDD7]                               ; $4D32: $FA $D7 $DD
@@ -1162,12 +1162,12 @@ jr_014_5360:
     ld   d, INVENTORY_BOMBS                       ; $537B: $16 $02
 
 .jr_537D
-    ld   e, $10                                   ; $537D: $1E $10
+    ld   e, J_A                                   ; $537D: $1E $10
     ld   a, [wInventoryItems.BButtonSlot]         ; $537F: $FA $00 $DB
     cp   d                                        ; $5382: $BA
     jr   nz, .jr_5389                             ; $5383: $20 $04
 
-    sla  e                                        ; $5385: $CB $23
+    sla  e ; J_B                                       ; $5385: $CB $23
     jr   jr_014_5391                              ; $5387: $18 $08
 
 .jr_5389
@@ -1841,7 +1841,7 @@ label_014_5743:
     ld   d, $00                                   ; $575E: $16 $00
     ld   hl, wOverworldRoomStatus                 ; $5760: $21 $00 $D8
     add  hl, de                                   ; $5763: $19
-    set  4, [hl]                                  ; $5764: $CB $E6
+    set  OW_ROOM_STATUS_FLAG_CHANGED, [hl]        ; $5764: $CB $E6
     pop  hl                                       ; $5766: $E1
 
 label_014_5767:

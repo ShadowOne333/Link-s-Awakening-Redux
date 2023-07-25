@@ -2940,7 +2940,7 @@ wSwitchableObjectAnimationStage::
   ds 1 ; D6F8
 
 ; Unlabeled
-wD6F9::
+wLinkStandingOnSwitchBlock::
   ds 1 ; D6F9
 
 ; Is there one or more switchable objects in the room
@@ -3759,8 +3759,11 @@ wPalettePartialCopyColorCount::
 wPaletteUnknownE::
   ds 1 ; DDD5
 
-; Unlabeled
-wDDD6::
+; Whether the palette should change during a room transition
+; - bit 7: Change from dark to light
+; - bit 6: Change from light to dark
+; - bits 5-0: What stage the transition is on
+wBGPaletteTransitionEffect::
   ds 1 ; DDD6
 
 ; Unlabeled
