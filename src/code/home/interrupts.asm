@@ -25,10 +25,10 @@ InterruptLCDStatus::
     push hl                                       ; $038A: $E5
     push de                                       ; $038B: $D5
     push bc                                       ; $038C: $C5
-    ld   a, [rSVBK]  ; Save current WRAM Bank to c ; $038D: $F0 $70
+    ldh  a, [rSVBK]  ; Save current WRAM Bank to c ; $038D: $F0 $70
     ld   c, a        ;                            ; $038F: $4F
     xor  a           ; Load WRAM Bank 1 (as "0" fallbacks to loading bank 1) ; $0390: $AF
-    ld   [rSVBK], a  ;                            ; $0391: $E0 $70
+    ldh  [rSVBK], a  ;                            ; $0391: $E0 $70
     ld   a, [wGameplayType]                       ; $0393: $FA $95 $DB
     cp   GAMEPLAY_CREDITS ; if GameplayType != GAMEPLAY_CREDITS ; $0396: $FE $01
     jr   nz, .skipScrollY                         ; $0398: $20 $13
@@ -45,7 +45,7 @@ InterruptLCDStatus::
     ldh  a, [hBaseScrollY]                        ; $03A6: $F0 $97
 
 .setScrollY
-    ld   [rSCY], a ; scrollY                      ; $03A8: $E0 $42
+    ldh  [rSCY], a ; scrollY                      ; $03A8: $E0 $42
     jp   .clearBGTilesFlag                        ; $03AA: $C3 $FF $03
 
 .skipScrollY
@@ -62,7 +62,7 @@ InterruptLCDStatus::
     ld   a, [hl]                                  ; $03BB: $7E
     ld   hl, hBaseScrollX ; a = hBaseScrollX + [hl] ; $03BC: $21 $96 $FF
     add  a, [hl]                                  ; $03BF: $86
-    ld   [rSCX], a        ; set scrollX           ; $03C0: $E0 $43
+    ldh  [rSCX], a        ; set scrollX           ; $03C0: $E0 $43
     ld   a, [wGameplaySubtype]                    ; $03C2: $FA $96 $DB
     cp   $06  ; if GameplaySubtype < 6 (intro sea) ; $03C5: $FE $06
     jr   c, .setupNextInterruptForIntroSea        ; $03C7: $38 $10
@@ -71,7 +71,7 @@ InterruptLCDStatus::
     ld   hl, IntroBeachScreenSections             ; $03C9: $21 $84 $03
     add  hl, de        ; hl = ScreenSectionsTable + SectionIndex ; $03CC: $19
     ld   a, [hl]       ;                          ; $03CD: $7E
-    ld   [rLYC], a     ; Fire LCD Y-compare interrupt when reaching the row for the next section ; $03CE: $E0 $45
+    ldh  [rLYC], a     ; Fire LCD Y-compare interrupt when reaching the row for the next section ; $03CE: $E0 $45
     ld   a, e          ; a = SectionIndex + 1     ; $03D0: $7B
     inc  a             ;                          ; $03D1: $3C
     and  $03           ; a = a % 4                ; $03D2: $E6 $03
@@ -82,7 +82,7 @@ InterruptLCDStatus::
     ld   hl, IntroSeaScreenSections               ; $03D9: $21 $7F $03
     add  hl, de        ; hl = LCDScreenSectionsTable + SectionIndex ; $03DC: $19
     ld   a, [hl]       ;                          ; $03DD: $7E
-    ld   [rLYC], a     ; Fire LCD Y-compare interrupt when reaching the row for the next section ; $03DE: $E0 $45
+    ldh  [rLYC], a     ; Fire LCD Y-compare interrupt when reaching the row for the next section ; $03DE: $E0 $45
     ld   a, e          ; a = SectionIndex + 1     ; $03E0: $7B
     inc  a             ;                          ; $03E1: $3C
     cp   $05           ; if SectionIndex != 5     ; $03E2: $FE $05
@@ -97,21 +97,21 @@ InterruptLCDStatus::
     jr   nz, .clearBGTilesFlag ; skip             ; $03ED: $20 $10
     ; If we are drawing the last section (4)
     ld   a, [wIntroBGYOffset] ; Apply the Y offset to compensate for sea vertical movement ; $03EF: $FA $06 $C1
-    ld   [rSCY], a               ; (so that the horizon position stays constant). ; $03F2: $E0 $42
+    ldh  [rSCY], a               ; (so that the horizon position stays constant). ; $03F2: $E0 $42
     cpl                ; a = $FF - a + $61        ; $03F4: $2F
     inc  a             ;                          ; $03F5: $3C
     add  a, $60        ;                          ; $03F6: $C6 $60
-    ld   [rLYC], a     ; Fire LCD Y-compare interrupt when reaching the row for the next transition step ; $03F8: $E0 $45
+    ldh  [rLYC], a     ; Fire LCD Y-compare interrupt when reaching the row for the next transition step ; $03F8: $E0 $45
     jr   .clearBGTilesFlag                        ; $03FA: $18 $03
 
 .clearScrollX
     xor  a                                        ; $03FC: $AF
-    ld   [rSCX], a ; scrollX                      ; $03FD: $E0 $43
+    ldh  [rSCX], a ; scrollX                      ; $03FD: $E0 $43
 
 .clearBGTilesFlag
     ; Restore banks and register
     ld   a, c                                     ; $03FF: $79
-    ld   [rSVBK], a                               ; $0400: $E0 $70
+    ldh  [rSVBK], a                               ; $0400: $E0 $70
     pop  bc                                       ; $0402: $C1
     pop  de                                       ; $0403: $D1
     pop  hl                                       ; $0404: $E1
@@ -200,7 +200,7 @@ LoadRequestedGfx::
     ld   [wBGMapToLoad], a                        ; $045E: $EA $FF $D6
     ld   [wTilesetToLoad], a                      ; $0461: $EA $FE $D6
     ld   a, [wLCDControl]                         ; $0464: $FA $FD $D6
-    ld   [rLCDC], a                               ; $0467: $E0 $40
+    ldh  [rLCDC], a                               ; $0467: $E0 $40
 .return
     ret                                           ; $0469: $C9
 
@@ -226,11 +226,11 @@ InterruptVBlank::
     push hl                                       ; $046F: $E5
 
     ; Save the current RAM bank, and switch to RAM0
-    ld   a, [rSVBK]                               ; $0470: $F0 $70
+    ldh  a, [rSVBK]                               ; $0470: $F0 $70
     and  $07                                      ; $0472: $E6 $07
     ld   c, a                                     ; $0474: $4F
     xor  a                                        ; $0475: $AF
-    ld   [rSVBK], a                               ; $0476: $E0 $70
+    ldh  [rSVBK], a                               ; $0476: $E0 $70
     push bc                                       ; $0478: $C5
 
     di                                            ; $0479: $F3
@@ -424,7 +424,7 @@ InterruptVBlank::
     ; Restore the RAM bank
     pop  bc                                       ; $056A: $C1
     ld   a, c                                     ; $056B: $79
-    ld   [rSVBK], a                               ; $056C: $E0 $70
+    ldh  [rSVBK], a                               ; $056C: $E0 $70
 
     ; Restore registers
     pop  hl                                       ; $056E: $E1
@@ -514,7 +514,7 @@ ENDC
     cp   TILESET_LOAD_DUNGEON_MINIMAP             ; $05E9: $FE $02
     jp   z, LoadDungeonMinimapTiles               ; $05EB: $CA $26 $08
 
-    ld   a, BANK(Dungeons2Tiles)                  ; $05EE: $3E $0D
+    ld   a, BANK(IndoorTiles)                     ; $05EE: $3E $0D
     call AdjustBankNumberForGBC                   ; $05F0: $CD $0B $0B
     ld   [rSelectROMBank], a                      ; $05F3: $EA $00 $21
     ldh  a, [hBGTilesLoadingStage]                ; $05F6: $F0 $92
@@ -536,7 +536,7 @@ ENDC
     add  hl, bc                                   ; $0616: $09
     ld   e, l                                     ; $0617: $5D
     ld   d, h                                     ; $0618: $54
-    ld   hl, Dungeons2Tiles                       ; $0619: $21 $00 $50
+    ld   hl, IndoorTiles                          ; $0619: $21 $00 $50
 
     ldh  a, [hMapId]                              ; $061C: $F0 $F7
     cp   MAP_COLOR_DUNGEON                        ; $061E: $FE $FF
@@ -577,7 +577,7 @@ ENDC
     ret                                           ; $0655: $C9
 
 LoadOverworldBGTiles::
-    ld   a, $0F                                   ; $0656: $3E $0F
+    ld   a, BANK(Overworld2Tiles)                 ; $0656: $3E $0F
     call AdjustBankNumberForGBC                   ; $0658: $CD $0B $0B
     ld   [rSelectROMBank], a                      ; $065B: $EA $00 $21
     ; de = vTiles2 + [hBGTilesLoadingStage] * 6

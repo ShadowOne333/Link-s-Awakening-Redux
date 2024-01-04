@@ -1,4 +1,5 @@
 section "WRAM Bank0", wram0[$c000]
+wram0Section::
 
 ; *******************************************************************
 ; *                                                                 *
@@ -13,9 +14,6 @@ section "WRAM Bank0", wram0[$c000]
 ; *           ds 1 ; address as 4 hex value                         *
 ; *                                                                 *
 ; *******************************************************************
-
-
-wram0Section EQU $C000
 
 ; Generic 40 tiles buffer for OAM data. Copied to OAM by DMA.
 ; During World gameplay, the OAM buffer is split between 12 OAM
@@ -3127,7 +3125,7 @@ wSwordLevel::
   ds 1 ; DB4E
 
 ; The player's name
-; Name is padded with $00 (spaces) to the max length (default length is 5) 
+; Name is padded with $00 (spaces) to the max length (default length is 5)
 wName::
   ds NAME_LENGTH ; DB4F - DB53
 
@@ -3643,7 +3641,7 @@ wDC0E::
 ; 0 = green,
 ; 1 = red,
 ; 2 = blue
-; 
+;
 ; Other valid values (don't occur naturally, but can be set by the "Tunic Glitch" bug
 ; when wKillOrder overflows into this memory location):
 ; 3 = inverted red,
@@ -3857,12 +3855,12 @@ wStack::
   ds $DFFF - @ + 1 ; DE04 - DFFF
 
 ; init puts the SP here
-wStackTop equ $DFFF
+DEF wStackTop EQU $DFFF
 
 section "WRAM Bank2", wramx[$D000], bank[2]
 
 ; TODO
 
 ; Something rombank and photographs related
-w2_D16A EQU $D16A
+DEF w2_D16A EQU $D16A
 

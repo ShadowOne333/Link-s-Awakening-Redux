@@ -1,14 +1,14 @@
-CURR_CHAR_GFX		EQU $D608	; Bytes to be printed on the screen
-CURR_CHAR			EQU $D638	;
-CURR_CHAR_SIZE		EQU	$D63A	; 
-IS_TILE_READY		EQU	$D63B	; Flag set if tile is to be printed
-IS_CHAR_READY		EQU	$D63C	; Flag set if we're finished with char
-CURR_CHAR_BUFFER	EQU	$D640	; 
-TILE_BUFFER			EQU	$D650	; 
-wDialogBoxPosIndex	EQU	$D668	; Replaces wDialogCharacterIndex for the dialog box
-wDialogBoxPosIndexHi EQU	$D669	; Replaces wDialogCharacterIndexHi for the dialog box
-PIXELS_TO_SUBTRACT	EQU	$D66A	; 
-PIXELS_TO_ADD		EQU	$D66B	; 
+DEF CURR_CHAR_GFX	EQU $D608	; Bytes to be printed on the screen
+DEF CURR_CHAR		EQU $D638	;
+DEF CURR_CHAR_SIZE	EQU	$D63A	; 
+DEF IS_TILE_READY	EQU	$D63B	; Flag set if tile is to be printed
+DEF IS_CHAR_READY	EQU	$D63C	; Flag set if we're finished with char
+DEF CURR_CHAR_BUFFER	EQU	$D640	; 
+DEF TILE_BUFFER		EQU	$D650	; 
+DEF wDialogBoxPosIndex	EQU	$D668	; Replaces wDialogCharacterIndex for the dialog box
+DEF wDialogBoxPosIndexHi EQU	$D669	; Replaces wDialogCharacterIndexHi for the dialog box
+DEF PIXELS_TO_SUBTRACT	EQU	$D66A	; 
+DEF PIXELS_TO_ADD		EQU	$D66B	; 
 
 
 variableWidthFont:

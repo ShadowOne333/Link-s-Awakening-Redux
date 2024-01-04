@@ -385,15 +385,15 @@ CopyDataToVRAM::
     ; On CGB, configure a GDMA transfer
     ; to copy $0F bytes from "${b}00" to "$8000 + ${c}00"
     ld   a, b                                     ; $0A1B: $78
-    ld   [rHDMA1], a                              ; $0A1C: $E0 $51
+    ldh  [rHDMA1], a                              ; $0A1C: $E0 $51
     ld   a, $00                                   ; $0A1E: $3E $00
-    ld   [rHDMA2], a                              ; $0A20: $E0 $52
+    ldh  [rHDMA2], a                              ; $0A20: $E0 $52
     ld   a, c                                     ; $0A22: $79
-    ld   [rHDMA3], a                              ; $0A23: $E0 $53
+    ldh  [rHDMA3], a                              ; $0A23: $E0 $53
     ld   a, $00                                   ; $0A25: $3E $00
-    ld   [rHDMA4], a                              ; $0A27: $E0 $54
+    ldh  [rHDMA4], a                              ; $0A27: $E0 $54
     ld   a, $0F                                   ; $0A29: $3E $0F
-    ld   [rHDMA5], a                              ; $0A2B: $E0 $55
+    ldh  [rHDMA5], a                              ; $0A2B: $E0 $55
 
     ; Fallthrough to switch back to the bank in h
 .restoreBankAndReturn
@@ -543,10 +543,10 @@ CopyObjectsAttributesToWRAM2::
     ldh  a, [hMultiPurpose0]                      ; $0B1A: $F0 $D7
     ld   [rSelectROMBank], a                      ; $0B1C: $EA $00 $21
     ld   a, $02                                   ; $0B1F: $3E $02
-    ld   [rSVBK], a                               ; $0B21: $E0 $70
+    ldh  [rSVBK], a                               ; $0B21: $E0 $70
     call CopyData                                 ; $0B23: $CD $14 $29
     xor  a                                        ; $0B26: $AF
-    ld   [rSVBK], a                               ; $0B27: $E0 $70
+    ldh  [rSVBK], a                               ; $0B27: $E0 $70
     ; Restore bank $20
     ld   a, $20                                   ; $0B29: $3E $20
     ld   [rSelectROMBank], a                      ; $0B2B: $EA $00 $21
@@ -581,10 +581,10 @@ BackupObjectInRAM2::
 .else
     ld   b, [hl]                                  ; $0B4B: $46
     ld   a, $02                                   ; $0B4C: $3E $02
-    ld   [rSVBK], a                               ; $0B4E: $E0 $70
+    ldh  [rSVBK], a                               ; $0B4E: $E0 $70
     ld   [hl], b                                  ; $0B50: $70
     xor  a                                        ; $0B51: $AF
-    ld   [rSVBK], a                               ; $0B52: $E0 $70
+    ldh  [rSVBK], a                               ; $0B52: $E0 $70
 .endIf
 
     ldh  a, [hMultiPurpose2]                      ; $0B54: $F0 $D9
@@ -619,11 +619,11 @@ CopyBGMapFromBank::
     add  hl, de                                   ; $0B75: $19
     ; Switch to VRAM bank 1
     ld   a, $01                                   ; $0B76: $3E $01
-    ld   [rVBK], a                                ; $0B78: $E0 $4F
+    ldh  [rVBK], a                                ; $0B78: $E0 $4F
     call CopyToBGMap0                             ; $0B7A: $CD $96 $0B
     ; Switch back to VRAM bank 0
     xor  a                                        ; $0B7D: $AF
-    ld   [rVBK], a                                ; $0B7E: $E0 $4F
+    ldh  [rVBK], a                                ; $0B7E: $E0 $4F
 .gbcEnd
 
     pop  hl                                       ; $0B80: $E1
@@ -1287,17 +1287,26 @@ ExecuteGameplayHandler::
     jr   nz, jumpToGameplayHandler                ; $0E44: $20 $3F
 
 presentSaveScreenIfNeeded::
-    ; If a indoor/outdoor transition is running
+    ; If a indoor/outdoor transition is running...
     ld   a, [wTransitionSequenceCounter]          ; $0E46: $FA $6B $C1
     cp   $04                                      ; $0E49: $FE $04
+    ; ...don't open the save screen.
     jr   nz, jumpToGameplayHandler                ; $0E4B: $20 $38
 
-    ; If a dialog is visible, or the screen is animating from one map to another
+    ; If a dialog is visible...
     ld   a, [wDialogState]                        ; $0E4D: $FA $9F $C1
+    ; ...or wC167 is non-zero...
     ld   hl, wC167                                ; $0E50: $21 $67 $C1
     or   [hl]                                     ; $0E53: $B6
+    ; ...or the screen is currently scrolling from one room to another...
+    ;
+    ; (POI: This last check was added in 1.1 of the non-DX version of the game,
+    ; and patches the screen warp glitch. However, removing this check doesn't
+    ; re-introduce the glitch into the DX version, perhaps because of another
+    ; check somewhere else.)
     ld   hl, wRoomTransitionState                 ; $0E54: $21 $24 $C1
     or   [hl]                                     ; $0E57: $B6
+    ; ...don't open the save screen.
     jr   nz, jumpToGameplayHandler                ; $0E58: $20 $2B
 
     ; If GameplayType > INVENTORY (i.e. photo album and pictures)
@@ -3447,7 +3456,7 @@ LinkDirectionToLinkAnimationState_2::
 .up:    db  LINK_ANIMATION_STATE_UNKNOWN_3A
 .down:  db  LINK_ANIMATION_STATE_UNKNOWN_3C                       ; $1F51
 
-data_1F55::
+LinkDirectionToLiftDirectionButton::
     db   2, 1, 8, 4                               ; $1F55
 
 data_1F59::
@@ -3746,7 +3755,7 @@ ENDC
     add  hl, de                                   ; $2100: $19
     ld   a, [hl]                                  ; $2101: $7E
     ldh  [hLinkAnimationState], a                 ; $2102: $E0 $9D
-    ld   hl, data_1F55                            ; $2104: $21 $55 $1F
+    ld   hl, LinkDirectionToLiftDirectionButton   ; $2104: $21 $55 $1F
     add  hl, de                                   ; $2107: $19
     ldh  a, [hPressedButtonsMask]                 ; $2108: $F0 $CB
     and  [hl]                                     ; $210A: $A6
@@ -4066,12 +4075,12 @@ DoUpdateBGRegion::
     jr   nz, .ramSwitchEnd                        ; $2258: $20 $08
     ; Switch to RAM Bank 2,
     ld   a, $02                                   ; $225A: $3E $02
-    ld   [rSVBK], a                               ; $225C: $E0 $70
+    ldh  [rSVBK], a                               ; $225C: $E0 $70
     ; read the object value,
     ld   c, [hl]                                  ; $225E: $4E
     ; switch back to RAM Bank 0.
     xor  a                                        ; $225F: $AF
-    ld   [rSVBK], a                               ; $2260: $E0 $70
+    ldh  [rSVBK], a                               ; $2260: $E0 $70
 .ramSwitchEnd
 
     ; bc = bc * 4
@@ -4331,22 +4340,22 @@ ReadJoypadState::
 
 .readState
     ld   a, J_BUTTONS                             ; $2852: $3E $20
-    ld   [rP1], a                                 ; $2854: $E0 $00
-    ld   a, [rP1]                                 ; $2856: $F0 $00
-    ld   a, [rP1]                                 ; $2858: $F0 $00
+    ldh  [rP1], a                                 ; $2854: $E0 $00
+    ldh  a, [rP1]                                 ; $2856: $F0 $00
+    ldh  a, [rP1]                                 ; $2858: $F0 $00
     cpl                                           ; $285A: $2F
     and  $0F                                      ; $285B: $E6 $0F
     ld   b, a                                     ; $285D: $47
     ld   a, J_DPAD                                ; $285E: $3E $10
-    ld   [rP1], a                                 ; $2860: $E0 $00
-    ld   a, [rP1]                                 ; $2862: $F0 $00
-    ld   a, [rP1]                                 ; $2864: $F0 $00
-    ld   a, [rP1]                                 ; $2866: $F0 $00
-    ld   a, [rP1]                                 ; $2868: $F0 $00
-    ld   a, [rP1]                                 ; $286A: $F0 $00
-    ld   a, [rP1]                                 ; $286C: $F0 $00
-    ld   a, [rP1]                                 ; $286E: $F0 $00
-    ld   a, [rP1]                                 ; $2870: $F0 $00
+    ldh  [rP1], a                                 ; $2860: $E0 $00
+    ldh  a, [rP1]                                 ; $2862: $F0 $00
+    ldh  a, [rP1]                                 ; $2864: $F0 $00
+    ldh  a, [rP1]                                 ; $2866: $F0 $00
+    ldh  a, [rP1]                                 ; $2868: $F0 $00
+    ldh  a, [rP1]                                 ; $286A: $F0 $00
+    ldh  a, [rP1]                                 ; $286C: $F0 $00
+    ldh  a, [rP1]                                 ; $286E: $F0 $00
+    ldh  a, [rP1]                                 ; $2870: $F0 $00
     swap a                                        ; $2872: $CB $37
     cpl                                           ; $2874: $2F
     and  $F0                                      ; $2875: $E6 $F0
@@ -4359,7 +4368,7 @@ ReadJoypadState::
     ld   a, c                                     ; $287F: $79
     ldh  [hPressedButtonsMask], a                 ; $2880: $E0 $CB
     ld   a, J_BUTTONS | J_DPAD                    ; $2882: $3E $30
-    ld   [rP1], a                                 ; $2884: $E0 $00
+    ldh  [rP1], a                                 ; $2884: $E0 $00
 
 .return
     ret                                           ; $2886: $C9
@@ -4439,26 +4448,26 @@ TableJump::
 ; Turn off LCD at next vertical blanking
 LCDOff::
     ; Save interrupts configuration
-    ld   a, [rIE]                                 ; $28CF: $F0 $FF
+    ldh  a, [rIE]                                 ; $28CF: $F0 $FF
     ldh  [hInterrupts], a                         ; $28D1: $E0 $D2
     ; Disable VBlank interrupt
     res  IEB_VBLANK, a                            ; $28D3: $CB $87
-    ld   [rIE], a                                 ; $28D5: $E0 $FF
+    ldh  [rIE], a                                 ; $28D5: $E0 $FF
 
     ; Wait for row 145
 .waitForEndOfLine
-    ld   a, [rLY]                                 ; $28D7: $F0 $44
+    ldh  a, [rLY]                                 ; $28D7: $F0 $44
     cp   SCRN_Y + 1                               ; $28D9: $FE $91
     jr   nz, .waitForEndOfLine                    ; $28DB: $20 $FA
 
     ; Switch off LCD screen
-    ld   a, [rLCDC]                               ; $28DD: $F0 $40
+    ldh  a, [rLCDC]                               ; $28DD: $F0 $40
     and  ~LCDCF_ON                                ; $28DF: $E6 $7F
-    ld   [rLCDC], a                               ; $28E1: $E0 $40
+    ldh  [rLCDC], a                               ; $28E1: $E0 $40
 
     ; Restore interrupts configuration
     ldh  a, [hInterrupts]                         ; $28E3: $F0 $D2
-    ld   [rIE], a                                 ; $28E5: $E0 $FF
+    ldh  [rIE], a                                 ; $28E5: $E0 $FF
 
     ret                                           ; $28E7: $C9
 
@@ -5394,7 +5403,7 @@ LoadRoomSpecificTiles::
     jr   nz, .skipBGLoading                       ; $2F55: $20 $12
 .notColorDungeon
 
-    ld   hl, Dungeons2Tiles                       ; $2F57: $21 $00 $50
+    ld   hl, IndoorTiles                          ; $2F57: $21 $00 $50
     ldh  a, [hWorldTileset]                       ; $2F5A: $F0 $94
     cp   W_TILESET_NO_UPDATE                      ; $2F5C: $FE $FF
     jr   z, .skipBGLoading                        ; $2F5E: $28 $09
@@ -5562,12 +5571,12 @@ WriteObjectToBG_DMG::
 WriteOverworldObjectToBG::
     ; Switch to RAM bank 2 (object attributes?)
     ld   a, $02                                   ; $300E: $3E $02
-    ld   [rSVBK], a                               ; $3010: $E0 $70
+    ldh  [rSVBK], a                               ; $3010: $E0 $70
     ; ObjectAttributeValue = [hl]
     ld   c, [hl]                                  ; $3012: $4E
     ; Switch back to RAM bank 0
     xor  a                                        ; $3013: $AF
-    ld   [rSVBK], a                               ; $3014: $E0 $70
+    ldh  [rSVBK], a                               ; $3014: $E0 $70
     jr   doCopyObjectToBG                         ; $3016: $18 $01
 
 ; Given an indoor object, retrieve its tiles indices and palettes (2x2),
@@ -5638,12 +5647,12 @@ doCopyObjectToBG:
     ldh  a, [hMultiPurposeA]                      ; $305E: $F0 $E1
     ld   l, a                                     ; $3060: $6F
     ld   a, $01                                   ; $3061: $3E $01
-    ld   [rVBK], a                                ; $3063: $E0 $4F
+    ldh  [rVBK], a                                ; $3063: $E0 $4F
     call CopyWord                                 ; $3065: $CD $C7 $2F
 
     ; Restore RAM and ROM banks
     xor  a                                        ; $3068: $AF
-    ld   [rVBK], a                                ; $3069: $E0 $4F
+    ldh  [rVBK], a                                ; $3069: $E0 $4F
     call SwitchToObjectsTilemapBank               ; $306B: $CD $05 $39
 
     ; Update palette offset
@@ -5674,12 +5683,12 @@ doCopyObjectToBG:
     ldh  a, [hMultiPurposeA]                      ; $308A: $F0 $E1
     ld   l, a                                     ; $308C: $6F
     ld   a, $01                                   ; $308D: $3E $01
-    ld   [rVBK], a                                ; $308F: $E0 $4F
+    ldh  [rVBK], a                                ; $308F: $E0 $4F
     call CopyWord                                 ; $3091: $CD $C7 $2F
 
     ; Restore RAM and ROM banks
     xor  a                                        ; $3094: $AF
-    ld   [rVBK], a                                ; $3095: $E0 $4F
+    ldh  [rVBK], a                                ; $3095: $E0 $4F
     call SwitchToObjectsTilemapBank               ; $3097: $CD $05 $39
 
     ret                                           ; $309A: $C9
@@ -5771,7 +5780,7 @@ ASSERT LOW(wRoomObjectsArea) & $0F == 0, "wRoomObjectsArea must be aligned on $1
 LoadRoom::
     ; Disable all interrupts except VBlank
     ld   a, IEF_VBLANK                            ; $30F4: $3E $01
-    ld   [rIE], a                                 ; $30F6: $E0 $FF
+    ldh  [rIE], a                                 ; $30F6: $E0 $FF
 
     ; Increment wD47F
     ld   hl, wD47F                                ; $30F8: $21 $7F $D4
