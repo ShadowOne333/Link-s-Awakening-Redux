@@ -129,7 +129,7 @@ CheckLinkInteractionWithEntity_06::
     jr   z, .jr_006_649F                          ; $6491: $28 $0C
 
     push de                                       ; $6493: $D5
-    call func_006_65B4                            ; $6494: $CD $B4 $65
+    call GetEntityDirectionToLink_06              ; $6494: $CD $B4 $65
     ldh  a, [hLinkDirection]                      ; $6497: $F0 $9E
     xor  $01                                      ; $6499: $EE $01
     cp   e                                        ; $649B: $BB
@@ -347,71 +347,88 @@ AddEntityZSpeedToPos_06::
     ld   hl, wEntitiesPosZTable                   ; $658F: $21 $10 $C3
     jr   AddEntitySpeedToPos_06.updatePosition    ; $6592: $18 $D2
 
-func_006_6594::
-    ld   e, $00                                   ; $6594: $1E $00
+; Inputs:
+;   bc   entity index
+;
+; Outputs:
+;   d   x distance (Link's position - entity's position)
+;   e   DIRECTION_LEFT if Link is to the left of the entity, DIRECTION_RIGHT otherwise
+GetEntityXDistanceToLink_06::
+    ld   e, DIRECTION_RIGHT                       ; $6594: $1E $00
     ldh  a, [hLinkPositionX]                      ; $6596: $F0 $98
     ld   hl, wEntitiesPosXTable                   ; $6598: $21 $00 $C2
     add  hl, bc                                   ; $659B: $09
     sub  [hl]                                     ; $659C: $96
     bit  7, a                                     ; $659D: $CB $7F
-    jr   z, .jr_65A2                              ; $659F: $28 $01
+    jr   z, .positive                             ; $659F: $28 $01
 
     inc  e                                        ; $65A1: $1C
 
-.jr_65A2
+.positive
     ld   d, a                                     ; $65A2: $57
     ret                                           ; $65A3: $C9
 
-func_006_65A4::
-    ld   e, $02                                   ; $65A4: $1E $02
+; Inputs:
+;   bc   entity index
+;
+; Outputs:
+;   d   y distance (Link's position - entity's position)
+;   e   DIRECTION_UP if Link is above the entity, DIRECTION_DOWN otherwise
+GetEntityYDistanceToLink_06::
+    ld   e, DIRECTION_UP                          ; $65A4: $1E $02
     ldh  a, [hLinkPositionY]                      ; $65A6: $F0 $99
     ld   hl, wEntitiesPosYTable                   ; $65A8: $21 $10 $C2
     add  hl, bc                                   ; $65AB: $09
     sub  [hl]                                     ; $65AC: $96
     bit  7, a                                     ; $65AD: $CB $7F
-    jr   nz, .jr_65B2                             ; $65AF: $20 $01
+    jr   nz, .negative                            ; $65AF: $20 $01
 
     inc  e                                        ; $65B1: $1C
 
-.jr_65B2
+.negative
     ld   d, a                                     ; $65B2: $57
     ret                                           ; $65B3: $C9
 
-func_006_65B4::
-    call func_006_6594                            ; $65B4: $CD $94 $65
+; Inputs:
+;   bc   entity index
+;
+; Outputs:
+;   e   entity's direction to Link (see DIRECTION_* constants for possible values)
+GetEntityDirectionToLink_06::
+    call GetEntityXDistanceToLink_06              ; $65B4: $CD $94 $65
     ld   a, e                                     ; $65B7: $7B
     ldh  [hMultiPurpose0], a                      ; $65B8: $E0 $D7
     ld   a, d                                     ; $65BA: $7A
     bit  7, a                                     ; $65BB: $CB $7F
-    jr   z, .jr_65C1                              ; $65BD: $28 $02
+    jr   z, .positiveX                            ; $65BD: $28 $02
 
     cpl                                           ; $65BF: $2F
     inc  a                                        ; $65C0: $3C
 
-.jr_65C1
+.positiveX
     push af                                       ; $65C1: $F5
-    call func_006_65A4                            ; $65C2: $CD $A4 $65
+    call GetEntityYDistanceToLink_06              ; $65C2: $CD $A4 $65
     ld   a, e                                     ; $65C5: $7B
     ldh  [hMultiPurpose1], a                      ; $65C6: $E0 $D8
     ld   a, d                                     ; $65C8: $7A
     bit  7, a                                     ; $65C9: $CB $7F
-    jr   z, .jr_65CF                              ; $65CB: $28 $02
+    jr   z, .positiveY                            ; $65CB: $28 $02
 
     cpl                                           ; $65CD: $2F
     inc  a                                        ; $65CE: $3C
 
-.jr_65CF
+.positiveY
     pop  de                                       ; $65CF: $D1
     cp   d                                        ; $65D0: $BA
-    jr   nc, .jr_65D7                             ; $65D1: $30 $04
+    jr   nc, .vertical                            ; $65D1: $30 $04
 
     ldh  a, [hMultiPurpose0]                      ; $65D3: $F0 $D7
-    jr   jr_006_65D9                              ; $65D5: $18 $02
+    jr   .verticalEnd                             ; $65D5: $18 $02
 
-.jr_65D7
+.vertical
     ldh  a, [hMultiPurpose1]                      ; $65D7: $F0 $D8
 
-jr_006_65D9:
+.verticalEnd
     ld   e, a                                     ; $65D9: $5F
     ret                                           ; $65DA: $C9
 

@@ -518,7 +518,7 @@ jr_002_4459:
 
 label_002_4464:
     ld   e, $03                                   ; $4464: $1E $03
-    ld   a, [wC117]                               ; $4466: $FA $17 $C1
+    ld   a, [wIsGelClingingToLink]                ; $4466: $FA $17 $C1
     and  a                                        ; $4469: $A7
     jr   nz, jr_002_44A2                          ; $446A: $20 $36
 
@@ -1810,7 +1810,7 @@ label_002_4C92:
     ld   d, $00                                   ; $4C95: $16 $00
     ld   hl, wRoomObjects                         ; $4C97: $21 $11 $D7
     add  hl, de                                   ; $4C9A: $19
-    ld   [hl], $CC                                ; $4C9B: $36 $CC
+    ld   [hl], OBJECT_SHOVEL_HOLE                 ; $4C9B: $36 $CC
     ld   a, $82                                   ; $4C9D: $3E $82
     call BackupObjectInRAM2                       ; $4C9F: $CD $2F $0B
     call label_2887                               ; $4CA2: $CD $87 $28
@@ -1841,7 +1841,7 @@ jr_002_4CC1:
     jr   nz, .jr_4CD3                             ; $4CCC: $20 $05
 
     ldh  a, [hMapRoom]                            ; $4CCE: $F0 $F6
-    cp   ROOM_OW_EAGLE_TOWER                      ; $4CD0: $FE $0E
+    cp   ROOM_OW_EAGLES_TOWER                     ; $4CD0: $FE $0E
     ret  z                                        ; $4CD2: $C8
 
 .jr_4CD3
@@ -1865,7 +1865,7 @@ jr_002_4CC1:
     ldh  a, [hIntersectedObjectTop]               ; $4CEF: $F0 $CD
     add  $10                                      ; $4CF1: $C6 $10
     ld   [hl], a                                  ; $4CF3: $77
-    ld   hl, wEntitiesDropTimerTable              ; $4CF4: $21 $50 $C4
+    ld   hl, wEntitiesSlowTransitionCountdownTable ; $4CF4: $21 $50 $C4
     add  hl, de                                   ; $4CF7: $19
     ld   [hl], $80                                ; $4CF8: $36 $80
     ld   hl, wEntitiesPrivateCountdown1Table      ; $4CFA: $21 $F0 $C2
@@ -2446,7 +2446,7 @@ jr_002_5015:
 
 .overworld
     ldh  a, [hMapRoom]                            ; $5035: $F0 $F6
-    cp   ROOM_OW_KANALET_MOAT                     ; $5037: $FE $78
+    cp   ROOM_OW_KANALET_MOAT_HEARTPIECE          ; $5037: $FE $78
     jr   nz, .return                              ; $5039: $20 $3E
 
 .roomHasSunkPieceOfHeart
@@ -2579,14 +2579,15 @@ LinkMotionFallingDownHandler::
     and  a                                        ; $5106: $A7
     jr   nz, jr_002_512B                          ; $5107: $20 $22
 
+    ; overworld warp hole rooms
     ldh  a, [hMapRoom]                            ; $5109: $F0 $F6
-    cp   UNKNOWN_ROOM_01                          ; $510B: $FE $01
+    cp   ROOM_OW_TURTLE_ROCK_WARP_HOLE            ; $510B: $FE $01
     jr   z, .jr_511B                              ; $510D: $28 $0C
-    cp   UNKNOWN_ROOM_95                          ; $510F: $FE $95
+    cp   ROOM_OW_UKUKU_PRAIRIE_WARP_HOLE          ; $510F: $FE $95
     jr   z, .jr_511B                              ; $5111: $28 $08
-    cp   UNKNOWN_ROOM_2C                          ; $5113: $FE $2C
+    cp   ROOM_OW_WATERFALL_WARP_HOLE              ; $5113: $FE $2C
     jr   z, .jr_511B                              ; $5115: $28 $04
-    cp   UNKNOWN_ROOM_EC                          ; $5117: $FE $EC
+    cp   ROOM_OW_ANIMAL_VILLAGE_WARP_HOLE         ; $5117: $FE $EC
     jr   nz, jr_002_512B                          ; $5119: $20 $10
 
 .jr_511B
@@ -2654,16 +2655,16 @@ jr_002_516A:
     jr   nz, jr_002_51AC                          ; $517A: $20 $30
 
     ldh  a, [hMapRoom]                            ; Underworld 2:
-    cp   MOUNTAIN_CAVE_ROOM_1                     ; caves in the mountains where falling in a pit will spit you out of a waterfall
-    jr   z, .jr_518E                           ;
-    cp   MOUNTAIN_CAVE_ROOM_2                     ; $5182: $FE $7B
-    jr   z, .jr_518E                              ; $5184: $28 $08
-    cp   MOUNTAIN_CAVE_ROOM_3                     ; $5186: $FE $7C
-    jr   z, .jr_518E                              ; $5188: $28 $04
-    cp   MOUNTAIN_CAVE_ROOM_4                     ; $518A: $FE $7D
+    cp   ROOM_INDOOR_B_MOUNTAIN_CAVE_ROOM_1       ; caves in the mountains where falling in a pit will spit you out of a waterfall
+    jr   z, .WaterfallWarp                        ;
+    cp   ROOM_INDOOR_B_MOUNTAIN_CAVE_ROOM_2       ; $5182: $FE $7B
+    jr   z, .WaterfallWarp                        ; $5184: $28 $08
+    cp   ROOM_INDOOR_B_MOUNTAIN_CAVE_ROOM_3       ; $5186: $FE $7C
+    jr   z, .WaterfallWarp                        ; $5188: $28 $04
+    cp   ROOM_INDOOR_B_MOUNTAIN_CAVE_ROOM_4       ; $518A: $FE $7D
     jr   nz, jr_002_51AC                          ; $518C: $20 $1E
 
-.jr_518E
+.WaterfallWarp
     ld   a, $00                                   ; $518E: $3E $00
     ld   hl, wWarp0MapCategory                    ; $5190: $21 $01 $D4
     ld   [hl+], a                                 ; $5193: $22
@@ -5925,7 +5926,7 @@ jr_002_6BEB:
     call UpdateFinalLinkPosition                  ; $6C16: $CD $A8 $21
     call CheckPositionForMapTransition            ; $6C19: $CD $75 $6C
     ld   a, $20                                   ; $6C1C: $3E $20
-    ld   [wC157], a                               ; $6C1E: $EA $57 $C1
+    ld   [wScreenShakeCountdown], a               ; $6C1E: $EA $57 $C1
     ldh  a, [hLinkDirection]                      ; $6C21: $F0 $9E
     and  DIRECTION_VERTICAL_MASK                  ; $6C23: $E6 $02
     sla  a                                        ; $6C25: $CB $27
@@ -6087,13 +6088,13 @@ CheckPositionForMapTransition::
     ;
 
     ldh  a, [hMapRoom]                            ; $6CD1: $F0 $F6
-    cp   ROOM_INDOOR_B_EAGLE_TOWER_BOSS           ; $6CD3: $FE $E8
+    cp   ROOM_INDOOR_B_EAGLES_TOWER_BOSS          ; $6CD3: $FE $E8
     jp   z, .manualEntryPointsEnd                 ; $6CD5: $CA $5C $6D
     cp   UNKNOWN_ROOM_F8                          ; $6CD8: $FE $F8
     jp   z, .manualEntryPointsEnd                 ; $6CDA: $CA $5C $6D
     cp   ROOM_INDOOR_B_MANBO                      ; $6CDD: $FE $FD
     jr   z, .jr_002_6D00                          ; $6CDF: $28 $1F
-    cp   ROOM_INDOOR_A_WATER_HOLE                 ; $6CE1: $FE $A3
+    cp   ROOM_INDOOR_A_CATFISHS_MAW_WATER_HOLE    ; $6CE1: $FE $A3
     jp   z, ApplyMapFadeOutTransitionWithNoise    ; $6CE3: $CA $7D $0C
     cp   UNKNOWN_ROOM_C0                          ; $6CE6: $FE $C0
     jp   z, ApplyMapFadeOutTransitionWithNoise    ; $6CE8: $CA $7D $0C
@@ -6148,7 +6149,7 @@ CheckPositionForMapTransition::
     jp   z, ApplyMapFadeOutTransition             ; $6D28: $CA $83 $0C
     cp   ROOM_INDOOR_B_SEASHELL_MANSION           ; $6D2B: $FE $E9
     jp   z, ApplyMapFadeOutTransitionWithNoise    ; $6D2D: $CA $7D $0C
-    cp   ROOM_INDOOR_B_EAGLE_TOWER_BOSS           ; $6D30: $FE $E8
+    cp   ROOM_INDOOR_B_EAGLES_TOWER_BOSS          ; $6D30: $FE $E8
     jp   z, .return                               ; $6D32: $CA $09 $6E
     cp   UNKNOWN_ROOM_F8                          ; $6D35: $FE $F8
     jp   z, .return                               ; $6D37: $CA $09 $6E
@@ -6211,7 +6212,7 @@ CheckPositionForMapTransition::
 
 .jr_002_6D94
     ld   a, [wIgnoreLinkCollisionsCountdown]      ; $6D94: $FA $3E $C1
-    ld   hl, wC157                                ; $6D97: $21 $57 $C1
+    ld   hl, wScreenShakeCountdown                ; $6D97: $21 $57 $C1
     or   [hl]                                     ; $6D9A: $B6
     jr   nz, clearIncrementAndReturn              ; $6D9B: $20 $6F
 
@@ -6256,7 +6257,7 @@ CheckPositionForMapTransition::
 
     ; If room is $E8 (Eagle's Tower boss)…
     ldh  a, [hMapRoom]                            ; $6DCC: $F0 $F6
-    cp   ROOM_INDOOR_B_EAGLE_TOWER_BOSS           ; $6DCE: $FE $E8
+    cp   ROOM_INDOOR_B_EAGLES_TOWER_BOSS          ; $6DCE: $FE $E8
     jr   nz, .eagleTowerBossEnd                   ; $6DD0: $20 $12
 
     ; … and map is not CAVE_E…
@@ -6642,7 +6643,7 @@ ApplyCollisionWithObject::
     jp   nz, label_002_703B                       ; $6FAD: $C2 $3B $70
 
     ldh  a, [hMapRoom]                            ; $6FB0: $F0 $F6
-    cp   ROOM_OW_EAGLE_TOWER                      ; L7 Eagle's Tower overworld entrance
+    cp   ROOM_OW_EAGLES_TOWER                     ; L7 Eagle's Tower overworld entrance
     jr   nz, .jr_6FBD                             ; $6FB4: $20 $07
 
     ld   a, [wHasBirdKey]                         ; $6FB6: $FA $14 $DB
@@ -7046,7 +7047,7 @@ ApplyCollisionWithDoor:
     jr   z, .jr_7204                              ; $71FA: $28 $08
     cp   ROOM_OW_FACE_SHRINE_ENTRANCE             ; $71FC: $FE $8C
     jr   z, .jr_7204                              ; $71FE: $28 $04
-    cp   ROOM_OW_EAGLE_TOWER                      ; $7200: $FE $0E
+    cp   ROOM_OW_EAGLES_TOWER                     ; $7200: $FE $0E
     jr   nz, jr_002_722C                          ; $7202: $20 $28
 
 .jr_7204
@@ -7599,7 +7600,7 @@ label_002_74AD:
     ld   a, $02                                   ; $74E4: $3E $02
     ld   [wIsLinkInTheAir], a                     ; $74E6: $EA $46 $C1
     ld   a, $20                                   ; $74E9: $3E $20
-    ld   [wC157], a                               ; $74EB: $EA $57 $C1
+    ld   [wScreenShakeCountdown], a               ; $74EB: $EA $57 $C1
     ldh  a, [hLinkDirection]                      ; $74EE: $F0 $9E
     and  $02                                      ; $74F0: $E6 $02
     sla  a                                        ; $74F2: $CB $27

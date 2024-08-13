@@ -95,7 +95,7 @@ SmasherState0Handler::
     call ApplyVectorTowardsLink_trampoline        ; $45A1: $CD $AA $3B
     call UpdateEntityPosWithSpeed_06              ; $45A4: $CD $41 $65
     call DefaultEntityPhysics_trampoline          ; $45A7: $CD $23 $3B
-    call func_006_6594                            ; $45AA: $CD $94 $65
+    call GetEntityXDistanceToLink_06              ; $45AA: $CD $94 $65
     ld   hl, wEntitiesDirectionTable              ; $45AD: $21 $80 $C3
     add  hl, bc                                   ; $45B0: $09
     ld   [hl], e                                  ; $45B1: $73
@@ -103,7 +103,7 @@ SmasherState0Handler::
     cp   $18                                      ; $45B4: $FE $18
     jr   nc, .jr_45DA                             ; $45B6: $30 $22
 
-    call func_006_65A4                            ; $45B8: $CD $A4 $65
+    call GetEntityYDistanceToLink_06              ; $45B8: $CD $A4 $65
     add  $0C                                      ; $45BB: $C6 $0C
     cp   $18                                      ; $45BD: $FE $18
     jr   nc, .jr_45DA                             ; $45BF: $30 $19
@@ -309,7 +309,7 @@ SmasherState3Handler::
     call func_006_45E5                            ; $46FB: $CD $E5 $45
     ld   a, $04                                   ; $46FE: $3E $04
     call ApplyVectorTowardsLink_trampoline        ; $4700: $CD $AA $3B
-    call func_006_6594                            ; $4703: $CD $94 $65
+    call GetEntityXDistanceToLink_06              ; $4703: $CD $94 $65
     ld   hl, wEntitiesDirectionTable              ; $4706: $21 $80 $C3
     add  hl, bc                                   ; $4709: $09
     ld   [hl], e                                  ; $470A: $73
@@ -458,7 +458,7 @@ jr_006_4806:
 
     ld   a, [wInventoryItems.BButtonSlot]         ; $4811: $FA $00 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $4814: $FE $03
-    jr   nz, .jr_4820                             ; $4816: $20 $08
+    jr   nz, .checkAButtonSlot                    ; $4816: $20 $08
 
     ldh  a, [hJoypadState]                        ; $4818: $F0 $CC
     and  J_B                                      ; $481A: $E6 $20
@@ -466,7 +466,7 @@ jr_006_4806:
 
     jr   ret_006_4852                             ; $481E: $18 $32
 
-.jr_4820
+.checkAButtonSlot
     ld   a, [wInventoryItems.AButtonSlot]         ; $4820: $FA $01 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $4823: $FE $03
     jr   nz, ret_006_4852                         ; $4825: $20 $2B

@@ -290,7 +290,7 @@ func_005_4F64::
 .jr_4FAC
     ld   d, $2F                                   ; $4FAC: $16 $2F
     ld_dialog_low e, Dialog003                    ; $4FAE: $1E $03
-    ld   a, [wDB48]                               ; $4FB0: $FA $48 $DB
+    ld   a, [wTarinFlag]                          ; $4FB0: $FA $48 $DB
     and  a                                        ; $4FB3: $A7
     jr   z, .openDialog                           ; $4FB4: $28 $45
 
@@ -692,7 +692,7 @@ MarinEntityHandler_Indoor::
     and  a                                        ; $5213: $A7
     jr   nz, .jr_5237                             ; $5214: $20 $21
 
-    call GetEntityDropTimer                       ; $5216: $CD $FB $0B
+    call GetEntitySlowTransitionCountdown         ; $5216: $CD $FB $0B
     ld   [hl], $7F                                ; $5219: $36 $7F
     ld   hl, wEntitiesDirectionTable              ; $521B: $21 $80 $C3
     add  hl, bc                                   ; $521E: $09
@@ -760,7 +760,7 @@ Data_005_5274::
     db   $00, $00, $01, $01, $00, $00, $01, $01, $00, $00, $01, $01, $00, $00, $01, $01
 
 func_005_5294::
-    call GetEntityDropTimer                       ; $5294: $CD $FB $0B
+    call GetEntitySlowTransitionCountdown         ; $5294: $CD $FB $0B
     jr   nz, .jr_52A4                             ; $5297: $20 $0B
 
     call_open_dialog Dialog001                    ; $5299: $3E $01

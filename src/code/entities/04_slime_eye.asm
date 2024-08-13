@@ -88,7 +88,7 @@ func_004_49DC::
 ._03 dw SlimeEyeState3Handler                     ; $49EB
 
 SlimeEyeState0Handler::
-    ld   a, [wC157]                               ; $49ED: $FA $57 $C1
+    ld   a, [wScreenShakeCountdown]               ; $49ED: $FA $57 $C1
     cp   $05                                      ; $49F0: $FE $05
     jr   nz, .jr_49FB                             ; $49F2: $20 $07
 
@@ -101,7 +101,7 @@ SlimeEyeState0Handler::
     jr   nz, .ret_4A2C                            ; $49FE: $20 $2C
 
     ld   [hl], $50                                ; $4A00: $36 $50
-    ld   a, [wC1AE]                               ; $4A02: $FA $AE $C1
+    ld   a, [wZolCount]                           ; $4A02: $FA $AE $C1
     cp   $02                                      ; $4A05: $FE $02
     jr   nc, .ret_4A2C                            ; $4A07: $30 $23
 
@@ -148,7 +148,7 @@ SlimeEyeState1Handler::
 
     ld   [hl], b                                  ; $4A49: $70
     ld   a, $50                                   ; $4A4A: $3E $50
-    ld   [wC157], a                               ; $4A4C: $EA $57 $C1
+    ld   [wScreenShakeCountdown], a               ; $4A4C: $EA $57 $C1
     ld   a, $04                                   ; $4A4F: $3E $04
     ld   [wC158], a                               ; $4A51: $EA $58 $C1
     call GetEntityTransitionCountdown             ; $4A54: $CD $05 $0C
@@ -158,7 +158,7 @@ SlimeEyeState1Handler::
     and  a                                        ; $4A5F: $A7
     jr   nz, .jr_4A67                             ; $4A60: $20 $05
 
-    call GetEntityDropTimer                       ; $4A62: $CD $FB $0B
+    call GetEntitySlowTransitionCountdown         ; $4A62: $CD $FB $0B
     ld   [hl], $14                                ; $4A65: $36 $14
 
 .jr_4A67
@@ -554,7 +554,7 @@ jr_004_4E4F:
     jp   label_004_50EF                           ; $4E4F: $C3 $EF $50
 
 func_004_4E52::
-    call GetEntityDropTimer                       ; $4E52: $CD $FB $0B
+    call GetEntitySlowTransitionCountdown         ; $4E52: $CD $FB $0B
     jr   z, .ret_4E5F                             ; $4E55: $28 $08
 
     ld   a, $02                                   ; $4E57: $3E $02
@@ -692,14 +692,14 @@ func_004_4EEB::
     jr   z, .jr_4F49                              ; $4F2C: $28 $1B
 
     ld   a, $18                                   ; $4F2E: $3E $18
-    ld   [wC157], a                               ; $4F30: $EA $57 $C1
+    ld   [wScreenShakeCountdown], a               ; $4F30: $EA $57 $C1
     ld   a, JINGLE_STRONG_BUMP                    ; $4F33: $3E $0B
     ldh  [hJingle], a                             ; $4F35: $E0 $F2
     ld   a, [wIsLinkInTheAir]                     ; $4F37: $FA $46 $C1
     and  a                                        ; $4F3A: $A7
     jr   nz, .jr_4F49                             ; $4F3B: $20 $0C
 
-    call GetEntityDropTimer                       ; $4F3D: $CD $FB $0B
+    call GetEntitySlowTransitionCountdown         ; $4F3D: $CD $FB $0B
     ld   [hl], $0E                                ; $4F40: $36 $0E
     ld   hl, wEntitiesSpeedZTable                 ; $4F42: $21 $20 $C3
     add  hl, bc                                   ; $4F45: $09

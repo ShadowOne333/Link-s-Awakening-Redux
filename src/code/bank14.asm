@@ -749,18 +749,18 @@ UpdateEntityTimers::
     dec  [hl]                                     ; $4DCB: $35
 .unknownCountdownEnd
 
-    ; Every 4 frames, if entity drop timer > 0, decrement it
+    ; Every 4 frames, if slow transition countdown > 0, decrement it
     ldh  a, [hFrameCounter]                       ; $4DCC: $F0 $E7
     and  $03                                      ; $4DCE: $E6 $03
-    jr   nz, .dropTimerEnd                        ; $4DD0: $20 $0
+    jr   nz, .slowTransitionCountdownEnd          ; $4DD0: $20 $0
 
-    ld   hl, wEntitiesDropTimerTable              ; $4DD2: $21 $50 $C4
+    ld   hl, wEntitiesSlowTransitionCountdownTable ; $4DD2: $21 $50 $C4
     add  hl, bc                                   ; $4DD5: $09
     ld   a, [hl]                                  ; $4DD6: $7E
     and  a                                        ; $4DD7: $A7
-    jr   z, .dropTimerEnd                         ; $4DD8: $28 $0
+    jr   z, .slowTransitionCountdownEnd           ; $4DD8: $28 $0
     dec  [hl]                                     ; $4DDA: $35
-.dropTimerEnd
+.slowTransitionCountdownEnd
 
     ; If flash countdown > 0, decrement it
     ld   hl, wEntitiesFlashCountdownTable         ; $4DDB: $21 $20 $C4
@@ -1059,7 +1059,7 @@ func_014_50C3::
     and  ENTITY_PHYSICS_GRABBABLE                 ; $50D5: $E6 $20
     jr   z, .continue                             ; $50D7: $28 $38
 
-    ; and the wEntitiesPrivateState3Table value != 2…
+    ; and the wEntitiesPrivateState3Table value = 2…
     ld   hl, wEntitiesPrivateState3Table          ; $50D9: $21 $D0 $C2
     add  hl, de                                   ; $50DC: $19
     ld   a, [hl]                                  ; $50DD: $7E
@@ -1086,8 +1086,8 @@ func_014_50C3::
     cp   $10                                      ; $50FC: $FE $10
     jr   nc, .continue                            ; $50FE: $30 $11
 
-    ; Set the drop timer to $80
-    ld   hl, wEntitiesDropTimerTable              ; $5100: $21 $50 $C4
+    ; Set the slow transition countdown to $80
+    ld   hl, wEntitiesSlowTransitionCountdownTable ; $5100: $21 $50 $C4
     add  hl, de                                   ; $5103: $19
     ld   [hl], $80                                ; $5104: $36 $80
     ; Clear the wEntitiesPrivateState3Table value
@@ -1165,12 +1165,12 @@ jr_014_5360:
     ld   e, J_A                                   ; $537D: $1E $10
     ld   a, [wInventoryItems.BButtonSlot]         ; $537F: $FA $00 $DB
     cp   d                                        ; $5382: $BA
-    jr   nz, .jr_5389                             ; $5383: $20 $04
+    jr   nz, .checkAButtonSlot                    ; $5383: $20 $04
 
-    sla  e ; J_B                                       ; $5385: $CB $23
+    sla  e ; J_B                                  ; $5385: $CB $23
     jr   jr_014_5391                              ; $5387: $18 $08
 
-.jr_5389
+.checkAButtonSlot
     ld   a, [wInventoryItems.AButtonSlot]         ; $5389: $FA $01 $DB
     cp   d                                        ; $538C: $BA
     jr   z, jr_014_5391                           ; $538D: $28 $02
@@ -1429,20 +1429,20 @@ Data_014_54F0::
     db   $00, $00, $00, $00, $00, $02, $00, $FE
 
 func_014_54F8::
-    ld   a, [wC178]                               ; $54F8: $FA $78 $C1
+    ld   a, [wPegasusBootsCollisionCountdown]     ; $54F8: $FA $78 $C1
     and  a                                        ; $54FB: $A7
     jr   z, .jr_5502                              ; $54FC: $28 $04
 
     dec  a                                        ; $54FE: $3D
-    ld   [wC178], a                               ; $54FF: $EA $78 $C1
+    ld   [wPegasusBootsCollisionCountdown], a     ; $54FF: $EA $78 $C1
 
 .jr_5502
-    ld   a, [wC157]                               ; $5502: $FA $57 $C1
+    ld   a, [wScreenShakeCountdown]               ; $5502: $FA $57 $C1
     and  a                                        ; $5505: $A7
     jr   z, .ret_5525                             ; $5506: $28 $1D
 
     dec  a                                        ; $5508: $3D
-    ld   [wC157], a                               ; $5509: $EA $57 $C1
+    ld   [wScreenShakeCountdown], a               ; $5509: $EA $57 $C1
     and  $03                                      ; $550C: $E6 $03
     ld   hl, wC158                                ; $550E: $21 $58 $C1
     add  [hl]                                     ; $5511: $86
@@ -1632,7 +1632,7 @@ label_014_5630:
     ldh  a, [hObjectUnderEntity]                  ; $5630: $F0 $AF
     cp   $20                                      ; $5632: $FE $20
     jr   nz, jr_014_564E                          ; $5634: $20 $18
-
+    ; likely mad batter entrance rooms
     ldh  a, [hMapRoom]                            ; $5636: $F0 $F6
     cp   UNKNOWN_ROOM_52                          ; $5638: $FE $52
     jr   z, .jr_5640                              ; $563A: $28 $04

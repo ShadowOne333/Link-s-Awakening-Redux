@@ -715,15 +715,15 @@ UpdateLinkWalkingAnimation_trampoline::
     call UpdateLinkWalkingAnimation               ; $0BF5: $CD $50 $1A
     jp   ReloadSavedBank                          ; $0BF8: $C3 $1D $08
 
-; Retrieve the drop timer for the given entity.
+; Retrieve the slow transition countdown for the given entity.
 ; Input:
 ;   bc   entity index
 ; Output:
-;   hl   address of the drop timer for this entity
-;   a    value of the drop timer for this entity
-;   z    whether the drop timer is zero
-GetEntityDropTimer::
-    ld   hl, wEntitiesDropTimerTable              ; $0BFB: $21 $50 $C4
+;   hl   address of the slow transition countdown for this entity
+;   a    value of the slow transition countdown for this entity
+;   z    whether the slow transition countdown is zero
+GetEntitySlowTransitionCountdown::
+    ld   hl, wEntitiesSlowTransitionCountdownTable ; $0BFB: $21 $50 $C4
     jr   IsZero                                   ; $0BFE: $18 $08
 
 ; Retrieve the private counter 1 for the given entity.
@@ -2479,7 +2479,7 @@ label_1653::
     ldh  a, [hIntersectedObjectTop]               ; $16A2: $F0 $CD
     add  a, $10                                   ; $16A4: $C6 $10
     ld   [hl], a                                  ; $16A6: $77
-    ld   hl, wEntitiesDropTimerTable              ; $16A7: $21 $50 $C4
+    ld   hl, wEntitiesSlowTransitionCountdownTable ; $16A7: $21 $50 $C4
     add  hl, de                                   ; $16AA: $19
     ld   [hl], $80                                ; $16AB: $36 $80
     ld   hl, wEntitiesPrivateCountdown1Table      ; $16AD: $21 $F0 $C2
@@ -2756,7 +2756,7 @@ LinkMotionMapFadeOutHandler::
 .label_1847
     call func_1A22                                ; $1847: $CD $22 $1A
     xor  a                                        ; $184A: $AF
-    ld   [wC157], a                               ; $184B: $EA $57 $C1
+    ld   [wScreenShakeCountdown], a               ; $184B: $EA $57 $C1
     inc  a                                        ; $184E: $3C
     ld   [wC1A8], a                               ; $184F: $EA $A8 $C1
     ld   a, [wTransitionSequenceCounter]          ; $1852: $FA $6B $C1
@@ -3737,13 +3737,13 @@ ENDC
 
     ld   a, [wInventoryItems.BButtonSlot]         ; $20CF: $FA $00 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $20D2: $FE $03
-    jr   nz, .jr_20DD                             ; $20D4: $20 $07
+    jr   nz, .checkAButtonSlot                    ; $20D4: $20 $07
     ldh  a, [hPressedButtonsMask]                 ; $20D6: $F0 $CB
     and  J_B                                      ; $20D8: $E6 $20
     jr   nz, .jr_20EC                             ; $20DA: $20 $10
     ret                                           ; $20DC: $C9
 
-.jr_20DD
+.checkAButtonSlot
     ld   a, [wInventoryItems.AButtonSlot]         ; $20DD: $FA $01 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $20E0: $FE $03
 IF __OPTIMIZATIONS_1__
@@ -5952,9 +5952,9 @@ LoadRoom::
     ;
 
     ldh  a, [hMapRoom]                            ; $31BF: $F0 $F6
-    cp   ROOM_OW_EAGLE_TOWER                      ; $31C1: $FE $0E
+    cp   ROOM_OW_EAGLES_TOWER                     ; $31C1: $FE $0E
     jr   nz, .endEaglesTowerAlt                   ; $31C3: $20 $0C
-    ld   a, [wOverworldRoomStatus + ROOM_OW_EAGLE_TOWER] ; $31C5: $FA $0E $D8
+    ld   a, [wOverworldRoomStatus + ROOM_OW_EAGLES_TOWER] ; $31C5: $FA $0E $D8
     and  OW_ROOM_STATUS_CHANGED                   ; $31C8: $E6 $10
     jr   z, .altRoomsEnd                          ; $31CA: $28 $55
     ld   bc, Overworld0EAlt ; Eagle's Tower open  ; $31CC: $01 $EC $47
@@ -6749,7 +6749,7 @@ label_350E::
     cp   $E1                                      ; $350E: $FE $E1
     jr   nz, label_351D                           ; $3510: $20 $0B
     ldh  a, [hMapRoom]                            ; $3512: $F0 $F6
-    cp   ROOM_OW_EAGLE_TOWER                      ; $3514: $FE $0E
+    cp   ROOM_OW_EAGLES_TOWER                     ; $3514: $FE $0E
     ret  z                                        ; $3516: $C8
     cp   UNKNOWN_ROOM_0C                          ; $3517: $FE $0C
     ret  z                                        ; $3519: $C8
@@ -6952,7 +6952,7 @@ SetupDestroyableObjectIfNeeded::
     jr   nz, .setupDestroyableObject              ; $35DB: $20 $0B
 
     ldh  a, [hMapRoom]                            ; $35DD: $F0 $F6
-    cp   ROOM_OW_EAGLE_TOWER                      ; $35DF: $FE $0E
+    cp   ROOM_OW_EAGLES_TOWER                     ; $35DF: $FE $0E
     ret  z                                        ; $35E1: $C8
     cp   UNKNOWN_ROOM_0C                          ; $35E2: $FE $0C
     ret  z                                        ; $35E4: $C8

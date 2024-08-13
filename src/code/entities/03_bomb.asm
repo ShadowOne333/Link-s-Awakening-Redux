@@ -31,7 +31,7 @@ BombEntityHandler::
     call func_003_6711                            ; $66BF: $CD $11 $67
     call CheckForEntityFallingDownQuicksandHole   ; $66C2: $CD $EA $5C
     call ReturnIfNonInteractive_03                ; $66C5: $CD $78 $7F
-    call func_003_60B3                            ; $66C8: $CD $B3 $60
+    call BouncingEntityPhysics                    ; $66C8: $CD $B3 $60
     ld   hl, wEntitiesPrivateCountdown2Table      ; $66CB: $21 $00 $C3
     add  hl, bc                                   ; $66CE: $09
     ld   [hl], $FF                                ; $66CF: $36 $FF
@@ -43,7 +43,7 @@ BombEntityHandler::
 
     ld   a, [wInventoryItems.BButtonSlot]         ; $66DB: $FA $00 $DB
     cp   INVENTORY_BOMBS                          ; $66DE: $FE $02
-    jr   nz, .jr_66EA                             ; $66E0: $20 $08
+    jr   nz, .checkAButtonSlot                    ; $66E0: $20 $08
 
     ldh  a, [hJoypadState]                        ; $66E2: $F0 $CC
     and  J_B                                      ; $66E4: $E6 $20
@@ -51,7 +51,7 @@ BombEntityHandler::
 
     jr   jr_003_66FA                              ; $66E8: $18 $10
 
-.jr_66EA
+.checkAButtonSlot
     ld   a, [wInventoryItems.AButtonSlot]         ; $66EA: $FA $01 $DB
     cp   INVENTORY_BOMBS                          ; $66ED: $FE $02
     jr   nz, jr_003_66FA                          ; $66EF: $20 $09

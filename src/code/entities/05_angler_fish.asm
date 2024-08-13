@@ -242,7 +242,7 @@ Data_005_56F7::
     db   $60, $18
 
 func_005_56F9::
-    call GetEntityDropTimer
+    call  GetEntitySlowTransitionCountdown
     jr   nz, .jr_5713                             ; $56FC: $20 $15
 
     call GetEntityTransitionCountdown             ; $56FE: $CD $05 $0C
@@ -307,7 +307,7 @@ func_005_5737::
     ret  nc                                       ; $5758: $D0
 
     ld   a, $30                                   ; $5759: $3E $30
-    ld   [wC157], a                               ; $575B: $EA $57 $C1
+    ld   [wScreenShakeCountdown], a               ; $575B: $EA $57 $C1
     xor  a                                        ; $575E: $AF
     ld   [wC158], a                               ; $575F: $EA $58 $C1
     call PlayBombExplosionSfx                     ; $5762: $CD $4B $0C
@@ -321,7 +321,7 @@ func_005_576E::
     add  hl, bc                                   ; $5771: $09
     ld   a, [hl]                                  ; $5772: $7E
     inc  [hl]                                     ; $5773: $34
-    ld   a, [wC157]                               ; $5774: $FA $57 $C1
+    ld   a, [wScreenShakeCountdown]               ; $5774: $FA $57 $C1
     and  a                                        ; $5777: $A7
     jr   nz, .ret_579B                            ; $5778: $20 $21
 
@@ -335,7 +335,7 @@ func_005_576E::
     cp   [hl]                                     ; $5789: $BE
     jr   c, .ret_579B                             ; $578A: $38 $0F
 
-    call GetEntityDropTimer                       ; $578C: $CD $FB $0B
+    call GetEntitySlowTransitionCountdown         ; $578C: $CD $FB $0B
     call GetRandomByte                            ; $578F: $CD $0D $28
     and  $1F                                      ; $5792: $E6 $1F
     add  $40                                      ; $5794: $C6 $40

@@ -147,16 +147,16 @@ func_007_4759::
     cp   $04                                      ; $4762: $FE $04
     ret  nz                                       ; $4764: $C0
 
-    call EntityLinkPositionXDifference_07         ; $4765: $CD $5D $7E
+    call GetEntityXDistanceToLink_07              ; $4765: $CD $5D $7E
     ld   a, e                                     ; $4768: $7B
     call SetEntitySpriteVariant                   ; $4769: $CD $0C $3B
     call PushLinkOutOfEntity_07                   ; $476C: $CD $F0 $7C
-    call EntityLinkPositionXDifference_07         ; $476F: $CD $5D $7E
+    call GetEntityXDistanceToLink_07              ; $476F: $CD $5D $7E
     add  $12                                      ; $4772: $C6 $12
     cp   $24                                      ; $4774: $FE $24
     jr   nc, .jr_4793                             ; $4776: $30 $1B
 
-    call EntityLinkPositionYDifference_07         ; $4778: $CD $6D $7E
+    call GetEntityYDistanceToLink_07              ; $4778: $CD $6D $7E
     add  $12                                      ; $477B: $C6 $12
     cp   $24                                      ; $477D: $FE $24
     jr   nc, .jr_4793                             ; $477F: $30 $12
@@ -175,7 +175,7 @@ func_007_4759::
     ret  nc                                       ; $4796: $D0
 
     ld   a, [wTradeSequenceItem]                  ; $4797: $FA $0E $DB
-    cp   $0C                                      ; $479A: $FE $0C
+    cp   TRADING_ITEM_NECKLACE                    ; $479A: $FE $0C
     jr   nz, .jr_47A9                             ; $479C: $20 $0B
 
     call_open_dialog Dialog1F2                    ; $479E
@@ -303,6 +303,7 @@ func_007_480A::
 
 jr_007_4854:
     ld   a, TRADING_ITEM_SCALE & REPLACE_TILES_TRADING_ITEM ; $4854: $3E $0D
+    ; both of these defines are $0D, so save an ld instruction
     ld   [wTradeSequenceItem], a                  ; $4856: $EA $0E $DB
     ldh  [hReplaceTiles], a                       ; $4859: $E0 $A5
     call CreateTradingItemEntity                  ; $485B: $CD $0C $0C
@@ -497,7 +498,7 @@ func_007_4959::
 
 func_007_4982::
     call PushLinkOutOfEntity_07                   ; $4982: $CD $F0 $7C
-    call EntityLinkPositionXDifference_07         ; $4985: $CD $5D $7E
+    call GetEntityXDistanceToLink_07              ; $4985: $CD $5D $7E
     ld   a, e                                     ; $4988: $7B
     add  $02                                      ; $4989: $C6 $02
     ldh  [hActiveEntitySpriteVariant], a          ; $498B: $E0 $F1

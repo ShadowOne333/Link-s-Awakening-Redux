@@ -831,37 +831,37 @@ CheckPushedTombStone::
     pop  bc                                       ; $49B0: $C1
     ret                                           ; $49B1: $C9
 
-LinkDirectionTowC179::
+PegasusBootsCollisionXOffsets::
 .right: db  $10
 .left:  db  $F0
 .up:    db  $08
 .down:  db  $08
 
-LinkDirectionTowC17A::
+PegasusBootsCollisionYOffsets::
 .right: db  $0C
 .left:  db  $0C
 .up:    db  $F0
 .down:  db  $10
 
 func_020_49BA::
-    ; wC179 = [LinkDirectionTowC179 + Linkdirection] + hLinkPositionX
+    ; wPegasusBootsCollisionPosX = [PegasusBootsCollisionXOffsets + Linkdirection] + hLinkPositionX
     ldh  a, [hLinkDirection]                      ; $49BA: $F0 $9E
     ld   e, a                                     ; $49BC: $5F
     ld   d, $00                                   ; $49BD: $16 $00
-    ld   hl, LinkDirectionTowC179                 ; $49BF: $21 $B2 $49
+    ld   hl, PegasusBootsCollisionXOffsets        ; $49BF: $21 $B2 $49
     add  hl, de                                   ; $49C2: $19
     ldh  a, [hLinkPositionX]                      ; $49C3: $F0 $98
     add  [hl]                                     ; $49C5: $86
-    ld   [wC179], a                               ; $49C6: $EA $79 $C1
-    ; wC17A = [LinkDirectionTowC17A + Linkdirection] + hLinkPositionY
-    ld   hl, LinkDirectionTowC17A                 ; $49C9: $21 $B6 $49
+    ld   [wPegasusBootsCollisionPosX], a          ; $49C6: $EA $79 $C1
+    ; wPegasusBootsCollisionPosY = [PegasusBootsCollisionYOffsets + Linkdirection] + hLinkPositionY
+    ld   hl, PegasusBootsCollisionYOffsets        ; $49C9: $21 $B6 $49
     add  hl, de                                   ; $49CC: $19
     ldh  a, [hLinkPositionY]                      ; $49CD: $F0 $99
     add  [hl]                                     ; $49CF: $86
-    ld   [wC17A], a                               ; $49D0: $EA $7A $C1
-    ; wC178 = 2
+    ld   [wPegasusBootsCollisionPosY], a          ; $49D0: $EA $7A $C1
+    ; wPegasusBootsCollisionCountdown = 2
     ld   a, $02                                   ; $49D3: $3E $02
-    ld   [wC178], a                               ; $49D5: $EA $78 $C1
+    ld   [wPegasusBootsCollisionCountdown], a     ; $49D5: $EA $78 $C1
     ret                                           ; $49D8: $C9
 
 ; Load BG palette data
@@ -1078,7 +1078,7 @@ func_20_4B1F::
     ld   [wActiveProjectileCount], a              ; $4B23: $EA $4D $C1
     ld   [wC1A4], a                               ; $4B26: $EA $A4 $C1
     ld   [wIsCarryingLiftedObject], a             ; $4B29: $EA $5C $C1
-    ld   [wC1AE], a                               ; $4B2C: $EA $AE $C1
+    ld   [wZolCount], a                           ; $4B2C: $EA $AE $C1
     ld   a, [wIsLinkPushing]                      ; $4B2F: $FA $44 $C1
     and  a                                        ; $4B32: $A7
     jr   z, .ret_4B39                             ; $4B33: $28 $04
@@ -5377,10 +5377,10 @@ LoadRoomObjectsAttributes::
     ret  nz                                       ; $6DB3: $C0
 
     ldh  a, [hMapRoom]                            ; $6DB4: $F0 $F6
-    cp   ROOM_OW_EAGLE_TOWER                      ; $6DB6: $FE $0E
+    cp   ROOM_OW_EAGLES_TOWER                     ; $6DB6: $FE $0E
     jr   nz, .jr_020_6DC6                         ; $6DB8: $20 $0C
 
-    ld   a, [wOverworldRoomStatus + ROOM_OW_EAGLE_TOWER] ; $6DBA: $FA $0E $D8
+    ld   a, [wOverworldRoomStatus + ROOM_OW_EAGLES_TOWER] ; $6DBA: $FA $0E $D8
     and  OW_ROOM_STATUS_CHANGED                   ; $6DBD: $E6 $10
     jr   z, .jr_020_6E1A                          ; $6DBF: $28 $59
     ld   hl, RoomGBCOverlay0EAlt                  ; $6DC1: $21 $90 $50

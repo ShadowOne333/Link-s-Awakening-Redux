@@ -278,7 +278,7 @@ func_020_4303::
     ld   [wC5A0], a                               ; $430A: $EA $A0 $C5
     ld   [wShouldGetLostInMysteriousWoods], a     ; $430D: $EA $0C $C1
     ldh  [hLinkSlowWalkingSpeed], a               ; $4310: $E0 $B2
-    ld   [wC117], a                               ; $4312: $EA $17 $C1
+    ld   [wIsGelClingingToLink], a                ; $4312: $EA $17 $C1
     ld   [wC19D], a                               ; $4315: $EA $9D $C1
     ld   [wC147], a                               ; $4318: $EA $47 $C1
     ld   [wLiftedEntityType], a                   ; $431B: $EA $A8 $C5
@@ -337,22 +337,22 @@ EntityInitHandlersTable::
 ._2A dw   EntityInitWithRandomDirection
 ._2B dw   EntityInitWithRandomDirection
 ._2C dw   EntityInitWithRandomDirection
-._2D dw   EntityInitPermanentDroppable
-._2E dw   EntityInitTemporaryDroppable
-._2F dw   EntityInitTemporaryDroppable
+._2D dw   EntityInitDiggableBushOrPotDroppable
+._2E dw   EntityInitTreeOrPotDroppable
+._2F dw   EntityInitTreeOrPotDroppable
 ._30 dw   EntityInitKeyDropPoint
 ._31 dw   EntityInitSword
-._32 dw   EntityInitTemporaryDroppable
-._33 dw   EntityInitTemporaryDroppable
-._34 dw   EntityInitTemporaryDroppable
+._32 dw   EntityInitTreeOrPotDroppable
+._33 dw   EntityInitTreeOrPotDroppable
+._34 dw   EntityInitTreeOrPotDroppable
 ._35 dw   EntityInitNoop
-._36 dw   EntityInitTemporaryDroppable
-._37 dw   EntityInitTemporaryDroppable
-._38 dw   EntityInitTemporaryDroppable
+._36 dw   EntityInitTreeOrPotDroppable
+._37 dw   EntityInitTreeOrPotDroppable
+._38 dw   EntityInitTreeOrPotDroppable
 ._39 dw   EntityInitWithShiftedXPosition
 ._3A dw   EntityInitNoop
-._3B dw   EntityInitPermanentDroppable
-._3C dw   EntityInitPermanentDroppable
+._3B dw   EntityInitDiggableBushOrPotDroppable
+._3C dw   EntityInitDiggableBushOrPotDroppable
 ._3D dw   EntityInitSecretSeashell
 ._3E dw   EntityInitMarin
 ._3F dw   EntityInitTarin

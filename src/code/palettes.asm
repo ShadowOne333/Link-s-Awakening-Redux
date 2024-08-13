@@ -179,7 +179,7 @@ func_021_40DB::
     ld   l, a                                     ; $40F5: $6F
     call func_021_41B4                            ; $40F6: $CD $B4 $41
     ldh  a, [hMapRoom]                            ; $40F9: $F0 $F6
-    cp   UNKNOWN_ROOM_92                          ; $40FB: $FE $92
+    cp   ROOM_OW_MABE_VILLAGE_SQUARE              ; $40FB: $FE $92
     ret  nz                                       ; $40FD: $C0
 
     ld   hl, wObjPal8 + 1*2                       ; $40FE: $21 $8A $DC
@@ -264,7 +264,7 @@ jr_021_416C:
     cp   ROOM_INDOOR_B_MARIN_HOUSE                ; $4172: $FE $A3
     jr   nz, jr_021_4191                          ; $4174: $20 $1B
 
-    ld   a, [wDB48]                               ; $4176: $FA $48 $DB
+    ld   a, [wTarinFlag]                          ; $4176: $FA $48 $DB
     cp   $01                                      ; $4179: $FE $01
     jr   z, .jr_418C                              ; $417B: $28 $0F
 
@@ -348,7 +348,7 @@ jr_021_41B4:
     jr   nz, jr_021_4222                          ; $41FB: $20 $25
 
     ldh  a, [hMapRoom]                            ; $41FD: $F0 $F6
-    cp   ROOM_OW_EAGLE_TOWER                      ; $41FF: $FE $0E
+    cp   ROOM_OW_EAGLES_TOWER                     ; $41FF: $FE $0E
     jr   nz, jr_021_4254                          ; $4201: $20 $51
 
     ld   hl, Data_021_5548                        ; $4203: $21 $48 $55

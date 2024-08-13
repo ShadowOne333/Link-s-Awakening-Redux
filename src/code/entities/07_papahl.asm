@@ -48,7 +48,7 @@ PapahlEntityHandler::
     jr   z, jr_007_4A69                           ; $4A1F: $28 $48
 
     ld   a, [wTradeSequenceItem]                  ; $4A21: $FA $0E $DB
-    cp   $08                                      ; $4A24: $FE $08
+    cp   TRADING_ITEM_HIBISCUS                    ; $4A24: $FE $08
     jr   nc, .jr_4A30                             ; $4A26: $30 $08
 
     ld   a, [wHasInstrument3]                     ; $4A28: $FA $67 $DB
@@ -58,10 +58,10 @@ PapahlEntityHandler::
 .jr_4A30
     ld   de, Papahl2SpriteVariants                ; $4A30: $11 $07 $4A
     ld   a, [wTradeSequenceItem]                  ; $4A33: $FA $0E $DB
-    cp   $08                                      ; $4A36: $FE $08
+    cp   TRADING_ITEM_HIBISCUS                    ; $4A36: $FE $08
     jr   nc, .render                              ; $4A38: $30 $09
 
-    call EntityLinkPositionXDifference_07         ; $4A3A: $CD $5D $7E
+    call GetEntityXDistanceToLink_07              ; $4A3A: $CD $5D $7E
     ld   a, e                                     ; $4A3D: $7B
     ldh  [hActiveEntitySpriteVariant], a          ; $4A3E: $E0 $F1
     ld   de, Papahl1SpriteVariants                ; $4A40: $11 $EF $49
@@ -80,7 +80,7 @@ PapahlEntityHandler::
     ret  nc                                       ; $4A57: $D0
 
     ld   a, [wTradeSequenceItem]                  ; $4A58: $FA $0E $DB
-    cp   $08                                      ; $4A5B: $FE $08
+    cp   TRADING_ITEM_HIBISCUS                    ; $4A5B: $FE $08
     jr   nc, .jr_4A64                             ; $4A5D: $30 $05
 
     jp_open_dialog Dialog027                      ; $4A5F
@@ -105,7 +105,7 @@ jr_007_4A69:
 .render:
     call RenderActiveEntitySpritesPair            ; $4A7E: $CD $C0 $3B
     ld   a, [wTradeSequenceItem]                  ; $4A81: $FA $0E $DB
-    cp   $08                                      ; $4A84: $FE $08
+    cp   TRADING_ITEM_HIBISCUS                    ; $4A84: $FE $08
     jr   nc, .jr_4AA0                             ; $4A86: $30 $18
 
     ldh  a, [hActiveEntityPosX]                   ; $4A88: $F0 $EE
@@ -132,7 +132,7 @@ jr_007_4A69:
 ._04 dw func_007_4B5B                             ; $4AB1
 
 func_007_4AB3::
-    call EntityLinkPositionXDifference_07         ; $4AB3: $CD $5D $7E
+    call GetEntityXDistanceToLink_07              ; $4AB3: $CD $5D $7E
     ld   hl, wEntitiesDirectionTable              ; $4AB6: $21 $80 $C3
     add  hl, bc                                   ; $4AB9: $09
     ld   [hl], e                                  ; $4ABA: $73
@@ -140,7 +140,7 @@ func_007_4AB3::
     cp   $48                                      ; $4ABD: $FE $48
     jr   nc, jr_007_4AE9                          ; $4ABF: $30 $28
 
-    call EntityLinkPositionYDifference_07         ; $4AC1: $CD $6D $7E
+    call GetEntityYDistanceToLink_07              ; $4AC1: $CD $6D $7E
     add  $24                                      ; $4AC4: $C6 $24
     cp   $48                                      ; $4AC6: $FE $48
     jr   nc, jr_007_4AE9                          ; $4AC8: $30 $1F
@@ -149,7 +149,7 @@ func_007_4AB3::
     jr   nc, jr_007_4AE5                          ; $4ACD: $30 $16
 
     ld   a, [wTradeSequenceItem]                  ; $4ACF: $FA $0E $DB
-    cp   $07                                      ; $4AD2: $FE $07
+    cp   TRADING_ITEM_PINEAPPLE                   ; $4AD2: $FE $07
     ld_dialog_low a, Dialog170 ; "Papahl got lost! Yes/Nope" ; $4AD4: $3E $70
     jr   z, .jr_4ADA                              ; $4AD6: $28 $02
 
@@ -179,7 +179,7 @@ func_007_4AF3::
     jr   nz, .jr_4B0E                             ; $4AF7: $20 $15
 
     ld   a, [wTradeSequenceItem]                  ; $4AF9: $FA $0E $DB
-    cp   $07                                      ; $4AFC: $FE $07
+    cp   TRADING_ITEM_PINEAPPLE                   ; $4AFC: $FE $07
     jr   nz, .jr_4B0E                             ; $4AFE: $20 $0E
 
     call_open_dialog Dialog172                    ; $4B00

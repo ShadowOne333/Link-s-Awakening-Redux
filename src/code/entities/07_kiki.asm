@@ -109,12 +109,12 @@ func_007_58A8::
     and  a                                        ; $58B4: $A7
     jr   nz, .jr_58C9                             ; $58B5: $20 $12
 
-    call EntityLinkPositionXDifference_07         ; $58B7: $CD $5D $7E
+    call GetEntityXDistanceToLink_07              ; $58B7: $CD $5D $7E
     add  $18                                      ; $58BA: $C6 $18
     cp   $30                                      ; $58BC: $FE $30
     jr   nc, KikiOpenDialog.return                ; $58BE: $30 $1D
 
-    call EntityLinkPositionYDifference_07         ; $58C0: $CD $6D $7E
+    call GetEntityYDistanceToLink_07              ; $58C0: $CD $6D $7E
     add  $18                                      ; $58C3: $C6 $18
     cp   $30                                      ; $58C5: $FE $30
     jr   nc, KikiOpenDialog.return                ; $58C7: $30 $14
@@ -141,7 +141,7 @@ jr_007_58DE:
     jr   nc, func_007_58FA                        ; $58E4: $30 $14
 
     ld   a, [wTradeSequenceItem]                  ; $58E6: $FA $0E $DB
-    cp   $04                                      ; $58E9: $FE $04
+    cp   TRADING_ITEM_BANANAS                     ; $58E9: $FE $04
     jr   nz, .jr_58F5                             ; $58EB: $20 $08
 
     ld_dialog_low a, Dialog165 ; "Give to Kiki?"  ; $58ED: $3E $65
@@ -227,7 +227,7 @@ func_007_5951::
     ld   a, MUSIC_MONKEYS_BUILDING_BRIDGE         ; $595B: $3E $36
     ld   [wMusicTrackToPlay], a                   ; $595D: $EA $68 $D3
     ldh  [hDefaultMusicTrack], a                  ; $5960: $E0 $B0
-    call GetEntityDropTimer                       ; $5962: $CD $FB $0B
+    call GetEntitySlowTransitionCountdown         ; $5962: $CD $FB $0B
     ld   [hl], $80                                ; $5965: $36 $80
     jp   IncrementEntityState                     ; $5967: $C3 $12 $3B
 
@@ -262,7 +262,7 @@ func_007_5997::
     ld   a, $02                                   ; $5997: $3E $02
     ldh  [hLinkInteractiveMotionBlocked], a       ; $5999: $E0 $A1
     call func_007_58FA                            ; $599B: $CD $FA $58
-    call GetEntityDropTimer                       ; $599E: $CD $FB $0B
+    call GetEntitySlowTransitionCountdown         ; $599E: $CD $FB $0B
 
 .jr_59A1
     jr   nz, jr_007_59C8                          ; $59A1: $20 $25
@@ -353,7 +353,7 @@ jr_007_59C8:
     pop  bc                                       ; $5A29: $C1
 
 jr_007_5A2A:
-    call GetEntityDropTimer                       ; $5A2A: $CD $FB $0B
+    call GetEntitySlowTransitionCountdown         ; $5A2A: $CD $FB $0B
     cp   $40                                      ; $5A2D: $FE $40
     ret  nc                                       ; $5A2F: $D0
 

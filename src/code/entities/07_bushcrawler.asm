@@ -146,13 +146,13 @@ BushCrawlerState0Handler::
     call GetEntityTransitionCountdown             ; $40DB: $CD $05 $0C
     jr   nz, jr_007_4128                          ; $40DE: $20 $48
 
-    call EntityLinkPositionYDifference_07         ; $40E0: $CD $6D $7E
+    call GetEntityYDistanceToLink_07              ; $40E0: $CD $6D $7E
     add  $08                                      ; $40E3: $C6 $08
     cp   $10                                      ; $40E5: $FE $10
     jr   c, .jr_40F9                              ; $40E7: $38 $10
 
     push de                                       ; $40E9: $D5
-    call EntityLinkPositionXDifference_07         ; $40EA: $CD $5D $7E
+    call GetEntityXDistanceToLink_07              ; $40EA: $CD $5D $7E
     add  $08                                      ; $40ED: $C6 $08
     pop  de                                       ; $40EF: $D1
     cp   $10                                      ; $40F0: $FE $10
@@ -164,7 +164,7 @@ BushCrawlerState0Handler::
 
 .jr_40F9
     call IncrementEntityState                     ; $40F9: $CD $12 $3B
-    call func_007_7E7D                            ; $40FC: $CD $7D $7E
+    call GetEntityDirectionToLink_07              ; $40FC: $CD $7D $7E
     ld   d, b                                     ; $40FF: $50
     ld   hl, Data_007_40CE                        ; $4100: $21 $CE $40
     add  hl, de                                   ; $4103: $19
@@ -205,7 +205,7 @@ jr_007_4128:
 
     ld   a, [wInventoryItems.BButtonSlot]         ; $4140: $FA $00 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $4143: $FE $03
-    jr   nz, .jr_414E                             ; $4145: $20 $07
+    jr   nz, .checkAButtonSlot                    ; $4145: $20 $07
 
     ldh  a, [hJoypadState]                        ; $4147: $F0 $CC
     and  J_B                                      ; $4149: $E6 $20
@@ -213,7 +213,7 @@ jr_007_4128:
 
     ret                                           ; $414D: $C9
 
-.jr_414E
+.checkAButtonSlot
     ld   a, [wInventoryItems.AButtonSlot]         ; $414E: $FA $01 $DB
     cp   INVENTORY_POWER_BRACELET                 ; $4151: $FE $03
     ret  nz                                       ; $4153: $C0

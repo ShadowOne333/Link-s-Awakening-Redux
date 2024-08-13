@@ -30,7 +30,7 @@ func_007_698A::
     call GetEntityTransitionCountdown             ; $698A: $CD $05 $0C
     ret  nz                                       ; $698D: $C0
 
-.jr_698E
+; fallthrough if not zero
     ld   a, MUSIC_OPEN_ANGLERS_TUNNEL             ; $698E: $3E $4C
     ld   [wMusicTrackToPlay], a                   ; $6990: $EA $68 $D3
     jp   IncrementEntityState                     ; $6993: $C3 $12 $3B
@@ -310,11 +310,11 @@ func_007_6B16::
 
     ld_dialog_low e, Dialog112 ; "You found me!"  ; $6B1D: $1E $12
     ldh  a, [hMapRoom]                            ; $6B1F: $F0 $F6
-    cp   ROOM_INDOOR_A_MASTER_STALFOS_2           ; $6B21: $FE $92
+    cp   ROOM_INDOOR_A_CATFISHS_MAW_MSTALFOS_2    ; $6B21: $FE $92
     jr   z, .jr_6B2F                              ; $6B23: $28 $0A
-    cp   ROOM_INDOOR_A_MASTER_STALFOS_3           ; $6B25: $FE $84
+    cp   ROOM_INDOOR_A_CATFISHS_MAW_MSTALFOS_3    ; $6B25: $FE $84
     jr   z, .jr_6B2F                              ; $6B27: $28 $06
-    cp   ROOM_INDOOR_A_MASTER_STALFOS_FINAL       ; $6B29: $FE $80
+    cp   ROOM_INDOOR_A_CATFISHS_MAW_MSTALFOS_4    ; $6B29: $FE $80
     jr   nz, jr_007_6B33                          ; $6B2B: $20 $06
 
     ld_dialog_low e, Dialog114 ; "I can't outlast you" ; $6B2D: $1E $14
@@ -424,7 +424,7 @@ func_007_6BC8::
     call IncrementEntityState                     ; $6BDC: $CD $12 $3B
 
 label_007_6BDF:
-    call EntityLinkPositionXDifference_07         ; $6BDF: $CD $5D $7E
+    call GetEntityXDistanceToLink_07              ; $6BDF: $CD $5D $7E
     ld   hl, wEntitiesDirectionTable              ; $6BE2: $21 $80 $C3
     add  hl, bc                                   ; $6BE5: $09
     ld   [hl], e                                  ; $6BE6: $73
@@ -441,12 +441,12 @@ func_007_6BE7::
 
 func_007_6BF4::
     call func_007_6EA2                            ; $6BF4: $CD $A2 $6E
-    call EntityLinkPositionXDifference_07         ; $6BF7: $CD $5D $7E
+    call GetEntityXDistanceToLink_07              ; $6BF7: $CD $5D $7E
     add  $20                                      ; $6BFA: $C6 $20
     cp   $40                                      ; $6BFC: $FE $40
     jr   nc, .jr_6C14                             ; $6BFE: $30 $14
 
-    call EntityLinkPositionYDifference_07         ; $6C00: $CD $6D $7E
+    call GetEntityYDistanceToLink_07              ; $6C00: $CD $6D $7E
     add  $1C                                      ; $6C03: $C6 $1C
     cp   $38                                      ; $6C05: $FE $38
     jr   nc, .jr_6C14                             ; $6C07: $30 $0B
@@ -905,12 +905,12 @@ func_007_6EA2::
     ld   hl, wEntitiesPrivateState1Table          ; $6EA2: $21 $B0 $C2
     add  hl, bc                                   ; $6EA5: $09
     ld   [hl], b                                  ; $6EA6: $70
-    call EntityLinkPositionXDifference_07         ; $6EA7: $CD $5D $7E
+    call GetEntityXDistanceToLink_07              ; $6EA7: $CD $5D $7E
     add  $30                                      ; $6EAA: $C6 $30
     cp   $60                                      ; $6EAC: $FE $60
     jr   nc, .jr_6EC3                             ; $6EAE: $30 $13
 
-    call EntityLinkPositionYDifference_07         ; $6EB0: $CD $6D $7E
+    call GetEntityYDistanceToLink_07              ; $6EB0: $CD $6D $7E
     add  $30                                      ; $6EB3: $C6 $30
     cp   $60                                      ; $6EB5: $FE $60
     jr   nc, .jr_6EC3                             ; $6EB7: $30 $0A
