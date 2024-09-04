@@ -199,11 +199,11 @@ func_91D::
     callsb GetBGAttributesAddressForObject        ;; 00:092F $3E $1A $EA $00 $21 $CD $76 $65
     ldh  a, [hMultiPurpose8]                      ;; 00:0937 $F0 $DF
     ld   [rSelectROMBank], a                      ;; 00:0939 $EA $00 $21
-    ld   hl, wDrawCommandAlt                      ;; 00:093C $21 $91 $DC
-    ld   a, [wDrawCommandsAltSize]                ;; 00:093F $FA $90 $DC
+    ld   hl, wDrawCommandVRAM1                    ;; 00:093C $21 $91 $DC
+    ld   a, [wDrawCommandsVRAM1Size]              ;; 00:093F $FA $90 $DC
     ld   e, a                                     ;; 00:0942 $5F
     add  a, $0A                                   ;; 00:0943 $C6 $0A
-    ld   [wDrawCommandsAltSize], a                ;; 00:0945 $EA $90 $DC
+    ld   [wDrawCommandsVRAM1Size], a              ;; 00:0945 $EA $90 $DC
     ld   d, $00                                   ;; 00:0948 $16 $00
     add  hl, de                                   ;; 00:094A $19
     ldh  a, [hMultiPurpose9]                      ;; 00:094B $F0 $E0
@@ -287,12 +287,12 @@ func_999::
     pop  bc                                       ;; 00:09A0 $C1
     call func_983                                 ;; 00:09A1 $CD $83 $09
     ldh  [hMultiPurpose1], a                      ;; 00:09A4 $E0 $D8
-    ld   a, [wDrawCommandsAltSize]                ;; 00:09A6 $FA $90 $DC
+    ld   a, [wDrawCommandsVRAM1Size]              ;; 00:09A6 $FA $90 $DC
     ld   c, a                                     ;; 00:09A9 $4F
     ld   b, $00                                   ;; 00:09AA $06 $00
     add  a, $05                                   ;; 00:09AC $C6 $05
-    ld   [wDrawCommandsAltSize], a                ;; 00:09AE $EA $90 $DC
-    ld   hl, wDrawCommandAlt                      ;; 00:09B1 $21 $91 $DC
+    ld   [wDrawCommandsVRAM1Size], a              ;; 00:09AE $EA $90 $DC
+    ld   hl, wDrawCommandVRAM1                    ;; 00:09B1 $21 $91 $DC
     add  hl, bc                                   ;; 00:09B4 $09
     ldh  a, [hIntersectedObjectBGAddressHigh]     ;; 00:09B5 $F0 $CF
     ldi  [hl], a                                  ;; 00:09B7 $22
@@ -407,7 +407,7 @@ CopyColorDungeonSymbols::
     ld   a, BANK(ColorDungeonNpcTiles)            ;; 00:0A33 $3E $35
     ld   [rSelectROMBank], a                      ;; 00:0A35 $EA $00 $21
     ld   hl, ColorDungeonNpcTiles + $F00          ;; 00:0A38 $21 $00 $4F
-    ld   de, wDCC0                                ;; 00:0A3B $11 $C0 $DC
+    ld   de, wAnimatedScrollingTilesStorage       ;; 00:0A3B $11 $C0 $DC
     ld   bc, $20                                  ;; 00:0A3E $01 $20 $00
     call CopyData                                 ;; 00:0A41 $CD $14 $29
     jp   RestoreStackedBankAndReturn              ;; 00:0A44 $C3 $73 $09
@@ -460,9 +460,9 @@ func_A9B::
     call ExecuteDialog                            ;; 00:0AA1 $CD $21 $23
     jp   RestoreStackedBankAndReturn              ;; 00:0AA4 $C3 $73 $09
 
-func_036_705A_trampoline::
+Spawn2x2RubbleEntities_trampoline::
     push af                                       ;; 00:0AA7 $F5
-    callsw func_036_705A                          ;; 00:0AA8 $3E $36 $CD $0C $08 $CD $5A $70
+    callsw Spawn2x2RubbleEntities                 ;; 00:0AA8 $3E $36 $CD $0C $08 $CD $5A $70
 
 RestoreStackedBank::
     pop  af                                       ;; 00:0AB0 $F1
@@ -3467,10 +3467,10 @@ SwordAreaYForDirection::
 
 ; Array of constants for Link animation state
 LinkDirectionToLinkAnimationState_2::
-.right: db  LINK_ANIMATION_STATE_UNKNOWN_36
-.left:  db  LINK_ANIMATION_STATE_UNKNOWN_38
-.up:    db  LINK_ANIMATION_STATE_UNKNOWN_3A
-.down:  db  LINK_ANIMATION_STATE_UNKNOWN_3C                       ;; 00:1F51
+.right: db  LINK_ANIMATION_STATE_GRABBING_RIGHT
+.left:  db  LINK_ANIMATION_STATE_GRABBING_LEFT
+.up:    db  LINK_ANIMATION_STATE_GRABBING_UP
+.down:  db  LINK_ANIMATION_STATE_GRABBING_DOWN    ;; 00:1F51
 
 LinkDirectionToLiftDirectionButton::
     db   2, 1, 8, 4                               ;; 00:1F55
@@ -4942,7 +4942,7 @@ LoadIndoorTiles::
     call AdjustBankNumberForGBC                   ;; 00:2C9C $CD $0B $0B
     ld   [rSelectROMBank], a                      ;; 00:2C9F $EA $00 $21
     ld   hl, Items1Tiles + $3C0                   ;; 00:2CA2 $21 $C0 $47
-    ld   de, wDCC0                                ;; 00:2CA5 $11 $C0 $DC
+    ld   de, wAnimatedScrollingTilesStorage       ;; 00:2CA5 $11 $C0 $DC
     ld   bc, TILE_SIZE * $4                       ;; 00:2CA8 $01 $40 $00
     call CopyData                                 ;; 00:2CAB $CD $14 $29
 

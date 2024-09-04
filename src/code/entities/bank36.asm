@@ -1835,7 +1835,7 @@ GetOwlStatueDialogId::
     jr   nz, .loop_4A5E                           ;; 36:4A68 $20 $F4
 
 .jr_4A6A
-    ld   hl, HintTable                        ;; 36:4A6A $21 $14 $4A
+    ld   hl, HintTable                            ;; 36:4A6A $21 $14 $4A
     add  hl, de                                   ;; 36:4A6D $19
     ld   a, [hl+]                                 ;; 36:4A6E $2A
     ld   h, [hl]                                  ;; 36:4A6F $66
@@ -3012,7 +3012,7 @@ func_036_51DF::
     ld   hl, Data_036_51BF                        ;; 36:51EA $21 $BF $51
     add  hl, de                                   ;; 36:51ED $19
     ld   e, [hl]                                  ;; 36:51EE $5E
-    ld   hl, wDCC0                                ;; 36:51EF $21 $C0 $DC
+    ld   hl, wAnimatedScrollingTilesStorage       ;; 36:51EF $21 $C0 $DC
     add  hl, de                                   ;; 36:51F2 $19
     ld   [hl], $00                                ;; 36:51F3 $36 $00
     ret                                           ;; 36:51F5 $C9
@@ -3295,12 +3295,12 @@ TunicFairyState9::
     add  hl, bc                                   ;; 36:53FE $09
     ld   c, l                                     ;; 36:53FF $4D
     ld   b, h                                     ;; 36:5400 $44
-    ld   a, [wDrawCommandsAltSize]                ;; 36:5401 $FA $90 $DC
+    ld   a, [wDrawCommandsVRAM1Size]              ;; 36:5401 $FA $90 $DC
     ld   e, a                                     ;; 36:5404 $5F
     add  $08                                      ;; 36:5405 $C6 $08
-    ld   [wDrawCommandsAltSize], a                ;; 36:5407 $EA $90 $DC
+    ld   [wDrawCommandsVRAM1Size], a              ;; 36:5407 $EA $90 $DC
     ld   d, $00                                   ;; 36:540A $16 $00
-    ld   hl, wDrawCommandAlt                      ;; 36:540C $21 $91 $DC
+    ld   hl, wDrawCommandVRAM1                    ;; 36:540C $21 $91 $DC
     add  hl, de                                   ;; 36:540F $19
     ld   e, $08                                   ;; 36:5410 $1E $08
 
@@ -8183,7 +8183,9 @@ Data_036_7052::
 Data_036_7056::
     db   $10, $10, $20, $20
 
-func_036_705A::
+; Spawn 4 (in a 2x2 grid) rouble entitites at hIntersectedObjectLeft, hIntersectedObjectTop.
+; Called when the giant skull is destroyed after Tarin with the bees.
+Spawn2x2RubbleEntities::
     push bc                                       ;; 36:705A $C5
     ld   c, $03                                   ;; 36:705B $0E $03
     ld   b, $00                                   ;; 36:705D $06 $00

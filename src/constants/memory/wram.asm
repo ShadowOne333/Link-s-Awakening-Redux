@@ -1070,6 +1070,8 @@ wEntitiesCollisionsTable::
 ;  - Smashable pillar: 0 = pillar, 1 = dust, 2 = debris
 ;  - Pincer: hole X position
 ;  - Peahat: animation speed 
+;  - Moving blocks (left): Y position when fully closed
+;  - Moving blocks (bottom): X position when fully closed
 wEntitiesPrivateState1Table::
   ds $10 ; C2B0 - C2BF
 
@@ -1080,6 +1082,9 @@ wEntitiesPrivateState1Table::
 ;  - Keese: -1 when flying counter-clockwise, 1 otherwise
 ;  - Peahat: -1 when flying counter-clockwise, 1 otherwise
 ;  - Pincer: hole Y position
+;  - Moving block mover: initial Y position
+;  - Moving blocks (left): Y position when fully open
+;  - Moving blocks (bottom): X position when fully open
 wEntitiesPrivateState2Table::
   ds $10 ; C2C0 - C2CF
 
@@ -3709,17 +3714,16 @@ wObjPal7::
 wObjPal8::
   ds 8 ; DC88 - DC8F
 
-; This seems to be some secondary wDrawCommands buffer used during map scrolling.
-;
-; TODO: find a better name
+; This is a 2nd draw to VRAM command. See wDrawCommand for details.
+; This draws to VRAM1 instead of VRAM0, used to update tile attributes on GBC.
 
 ; Size of all cumulated wDrawCommandsSize
 ; When 0, no wDrawCommand is executed on vblanks
-wDrawCommandsAltSize::
+wDrawCommandsVRAM1Size::
   ds 1 ; DC90
 
 ; Secondary wDrawCommand destination (higher byte)
-wDrawCommandAlt::
+wDrawCommandVRAM1::
 .destinationHigh
   ds 1 ; DC91
 ; Secondary wDrawCommand destination (lower byte)
@@ -3734,25 +3738,20 @@ wDrawCommandAlt::
 .data
   ds $2C ; DC93 - DCBF
 
-; Unlabeled
-wDCC0::
-  ds 15 ; DCC0 - DCCE
+; Stores the 4 animated tiles for belts that are scrolled for the animation.
+wAnimatedScrollingTilesStorage::
+  ds $10 ; DCC0 - DCCE
 
-; Unlabeled
-wDCCF::
-  ds 1 ; DCCF
+.tile1::
+  ds $10 ; DCD0 - DCDF
 
-; Unlabeled
-wDCD0::
-  ds $10 ; DCD0 -DCDF
+.tile2::
+  ds $10 ; DCE0 - DCEF
+.tile3::
+  ds $10 ; DCF0 - DCFF
 
-; Unlabeled
-wDCE0::
-  ds $10 ; DCE0 -DCEF
-
-; Unlabeled
-wDCF0::
-  ds $E1 ; DCF0 -DDD0
+; Unused data?
+  ds $D1 ; DD00 - DDD0
 
 ; Palette flags for copying palettes to hardware.
 ; bit 0: If set, copy background palette to hardware during vblank
