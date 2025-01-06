@@ -173,7 +173,7 @@ AddEntityZSpeedToPos_04::
     ld   hl, wEntitiesPosZTable                   ;; 04:6E18 $21 $10 $C3
     jr   AddEntitySpeedToPos_04.updatePosition    ;; 04:6E1B $18 $D2
 
-func_004_6E1D::
+KnightAddIronBallSpeedToPos::
     ld   hl, wEntitiesPrivateState1Table          ;; 04:6E1D $21 $B0 $C2
     add  hl, bc                                   ;; 04:6E20 $09
     ld   a, [hl]                                  ;; 04:6E21 $7E
@@ -327,15 +327,23 @@ func_004_7C4B:: ; called only from fishing minigame
     and  a                                        ;; 04:7C92 $A7
     ret                                           ;; 04:7C93 $C9
 
-Data_004_7C94::
-    db   $06, $04, $02, $00
+EntityVariantForDirection_04::
+.right db 6
+.left  db 4
+.up    db 2
+.down  db 0
 
-func_004_7C98::
+; Set the entity sprite variant to match the preset entity direction.
+; Some inertia is added, so that after a direction change the entity waits for a bit before turning again.
+;
+; Inputs:
+;   bc   entity index
+SetEntityVariantForDirection_04::
     ld   hl, wEntitiesDirectionTable              ;; 04:7C98 $21 $80 $C3
     add  hl, bc                                   ;; 04:7C9B $09
     ld   e, [hl]                                  ;; 04:7C9C $5E
     ld   d, b                                     ;; 04:7C9D $50
-    ld   hl, Data_004_7C94                        ;; 04:7C9E $21 $94 $7C
+    ld   hl, EntityVariantForDirection_04         ;; 04:7C9E $21 $94 $7C
     add  hl, de                                   ;; 04:7CA1 $19
     push hl                                       ;; 04:7CA2 $E5
     ld   hl, wEntitiesInertiaTable                ;; 04:7CA3 $21 $D0 $C3
@@ -349,6 +357,7 @@ func_004_7C98::
     and  $01                                      ;; 04:7CAD $E6 $01
     or   [hl]                                     ;; 04:7CAF $B6
     jp   SetEntitySpriteVariant                   ;; 04:7CB0 $C3 $0C $3B
+
 
     ld   hl, wEntitiesSpeedXTable                 ;; 04:7CB3 $21 $40 $C2
     add  hl, bc                                   ;; 04:7CB6 $09
@@ -389,6 +398,22 @@ func_004_7C98::
 
 include "code/entities/04_bombite.asm"
 include "code/entities/04_leever.asm"
+
+GhiniUpdateFlipAttribute::
+    ld   hl, wEntitiesSpeedXTable                 ;; 04:7F90 $21 $40 $C2
+    add  hl, bc                                   ;; 04:7F93 $09
+    ld   a, [hl]                                  ;; 04:7F94 $7E
+    rl   a                                        ;; 04:7F95 $CB $17
+    ld   a, OAM_NO_FLIP                           ;; 04:7F97 $3E $00
+    jr   c, .negative                             ;; 04:7F99 $38 $02
+
+    ld   a, OAMF_XFLIP                            ;; 04:7F9B $3E $20
+
+.negative
+    ld   hl, hActiveEntityFlipAttribute           ;; 04:7F9D $21 $ED $FF
+    xor  [hl]                                     ;; 04:7FA0 $AE
+    ld   [hl], a                                  ;; 04:7FA1 $77
+    ret                                           ;; 04:7FA2 $C9
 
 ; If the entity is disabled or the game is in a dialog or transition,
 ; return to the caller directly, skipping the rest of the code.

@@ -1660,7 +1660,7 @@ InitGotItemSequence::
     cp   $02                                      ;; 00:1098 $FE $02
     jr   z, .jp_10DB                              ;; 00:109A $28 $3F
     ldh  a, [hLinkAnimationState]                 ;; 00:109C $F0 $9D
-    cp   LINK_ANIMATION_STATE_NO_UPDATE           ;; 00:109E $FE $FF
+    cp   LINK_ANIMATION_STATE_HIDDEN              ;; 00:109E $FE $FF
     jr   z, .jp_10DB                              ;; 00:10A0 $28 $39
     ld   a, [wLinkMotionState]                    ;; 00:10A2 $FA $1C $C1
     cp   LINK_MOTION_TYPE_NON_INTERACTIVE         ;; 00:10A5 $FE $02
@@ -2629,8 +2629,8 @@ DisplayTransientVfxForLinkRunning::
     ldh  a, [hLinkPositionX]                      ;; 00:1767 $F0 $98
     ldh  [hMultiPurpose0], a                      ;; 00:1769 $E0 $D7
 
-    ld   a, [wLinkGroundVfx]                      ;; 00:176B $FA $81 $C1
-    cp   GROUND_VFX_SHALLOW_WATER                 ;; 00:176E $FE $05
+    ld   a, [wLinkObjectPhysics]                  ;; 00:176B $FA $81 $C1
+    cp   OBJ_PHYSICS_SHALLOW_WATER                ;; 00:176E $FE $05
     jr   z, .shallowWater                         ;; 00:1770 $28 $0F
 
     ld   a, NOISE_SFX_FOOTSTEP                    ;; 00:1772 $3E $07

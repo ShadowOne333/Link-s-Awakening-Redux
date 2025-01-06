@@ -73,7 +73,7 @@ MoldormDestructionFlash2Handler::
     jr   z, .jr_5705                              ;; 04:56FF $28 $04
 
     inc  [hl]                                     ;; 04:5701 $34
-    jp   func_004_5A05                            ;; 04:5702 $C3 $05 $5A
+    jp   CreatePoofVfx                            ;; 04:5702 $C3 $05 $5A
 
 .jr_5705
     call GetEntityTransitionCountdown             ;; 04:5705 $CD $05 $0C
@@ -111,7 +111,7 @@ BossDestructionHandler_04::
     ldh  a, [hActiveEntityVisualPosY]             ;; 04:573B $F0 $EC
     add  [hl]                                     ;; 04:573D $86
     ldh  [hActiveEntityVisualPosY], a             ;; 04:573E $E0 $EC
-    call func_004_5A05                            ;; 04:5740 $CD $05 $5A
+    call CreatePoofVfx                            ;; 04:5740 $CD $05 $5A
     call GetEntityTransitionCountdown             ;; 04:5743 $CD $05 $0C
     cp   $10                                      ;; 04:5746 $FE $10
     jr   nz, .return                              ;; 04:5748 $20 $06
@@ -224,7 +224,7 @@ jr_004_57C6:
     add  hl, de                                   ;; 04:57DB $19
     ldh  a, [hActiveEntityVisualPosY]             ;; 04:57DC $F0 $EC
     ld   [hl], a                                  ;; 04:57DE $77
-    call func_004_5AE6                            ;; 04:57DF $CD $E6 $5A
+    call MiniMoldormEntityHandler.sharedMoldormBehavior ;; 04:57DF $CD $E6 $5A
     ld   hl, wEntitiesPrivateState1Table          ;; 04:57E2 $21 $B0 $C2
     add  hl, bc                                   ;; 04:57E5 $09
     ld   e, [hl]                                  ;; 04:57E6 $5E
@@ -441,7 +441,7 @@ func_004_5902::
 ret_004_5A04:
     ret                                           ;; 04:5A04 $C9
 
-func_004_5A05::
+CreatePoofVfx::  ; Create a visual effect for boss destruction (called from multiple bosses)
     call ReturnIfNonInteractive_04.allowInactiveEntity ;; 04:5A05 $CD $A9 $7F
     ldh  a, [hActiveEntityPosX]                   ;; 04:5A08 $F0 $EE
     ldh  [hMultiPurpose0], a                      ;; 04:5A0A $E0 $D7
@@ -452,42 +452,4 @@ func_004_5A05::
     ld   a, NOISE_SFX_ENEMY_DESTROYED             ;; 04:5A15 $3E $13
     ldh  [hNoiseSfx], a                           ;; 04:5A17 $E0 $F4
     ret                                           ;; 04:5A19 $C9
-
-; Also called from initialization of mini moldorm.
-func_004_5A1A::
-    ld   hl, wEntitiesLoadOrderTable              ;; 04:5A1A $21 $60 $C4
-    add  hl, bc                                   ;; 04:5A1D $09
-    ld   e, [hl]                                  ;; 04:5A1E $5E
-    sla  e                                        ;; 04:5A1F $CB $23
-    sla  e                                        ;; 04:5A21 $CB $23
-    sla  e                                        ;; 04:5A23 $CB $23
-    sla  e                                        ;; 04:5A25 $CB $23
-    sla  e                                        ;; 04:5A27 $CB $23
-    ld   d, b                                     ;; 04:5A29 $50
-    ld   hl, wIsFileSelectionArrowShifted         ;; 04:5A2A $21 $00 $D0
-    add  hl, de                                   ;; 04:5A2D $19
-    push de                                       ;; 04:5A2E $D5
-    ld   e, $20                                   ;; 04:5A2F $1E $20
-
-.loop_5A31
-    xor  a                                        ;; 04:5A31 $AF
-    ld   [hl+], a                                 ;; 04:5A32 $22
-    dec  e                                        ;; 04:5A33 $1D
-    ld   a, e                                     ;; 04:5A34 $7B
-    cp   $00                                      ;; 04:5A35 $FE $00
-    jr   nz, .loop_5A31                           ;; 04:5A37 $20 $F8
-
-    pop  de                                       ;; 04:5A39 $D1
-    ld   hl, wD100                                ;; 04:5A3A $21 $00 $D1
-    add  hl, de                                   ;; 04:5A3D $19
-    ld   e, $20                                   ;; 04:5A3E $1E $20
-
-.loop_5A40
-    xor  a                                        ;; 04:5A40 $AF
-    ld   [hl+], a                                 ;; 04:5A41 $22
-    dec  e                                        ;; 04:5A42 $1D
-    ld   a, e                                     ;; 04:5A43 $7B
-    cp   $00                                      ;; 04:5A44 $FE $00
-    jr   nz, .loop_5A40                           ;; 04:5A46 $20 $F8
-
-    ret                                           ;; 04:5A48 $C9
+    
